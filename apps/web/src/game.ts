@@ -5,6 +5,7 @@ export type Projectile = { id: number; pos: Vec2; owner: number }
 export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; scores: number[]; events: unknown[] }
 export type Room = { id: number; name: string; mode: string; players: number; capacity: number }
 type Predict = (player: string, input: string) => string
+declare global { interface Window { __arenaWasmReady?: Promise<Predict | null> } }
 const platforms = [ [0,650,1200,50], [120,490,280,20], [800,490,280,20], [480,365,240,20], [510,555,180,20] ]
 
 export class GameClient {
@@ -53,11 +54,7 @@ export class GameClient {
     this.resize(); this.frame = requestAnimationFrame(this.loop)
   }
   async loadWasm() {
-    try {
-      const wasmPath = '/wasm/game_core.js'
-      const module = await import(/* @vite-ignore */ wasmPath) as { default: () => Promise<unknown>; predict_player: Predict }
-      await module.default(); this.predict = module.predict_player
-    } catch { this.predict = null }
+    this.predict = await (window.__arenaWasmReady ?? Promise.resolve(null))
   }
   keydown = (e: KeyboardEvent) => { if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault(); this.keys.add(e.code); if (e.code === 'Digit1') this.weapon = 0; if (e.code === 'Digit2') this.weapon = 1; if (e.code === 'Digit3') this.weapon = 2 }
   keyup = (e: KeyboardEvent) => this.keys.delete(e.code)

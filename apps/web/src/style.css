@@ -1,3 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
-:root{font-family:'DM Sans',Arial,sans-serif;color:#e8f1ed;background:#101a25;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer;border:0;background:#e2fc68;color:#142022;font-weight:700;padding:13px 22px;border-radius:7px}button:hover{background:#f2ff9c}button:disabled{opacity:.5;cursor:default}input,select{background:#172633;color:#eef6ed;border:1px solid #40505a;border-radius:7px;padding:13px 15px;outline:none}input:focus,select:focus{border-color:#dff968}.shell{min-height:100vh;background:radial-gradient(circle at 80% 20%,#1b3842 0,transparent 36%),#101a25}header{height:80px;padding:0 clamp(20px,5vw,80px);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff17}.brand{display:flex;gap:13px;align-items:center}.brand-mark{color:#e4fa70;font-size:32px}.brand strong{font:800 29px 'Barlow Condensed',sans-serif;letter-spacing:3px}.brand small{display:block;color:#8ea6a8;font-size:11px;letter-spacing:1px;text-transform:uppercase}.connection{display:flex;align-items:center;gap:9px;font-size:13px;color:#a8b9b9}.dot{width:8px;height:8px;border-radius:50%;background:#d96666}.dot.online{background:#c7f66b}.landing{min-height:calc(100vh - 80px);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3vw;max-width:1400px;margin:auto;padding:50px 5vw}.hero{max-width:570px}.eyebrow{color:#dafa72;letter-spacing:3px;font-size:12px;font-weight:700}.hero h1,.section-head h1{font:800 clamp(58px,7vw,110px)/.92 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;margin:20px 0}.hero>p:not(.eyebrow):not(.hint){font-size:18px;line-height:1.6;color:#a9bfbd;max-width:490px}.connect-form{display:flex;gap:10px;margin-top:35px}.connect-form input{flex:1;min-width:0}.hint{font-size:12px;color:#829998;margin-top:17px}.preview{height:490px;position:relative;overflow:hidden;border:1px solid #456165;border-radius:14px;background:linear-gradient(#1e4653,#18323c 65%,#122832);box-shadow:0 35px 90px #0008}.sun{position:absolute;width:180px;height:180px;border-radius:50%;background:#e6bd7c;filter:blur(1px);left:54%;top:20%;opacity:.75}.preview-platform{position:absolute;height:18px;background:#4b6866;border-top:4px solid #9cb896}.preview-platform.one{bottom:22%;left:0;width:45%}.preview-platform.two{bottom:47%;right:0;width:43%}.preview-player{position:absolute;width:25px;height:43px;border-radius:8px 8px 4px 4px;box-shadow:0 -12px 0 -2px #c5ad8e}.preview-player.a{background:#a7dbe6;left:30%;bottom:25%}.preview-player.b{background:#ec7773;right:27%;bottom:50%}.preview-shot{position:absolute;width:100px;height:3px;background:#f9ebae;left:38%;bottom:33%;transform:rotate(-16deg);box-shadow:0 0 15px #fff}.lobby,.match{max-width:1380px;margin:auto;padding:36px clamp(16px,4vw,60px)}.section-head,.match-head{display:flex;justify-content:space-between;align-items:center;gap:20px}.section-head h1{font-size:64px;margin:8px 0 30px}.outline{background:transparent;color:#d7e9df;border:1px solid #587074}.outline:hover{background:#29424a}.rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}.room,.create,.scoreboard,.chat{background:#172833;border:1px solid #344c55;border-radius:10px;padding:22px}.room{display:flex;align-items:center;justify-content:space-between;gap:15px}.room strong,.room span{display:block}.room span,.match-head span{color:#9ab1b0;font-size:13px;margin-top:5px}.create{margin-top:30px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.create h2{width:100%;margin:0 0 5px;font:700 28px 'Barlow Condensed'}.match-head{margin-bottom:14px}.match-head strong{font:700 26px 'Barlow Condensed'}.match-head span{display:block}.game-wrap{position:relative;width:100%;aspect-ratio:12/7;max-height:72vh;background:#132530;border:1px solid #567275;border-radius:8px;overflow:hidden}.game-wrap canvas{display:block;width:100%;height:100%;touch-action:none}.hud{position:absolute;left:14px;top:14px;display:flex;gap:8px;pointer-events:none}.stat{background:#0c1b23c9;border:1px solid #819f9b55;padding:8px 13px;border-radius:5px}.stat small{font-size:9px;letter-spacing:1px;color:#a7bab5;display:block}.stat strong{font:700 22px 'Barlow Condensed'}.match-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.match-bottom h2{font:700 23px 'Barlow Condensed';margin:0 0 12px}.scoreboard>div{display:flex;justify-content:space-between;border-top:1px solid #415a5e;padding:7px 0;font-size:13px}.chat-log{height:85px;overflow:auto;font-size:12px}.chat-log p{margin:3px 0}.chat form{display:flex;gap:6px}.chat input{flex:1;min-width:0;padding:8px}.chat button{padding:8px 12px}.controls{text-align:center;color:#8ea7a4;font-size:12px}.toast{position:fixed;right:18px;bottom:18px;background:#873d3d;color:white;padding:12px 18px;border-radius:6px;cursor:pointer;z-index:10}.touch-layer{position:absolute;inset:0;pointer-events:none;display:flex;align-items:end;justify-content:space-between;padding:18px}.touch-layer button{pointer-events:auto;border-radius:50%;padding:0;width:62px;height:62px;background:#e2fc68c9;touch-action:none;user-select:none}.touch-move,.touch-actions{display:flex;gap:8px}.touch-actions button{width:56px;height:56px;font-size:11px}.touch-actions .fire{background:#ff8c72;min-width:72px;min-height:72px;align-self:end}@media(max-width:800px){.landing{grid-template-columns:1fr;padding-top:40px}.preview{height:260px;order:-1}.hero h1{font-size:72px}.match-bottom{grid-template-columns:1fr}.game-wrap{aspect-ratio:12/8;min-height:330px}.hud{top:7px;left:7px}.stat{padding:5px 7px}.stat strong{font-size:16px}.stat small{font-size:7px}.controls{display:none}}@media(max-width:500px){header{height:64px}.brand strong{font-size:24px}.preview{height:210px}.connect-form{flex-direction:column}.section-head h1{font-size:52px}.touch-layer{padding:8px}.touch-layer button{width:50px;height:50px}.touch-actions button{width:45px;height:45px;font-size:9px}.touch-actions .fire{min-width:58px;min-height:58px}}
-.weapons{display:flex;gap:8px;margin-top:8px}.weapons button{flex:1;font-size:11px;padding:8px}
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root{font-family:'DM Sans',Arial,sans-serif;color:#f5f5ed;background:#0d1116;font-synthesis:none}
+*{box-sizing:border-box}
+html{min-width:320px}
+body{margin:0}
+::selection{background:#e5b645;color:#111820}
+button,input,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:2px;background:#e9b94a;color:#18180f;font-weight:800;letter-spacing:.035em;padding:13px 22px;transition:background .18s,transform .18s}
+button:hover{background:#ffcf62;transform:translateY(-1px)}
+button:disabled{opacity:.5;cursor:default;transform:none}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #ffd572;outline-offset:3px}
+input,select{background:#151d25;color:#f5f5ed;border:1px solid #5d6870;border-radius:2px;padding:13px 15px;outline:none}
+input::placeholder{color:#acb4b7}
+.shell{min-height:100vh;background:#0d1116}
+header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #fff2;position:relative;z-index:2;background:#0d1116}
+.brand{display:flex;gap:13px;align-items:center}
+.brand-mark{width:32px;height:32px;display:block;position:relative;border:2px solid #e9b94a;transform:rotate(45deg)}
+.brand-mark:before,.brand-mark:after{content:"";position:absolute;background:#e9b94a;top:50%;left:50%;transform:translate(-50%,-50%)}
+.brand-mark:before{width:18px;height:2px}.brand-mark:after{width:2px;height:18px}
+.brand strong{display:block;font:900 28px/1 'Barlow Condensed',sans-serif;letter-spacing:.11em}
+.brand small{display:block;margin-top:2px;color:#9faab0;font-size:9px;letter-spacing:.17em;text-transform:uppercase}
+.connection{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#aeb8b9}
+.dot{width:7px;height:7px;border-radius:50%;background:#bb6767;box-shadow:0 0 0 4px #bb67672a}.dot.online{background:#afd176;box-shadow:0 0 0 4px #afd17624}
+
+.landing{min-height:calc(100svh - 72px);position:relative;display:flex;align-items:center;isolation:isolate;overflow:hidden;background:#121a22 url('/art/arena-key-art.png') 58% center/cover no-repeat}
+.landing:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#0b1119fa 0%,#0b1119ee 27%,#0b1119af 48%,#0b111943 72%,#0b111920 100%),linear-gradient(0deg,#0b1119d9,transparent 35%)}
+.landing:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:1px solid #ffffff16}
+.hero{width:min(640px,100%);padding:clamp(28px,5vw,72px) clamp(24px,6vw,96px) 82px;position:relative}
+.hero-rule{display:flex;align-items:center;gap:10px;font:700 11px 'DM Sans',sans-serif;letter-spacing:.19em;color:#e8bb58}
+.hero-rule span{width:25px;height:2px;background:#e8bb58}
+.hero h1{margin:20px 0 12px;font:900 clamp(72px,8vw,126px)/.82 'Barlow Condensed',sans-serif;letter-spacing:-.012em;white-space:nowrap;text-shadow:0 4px 26px #0008}
+.hero h1 em{font-style:normal;color:#e9b94a}
+.hero>p{max-width:400px;color:#d8e0df;font-size:16px;line-height:1.55;margin:24px 0 31px}
+.connect-form{max-width:440px;border-top:1px solid #e9b94a7d;padding-top:18px}
+.connect-form label{display:block;margin-bottom:9px;color:#d9e0dc;font-size:10px;font-weight:800;letter-spacing:.19em}
+.join-row{display:flex;gap:0;min-height:54px;box-shadow:0 14px 32px #0008}
+.join-row input{flex:1;min-width:0;background:#e8eced;color:#171f26;border:0;font-weight:700;font-size:14px}
+.join-row input::placeholder{color:#59656b}
+.join-row button{flex:none;padding:0 23px;font:800 15px 'Barlow Condensed',sans-serif;letter-spacing:.07em;white-space:nowrap}
+.hint{display:block;margin-top:11px;color:#c4cfcd;font-size:11px}
+.landing-footer{position:absolute;left:clamp(24px,6vw,96px);right:clamp(24px,6vw,96px);bottom:22px;display:flex;gap:25px;justify-content:space-between;border-top:1px solid #ffffff54;padding-top:13px;color:#e3e9e5;font:700 10px 'DM Sans',sans-serif;letter-spacing:.14em}
+
+.lobby,.match{max-width:1380px;margin:auto;padding:36px clamp(16px,4vw,60px)}
+.section-head,.match-head{display:flex;justify-content:space-between;align-items:center;gap:20px}
+.section-head h1{font:800 clamp(46px,6vw,76px)/.9 'Barlow Condensed',sans-serif;text-transform:uppercase;margin:8px 0 30px}
+.eyebrow{color:#e9b94a;letter-spacing:.17em;font-size:11px;font-weight:700}
+.outline{background:transparent;color:#ecf0eb;border:1px solid #677880}.outline:hover{background:#22323d}
+.rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.room,.create,.scoreboard,.chat{background:#19242d;border:1px solid #3e5059;border-radius:4px;padding:22px}
+.room{display:flex;align-items:center;justify-content:space-between;gap:15px}.room strong,.room span{display:block}.room span,.match-head span{color:#b3c1c0;font-size:13px;margin-top:5px}
+.create{margin-top:30px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.create h2{width:100%;margin:0 0 5px;font:700 28px 'Barlow Condensed'}
+.match-head{margin-bottom:14px}.match-head strong{font:700 28px 'Barlow Condensed'}.match-head span{display:block}
+.game-wrap{position:relative;width:100%;aspect-ratio:12/7;max-height:72vh;background:#132530;border:1px solid #567275;border-radius:4px;overflow:hidden}.game-wrap canvas{display:block;width:100%;height:100%;touch-action:none}
+.hud{position:absolute;left:14px;top:14px;display:flex;gap:8px;pointer-events:none}.stat{background:#0c1b23db;border:1px solid #819f9b55;padding:8px 13px;border-radius:2px}.stat small{font-size:9px;letter-spacing:1px;color:#b9c7c1;display:block}.stat strong{font:700 22px 'Barlow Condensed'}
+.match-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.match-bottom h2{font:700 23px 'Barlow Condensed';margin:0 0 12px}.scoreboard>div{display:flex;justify-content:space-between;border-top:1px solid #415a5e;padding:7px 0;font-size:13px}.chat-log{height:85px;overflow:auto;font-size:12px}.chat-log p{margin:3px 0}.chat form{display:flex;gap:6px}.chat input{flex:1;min-width:0;padding:8px}.chat button{padding:8px 12px}.controls{text-align:center;color:#aabbb6;font-size:12px}
+.toast{position:fixed;right:18px;bottom:18px;background:#873d3d;color:white;padding:12px 18px;border-radius:2px;cursor:pointer;z-index:10}
+.touch-layer{position:absolute;inset:0;pointer-events:none;display:flex;align-items:end;justify-content:space-between;padding:18px}.touch-layer button{pointer-events:auto;border-radius:50%;padding:0;width:62px;height:62px;background:#e9b94ad9;touch-action:none;user-select:none}.touch-move,.touch-actions{display:flex;gap:8px}.touch-actions button{width:56px;height:56px;font-size:11px}.touch-actions .fire{background:#ee8066;min-width:72px;min-height:72px;align-self:end}.weapons{display:flex;gap:8px;margin-top:8px}.weapons button{flex:1;font-size:11px;padding:8px}
+@media(max-width:800px){
+  header{height:62px}.landing{min-height:calc(100svh - 62px);align-items:flex-start;background-position:61% center}.landing:before{background:linear-gradient(90deg,#0b1119f5 0%,#0b1119cc 44%,#0b111962 100%),linear-gradient(0deg,#0b1119b8,transparent 50%)}
+  .hero{padding:clamp(42px,8vh,72px) 34px 88px}.hero h1{font-size:clamp(64px,11vw,88px)}.hero>p{margin:19px 0 26px}
+  .landing-footer{left:34px;right:34px}.landing-footer span:last-child{display:none}
+  .match-bottom{grid-template-columns:1fr}.game-wrap{aspect-ratio:12/8;min-height:330px}.hud{top:7px;left:7px}.stat{padding:5px 7px}.stat strong{font-size:16px}.stat small{font-size:7px}.controls{display:none}
+}
+@media(max-width:500px){
+  header{padding:0 20px}.brand strong{font-size:24px}.brand small{font-size:8px}.connection{font-size:9px}
+  .landing{background-position:63% center}.landing:before{background:linear-gradient(90deg,#0b1119eb 0%,#0b1119bb 63%,#0b11196b 100%),linear-gradient(0deg,#0b1119aa,transparent 60%)}
+  .hero{padding:42px 22px 91px}.hero-rule{font-size:9px}.hero h1{font-size:clamp(58px,14vw,74px)}.hero>p{font-size:14px;max-width:280px}
+  .join-row{flex-direction:column;gap:7px;box-shadow:none}.join-row input,.join-row button{min-height:48px}.landing-footer{left:22px;right:22px;font-size:8px;gap:8px}
+  .section-head h1{font-size:52px}.touch-layer{padding:8px}.touch-layer button{width:50px;height:50px}.touch-actions button{width:45px;height:45px;font-size:9px}.touch-actions .fire{min-width:58px;min-height:58px}
+}
