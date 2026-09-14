@@ -1,0 +1,23 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile.api
+    environment:
+      BIND_ADDR: 0.0.0.0:3000
+      ALLOWED_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost}
+      RUST_LOG: server=info
+    restart: unless-stopped
+    stop_grace_period: 10s
+  web:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile.web
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
+    restart: unless-stopped
