@@ -4,5 +4,6 @@
 /apps/web/node_modules/
 /apps/web/dist/
 /apps/web/public/wasm/
+/.agents/
 /.env
 *.log
