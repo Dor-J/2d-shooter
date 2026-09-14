@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+mod weapons;
+pub use weapons::{Weapon, WeaponStyle, WEAPONS};
 
 pub const TICK_RATE: u32 = 60;
 pub const DT: f32 = 1.0 / TICK_RATE as f32;
@@ -94,6 +96,10 @@ pub struct Player {
     pub respawn: u16,
     pub last_seq: u32,
     pub weapon: u8,
+    pub ammo: u16,
+    pub reload_timer: u16,
+    pub startup: u16,
+    pub magazines: [u16; 10],
 }
 impl Player {
     pub fn new(id: u32, name: String, team: u8) -> Self {
@@ -112,6 +118,10 @@ impl Player {
             respawn: 0,
             last_seq: 0,
             weapon: 0,
+            ammo: WEAPONS[0].ammo,
+            reload_timer: 0,
+            startup: 0,
+            magazines: WEAPONS.map(|weapon| weapon.ammo),
         }
     }
 }
@@ -136,6 +146,7 @@ pub struct Projectile {
     pub vel: Vec2,
     pub ttl: u16,
     pub damage: i32,
+    pub explosive: bool,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Event {
@@ -191,15 +202,38 @@ impl World {
                     player.pos = spawn(player.id, player.team);
                     player.vel = Vec2::default();
                     player.fuel = 1.0;
+                    player.magazines = WEAPONS.map(|weapon| weapon.ammo);
+                    player.ammo = WEAPONS[player.weapon as usize].ammo;
+                    player.reload_timer = 0;
+                    player.startup = 0;
                     self.events.push(Event::Respawn { player: player.id });
                 }
                 continue;
             }
             let input = inputs.get(&player.id).copied().unwrap_or_default();
             player.last_seq = input.seq;
-            player.weapon = input.weapon.min(2);
+            let selected = input.weapon.min((WEAPONS.len() - 1) as u8);
+            if selected != player.weapon {
+                player.magazines[player.weapon as usize] = player.ammo;
+                player.weapon = selected;
+                player.ammo = player.magazines[selected as usize];
+                player.startup = 0;
+                player.reload_timer = if player.ammo == 0 {
+                    WEAPONS[selected as usize].reload_ticks
+                } else {
+                    0
+                };
+            }
+            let weapon = WEAPONS[player.weapon as usize];
             if player.cooldown > 0 {
                 player.cooldown -= 1;
+            }
+            if player.reload_timer > 0 {
+                player.reload_timer -= 1;
+                if player.reload_timer == 0 {
+                    player.ammo = weapon.ammo;
+                    player.magazines[player.weapon as usize] = player.ammo;
+                }
             }
             let horizontal = (input.right as i32 - input.left as i32) as f32;
             player.vel.x = (player.vel.x + horizontal * 1050.0 * DT).clamp(-270.0, 270.0);
@@ -233,29 +267,59 @@ impl World {
                     player.grounded = true;
                 }
             }
-            if input.fire && player.cooldown == 0 {
+            if input.fire {
+                player.startup = player.startup.saturating_add(1);
+            } else {
+                player.startup = 0;
+            }
+            if input.fire
+                && player.cooldown == 0
+                && player.reload_timer == 0
+                && player.ammo > 0
+                && player.startup > weapon.startup_ticks
+            {
                 let dx = input.aim.x - player.pos.x;
                 let dy = input.aim.y - player.pos.y;
                 let len = (dx * dx + dy * dy).sqrt();
                 if len > 1.0 && len.is_finite() {
-                    let (speed, damage, cooldown) = match player.weapon {
-                        1 => (850.0, 34, 18),
-                        2 => (1100.0, 12, 4),
-                        _ => (780.0, 22, 9),
+                    let speed = weapon.speed * 40.0;
+                    let damage = match weapon.style {
+                        WeaponStyle::Explosive => 100,
+                        WeaponStyle::Shotgun => {
+                            ((weapon.speed * weapon.hit_multiply) / 3.0).round() as i32
+                        }
+                        WeaponStyle::Bullet => (weapon.speed * weapon.hit_multiply)
+                            .round()
+                            .clamp(1.0, 100.0)
+                            as i32,
                     };
-                    self.projectiles.push(Projectile {
-                        id: self.next_projectile,
-                        owner: player.id,
-                        pos: player.pos,
-                        vel: Vec2 {
-                            x: dx / len * speed,
-                            y: dy / len * speed,
-                        },
-                        ttl: 90,
-                        damage,
-                    });
-                    self.next_projectile = self.next_projectile.wrapping_add(1);
-                    player.cooldown = cooldown;
+                    for pellet in 0..weapon.pellets {
+                        let spread = if weapon.style == WeaponStyle::Shotgun {
+                            (pellet as f32 - 2.5) * 0.055
+                        } else {
+                            0.0
+                        };
+                        let angle = dy.atan2(dx) + spread;
+                        self.projectiles.push(Projectile {
+                            id: self.next_projectile,
+                            owner: player.id,
+                            pos: player.pos,
+                            vel: Vec2 {
+                                x: angle.cos() * speed,
+                                y: angle.sin() * speed,
+                            },
+                            ttl: 90,
+                            damage,
+                            explosive: weapon.style == WeaponStyle::Explosive,
+                        });
+                        self.next_projectile = self.next_projectile.wrapping_add(1);
+                    }
+                    player.ammo -= 1;
+                    player.magazines[player.weapon as usize] = player.ammo;
+                    player.cooldown = weapon.fire_interval;
+                    if player.ammo == 0 {
+                        player.reload_timer = weapon.reload_ticks;
+                    }
                     self.events.push(Event::Shot { player: player.id });
                 }
             }
@@ -271,6 +335,9 @@ impl World {
                 || bullet.pos.y < 0.0
                 || bullet.pos.y > HEIGHT
             {
+                if bullet.explosive {
+                    splash_hits(bullet, &self.players, &teams, &mut hits);
+                }
                 return false;
             }
             if PLATFORMS.iter().any(|p| {
@@ -279,6 +346,9 @@ impl World {
                     && bullet.pos.y >= p.y
                     && bullet.pos.y <= p.y + p.h
             }) {
+                if bullet.explosive {
+                    splash_hits(bullet, &self.players, &teams, &mut hits);
+                }
                 return false;
             }
             let Some(owner_team) = teams.get(&bullet.owner) else {
@@ -291,7 +361,11 @@ impl World {
                     && (target.pos.x - bullet.pos.x).powi(2) + (target.pos.y - bullet.pos.y).powi(2)
                         < 18.0_f32.powi(2)
                 {
-                    hits.push((bullet.owner, target.id, bullet.damage));
+                    if bullet.explosive {
+                        splash_hits(bullet, &self.players, &teams, &mut hits);
+                    } else {
+                        hits.push((bullet.owner, target.id, bullet.damage));
+                    }
                     return false;
                 }
             }
@@ -310,7 +384,7 @@ impl World {
                 if target.hp == 0 {
                     target.deaths += 1;
                     target.respawn = 120;
-                    if self.mode == "team" {
+                    if self.mode == "team" && killer != target_id {
                         if let Some(team) = teams.get(&killer) {
                             self.scores[(*team - 1) as usize] += 1;
                         }
@@ -319,11 +393,42 @@ impl World {
                         killer,
                         target: target_id,
                     });
-                    if let Some(k) = self.players.get_mut(&killer) {
-                        k.kills += 1;
+                    if killer != target_id {
+                        if let Some(k) = self.players.get_mut(&killer) {
+                            k.kills += 1;
+                        }
                     }
                 }
             }
+        }
+    }
+}
+
+fn splash_hits(
+    bullet: &Projectile,
+    players: &BTreeMap<u32, Player>,
+    teams: &BTreeMap<u32, u8>,
+    hits: &mut Vec<(u32, u32, i32)>,
+) {
+    for target in players.values() {
+        if target.hp <= 0 {
+            continue;
+        }
+        if target.id != bullet.owner
+            && teams.get(&bullet.owner) == Some(&target.team)
+            && target.team != 0
+        {
+            continue;
+        }
+        let dx = target.pos.x - bullet.pos.x;
+        let dy = target.pos.y - bullet.pos.y;
+        let distance = (dx * dx + dy * dy).sqrt();
+        if distance < 64.0 {
+            hits.push((
+                bullet.owner,
+                target.id,
+                ((1.0 - distance / 64.0) * bullet.damage as f32).ceil() as i32,
+            ));
         }
     }
 }
@@ -351,6 +456,154 @@ mod wasm {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn soldat_primary_weapon_stats_match_normal_mode() {
+        assert_eq!(WEAPONS.len(), 10);
+        assert_eq!(WEAPONS[0].name, "Desert Eagles");
+        assert_eq!(
+            (
+                WEAPONS[0].fire_interval,
+                WEAPONS[0].ammo,
+                WEAPONS[0].reload_ticks
+            ),
+            (24, 7, 87)
+        );
+        assert_eq!(
+            (
+                WEAPONS[1].fire_interval,
+                WEAPONS[1].ammo,
+                WEAPONS[1].reload_ticks
+            ),
+            (6, 30, 105)
+        );
+        assert_eq!(
+            (WEAPONS[4].style, WEAPONS[4].pellets),
+            (WeaponStyle::Shotgun, 6)
+        );
+        assert_eq!(
+            (WEAPONS[6].style, WEAPONS[6].ammo),
+            (WeaponStyle::Explosive, 1)
+        );
+        assert_eq!(
+            (WEAPONS[7].startup_ticks, WEAPONS[7].fire_interval),
+            (19, 225)
+        );
+    }
+    #[test]
+    fn magazine_runs_empty_and_reloads_after_source_duration() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "A".into());
+        let fire = Input {
+            fire: true,
+            aim: Vec2 {
+                x: 1000.0,
+                y: 430.0,
+            },
+            weapon: 0,
+            ..Default::default()
+        };
+        for _ in 0..7 {
+            w.players.get_mut(&1).unwrap().cooldown = 0;
+            w.step(&BTreeMap::from([(1, fire)]));
+        }
+        assert_eq!(w.players[&1].ammo, 0);
+        let before = w.projectiles.len();
+        w.step(&BTreeMap::from([(1, fire)]));
+        assert_eq!(w.projectiles.len(), before);
+        for _ in 0..WEAPONS[0].reload_ticks {
+            w.step(&BTreeMap::new());
+        }
+        assert_eq!(w.players[&1].ammo, WEAPONS[0].ammo);
+    }
+    #[test]
+    fn spas_fires_multiple_pellets_for_one_shell() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "A".into());
+        w.step(&BTreeMap::from([(
+            1,
+            Input {
+                fire: true,
+                aim: Vec2 {
+                    x: 1000.0,
+                    y: 430.0,
+                },
+                weapon: 4,
+                ..Default::default()
+            },
+        )]));
+        assert_eq!(w.projectiles.len(), WEAPONS[4].pellets as usize);
+        assert_eq!(w.players[&1].ammo, WEAPONS[4].ammo - 1);
+    }
+    #[test]
+    fn m79_explosion_damages_nearby_enemy_not_distant_enemy() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "Shooter".into());
+        w.add_player(2, "Near".into());
+        w.add_player(3, "Far".into());
+        w.players.get_mut(&2).unwrap().pos = Vec2 { x: 335.0, y: 430.0 };
+        w.players.get_mut(&3).unwrap().pos = Vec2 { x: 500.0, y: 430.0 };
+        w.projectiles.push(Projectile {
+            id: 1,
+            owner: 1,
+            pos: Vec2 { x: 300.0, y: 430.0 },
+            vel: Vec2::default(),
+            ttl: 1,
+            damage: 100,
+            explosive: true,
+        });
+        w.step(&BTreeMap::new());
+        assert!(w.players[&2].hp < 100);
+        assert_eq!(w.players[&3].hp, 100);
+    }
+    #[test]
+    fn switching_away_and_back_does_not_refill_a_magazine() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "A".into());
+        w.players.get_mut(&1).unwrap().ammo = 1;
+        let fire = Input {
+            fire: true,
+            aim: Vec2 {
+                x: 1000.0,
+                y: 430.0,
+            },
+            weapon: 0,
+            ..Default::default()
+        };
+        w.step(&BTreeMap::from([(1, fire)]));
+        w.step(&BTreeMap::from([(
+            1,
+            Input {
+                weapon: 1,
+                ..Default::default()
+            },
+        )]));
+        w.step(&BTreeMap::from([(
+            1,
+            Input {
+                weapon: 0,
+                ..Default::default()
+            },
+        )]));
+        assert_eq!(w.players[&1].ammo, 0);
+        assert!(w.players[&1].reload_timer > 0);
+    }
+    #[test]
+    fn self_explosion_is_not_credited_as_a_kill() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "A".into());
+        w.projectiles.push(Projectile {
+            id: 1,
+            owner: 1,
+            pos: w.players[&1].pos,
+            vel: Vec2::default(),
+            ttl: 1,
+            damage: 100,
+            explosive: true,
+        });
+        w.step(&BTreeMap::new());
+        assert_eq!(w.players[&1].hp, 0);
+        assert_eq!(w.players[&1].kills, 0);
+    }
     #[test]
     fn deterministic_replay() {
         let mut a = World::new("deathmatch");

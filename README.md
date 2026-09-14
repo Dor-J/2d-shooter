@@ -14,4 +14,4 @@ Set `SITE_ADDRESS` to the public domain and `PUBLIC_ORIGIN` to its `https://` or
 
 ## Status
 
-This repository provides a playable foundation, not a production-complete Soldat remake. The first arena, two modes, and three weapons work at the simulation layer. Production release still requires more content, network/browser/device testing, asset provenance review, and operational hardening. See `docs/gameplay.md` and `docs/provenance.md`.
+This repository provides a playable foundation, not a production-complete Soldat remake. The first arena, two modes, and ten normal-mode primary weapons work at the simulation layer. Production release still requires exact mechanics parity, more content, network/browser/device testing, asset provenance review, and operational hardening. See `docs/gameplay.md` and `docs/provenance.md`.

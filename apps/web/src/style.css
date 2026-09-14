@@ -69,3 +69,34 @@ header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:s
   .join-row{flex-direction:column;gap:7px;box-shadow:none}.join-row input,.join-row button{min-height:48px}.landing-footer{left:22px;right:22px;font-size:8px;gap:8px}
   .section-head h1{font-size:52px}.touch-layer{padding:8px}.touch-layer button{width:50px;height:50px}.touch-actions button{width:45px;height:45px;font-size:9px}.touch-actions .fire{min-width:58px;min-height:58px}
 }
+
+/* Match surface: keep world units square and let the battlefield lead. */
+.match{padding-top:22px}
+.match-head{padding:0 2px 12px;margin-bottom:0}
+.game-wrap{max-height:none;aspect-ratio:12/7;background:#172330;border-color:#52616a;box-shadow:0 22px 54px #0007}
+.game-wrap canvas{background:#182633 url('/art/battlefield.png') center/cover no-repeat}
+.hud{left:14px;top:14px;gap:0;background:#0b131ce8;border:1px solid #d5c8a65c;padding:4px 7px;box-shadow:0 6px 18px #0008}
+.stat{background:none;border:0;border-right:1px solid #ffffff38;padding:5px 13px;min-width:76px}
+.stat:last-child{border-right:0}
+.stat small{font:700 9px 'DM Sans',sans-serif;letter-spacing:.10em;color:#ced6d4}
+.stat strong{font:800 19px 'DM Sans',sans-serif;font-variant-numeric:tabular-nums;color:#f5f2e9}
+.match-bottom{gap:0;margin-top:18px;border-top:1px solid #b2a17a62}
+.scoreboard,.chat{border:0;border-radius:0;background:transparent;padding:18px 22px 22px}
+.scoreboard{border-right:1px solid #ffffff1f}
+.match-bottom h2{font:700 19px 'DM Sans',sans-serif;letter-spacing:-.02em;margin-bottom:14px}
+.scoreboard>div{border-top:1px solid #ffffff25;padding:9px 0}
+.chat-log{height:78px;color:#d5dfdc}
+@media(max-width:800px){.game-wrap{min-height:0;aspect-ratio:12/7}.match-bottom{grid-template-columns:1fr}.scoreboard{border-right:0;border-bottom:1px solid #ffffff1f}}
+@media(max-width:500px){.match{padding:12px 8px}.hud{left:7px;top:7px;padding:2px 4px}.stat{min-width:0;padding:4px 7px}.stat small{font-size:7px}.stat strong{font-size:13px}.match-head strong{font-size:22px}}
+@media(min-width:801px){
+  .match{max-width:1600px;display:grid;grid-template-columns:minmax(0,1fr) clamp(210px,22vw,276px);column-gap:16px;align-items:start}
+  .match-head{grid-column:1/-1}
+  .game-wrap{grid-column:1}
+  .match-bottom{grid-column:2;display:flex;flex-direction:column;gap:14px;margin-top:0;border-top:0;min-height:100%}
+  .scoreboard,.chat{background:#17212a;border:1px solid #45535b;border-radius:3px;padding:16px}
+  .scoreboard{border-right:1px solid #45535b}
+  .chat{flex:1;display:flex;flex-direction:column;min-height:210px}
+  .chat-log{flex:1;height:auto;min-height:90px}
+  .controls{grid-column:1/-1;margin:12px 0 0}
+}
+.weapons{flex-wrap:wrap}.weapons button{flex:1 1 120px;background:#243b44;color:#dce9df;border:1px solid #47616a}.weapons button.selected{background:#e2fc68;color:#142022}

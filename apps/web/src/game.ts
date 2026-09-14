@@ -1,6 +1,10 @@
+import { screenToWorld, viewForCanvas } from './mobile'
+import type { View } from './mobile'
+
 export type Vec2 = { x: number; y: number }
 export type Input = { seq: number; left: boolean; right: boolean; jump: boolean; jet: boolean; fire: boolean; aim: Vec2; weapon: number }
-export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: number; fuel: number; kills: number; deaths: number; team: number; grounded: boolean; cooldown: number; respawn: number; last_seq: number; weapon: number }
+export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: number; fuel: number; kills: number; deaths: number; team: number; grounded: boolean; cooldown: number; respawn: number; last_seq: number; weapon: number; ammo: number; reload_timer: number; startup: number; magazines: number[] }
+export const weaponNames = ['Desert Eagles','HK MP5','AK-74','Steyr AUG','SPAS-12','Ruger 77','M79','Barrett M82A1','FN Minimi','XM214 Minigun']
 export type Projectile = { id: number; pos: Vec2; owner: number }
 export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; scores: number[]; events: unknown[] }
 export type Room = { id: number; name: string; mode: string; players: number; capacity: number }
@@ -15,7 +19,16 @@ export class GameClient {
   buffer: WebGLBuffer
   position: number
   resolution: WebGLUniformLocation
+  camera: WebGLUniformLocation
   color: WebGLUniformLocation
+  spriteProgram: WebGLProgram
+  spriteBuffer: WebGLBuffer
+  spritePosition: number
+  spriteUv: number
+  spriteResolution: WebGLUniformLocation
+  spriteCamera: WebGLUniformLocation
+  spriteTint: WebGLUniformLocation
+  soldierTexture: WebGLTexture | null = null
   world: World | null = null
   previousWorld: World | null = null
   snapshotAt = performance.now()
@@ -32,6 +45,7 @@ export class GameClient {
   accumulator = 0
   frame = 0
   resizeObserver: ResizeObserver
+  view: View = { x: 0, width: 1200, height: 700 }
 
   constructor(canvas: HTMLCanvasElement, send: (input: Input) => void) {
     this.canvas = canvas; this.send = send
@@ -39,7 +53,7 @@ export class GameClient {
     if (!gl) throw new Error('WebGL2 is required on this device')
     this.gl = gl
     const vertex = gl.createShader(gl.VERTEX_SHADER)!
-    gl.shaderSource(vertex, `#version 300 es\nin vec2 a_position; uniform vec2 u_resolution; void main(){ vec2 p = a_position / u_resolution * 2.0 - 1.0; gl_Position = vec4(p.x, -p.y, 0, 1); }`)
+    gl.shaderSource(vertex, `#version 300 es\nin vec2 a_position; uniform vec2 u_resolution; uniform float u_camera; void main(){ vec2 p = (a_position - vec2(u_camera,0.0)) / u_resolution * 2.0 - 1.0; gl_Position = vec4(p.x, -p.y, 0, 1); }`)
     gl.compileShader(vertex)
     const fragment = gl.createShader(gl.FRAGMENT_SHADER)!
     gl.shaderSource(fragment, `#version 300 es\nprecision mediump float; uniform vec4 u_color; out vec4 color; void main(){color=u_color;}`)
@@ -47,7 +61,23 @@ export class GameClient {
     const program = gl.createProgram()!
     gl.attachShader(program, vertex); gl.attachShader(program, fragment); gl.linkProgram(program)
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error('WebGL shader setup failed')
-    this.program = program; this.buffer = gl.createBuffer()!; this.position = gl.getAttribLocation(program, 'a_position'); this.resolution = gl.getUniformLocation(program, 'u_resolution')!; this.color = gl.getUniformLocation(program, 'u_color')!
+    this.program = program; this.buffer = gl.createBuffer()!; this.position = gl.getAttribLocation(program, 'a_position'); this.resolution = gl.getUniformLocation(program, 'u_resolution')!; this.camera = gl.getUniformLocation(program, 'u_camera')!; this.color = gl.getUniformLocation(program, 'u_color')!
+    const spriteVertex = gl.createShader(gl.VERTEX_SHADER)!
+    gl.shaderSource(spriteVertex, `#version 300 es\nin vec2 a_position; in vec2 a_uv; uniform vec2 u_resolution; uniform float u_camera; out vec2 v_uv; void main(){ vec2 p=(a_position-vec2(u_camera,0.0))/u_resolution*2.0-1.0; gl_Position=vec4(p.x,-p.y,0,1); v_uv=a_uv; }`)
+    gl.compileShader(spriteVertex)
+    const spriteFragment = gl.createShader(gl.FRAGMENT_SHADER)!
+    gl.shaderSource(spriteFragment, `#version 300 es\nprecision mediump float; in vec2 v_uv; uniform sampler2D u_texture; uniform vec4 u_tint; out vec4 color; void main(){ color=texture(u_texture,v_uv)*u_tint; }`)
+    gl.compileShader(spriteFragment)
+    const spriteProgram = gl.createProgram()!
+    gl.attachShader(spriteProgram,spriteVertex); gl.attachShader(spriteProgram,spriteFragment); gl.linkProgram(spriteProgram)
+    if (!gl.getProgramParameter(spriteProgram, gl.LINK_STATUS)) throw new Error('Sprite shader setup failed')
+    this.spriteProgram = spriteProgram; this.spriteBuffer = gl.createBuffer()!
+    this.spritePosition = gl.getAttribLocation(spriteProgram,'a_position'); this.spriteUv = gl.getAttribLocation(spriteProgram,'a_uv')
+    this.spriteResolution = gl.getUniformLocation(spriteProgram,'u_resolution')!; this.spriteCamera = gl.getUniformLocation(spriteProgram,'u_camera')!; this.spriteTint = gl.getUniformLocation(spriteProgram,'u_tint')!
+    const soldier = new Image()
+    soldier.src = '/art/soldier.png'
+    soldier.onload = () => { const texture = gl.createTexture(); if (!texture) return; gl.bindTexture(gl.TEXTURE_2D,texture); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,soldier); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); this.soldierTexture = texture }
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
     this.resizeObserver = new ResizeObserver(() => this.resize()); this.resizeObserver.observe(canvas)
     window.addEventListener('keydown', this.keydown); window.addEventListener('keyup', this.keyup); window.addEventListener('blur', this.blur)
     canvas.addEventListener('pointermove', this.pointer); canvas.addEventListener('pointerdown', this.pointerDown); window.addEventListener('pointerup', this.pointerUp)
@@ -56,17 +86,67 @@ export class GameClient {
   async loadWasm() {
     this.predict = await (window.__arenaWasmReady ?? Promise.resolve(null))
   }
-  keydown = (e: KeyboardEvent) => { if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault(); this.keys.add(e.code); if (e.code === 'Digit1') this.weapon = 0; if (e.code === 'Digit2') this.weapon = 1; if (e.code === 'Digit3') this.weapon = 2 }
+  keydown = (e: KeyboardEvent) => { if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault(); this.keys.add(e.code); if (/^Digit[0-9]$/.test(e.code)) this.weapon = e.code === 'Digit0' ? 9 : Number(e.code.slice(-1)) - 1 }
   keyup = (e: KeyboardEvent) => this.keys.delete(e.code)
   blur = () => { this.keys.clear(); this.touch = { left: false, right: false, jump: false, jet: false, fire: false } }
-  pointer = (e: PointerEvent) => { const r = this.canvas.getBoundingClientRect(); this.aim = { x: (e.clientX - r.left) / r.width * 1200, y: (e.clientY - r.top) / r.height * 700 } }
-  pointerDown = (e: PointerEvent) => { this.pointer(e); this.touch.fire = true }
+  pointer = (e: PointerEvent) => { const r = this.canvas.getBoundingClientRect(); this.aim = screenToWorld(e.clientX - r.left, e.clientY - r.top, r.width, r.height, this.view) }
+  pointerDown = (e: PointerEvent) => { this.pointer(e); if (e.pointerType === 'mouse') this.touch.fire = true }
   pointerUp = () => { this.touch.fire = false }
   resize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); this.canvas.width = Math.max(1, Math.round(this.canvas.clientWidth * dpr)); this.canvas.height = Math.max(1, Math.round(this.canvas.clientHeight * dpr)); this.gl.viewport(0, 0, this.canvas.width, this.canvas.height) }
+  updateView() { const player = this.predicted ?? this.world?.players[this.localId]; const rect = this.canvas.getBoundingClientRect(); this.view = viewForCanvas(rect.width, rect.height, player?.pos.x ?? 600); this.canvas.style.backgroundSize = `${1200 / this.view.width * 100}% 100%`; this.canvas.style.backgroundPositionX = `${this.view.width >= 1200 ? 50 : this.view.x / (1200 - this.view.width) * 100}%` }
   setSnapshot(world: World) { this.previousWorld = this.world; this.world = world; this.snapshotAt = performance.now(); this.predicted = world.players[this.localId] ? structuredClone(world.players[this.localId]) : null }
   loop = (now: number) => { this.accumulator += Math.min(now - this.last, 100); this.last = now; while (this.accumulator >= 1000 / 60) { this.tick(); this.accumulator -= 1000 / 60 } this.render(); this.frame = requestAnimationFrame(this.loop) }
   tick() { if (!this.world || !this.localId) return; const input: Input = { seq: ++this.seq, left: this.keys.has('KeyA') || this.keys.has('ArrowLeft') || this.touch.left, right: this.keys.has('KeyD') || this.keys.has('ArrowRight') || this.touch.right, jump: this.keys.has('Space') || this.keys.has('KeyW') || this.touch.jump, jet: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.touch.jet, fire: this.touch.fire, aim: this.aim, weapon: this.weapon }; this.send(input); if (this.predict && this.predicted) { try { const result = this.predict(JSON.stringify(this.predicted), JSON.stringify(input)); if (result) this.predicted = JSON.parse(result) as Player } catch { this.predict = null } } }
   rect(x: number, y: number, w: number, h: number, c: number[]) { const gl = this.gl; gl.uniform4f(this.color, c[0], c[1], c[2], c[3] ?? 1); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([x,y,x+w,y,x,y+h,x,y+h,x+w,y,x+w,y+h]), gl.STREAM_DRAW); gl.drawArrays(gl.TRIANGLES, 0, 6) }
-  render() { const gl = this.gl; gl.clearColor(.07,.11,.15,1); gl.clear(gl.COLOR_BUFFER_BIT); gl.useProgram(this.program); gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer); gl.enableVertexAttribArray(this.position); gl.vertexAttribPointer(this.position,2,gl.FLOAT,false,0,0); gl.uniform2f(this.resolution,1200,700); for (const [x,y,w,h] of platforms) { this.rect(x,y,w,h,[.30,.37,.38,1]); this.rect(x,y,w,3,[.58,.70,.65,1]) } if (!this.world) return; const blend = Math.min(1, (performance.now() - this.snapshotAt) / 50); for (const projectile of this.world.projectiles) this.rect(projectile.pos.x-3,projectile.pos.y-3,6,6,[1,.77,.29,1]); for (const p of Object.values(this.world.players)) { if (p.hp <= 0) continue; const previous = this.previousWorld?.players[p.id]; const pos = p.id === this.localId && this.predicted ? this.predicted.pos : previous ? { x: previous.pos.x + (p.pos.x - previous.pos.x) * blend, y: previous.pos.y + (p.pos.y - previous.pos.y) * blend } : p.pos; const color = p.team === 1 ? [.35,.70,1,1] : p.team === 2 ? [1,.38,.38,1] : [.87,.86,.72,1]; this.rect(pos.x-11,pos.y-15,22,30,color); this.rect(pos.x-9,pos.y-23,18,8,[.74,.65,.54,1]); this.rect(pos.x-13,pos.y-30,26 * p.hp / 100,3,[.35,.95,.49,1]) } }
-  destroy() { cancelAnimationFrame(this.frame); this.resizeObserver.disconnect(); window.removeEventListener('keydown',this.keydown); window.removeEventListener('keyup',this.keyup); window.removeEventListener('blur',this.blur); this.canvas.removeEventListener('pointermove',this.pointer); this.canvas.removeEventListener('pointerdown',this.pointerDown); window.removeEventListener('pointerup',this.pointerUp) }
+  sprite(x: number, y: number, w: number, h: number, tint: number[], flip: boolean) {
+    const gl = this.gl
+    if (!this.soldierTexture) return
+    const left = flip ? 1 : 0, right = flip ? 0 : 1
+    gl.useProgram(this.spriteProgram)
+    gl.bindBuffer(gl.ARRAY_BUFFER,this.spriteBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([x,y,left,0,x+w,y,right,0,x,y+h,left,1,x,y+h,left,1,x+w,y,right,0,x+w,y+h,right,1]),gl.STREAM_DRAW)
+    gl.enableVertexAttribArray(this.spritePosition); gl.vertexAttribPointer(this.spritePosition,2,gl.FLOAT,false,16,0)
+    gl.enableVertexAttribArray(this.spriteUv); gl.vertexAttribPointer(this.spriteUv,2,gl.FLOAT,false,16,8)
+    gl.uniform2f(this.spriteResolution,this.view.width,700); gl.uniform1f(this.spriteCamera,this.view.x)
+    gl.uniform4f(this.spriteTint,tint[0],tint[1],tint[2],1)
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,this.soldierTexture)
+    gl.drawArrays(gl.TRIANGLES,0,6)
+  }
+  render() {
+    const gl = this.gl
+    this.updateView()
+    gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT)
+    gl.useProgram(this.program); gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer)
+    gl.enableVertexAttribArray(this.position); gl.vertexAttribPointer(this.position,2,gl.FLOAT,false,0,0)
+    gl.uniform2f(this.resolution,this.view.width,700); gl.uniform1f(this.camera,this.view.x)
+    for (const [x,y,w,h] of platforms) {
+      this.rect(x,y+7,w,h,[.10,.14,.18,.95])
+      this.rect(x,y,w,7,[.38,.44,.46,1])
+      this.rect(x,y,w,2,[.79,.70,.49,1])
+      if (y < 650) for (let rivet=x+26;rivet<x+w-10;rivet+=52) this.rect(rivet,y+3,3,2,[.13,.18,.20,1])
+    }
+    if (!this.world) return
+    const blend = Math.min(1,(performance.now()-this.snapshotAt)/50)
+    for (const projectile of this.world.projectiles) {
+      this.rect(projectile.pos.x-7,projectile.pos.y-2,14,4,[1,.50,.14,.32])
+      this.rect(projectile.pos.x-3,projectile.pos.y-1,6,2,[1,.90,.55,1])
+    }
+    for (const p of Object.values(this.world.players)) {
+      if (p.hp <= 0) continue
+      const previous = this.previousWorld?.players[p.id]
+      const pos = p.id === this.localId && this.predicted ? this.predicted.pos : previous ? {x:previous.pos.x+(p.pos.x-previous.pos.x)*blend,y:previous.pos.y+(p.pos.y-previous.pos.y)*blend} : p.pos
+      const color = p.team === 1 ? [.64,.79,1] : p.team === 2 ? [1,.66,.62] : [1,.95,.83]
+      if (!p.grounded && p.fuel < .99) {
+        this.rect(pos.x-13,pos.y+9,8,18,[.32,.69,1,.35]); this.rect(pos.x-11,pos.y+12,4,12,[.68,.91,1,.85])
+      }
+      if (!this.soldierTexture) this.rect(pos.x-12,pos.y-16,24,32,[color[0],color[1],color[2],1])
+      else this.sprite(pos.x-22,pos.y-32,52,48,color,p.vel.x < -10)
+      gl.useProgram(this.program); gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer)
+      gl.enableVertexAttribArray(this.position); gl.vertexAttribPointer(this.position,2,gl.FLOAT,false,0,0); gl.uniform2f(this.resolution,this.view.width,700); gl.uniform1f(this.camera,this.view.x)
+      this.rect(pos.x-20,pos.y-53,40,4,[.04,.07,.09,.85])
+      this.rect(pos.x-19,pos.y-52,38*p.hp/100,2,[p.hp<30 ? 1 : .88,p.hp<30 ? .25 : .72,.28,1])
+      if (p.id === this.localId) { this.rect(pos.x-2,pos.y-61,4,4,[1,.82,.38,1]); this.rect(pos.x-12,pos.y-59,24,1,[1,.82,.38,.8]) }
+    }
+  }
+  destroy() { cancelAnimationFrame(this.frame); this.resizeObserver.disconnect(); if (this.soldierTexture) this.gl.deleteTexture(this.soldierTexture); window.removeEventListener('keydown',this.keydown); window.removeEventListener('keyup',this.keyup); window.removeEventListener('blur',this.blur); this.canvas.removeEventListener('pointermove',this.pointer); this.canvas.removeEventListener('pointerdown',this.pointerDown); window.removeEventListener('pointerup',this.pointerUp) }
 }
