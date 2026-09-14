@@ -1,0 +1,9 @@
+target
+.cargo-home
+.tools
+apps/web/node_modules
+apps/web/dist
+apps/web/public/wasm
+.git
+.env
+*.log
