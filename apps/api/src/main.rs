@@ -37,6 +37,8 @@ struct Room {
     id: u32,
     name: String,
     mode: String,
+    code: String,
+    public: bool,
     world: World,
     inputs: BTreeMap<u32, Input>,
 }
@@ -62,6 +64,8 @@ impl Hub {
                 id: 1,
                 name: "Arena".into(),
                 mode: "deathmatch".into(),
+                code: "ARENA1".into(),
+                public: true,
                 world: World::new("deathmatch"),
                 inputs: BTreeMap::new(),
             },
@@ -78,6 +82,7 @@ impl Hub {
     fn room_list(&self) -> Vec<RoomInfo> {
         self.rooms
             .values()
+            .filter(|r| r.public)
             .map(|r| RoomInfo {
                 id: r.id,
                 name: r.name.clone(),
@@ -86,6 +91,22 @@ impl Hub {
                 capacity: ROOM_CAPACITY,
             })
             .collect()
+    }
+    fn create_room(&mut self, name: String, mode: String, public: bool) -> u32 {
+        let room_id = self.next_room;
+        self.next_room += 1;
+        let code = loop {
+            let candidate = uuid::Uuid::new_v4().simple().to_string()[..6].to_uppercase();
+            if self.rooms.values().all(|room| room.code != candidate) {
+                break candidate;
+            }
+        };
+        self.rooms.insert(room_id, Room { id: room_id, name, mode: mode.clone(), code, public, world: World::new(&mode), inputs: BTreeMap::new() });
+        room_id
+    }
+    fn room_id_by_code(&self, code: &str) -> Option<u32> {
+        let code = code.trim().to_uppercase();
+        self.rooms.values().find(|room| room.code == code).map(|room| room.id)
     }
     fn leave(&mut self, id: u32) {
         if let Some(room_id) = self.guests.get_mut(&id).and_then(|g| g.room.take()) {
@@ -111,12 +132,18 @@ impl Hub {
         let name = self.guests[&id].name.clone();
         let room = self.rooms.get_mut(&room_id).unwrap();
         room.world.add_player(id, name);
+        let joined_name = room.name.clone();
+        let joined_code = room.code.clone();
+        let joined_public = room.public;
         self.guests.get_mut(&id).unwrap().room = Some(room_id);
         self.send(
             id,
             &ServerMessage::Joined {
                 room: room_id,
                 player: id,
+                name: joined_name,
+                code: joined_code,
+                public: joined_public,
             },
         );
         Ok(())
@@ -236,6 +263,7 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                     let g = h.guests.get_mut(&id).unwrap();
                     g.sender = Some(tx.clone());
                     g.disconnected = None;
+                    g.last_input = 0;
                     id
                 } else {
                     let id = h.next_guest;
@@ -279,6 +307,9 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                         &ServerMessage::Joined {
                             room: room_id,
                             player: id,
+                            name: h.rooms[&room_id].name.clone(),
+                            code: h.rooms[&room_id].code.clone(),
+                            public: h.rooms[&room_id].public,
                         },
                     );
                 }
@@ -288,6 +319,14 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
             continue;
         }
         let id = identity.unwrap();
+        if !h
+            .guests
+            .get(&id)
+            .and_then(|guest| guest.sender.as_ref())
+            .is_some_and(|active| active.same_channel(&tx))
+        {
+            break;
+        }
         match parsed {
             ClientMessage::Hello { .. } => send_error(&tx, "already_connected"),
             ClientMessage::Rooms => h.send(
@@ -296,7 +335,7 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                     rooms: h.room_list(),
                 },
             ),
-            ClientMessage::CreateRoom { name, mode } => {
+            ClientMessage::CreateRoom { name, mode, public } => {
                 if h.rooms.len() >= 16 {
                     send_error(&tx, "room_limit");
                     continue;
@@ -306,23 +345,21 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                     send_error(&tx, "invalid_room");
                     continue;
                 }
-                let room_id = h.next_room;
-                h.next_room += 1;
-                h.rooms.insert(
-                    room_id,
-                    Room {
-                        id: room_id,
-                        name,
-                        mode: mode.clone(),
-                        world: World::new(&mode),
-                        inputs: BTreeMap::new(),
-                    },
-                );
+                let room_id = h.create_room(name, mode, public);
                 let _ = h.join(id, room_id);
             }
             ClientMessage::JoinRoom { room } => {
-                if let Err(code) = h.join(id, room) {
+                if h.rooms.get(&room).is_some_and(|candidate| !candidate.public) {
+                    send_error(&tx, "invite_code_required");
+                } else if let Err(code) = h.join(id, room) {
                     send_error(&tx, code);
+                }
+            }
+            ClientMessage::JoinByCode { code } => {
+                if let Some(room) = h.room_id_by_code(&code) {
+                    if let Err(code) = h.join(id, room) { send_error(&tx, code); }
+                } else {
+                    send_error(&tx, "invalid_invite_code");
                 }
             }
             ClientMessage::LeaveRoom => h.leave(id),
@@ -453,5 +490,19 @@ async fn tick_loop(hub: Shared) {
                 h.rooms.remove(&id);
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn private_rooms_are_hidden_but_resolvable_by_code() {
+        let mut hub = Hub::new();
+        let room_id = hub.create_room("Friends".into(), "deathmatch".into(), false);
+        assert!(!hub.room_list().iter().any(|room| room.id == room_id));
+        let code = hub.rooms[&room_id].code.clone();
+        assert_eq!(hub.room_id_by_code(&code.to_lowercase()), Some(room_id));
     }
 }

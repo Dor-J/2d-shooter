@@ -2,6 +2,8 @@
 
 A browser-based 2D multiplayer shooter inspired by Soldat's pace and presentation. The server is authoritative Rust; the same Rust simulation can compile to WebAssembly for local prediction. Vue 3 handles the lobby and HUD, and WebGL2 renders play.
 
+On touch devices, the match uses a player-following camera. Drag the left pad to move and push it upward to jump, drag the right pad to aim and fire, and hold the center button for the jetpack. The weapon selector and score/chat panel stay outside the thumb zones. Both portrait and landscape layouts honor device safe areas.
+
 Component guides: [web client](apps/web/README.md), [Rust server](apps/api/README.md), [shared crates](crates/README.md), and [deployment](infrastructure/README.md).
 
 ## Local development
@@ -14,4 +16,4 @@ Set `SITE_ADDRESS` to the public domain and `PUBLIC_ORIGIN` to its `https://` or
 
 ## Status
 
-This repository provides a playable foundation, not a production-complete Soldat remake. The first arena, two modes, and ten normal-mode primary weapons work at the simulation layer. Production release still requires exact mechanics parity, more content, network/browser/device testing, asset provenance review, and operational hardening. See `docs/gameplay.md` and `docs/provenance.md`.
+This repository provides a playable foundation, not a production-complete Soldat remake. The first arena, two modes, ten normal-mode primary weapons, four secondary weapons, and frag grenades work at the simulation layer. Production release still requires exact mechanics parity, more content, network/browser/device testing, asset provenance review, and operational hardening. See `docs/gameplay.md` and `docs/provenance.md`.

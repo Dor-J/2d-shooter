@@ -2,6 +2,7 @@
 /.cargo-home/
 /.tools/
 /.impeccable-cache/
+/.impeccable-cache/
 /.codex/
 /apps/web/node_modules/
 /apps/web/dist/
