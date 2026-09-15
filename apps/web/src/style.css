@@ -50,6 +50,7 @@ header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:s
 .room,.create,.scoreboard,.chat{background:#19242d;border:1px solid #3e5059;border-radius:4px;padding:22px}
 .room{display:flex;align-items:center;justify-content:space-between;gap:15px}.room strong,.room span{display:block}.room span,.match-head span{color:#b3c1c0;font-size:13px;margin-top:5px}
 .create{margin-top:30px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.create h2{width:100%;margin:0 0 5px;font:700 28px 'Barlow Condensed'}
+.create>p{width:100%;margin:-4px 0 8px;color:#aebcba;font-size:13px}.join-code{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:22px;padding:18px 20px;background:#17232c;border:1px solid #53636b}.join-code h2{margin:0 0 4px;font:700 24px 'Barlow Condensed'}.join-code p{margin:0;color:#aebcba;font-size:13px}.join-code form{display:flex;gap:8px}.join-code input{text-transform:uppercase;letter-spacing:.22em;font-weight:800;width:132px}.invite-chip{display:flex;align-items:center;gap:10px;padding:7px 11px;background:#17252e;color:#f5f5ed;border:1px solid #ddbd6a;border-radius:2px}.invite-chip small{font-size:7px;letter-spacing:.12em;color:#c7d0cc}.invite-chip b{font-size:15px;letter-spacing:.15em;color:#f4c65b}.invite-chip span{font-size:8px;color:#b9c5c1}
 .match-head{margin-bottom:14px}.match-head strong{font:700 28px 'Barlow Condensed'}.match-head span{display:block}
 .game-wrap{position:relative;width:100%;aspect-ratio:12/7;max-height:72vh;background:#132530;border:1px solid #567275;border-radius:4px;overflow:hidden}.game-wrap canvas{display:block;width:100%;height:100%;touch-action:none}
 .hud{position:absolute;left:14px;top:14px;display:flex;gap:8px;pointer-events:none}.stat{background:#0c1b23db;border:1px solid #819f9b55;padding:8px 13px;border-radius:2px}.stat small{font-size:9px;letter-spacing:1px;color:#b9c7c1;display:block}.stat strong{font:700 22px 'Barlow Condensed'}
@@ -69,6 +70,7 @@ header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:s
   .join-row{flex-direction:column;gap:7px;box-shadow:none}.join-row input,.join-row button{min-height:48px}.landing-footer{left:22px;right:22px;font-size:8px;gap:8px}
   .section-head h1{font-size:52px}.touch-layer{padding:8px}.touch-layer button{width:50px;height:50px}.touch-actions button{width:45px;height:45px;font-size:9px}.touch-actions .fire{min-width:58px;min-height:58px}
 }
+@media(max-width:640px){.join-code{align-items:stretch;flex-direction:column;gap:13px}.join-code form{display:grid;grid-template-columns:1fr auto}.join-code input{width:100%;min-width:0}.create{align-items:stretch}.create input,.create select,.create button{width:100%;min-height:48px}}
 
 /* Match surface: keep world units square and let the battlefield lead. */
 .match{padding-top:22px}
@@ -100,3 +102,37 @@ header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:s
   .controls{grid-column:1/-1;margin:12px 0 0}
 }
 .weapons{flex-wrap:wrap}.weapons button{flex:1 1 120px;background:#243b44;color:#dce9df;border:1px solid #47616a}.weapons button.selected{background:#e2fc68;color:#142022}
+.match-actions{display:flex;gap:8px}.mobile-weapon{display:none}
+
+@media(pointer:coarse){
+  button:hover{transform:none}
+  .in-match{height:100dvh;overflow:hidden;background:#080d12}
+  .in-match>header{display:none}
+  .in-match .match{height:100dvh;max-width:none;padding:0;position:relative;display:block}
+  .in-match .match-head{height:48px;padding:max(5px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) 5px max(10px,env(safe-area-inset-left));position:absolute;inset:0 0 auto;z-index:5;background:linear-gradient(#080e16e8,#080e1696,transparent)}
+  .in-match .match-head strong{font-size:17px}.in-match .match-head span{font-size:9px;margin-top:1px}
+  .in-match .match-actions button{min-height:38px;padding:7px 10px;font-size:10px;background:#101c26d9}
+  .in-match .invite-chip{position:absolute;left:50%;top:max(7px,env(safe-area-inset-top));transform:translateX(-50%);height:36px;padding:4px 8px}.in-match .invite-chip small,.in-match .invite-chip span{display:none}.in-match .invite-chip b{font-size:12px}
+  .in-match .game-wrap{width:100%;height:100%;min-height:0;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}
+  .in-match .game-wrap canvas{height:100%;background-repeat:no-repeat}
+  .in-match .hud{top:max(51px,calc(env(safe-area-inset-top) + 46px));left:max(8px,env(safe-area-inset-left));right:auto;max-width:calc(100% - 16px);padding:2px 3px}
+  .in-match .stat{padding:4px 6px}.in-match .stat small{font-size:6px}.in-match .stat strong{font-size:12px}
+  .in-match .weapons{display:none}
+  .in-match .mobile-weapon{display:flex;position:absolute;z-index:6;left:50%;bottom:max(9px,env(safe-area-inset-bottom));transform:translateX(-50%);align-items:center;background:#071019d9;border:1px solid #f0e8d067;box-shadow:0 5px 18px #0009;height:34px;min-width:158px}
+  .in-match .mobile-weapon button{width:40px;height:32px;padding:0;background:transparent;color:#f5f5ed;font-size:19px;border-radius:0}
+  .in-match .mobile-weapon span{flex:1;text-align:center;font:800 10px 'DM Sans',sans-serif;letter-spacing:.035em;white-space:nowrap}
+  .in-match .match-bottom{display:none;position:absolute;z-index:8;inset:max(52px,calc(env(safe-area-inset-top) + 48px)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));overflow:auto;margin:0;padding:0;background:#101a24f5;border:1px solid #59666d;box-shadow:0 12px 40px #000b}
+  .in-match .match-bottom.open{display:block}
+  .in-match .scoreboard,.in-match .chat{padding:16px;border:0;border-bottom:1px solid #ffffff24;background:transparent}
+  .in-match .chat-log{height:min(25vh,140px)}
+  .in-match .chat input{font-size:16px}
+  .in-match .controls{display:none}
+}
+@media(pointer:coarse) and (orientation:portrait){
+  .in-match .match-head span{display:none}
+  .in-match .hud .stat:last-child{display:none}
+}
+@media(pointer:coarse) and (max-height:420px){
+  .in-match .match-head{height:40px}.in-match .hud{top:max(40px,env(safe-area-inset-top))}
+  .in-match .match-head span{display:none}.in-match .match-actions button{min-height:32px;padding:4px 8px}
+}
