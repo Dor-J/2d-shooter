@@ -2,9 +2,9 @@ import { screenToWorld, viewForCanvas } from './mobile'
 import type { View } from './mobile'
 
 export type Vec2 = { x: number; y: number }
-export type Input = { seq: number; left: boolean; right: boolean; jump: boolean; jet: boolean; fire: boolean; aim: Vec2; weapon: number }
-export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: number; fuel: number; kills: number; deaths: number; team: number; grounded: boolean; cooldown: number; respawn: number; last_seq: number; weapon: number; ammo: number; reload_timer: number; startup: number; magazines: number[] }
-export const weaponNames = ['Desert Eagles','HK MP5','AK-74','Steyr AUG','SPAS-12','Ruger 77','M79','Barrett M82A1','FN Minimi','XM214 Minigun']
+export type Input = { seq: number; left: boolean; right: boolean; jump: boolean; jet: boolean; fire: boolean; throw_grenade: boolean; aim: Vec2; weapon: number }
+export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: number; fuel: number; kills: number; deaths: number; team: number; grounded: boolean; cooldown: number; respawn: number; last_seq: number; weapon: number; ammo: number; reload_timer: number; startup: number; magazines: number[]; grenades: number; grenade_cooldown: number; grenade_held: boolean }
+export const weaponNames = ['Desert Eagles','HK MP5','AK-74','Steyr AUG','SPAS-12','Ruger 77','M79','Barrett M82A1','FN Minimi','XM214 Minigun','USSOCOM','Combat Knife','Chainsaw','M72 LAW']
 export type Projectile = { id: number; pos: Vec2; owner: number }
 export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; scores: number[]; events: unknown[] }
 export type Room = { id: number; name: string; mode: string; players: number; capacity: number }
@@ -37,7 +37,7 @@ export class GameClient {
   predict: Predict | null = null
   send: (input: Input) => void
   keys = new Set<string>()
-  touch = { left: false, right: false, jump: false, jet: false, fire: false }
+  touch = { left: false, right: false, jump: false, jet: false, fire: false, grenade: false }
   aim: Vec2 = { x: 600, y: 350 }
   seq = 0
   weapon = 0
@@ -45,7 +45,7 @@ export class GameClient {
   accumulator = 0
   frame = 0
   resizeObserver: ResizeObserver
-  view: View = { x: 0, width: 1200, height: 700 }
+  view: View = { x: 0, y: 0, width: 1200, height: 700 }
 
   constructor(canvas: HTMLCanvasElement, send: (input: Input) => void) {
     this.canvas = canvas; this.send = send
@@ -53,7 +53,7 @@ export class GameClient {
     if (!gl) throw new Error('WebGL2 is required on this device')
     this.gl = gl
     const vertex = gl.createShader(gl.VERTEX_SHADER)!
-    gl.shaderSource(vertex, `#version 300 es\nin vec2 a_position; uniform vec2 u_resolution; uniform float u_camera; void main(){ vec2 p = (a_position - vec2(u_camera,0.0)) / u_resolution * 2.0 - 1.0; gl_Position = vec4(p.x, -p.y, 0, 1); }`)
+    gl.shaderSource(vertex, `#version 300 es\nin vec2 a_position; uniform vec2 u_resolution; uniform vec2 u_camera; void main(){ vec2 p = (a_position - u_camera) / u_resolution * 2.0 - 1.0; gl_Position = vec4(p.x, -p.y, 0, 1); }`)
     gl.compileShader(vertex)
     const fragment = gl.createShader(gl.FRAGMENT_SHADER)!
     gl.shaderSource(fragment, `#version 300 es\nprecision mediump float; uniform vec4 u_color; out vec4 color; void main(){color=u_color;}`)
@@ -63,7 +63,7 @@ export class GameClient {
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error('WebGL shader setup failed')
     this.program = program; this.buffer = gl.createBuffer()!; this.position = gl.getAttribLocation(program, 'a_position'); this.resolution = gl.getUniformLocation(program, 'u_resolution')!; this.camera = gl.getUniformLocation(program, 'u_camera')!; this.color = gl.getUniformLocation(program, 'u_color')!
     const spriteVertex = gl.createShader(gl.VERTEX_SHADER)!
-    gl.shaderSource(spriteVertex, `#version 300 es\nin vec2 a_position; in vec2 a_uv; uniform vec2 u_resolution; uniform float u_camera; out vec2 v_uv; void main(){ vec2 p=(a_position-vec2(u_camera,0.0))/u_resolution*2.0-1.0; gl_Position=vec4(p.x,-p.y,0,1); v_uv=a_uv; }`)
+    gl.shaderSource(spriteVertex, `#version 300 es\nin vec2 a_position; in vec2 a_uv; uniform vec2 u_resolution; uniform vec2 u_camera; out vec2 v_uv; void main(){ vec2 p=(a_position-u_camera)/u_resolution*2.0-1.0; gl_Position=vec4(p.x,-p.y,0,1); v_uv=a_uv; }`)
     gl.compileShader(spriteVertex)
     const spriteFragment = gl.createShader(gl.FRAGMENT_SHADER)!
     gl.shaderSource(spriteFragment, `#version 300 es\nprecision mediump float; in vec2 v_uv; uniform sampler2D u_texture; uniform vec4 u_tint; out vec4 color; void main(){ color=texture(u_texture,v_uv)*u_tint; }`)
@@ -88,15 +88,15 @@ export class GameClient {
   }
   keydown = (e: KeyboardEvent) => { if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault(); this.keys.add(e.code); if (/^Digit[0-9]$/.test(e.code)) this.weapon = e.code === 'Digit0' ? 9 : Number(e.code.slice(-1)) - 1 }
   keyup = (e: KeyboardEvent) => this.keys.delete(e.code)
-  blur = () => { this.keys.clear(); this.touch = { left: false, right: false, jump: false, jet: false, fire: false } }
+  blur = () => { this.keys.clear(); this.touch = { left: false, right: false, jump: false, jet: false, fire: false, grenade: false } }
   pointer = (e: PointerEvent) => { const r = this.canvas.getBoundingClientRect(); this.aim = screenToWorld(e.clientX - r.left, e.clientY - r.top, r.width, r.height, this.view) }
   pointerDown = (e: PointerEvent) => { this.pointer(e); if (e.pointerType === 'mouse') this.touch.fire = true }
   pointerUp = () => { this.touch.fire = false }
   resize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); this.canvas.width = Math.max(1, Math.round(this.canvas.clientWidth * dpr)); this.canvas.height = Math.max(1, Math.round(this.canvas.clientHeight * dpr)); this.gl.viewport(0, 0, this.canvas.width, this.canvas.height) }
-  updateView() { const player = this.predicted ?? this.world?.players[this.localId]; const rect = this.canvas.getBoundingClientRect(); this.view = viewForCanvas(rect.width, rect.height, player?.pos.x ?? 600); this.canvas.style.backgroundSize = `${1200 / this.view.width * 100}% 100%`; this.canvas.style.backgroundPositionX = `${this.view.width >= 1200 ? 50 : this.view.x / (1200 - this.view.width) * 100}%` }
+  updateView() { const player = this.predicted ?? this.world?.players[this.localId]; const rect = this.canvas.getBoundingClientRect(); this.view = viewForCanvas(rect.width, rect.height, player?.pos.x ?? 600, player?.pos.y ?? 350); this.canvas.style.backgroundSize = `${1200 / this.view.width * 100}% ${700 / this.view.height * 100}%`; this.canvas.style.backgroundPosition = `${this.view.width >= 1200 ? 50 : this.view.x / (1200 - this.view.width) * 100}% ${this.view.height >= 700 ? 50 : this.view.y / (700 - this.view.height) * 100}%` }
   setSnapshot(world: World) { this.previousWorld = this.world; this.world = world; this.snapshotAt = performance.now(); this.predicted = world.players[this.localId] ? structuredClone(world.players[this.localId]) : null }
   loop = (now: number) => { this.accumulator += Math.min(now - this.last, 100); this.last = now; while (this.accumulator >= 1000 / 60) { this.tick(); this.accumulator -= 1000 / 60 } this.render(); this.frame = requestAnimationFrame(this.loop) }
-  tick() { if (!this.world || !this.localId) return; const input: Input = { seq: ++this.seq, left: this.keys.has('KeyA') || this.keys.has('ArrowLeft') || this.touch.left, right: this.keys.has('KeyD') || this.keys.has('ArrowRight') || this.touch.right, jump: this.keys.has('Space') || this.keys.has('KeyW') || this.touch.jump, jet: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.touch.jet, fire: this.touch.fire, aim: this.aim, weapon: this.weapon }; this.send(input); if (this.predict && this.predicted) { try { const result = this.predict(JSON.stringify(this.predicted), JSON.stringify(input)); if (result) this.predicted = JSON.parse(result) as Player } catch { this.predict = null } } }
+  tick() { if (!this.world || !this.localId) return; const input: Input = { seq: ++this.seq, left: this.keys.has('KeyA') || this.keys.has('ArrowLeft') || this.touch.left, right: this.keys.has('KeyD') || this.keys.has('ArrowRight') || this.touch.right, jump: this.keys.has('Space') || this.keys.has('KeyW') || this.touch.jump, jet: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.touch.jet, fire: this.touch.fire, throw_grenade: this.keys.has('KeyE') || this.touch.grenade, aim: this.aim, weapon: this.weapon }; this.send(input); if (this.predict && this.predicted) { try { const result = this.predict(JSON.stringify(this.predicted), JSON.stringify(input)); if (result) this.predicted = JSON.parse(result) as Player } catch { this.predict = null } } }
   rect(x: number, y: number, w: number, h: number, c: number[]) { const gl = this.gl; gl.uniform4f(this.color, c[0], c[1], c[2], c[3] ?? 1); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([x,y,x+w,y,x,y+h,x,y+h,x+w,y,x+w,y+h]), gl.STREAM_DRAW); gl.drawArrays(gl.TRIANGLES, 0, 6) }
   sprite(x: number, y: number, w: number, h: number, tint: number[], flip: boolean) {
     const gl = this.gl
@@ -107,7 +107,7 @@ export class GameClient {
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([x,y,left,0,x+w,y,right,0,x,y+h,left,1,x,y+h,left,1,x+w,y,right,0,x+w,y+h,right,1]),gl.STREAM_DRAW)
     gl.enableVertexAttribArray(this.spritePosition); gl.vertexAttribPointer(this.spritePosition,2,gl.FLOAT,false,16,0)
     gl.enableVertexAttribArray(this.spriteUv); gl.vertexAttribPointer(this.spriteUv,2,gl.FLOAT,false,16,8)
-    gl.uniform2f(this.spriteResolution,this.view.width,700); gl.uniform1f(this.spriteCamera,this.view.x)
+    gl.uniform2f(this.spriteResolution,this.view.width,this.view.height); gl.uniform2f(this.spriteCamera,this.view.x,this.view.y)
     gl.uniform4f(this.spriteTint,tint[0],tint[1],tint[2],1)
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,this.soldierTexture)
     gl.drawArrays(gl.TRIANGLES,0,6)
@@ -118,7 +118,7 @@ export class GameClient {
     gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT)
     gl.useProgram(this.program); gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer)
     gl.enableVertexAttribArray(this.position); gl.vertexAttribPointer(this.position,2,gl.FLOAT,false,0,0)
-    gl.uniform2f(this.resolution,this.view.width,700); gl.uniform1f(this.camera,this.view.x)
+    gl.uniform2f(this.resolution,this.view.width,this.view.height); gl.uniform2f(this.camera,this.view.x,this.view.y)
     for (const [x,y,w,h] of platforms) {
       this.rect(x,y+7,w,h,[.10,.14,.18,.95])
       this.rect(x,y,w,7,[.38,.44,.46,1])
@@ -142,7 +142,7 @@ export class GameClient {
       if (!this.soldierTexture) this.rect(pos.x-12,pos.y-16,24,32,[color[0],color[1],color[2],1])
       else this.sprite(pos.x-22,pos.y-32,52,48,color,p.vel.x < -10)
       gl.useProgram(this.program); gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer)
-      gl.enableVertexAttribArray(this.position); gl.vertexAttribPointer(this.position,2,gl.FLOAT,false,0,0); gl.uniform2f(this.resolution,this.view.width,700); gl.uniform1f(this.camera,this.view.x)
+      gl.enableVertexAttribArray(this.position); gl.vertexAttribPointer(this.position,2,gl.FLOAT,false,0,0); gl.uniform2f(this.resolution,this.view.width,this.view.height); gl.uniform2f(this.camera,this.view.x,this.view.y)
       this.rect(pos.x-20,pos.y-53,40,4,[.04,.07,.09,.85])
       this.rect(pos.x-19,pos.y-52,38*p.hp/100,2,[p.hp<30 ? 1 : .88,p.hp<30 ? .25 : .72,.28,1])
       if (p.id === this.localId) { this.rect(pos.x-2,pos.y-61,4,4,[1,.82,.38,1]); this.rect(pos.x-12,pos.y-59,24,1,[1,.82,.38,.8]) }

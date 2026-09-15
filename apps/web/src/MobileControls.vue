@@ -6,6 +6,7 @@ const emit = defineEmits<{
   move: [state: { left: boolean; right: boolean; jump: boolean }]
   aim: [state: { dx: number; dy: number; fire: boolean }]
   jet: [active: boolean]
+  grenade: [active: boolean]
 }>()
 
 const movePointer = ref<number | null>(null)
@@ -67,6 +68,7 @@ function stopAim(event: PointerEvent) {
       <span class="pad-label">MOVE / JUMP</span>
     </div>
     <button class="jet-button" aria-label="Hold to use jetpack" @pointerdown.prevent="emit('jet', true)" @pointerup.prevent="emit('jet', false)" @pointercancel.prevent="emit('jet', false)">JET</button>
+    <button class="grenade-button" aria-label="Throw grenade" @pointerdown.prevent="emit('grenade', true)" @pointerup.prevent="emit('grenade', false)" @pointercancel.prevent="emit('grenade', false)">NADE</button>
     <div class="control-pad aim-pad" aria-label="Aim and fire: drag toward target"
       @pointerdown.prevent="startAim" @pointermove.prevent="dragAim"
       @pointerup.prevent="stopAim" @pointercancel.prevent="stopAim">
@@ -84,6 +86,7 @@ function stopAim(event: PointerEvent) {
 .aim-pad .pad-knob{background:#f27e62}
 .pad-label{position:absolute;left:0;right:0;bottom:-21px;text-align:center;color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em;text-shadow:0 2px 5px #000}
 .jet-button{pointer-events:auto;touch-action:none;width:64px;height:64px;align-self:flex-end;margin-bottom:16px;border:1px solid #fff9;background:#243d51d9;color:#f5f5ed;border-radius:50%;font-size:13px;box-shadow:0 5px 18px #0008}
+.grenade-button{pointer-events:auto;touch-action:none;width:54px;height:54px;align-self:flex-end;margin-bottom:16px;border:1px solid #fff9;background:#704538e6;color:#fff;border-radius:50%;font-size:11px;box-shadow:0 5px 18px #0008}
 @media(max-width:700px) and (orientation:portrait){.mobile-controls{padding-bottom:max(30px,env(safe-area-inset-bottom))}.control-pad{width:118px;height:118px}.jet-button{width:58px;height:58px;margin-bottom:8px}}
 @media(max-height:420px){.control-pad{width:106px;height:106px}.jet-button{width:54px;height:54px}}
 </style>
