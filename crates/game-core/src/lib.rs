@@ -76,6 +76,7 @@ pub struct Input {
     pub jump: bool,
     pub jet: bool,
     pub fire: bool,
+    pub throw_grenade: bool,
     pub aim: Vec2,
     pub weapon: u8,
 }
@@ -99,7 +100,10 @@ pub struct Player {
     pub ammo: u16,
     pub reload_timer: u16,
     pub startup: u16,
-    pub magazines: [u16; 10],
+    pub magazines: [u16; 14],
+    pub grenades: u8,
+    pub grenade_cooldown: u16,
+    pub grenade_held: bool,
 }
 impl Player {
     pub fn new(id: u32, name: String, team: u8) -> Self {
@@ -122,6 +126,9 @@ impl Player {
             reload_timer: 0,
             startup: 0,
             magazines: WEAPONS.map(|weapon| weapon.ammo),
+            grenades: 2,
+            grenade_cooldown: 0,
+            grenade_held: false,
         }
     }
 }
@@ -147,6 +154,17 @@ pub struct Projectile {
     pub ttl: u16,
     pub damage: i32,
     pub explosive: bool,
+    pub kind: ProjectileKind,
+    pub splash_radius: f32,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ProjectileKind {
+    Bullet,
+    ShotgunPellet,
+    M79Grenade,
+    FragGrenade,
+    Melee,
+    LawRocket,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Event {
@@ -206,6 +224,9 @@ impl World {
                     player.ammo = WEAPONS[player.weapon as usize].ammo;
                     player.reload_timer = 0;
                     player.startup = 0;
+                    player.grenades = 2;
+                    player.grenade_cooldown = 0;
+                    player.grenade_held = false;
                     self.events.push(Event::Respawn { player: player.id });
                 }
                 continue;
@@ -227,6 +248,9 @@ impl World {
             let weapon = WEAPONS[player.weapon as usize];
             if player.cooldown > 0 {
                 player.cooldown -= 1;
+            }
+            if player.grenade_cooldown > 0 {
+                player.grenade_cooldown -= 1;
             }
             if player.reload_timer > 0 {
                 player.reload_timer -= 1;
@@ -292,6 +316,7 @@ impl World {
                             .round()
                             .clamp(1.0, 100.0)
                             as i32,
+                        WeaponStyle::Melee => 100,
                     };
                     for pellet in 0..weapon.pellets {
                         let spread = if weapon.style == WeaponStyle::Shotgun {
@@ -308,9 +333,27 @@ impl World {
                                 x: angle.cos() * speed,
                                 y: angle.sin() * speed,
                             },
-                            ttl: 90,
+                            ttl: if weapon.style == WeaponStyle::Melee {
+                                3
+                            } else {
+                                90
+                            },
                             damage,
                             explosive: weapon.style == WeaponStyle::Explosive,
+                            kind: match (player.weapon, weapon.style) {
+                                (6, _) => ProjectileKind::M79Grenade,
+                                (13, _) => ProjectileKind::LawRocket,
+                                (_, WeaponStyle::Shotgun) => ProjectileKind::ShotgunPellet,
+                                (_, WeaponStyle::Melee) => ProjectileKind::Melee,
+                                _ => ProjectileKind::Bullet,
+                            },
+                            splash_radius: if player.weapon == 6 {
+                                64.0
+                            } else if player.weapon == 13 {
+                                85.0
+                            } else {
+                                0.0
+                            },
                         });
                         self.next_projectile = self.next_projectile.wrapping_add(1);
                     }
@@ -323,10 +366,46 @@ impl World {
                     self.events.push(Event::Shot { player: player.id });
                 }
             }
+            if input.throw_grenade
+                && !player.grenade_held
+                && player.grenades > 0
+                && player.grenade_cooldown == 0
+            {
+                let dx = input.aim.x - player.pos.x;
+                let dy = input.aim.y - player.pos.y;
+                let len = (dx * dx + dy * dy).sqrt();
+                if len > 1.0 && len.is_finite() {
+                    self.projectiles.push(Projectile {
+                        id: self.next_projectile,
+                        owner: player.id,
+                        pos: player.pos,
+                        vel: Vec2 {
+                            x: dx / len * 200.0 + player.vel.x,
+                            y: dy / len * 200.0 + player.vel.y,
+                        },
+                        ttl: 150,
+                        damage: 100,
+                        explosive: true,
+                        kind: ProjectileKind::FragGrenade,
+                        splash_radius: 85.0,
+                    });
+                    self.next_projectile = self.next_projectile.wrapping_add(1);
+                    player.grenades -= 1;
+                    player.grenade_cooldown = 80;
+                }
+            }
+            player.grenade_held = input.throw_grenade;
         }
         let teams: BTreeMap<u32, u8> = self.players.iter().map(|(&id, p)| (id, p.team)).collect();
         let mut hits = Vec::new();
         self.projectiles.retain_mut(|bullet| {
+            let previous_pos = bullet.pos;
+            if matches!(
+                bullet.kind,
+                ProjectileKind::M79Grenade | ProjectileKind::FragGrenade
+            ) {
+                bullet.vel.y += 0.12 * 950.0 * DT;
+            }
             bullet.pos = bullet.pos.add(bullet.vel.scale(DT));
             bullet.ttl = bullet.ttl.saturating_sub(1);
             if bullet.ttl == 0
@@ -340,34 +419,46 @@ impl World {
                 }
                 return false;
             }
-            if PLATFORMS.iter().any(|p| {
-                bullet.pos.x >= p.x
-                    && bullet.pos.x <= p.x + p.w
-                    && bullet.pos.y >= p.y
-                    && bullet.pos.y <= p.y + p.h
-            }) {
-                if bullet.explosive {
-                    splash_hits(bullet, &self.players, &teams, &mut hits);
-                }
-                return false;
-            }
             let Some(owner_team) = teams.get(&bullet.owner) else {
                 return false;
             };
+            let platform_hit = PLATFORMS
+                .iter()
+                .filter_map(|p| segment_rect_t(previous_pos, bullet.pos, p))
+                .reduce(f32::min);
+            let mut player_hit: Option<(f32, u32)> = None;
             for target in self.players.values() {
                 if target.id != bullet.owner
                     && target.hp > 0
                     && (*owner_team == 0 || *owner_team != target.team)
-                    && (target.pos.x - bullet.pos.x).powi(2) + (target.pos.y - bullet.pos.y).powi(2)
-                        < 18.0_f32.powi(2)
                 {
-                    if bullet.explosive {
-                        splash_hits(bullet, &self.players, &teams, &mut hits);
-                    } else {
-                        hits.push((bullet.owner, target.id, bullet.damage));
+                    if let Some(t) = segment_circle_t(previous_pos, bullet.pos, target.pos, 18.0) {
+                        if player_hit.is_none_or(|(best, _)| t < best) {
+                            player_hit = Some((t, target.id));
+                        }
                     }
-                    return false;
                 }
+            }
+            let player_t = player_hit.map(|(t, _)| t);
+            let impact_t = match (platform_hit, player_t) {
+                (Some(a), Some(b)) => Some(a.min(b)),
+                (Some(a), None) => Some(a),
+                (None, Some(b)) => Some(b),
+                (None, None) => None,
+            };
+            if let Some(t) = impact_t {
+                bullet.pos = Vec2 {
+                    x: previous_pos.x + (bullet.pos.x - previous_pos.x) * t,
+                    y: previous_pos.y + (bullet.pos.y - previous_pos.y) * t,
+                };
+                if bullet.explosive {
+                    splash_hits(bullet, &self.players, &teams, &mut hits);
+                } else if player_t
+                    .is_some_and(|hit_t| hit_t <= platform_hit.unwrap_or(f32::INFINITY))
+                {
+                    hits.push((bullet.owner, player_hit.unwrap().1, bullet.damage));
+                }
+                return false;
             }
             true
         });
@@ -404,6 +495,69 @@ impl World {
     }
 }
 
+fn segment_point_distance_squared(start: Vec2, end: Vec2, point: Vec2) -> f32 {
+    let segment = Vec2 {
+        x: end.x - start.x,
+        y: end.y - start.y,
+    };
+    let length_squared = segment.x * segment.x + segment.y * segment.y;
+    if length_squared == 0.0 {
+        return (point.x - start.x).powi(2) + (point.y - start.y).powi(2);
+    }
+    let projection = (((point.x - start.x) * segment.x + (point.y - start.y) * segment.y)
+        / length_squared)
+        .clamp(0.0, 1.0);
+    let closest = Vec2 {
+        x: start.x + segment.x * projection,
+        y: start.y + segment.y * projection,
+    };
+    (point.x - closest.x).powi(2) + (point.y - closest.y).powi(2)
+}
+
+fn segment_circle_t(start: Vec2, end: Vec2, center: Vec2, radius: f32) -> Option<f32> {
+    let segment = Vec2 {
+        x: end.x - start.x,
+        y: end.y - start.y,
+    };
+    let length_squared = segment.x * segment.x + segment.y * segment.y;
+    if length_squared == 0.0 {
+        return (segment_point_distance_squared(start, end, center) <= radius * radius)
+            .then_some(0.0);
+    }
+    let t = (((center.x - start.x) * segment.x + (center.y - start.y) * segment.y)
+        / length_squared)
+        .clamp(0.0, 1.0);
+    (segment_point_distance_squared(start, end, center) <= radius * radius).then_some(t)
+}
+
+fn segment_rect_t(start: Vec2, end: Vec2, rect: &Platform) -> Option<f32> {
+    let delta = Vec2 {
+        x: end.x - start.x,
+        y: end.y - start.y,
+    };
+    let mut near: f32 = 0.0;
+    let mut far: f32 = 1.0;
+    for (origin, direction, min, max) in [
+        (start.x, delta.x, rect.x, rect.x + rect.w),
+        (start.y, delta.y, rect.y, rect.y + rect.h),
+    ] {
+        if direction.abs() < f32::EPSILON {
+            if origin < min || origin > max {
+                return None;
+            }
+            continue;
+        }
+        let a = (min - origin) / direction;
+        let b = (max - origin) / direction;
+        near = near.max(a.min(b));
+        far = far.min(a.max(b));
+        if near > far {
+            return None;
+        }
+    }
+    (far >= 0.0 && near <= 1.0).then_some(near.clamp(0.0, 1.0))
+}
+
 fn splash_hits(
     bullet: &Projectile,
     players: &BTreeMap<u32, Player>,
@@ -423,11 +577,11 @@ fn splash_hits(
         let dx = target.pos.x - bullet.pos.x;
         let dy = target.pos.y - bullet.pos.y;
         let distance = (dx * dx + dy * dy).sqrt();
-        if distance < 64.0 {
+        if distance < bullet.splash_radius {
             hits.push((
                 bullet.owner,
                 target.id,
-                ((1.0 - distance / 64.0) * bullet.damage as f32).ceil() as i32,
+                ((1.0 - distance / bullet.splash_radius) * bullet.damage as f32).ceil() as i32,
             ));
         }
     }
@@ -458,7 +612,7 @@ mod tests {
     use super::*;
     #[test]
     fn soldat_primary_weapon_stats_match_normal_mode() {
-        assert_eq!(WEAPONS.len(), 10);
+        assert_eq!(WEAPONS[..10].len(), 10);
         assert_eq!(WEAPONS[0].name, "Desert Eagles");
         assert_eq!(
             (
@@ -488,6 +642,128 @@ mod tests {
             (WEAPONS[7].startup_ticks, WEAPONS[7].fire_interval),
             (19, 225)
         );
+    }
+    #[test]
+    fn soldat_secondary_weapon_stats_match_normal_mode() {
+        assert_eq!(WEAPONS.len(), 14);
+        assert_eq!(
+            (WEAPONS[10].name, WEAPONS[10].ammo, WEAPONS[10].reload_ticks),
+            ("USSOCOM", 14, 60)
+        );
+        assert_eq!(
+            (WEAPONS[11].name, WEAPONS[11].style),
+            ("Combat Knife", WeaponStyle::Melee)
+        );
+        assert_eq!(
+            (WEAPONS[12].name, WEAPONS[12].fire_interval),
+            ("Chainsaw", 2)
+        );
+        assert_eq!(
+            (WEAPONS[13].name, WEAPONS[13].startup_ticks),
+            ("M72 LAW", 13)
+        );
+    }
+    #[test]
+    fn frag_grenade_consumes_ammo_and_uses_source_radius() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "Thrower".into());
+        let grenades = w.players[&1].grenades;
+        w.step(&BTreeMap::from([(
+            1,
+            Input {
+                throw_grenade: true,
+                aim: Vec2 { x: 500.0, y: 430.0 },
+                ..Default::default()
+            },
+        )]));
+        assert_eq!(w.players[&1].grenades, grenades - 1);
+        let grenade = w
+            .projectiles
+            .iter()
+            .find(|p| p.kind == ProjectileKind::FragGrenade)
+            .unwrap();
+        assert_eq!(grenade.splash_radius, 85.0);
+    }
+    #[test]
+    fn fast_projectile_hits_player_crossed_between_ticks() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "Shooter".into());
+        w.add_player(2, "Target".into());
+        w.players.get_mut(&2).unwrap().pos = Vec2 { x: 300.0, y: 430.0 };
+        w.projectiles.push(Projectile {
+            id: 1,
+            owner: 1,
+            pos: Vec2 { x: 270.0, y: 430.0 },
+            vel: Vec2 { x: 3600.0, y: 0.0 },
+            ttl: 10,
+            damage: 20,
+            explosive: false,
+            kind: ProjectileKind::Bullet,
+            splash_radius: 0.0,
+        });
+        w.step(&BTreeMap::new());
+        assert_eq!(w.players[&2].hp, 80);
+    }
+    #[test]
+    fn platform_blocks_fast_projectile_before_player() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "Shooter".into());
+        w.add_player(2, "Target".into());
+        w.players.get_mut(&2).unwrap().pos = Vec2 { x: 350.0, y: 500.0 };
+        w.projectiles.push(Projectile {
+            id: 1,
+            owner: 1,
+            pos: Vec2 { x: 350.0, y: 460.0 },
+            vel: Vec2 { x: 0.0, y: 3600.0 },
+            ttl: 10,
+            damage: 20,
+            explosive: false,
+            kind: ProjectileKind::Bullet,
+            splash_radius: 0.0,
+        });
+        w.step(&BTreeMap::new());
+        assert_eq!(w.players[&2].hp, 100);
+        assert!(w.projectiles.is_empty());
+    }
+    #[test]
+    fn holding_grenade_input_throws_only_once() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "Thrower".into());
+        let input = BTreeMap::from([(
+            1,
+            Input {
+                throw_grenade: true,
+                aim: Vec2 { x: 500.0, y: 430.0 },
+                ..Default::default()
+            },
+        )]);
+        for _ in 0..100 {
+            w.step(&input);
+        }
+        assert_eq!(w.players[&1].grenades, 1);
+    }
+    #[test]
+    fn melee_projectile_has_short_range() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "Knife".into());
+        w.step(&BTreeMap::from([(
+            1,
+            Input {
+                fire: true,
+                aim: Vec2 {
+                    x: 1000.0,
+                    y: 430.0,
+                },
+                weapon: 11,
+                ..Default::default()
+            },
+        )]));
+        let melee = w
+            .projectiles
+            .iter()
+            .find(|p| p.kind == ProjectileKind::Melee)
+            .unwrap();
+        assert!(melee.ttl <= 3);
     }
     #[test]
     fn magazine_runs_empty_and_reloads_after_source_duration() {
@@ -550,6 +826,8 @@ mod tests {
             ttl: 1,
             damage: 100,
             explosive: true,
+            kind: ProjectileKind::M79Grenade,
+            splash_radius: 64.0,
         });
         w.step(&BTreeMap::new());
         assert!(w.players[&2].hp < 100);
@@ -599,6 +877,8 @@ mod tests {
             ttl: 1,
             damage: 100,
             explosive: true,
+            kind: ProjectileKind::M79Grenade,
+            splash_radius: 64.0,
         });
         w.step(&BTreeMap::new());
         assert_eq!(w.players[&1].hp, 0);

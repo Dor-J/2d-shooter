@@ -1,10 +1,11 @@
-// Normal-mode primary-weapon values from OpenSoldat shared/Weapons.pas.
+// Normal-mode main-weapon values from OpenSoldat shared/Weapons.pas.
 // Speed is converted to this project's world units by the simulation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum WeaponStyle {
     Bullet,
     Shotgun,
     Explosive,
+    Melee,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -20,7 +21,7 @@ pub struct Weapon {
     pub pellets: u8,
 }
 
-pub const WEAPONS: [Weapon; 10] = [
+pub const WEAPONS: [Weapon; 14] = [
     Weapon {
         name: "Desert Eagles",
         fire_interval: 24,
@@ -129,6 +130,50 @@ pub const WEAPONS: [Weapon; 10] = [
         hit_multiply: 0.468,
         startup_ticks: 25,
         style: WeaponStyle::Bullet,
+        pellets: 1,
+    },
+    Weapon {
+        name: "USSOCOM",
+        fire_interval: 10,
+        ammo: 14,
+        reload_ticks: 60,
+        speed: 18.0,
+        hit_multiply: 1.49,
+        startup_ticks: 0,
+        style: WeaponStyle::Bullet,
+        pellets: 1,
+    },
+    Weapon {
+        name: "Combat Knife",
+        fire_interval: 6,
+        ammo: 1,
+        reload_ticks: 3,
+        speed: 6.0,
+        hit_multiply: 2150.0,
+        startup_ticks: 0,
+        style: WeaponStyle::Melee,
+        pellets: 1,
+    },
+    Weapon {
+        name: "Chainsaw",
+        fire_interval: 2,
+        ammo: 200,
+        reload_ticks: 110,
+        speed: 8.0,
+        hit_multiply: 50.0,
+        startup_ticks: 0,
+        style: WeaponStyle::Melee,
+        pellets: 1,
+    },
+    Weapon {
+        name: "M72 LAW",
+        fire_interval: 6,
+        ammo: 1,
+        reload_ticks: 300,
+        speed: 23.0,
+        hit_multiply: 1550.0,
+        startup_ticks: 13,
+        style: WeaponStyle::Explosive,
         pellets: 1,
     },
 ];

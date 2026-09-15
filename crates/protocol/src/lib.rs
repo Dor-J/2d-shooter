@@ -1,7 +1,7 @@
 use game_core::{Input, World};
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 1;
+pub const VERSION: u32 = 3;
 pub const MAX_MESSAGE_BYTES: usize = 4096;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -16,9 +16,13 @@ pub enum ClientMessage {
     CreateRoom {
         name: String,
         mode: String,
+        public: bool,
     },
     JoinRoom {
         room: u32,
+    },
+    JoinByCode {
+        code: String,
     },
     LeaveRoom,
     Input {
@@ -55,6 +59,9 @@ pub enum ServerMessage {
     Joined {
         room: u32,
         player: u32,
+        name: String,
+        code: String,
+        public: bool,
     },
     Snapshot {
         room: u32,
@@ -94,5 +101,16 @@ mod tests {
             parse_client(&"x".repeat(MAX_MESSAGE_BYTES + 1)).unwrap_err(),
             "message_too_large"
         );
+    }
+    #[test]
+    fn room_visibility_and_invite_code_messages_parse() {
+        assert!(matches!(
+            parse_client(r#"{"type":"create_room","name":"Friends","mode":"deathmatch","public":false}"#),
+            Ok(ClientMessage::CreateRoom { public: false, .. })
+        ));
+        assert!(matches!(
+            parse_client(r#"{"type":"join_by_code","code":"AB12CD"}"#),
+            Ok(ClientMessage::JoinByCode { code }) if code == "AB12CD"
+        ));
     }
 }
