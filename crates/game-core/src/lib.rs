@@ -1,12 +1,57 @@
+#![forbid(unsafe_code)]
+
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+mod collision;
+mod fixtures;
+mod map;
 mod weapons;
+pub use fixtures::{replay_fixture_json, Fixture, FrameInput, SimRng, WorldDigest};
+pub use map::{MapValidationError, ValidatedMap};
+pub use collision::{
+    resolve_material_velocity, Aabb, BodyPart, BodyRegion, BodyShape, CollisionMask,
+    CollisionPolygon, CollisionWorld, Contact, ContactManifold, DynamicBody, DynamicBodyKind,
+    MaterialResponse, PolygonKind, RayHit, ShapeHit, SweepHit,
+};
 pub use weapons::{Weapon, WeaponStyle, WEAPONS};
 
 pub const TICK_RATE: u32 = 60;
 pub const DT: f32 = 1.0 / TICK_RATE as f32;
 pub const WIDTH: f32 = 1200.0;
 pub const HEIGHT: f32 = 700.0;
+
+fn default_collision_world() -> CollisionWorld {
+    let rectangles = [
+        (0.0, 650.0, 1200.0, 50.0),
+        (120.0, 490.0, 280.0, 20.0),
+        (800.0, 490.0, 280.0, 20.0),
+        (480.0, 365.0, 240.0, 20.0),
+        (510.0, 555.0, 180.0, 20.0),
+    ];
+    let polygons = rectangles
+        .into_iter()
+        .flat_map(|(x, y, width, height)| {
+            let top_left = Vec2 { x, y };
+            let top_right = Vec2 { x: x + width, y };
+            let bottom_left = Vec2 { x, y: y + height };
+            let bottom_right = Vec2 {
+                x: x + width,
+                y: y + height,
+            };
+            [
+                CollisionPolygon::triangle(
+                    [top_left, top_right, bottom_right],
+                    PolygonKind::Normal,
+                ),
+                CollisionPolygon::triangle(
+                    [top_left, bottom_right, bottom_left],
+                    PolygonKind::Normal,
+                ),
+            ]
+        })
+        .collect();
+    CollisionWorld::new(polygons)
+}
 
 #[derive(Clone, Copy, Default, Debug, Serialize, Deserialize)]
 pub struct Vec2 {
@@ -27,46 +72,6 @@ impl Vec2 {
         }
     }
 }
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
-pub struct Platform {
-    pub x: f32,
-    pub y: f32,
-    pub w: f32,
-    pub h: f32,
-}
-pub const PLATFORMS: [Platform; 5] = [
-    Platform {
-        x: 0.0,
-        y: 650.0,
-        w: 1200.0,
-        h: 50.0,
-    },
-    Platform {
-        x: 120.0,
-        y: 490.0,
-        w: 280.0,
-        h: 20.0,
-    },
-    Platform {
-        x: 800.0,
-        y: 490.0,
-        w: 280.0,
-        h: 20.0,
-    },
-    Platform {
-        x: 480.0,
-        y: 365.0,
-        w: 240.0,
-        h: 20.0,
-    },
-    Platform {
-        x: 510.0,
-        y: 555.0,
-        w: 180.0,
-        h: 20.0,
-    },
-];
 
 #[derive(Clone, Copy, Default, Debug, Serialize, Deserialize)]
 pub struct Input {
@@ -179,22 +184,48 @@ pub struct World {
     pub mode: String,
     pub players: BTreeMap<u32, Player>,
     pub projectiles: Vec<Projectile>,
+    #[serde(default)]
+    pub objects: Vec<DynamicBody>,
+    #[serde(default)]
+    pub map_polygons: Vec<CollisionPolygon>,
     pub scores: [u32; 2],
     pub events: Vec<Event>,
+    #[serde(default)]
+    pub rng: SimRng,
+    #[serde(default)]
     next_projectile: u32,
+    #[serde(skip, default = "default_collision_world")]
+    collision: CollisionWorld,
 }
 
 impl World {
     pub fn new(mode: &str) -> Self {
+        Self::with_collision(mode, default_collision_world())
+    }
+
+    pub fn with_collision(mode: &str, collision: CollisionWorld) -> Self {
+        let map_polygons = collision.polygons().to_vec();
         Self {
             tick: 0,
             mode: mode.into(),
             players: BTreeMap::new(),
             projectiles: Vec::new(),
+            objects: Vec::new(),
+            map_polygons,
             scores: [0, 0],
             events: Vec::new(),
+            rng: SimRng::default(),
             next_projectile: 1,
+            collision,
         }
+    }
+
+    pub fn with_map(mode: &str, map: &ValidatedMap) -> Self {
+        Self::with_collision(mode, CollisionWorld::from_map(map))
+    }
+
+    pub fn digest(&self) -> WorldDigest {
+        fixtures::digest(&serde_json::to_vec(self).unwrap_or_default())
     }
     pub fn add_player(&mut self, id: u32, name: String) {
         let team = if self.mode == "team" {
@@ -275,21 +306,27 @@ impl World {
                 player.fuel = (player.fuel + 0.5 * DT).min(1.0);
             }
             player.vel.y = (player.vel.y + 950.0 * DT).min(600.0);
-            player.pos.x = (player.pos.x + player.vel.x * DT).clamp(14.0, WIDTH - 14.0);
-            let old_bottom = player.pos.y + 16.0;
-            player.pos.y = (player.pos.y + player.vel.y * DT).clamp(16.0, HEIGHT - 16.0);
+            let start = player.pos;
+            let desired = Vec2 {
+                x: (start.x + player.vel.x * DT).clamp(16.0, WIDTH - 16.0),
+                y: (start.y + player.vel.y * DT).clamp(16.0, HEIGHT - 16.0),
+            };
             player.grounded = false;
-            for platform in PLATFORMS {
-                if player.vel.y >= 0.0
-                    && old_bottom <= platform.y + 5.0
-                    && player.pos.y + 16.0 >= platform.y
-                    && player.pos.x + 12.0 > platform.x
-                    && player.pos.x - 12.0 < platform.x + platform.w
-                {
-                    player.pos.y = platform.y - 16.0;
-                    player.vel.y = 0.0;
-                    player.grounded = true;
+            if let Some(shape_hit) = self
+                .collision
+                .sweep_shape(start, desired, &BodyShape::standing(), CollisionMask::PLAYER)
+            {
+                let hit = shape_hit.hit;
+                player.pos = hit.position;
+                let response = resolve_material_velocity(player.vel, hit.normal, hit.kind);
+                player.vel = response.velocity;
+                player.grounded = hit.normal.y < -0.5;
+                if response.deadly {
+                    player.hp = 0;
+                    player.respawn = 120;
                 }
+            } else {
+                player.pos = desired;
             }
             if input.fire {
                 player.startup = player.startup.saturating_add(1);
@@ -396,6 +433,9 @@ impl World {
             }
             player.grenade_held = input.throw_grenade;
         }
+        for object in &mut self.objects {
+            object.step(&self.collision, DT);
+        }
         let teams: BTreeMap<u32, u8> = self.players.iter().map(|(&id, p)| (id, p.team)).collect();
         let mut hits = Vec::new();
         self.projectiles.retain_mut(|bullet| {
@@ -422,10 +462,10 @@ impl World {
             let Some(owner_team) = teams.get(&bullet.owner) else {
                 return false;
             };
-            let platform_hit = PLATFORMS
-                .iter()
-                .filter_map(|p| segment_rect_t(previous_pos, bullet.pos, p))
-                .reduce(f32::min);
+            let platform_hit = self
+                .collision
+                .raycast(previous_pos, bullet.pos, CollisionMask::BULLET)
+                .map(|hit| hit.time);
             let mut player_hit: Option<(f32, u32)> = None;
             for target in self.players.values() {
                 if target.id != bullet.owner
@@ -473,6 +513,11 @@ impl World {
                     hp: target.hp,
                 });
                 if target.hp == 0 {
+                    self.objects.push(DynamicBody::new(
+                        DynamicBodyKind::Corpse,
+                        target.pos,
+                        10.0,
+                    ));
                     target.deaths += 1;
                     target.respawn = 120;
                     if self.mode == "team" && killer != target_id {
@@ -530,34 +575,6 @@ fn segment_circle_t(start: Vec2, end: Vec2, center: Vec2, radius: f32) -> Option
     (segment_point_distance_squared(start, end, center) <= radius * radius).then_some(t)
 }
 
-fn segment_rect_t(start: Vec2, end: Vec2, rect: &Platform) -> Option<f32> {
-    let delta = Vec2 {
-        x: end.x - start.x,
-        y: end.y - start.y,
-    };
-    let mut near: f32 = 0.0;
-    let mut far: f32 = 1.0;
-    for (origin, direction, min, max) in [
-        (start.x, delta.x, rect.x, rect.x + rect.w),
-        (start.y, delta.y, rect.y, rect.y + rect.h),
-    ] {
-        if direction.abs() < f32::EPSILON {
-            if origin < min || origin > max {
-                return None;
-            }
-            continue;
-        }
-        let a = (min - origin) / direction;
-        let b = (max - origin) / direction;
-        near = near.max(a.min(b));
-        far = far.min(a.max(b));
-        if near > far {
-            return None;
-        }
-    }
-    (far >= 0.0 && near <= 1.0).then_some(near.clamp(0.0, 1.0))
-}
-
 fn splash_hits(
     bullet: &Projectile,
     players: &BTreeMap<u32, Player>,
@@ -604,6 +621,11 @@ mod wasm {
         world.players.insert(id, player);
         world.step(&BTreeMap::from([(id, input)]));
         serde_json::to_string(&world.players[&id]).unwrap_or_default()
+    }
+
+    #[wasm_bindgen]
+    pub fn replay_fixture(fixture_json: &str) -> String {
+        replay_fixture_json(fixture_json).unwrap_or_default()
     }
 }
 
@@ -883,6 +905,12 @@ mod tests {
         w.step(&BTreeMap::new());
         assert_eq!(w.players[&1].hp, 0);
         assert_eq!(w.players[&1].kills, 0);
+        assert_eq!(w.objects.len(), 1);
+        assert_eq!(w.objects[0].kind, DynamicBodyKind::Corpse);
+        for _ in 0..120 {
+            w.step(&BTreeMap::new());
+        }
+        assert!(w.objects[0].grounded);
     }
     #[test]
     fn deterministic_replay() {
