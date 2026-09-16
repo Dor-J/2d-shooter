@@ -1,0 +1,17 @@
+{
+  "source_revision": "c7596cdca32416cb66339b339105eb1e07e7fbbf",
+  "source_path": "tests/fixture-contract",
+  "seed": 99,
+  "initial": {
+    "tick": 0,
+    "mode": "deathmatch",
+    "players": {},
+    "projectiles": [],
+    "scores": [0, 0],
+    "events": []
+  },
+  "frames": [
+    { "inputs": {} }
+  ],
+  "expected": ["59f65e2ae86448fc"]
+}
