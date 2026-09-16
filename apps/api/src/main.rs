@@ -1,3 +1,7 @@
+#![forbid(unsafe_code)]
+
+mod maps;
+
 use axum::{
     extract::{
         ws::{Message, WebSocket, WebSocketUpgrade},
@@ -10,6 +14,7 @@ use axum::{
 };
 use futures_util::{SinkExt, StreamExt};
 use game_core::{Input, World, TICK_RATE};
+use maps::{MapService, TransferEvent};
 use protocol::{ClientMessage, RoomInfo, ServerMessage, VERSION};
 use std::{
     collections::{BTreeMap, HashMap},
@@ -48,15 +53,23 @@ struct Hub {
     rooms: BTreeMap<u32, Room>,
     next_guest: u32,
     next_room: u32,
+    maps: MapService,
+    map_transfers: BTreeMap<u64, u32>,
 }
 impl Hub {
     fn new() -> Self {
+        let maps = std::env::var_os("MAP_PACKAGES_DIR")
+            .map(std::path::PathBuf::from)
+            .map(|path| MapService::load_directory(&path).expect("load signed map packages"))
+            .unwrap_or_default();
         let mut hub = Self {
             guests: HashMap::new(),
             tokens: HashMap::new(),
             rooms: BTreeMap::new(),
             next_guest: 1,
             next_room: 2,
+            maps,
+            map_transfers: BTreeMap::new(),
         };
         hub.rooms.insert(
             1,
@@ -401,6 +414,33 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                 }
             }
             ClientMessage::Ping { nonce } => h.send(id, &ServerMessage::Pong { nonce }),
+            ClientMessage::MapDownloadStart {
+                map_hash,
+                cached_assets,
+            } => match h.maps.start(map_hash, &cached_assets) {
+                Ok((transfer, manifest, total_bytes)) => {
+                    h.map_transfers.insert(transfer, id);
+                    h.send(
+                        id,
+                        &ServerMessage::MapDownloadManifest {
+                            transfer,
+                            manifest,
+                            total_bytes,
+                        },
+                    );
+                }
+                Err(code) => send_error(&tx, code),
+            },
+            ClientMessage::MapDownloadCancel { transfer } => {
+                if h.map_transfers.get(&transfer) == Some(&id) {
+                    if let Ok(TransferEvent::Cancelled { transfer }) = h.maps.cancel(transfer) {
+                        h.map_transfers.remove(&transfer);
+                        h.send(id, &ServerMessage::MapDownloadCancelled { transfer });
+                    }
+                } else {
+                    send_error(&tx, "transfer_missing");
+                }
+            }
         }
     }
     if let Some(id) = identity {
@@ -474,6 +514,38 @@ async fn tick_loop(hub: Shared) {
                             world: world.clone(),
                         },
                     );
+                }
+            }
+        }
+        let transfers = h
+            .map_transfers
+            .iter()
+            .map(|(&transfer, &owner)| (transfer, owner))
+            .collect::<Vec<_>>();
+        for (transfer, owner) in transfers {
+            match h.maps.next(transfer) {
+                Ok(TransferEvent::Chunk {
+                    path,
+                    offset,
+                    total,
+                    bytes,
+                    ..
+                }) => h.send(
+                    owner,
+                    &ServerMessage::MapDownloadChunk {
+                        transfer,
+                        path,
+                        offset,
+                        total,
+                        bytes,
+                    },
+                ),
+                Ok(TransferEvent::Complete { .. }) => {
+                    h.map_transfers.remove(&transfer);
+                    h.send(owner, &ServerMessage::MapDownloadComplete { transfer });
+                }
+                Ok(TransferEvent::Cancelled { .. }) | Err(_) => {
+                    h.map_transfers.remove(&transfer);
                 }
             }
         }
