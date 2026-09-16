@@ -1,4 +1,7 @@
+#![forbid(unsafe_code)]
+
 use game_core::{Input, World};
+use content::manifest::SignedMapManifest;
 use serde::{Deserialize, Serialize};
 
 pub const VERSION: u32 = 3;
@@ -33,6 +36,13 @@ pub enum ClientMessage {
     },
     Ping {
         nonce: u64,
+    },
+    MapDownloadStart {
+        map_hash: u32,
+        cached_assets: Vec<[u8; 32]>,
+    },
+    MapDownloadCancel {
+        transfer: u64,
     },
 }
 
@@ -79,6 +89,24 @@ pub enum ServerMessage {
     Pong {
         nonce: u64,
     },
+    MapDownloadManifest {
+        transfer: u64,
+        manifest: SignedMapManifest,
+        total_bytes: u64,
+    },
+    MapDownloadChunk {
+        transfer: u64,
+        path: String,
+        offset: u64,
+        total: u64,
+        bytes: Vec<u8>,
+    },
+    MapDownloadComplete {
+        transfer: u64,
+    },
+    MapDownloadCancelled {
+        transfer: u64,
+    },
 }
 
 pub fn parse_client(raw: &str) -> Result<ClientMessage, &'static str> {
@@ -111,6 +139,17 @@ mod tests {
         assert!(matches!(
             parse_client(r#"{"type":"join_by_code","code":"AB12CD"}"#),
             Ok(ClientMessage::JoinByCode { code }) if code == "AB12CD"
+        ));
+    }
+    #[test]
+    fn map_download_start_and_cancel_messages_parse() {
+        assert!(matches!(
+            parse_client(r#"{"type":"map_download_start","map_hash":42,"cached_assets":[]}"#),
+            Ok(ClientMessage::MapDownloadStart { map_hash: 42, .. })
+        ));
+        assert!(matches!(
+            parse_client(r#"{"type":"map_download_cancel","transfer":7}"#),
+            Ok(ClientMessage::MapDownloadCancel { transfer: 7 })
         ));
     }
 }
