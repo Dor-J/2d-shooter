@@ -2,13 +2,13 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Implement every `Missing` and `Partial` item in `.codex/gap-list.md` as verified, server-authoritative, browser-playable Soldat-parity features.
+**Goal:** Implement every `Missing` and `Partial` item in `docs/gaps/gap-list.md` as verified, server-authoritative, browser-playable Soldat-parity features.
 
 **Architecture:** Grow the current prototype into a deterministic, safe-Rust simulation library consumed by the authoritative server and Wasm prediction client. Keep gameplay rules in focused `game-core` modules, wire-only types in `protocol`, orchestration in `server`, and presentation/input in Vue/WebGL; content and configuration are validated data rather than duplicated constants.
 
 **Tech Stack:** Rust 1.88 (edition 2021), safe Rust only, serde, Axum/Tokio/WebSocket, wasm-bindgen, Vue 3, TypeScript, WebGL2, Node test runner, Playwright, cargo-fuzz, Docker Compose.
 
-**Spec:** `.codex/gap-list.md`
+**Spec:** `docs/gaps/gap-list.md`
 
 ## Global Constraints
 
@@ -43,14 +43,14 @@ For every checkbox group below, execute this exact closing cycle:
 2. Implement only enough production code to pass, using existing shared primitives or extracting one when two callers need the same rule.
 3. Run the focused test, module suite, `cargo test --workspace`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo fmt --all -- --check`, `npm test`, `npm run build`, native/Wasm determinism fixtures, and the relevant browser test.
 4. Run `rg -n "unsafe" --glob "*.rs" .` and confirm no unsafe block, function, trait, or impl exists; enforce `#![forbid(unsafe_code)]` in every Rust crate root.
-5. Change only the completed line in `.codex/gap-list.md` to `**Present:** ...` (add explicit status prefixes to currently unprefixed bullets as they are completed).
+5. Change only the completed line in `docs/gaps/gap-list.md` to `**Present:** ...` (add explicit status prefixes to currently unprefixed bullets as they are completed).
 6. Commit tests, implementation, documentation, provenance additions if any, and that one status-line update together using `feat(<area>): <behavior>`.
 
 ## Phase 0 — Baseline and traceability
 
 ### Task 1: Freeze references and build the coverage ledger
 
-**Files:** Create `docs/parity/reference-lock.md`, `docs/parity/coverage.md`, `tests/fixtures/reference/README.md`; modify `docs/provenance.md` and `.codex/gap-list.md` only to add stable feature IDs without changing statuses.
+**Files:** Create `docs/parity/reference-lock.md`, `docs/parity/coverage.md`, `tests/fixtures/reference/README.md`; modify `docs/provenance.md` and `docs/gaps/gap-list.md` only to add stable feature IDs without changing statuses.
 
 **Interfaces:** Produce IDs `G01-MOVEMENT-001` through `G37-TESTING-*`, each mapped to its exact gap-list line, reference URL/source path, acceptance test, owning phase, and dependency IDs.
 
@@ -88,9 +88,9 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** `CollisionWorld::query_aabb`, `sweep_shape`, and `raycast`; `BodyShape` exposes head/chest/legs; `PolygonKind` handles normal, one-way, bouncy, ice, deadly, only-player, and only-bullet surfaces.
 
-- [ ] Test floors, ceilings, vertical walls, slopes, edge contacts, tunneling, one-way entry, bounce restitution, ice friction, deadly contact, and player/bullet filters.
-- [ ] Implement deterministic broad phase plus continuous narrow-phase collision and contact manifolds shared by players, corpses, projectiles, flags, kits, and dropped weapons.
-- [ ] Replace rectangle-platform rendering with map polygon buffers and verify collision/render coordinates agree.
+- [x] Test floors, ceilings, vertical walls, slopes, edge contacts, tunneling, one-way entry, bounce restitution, ice friction, deadly contact, and player/bullet filters.
+- [x] Implement deterministic broad phase plus continuous narrow-phase collision and contact manifolds shared by players, corpses, projectiles, flags, kits, and dropped weapons.
+- [x] Replace rectangle-platform rendering with map polygon buffers and verify collision/render coordinates agree.
 
 ### Task 5: Map assets, download, cache, rotation, selection, and editor pipeline
 
@@ -340,7 +340,7 @@ For every checkbox group below, execute this exact closing cycle:
 
 ### Task 30: Close the parity matrix
 
-**Files:** Complete `docs/parity/coverage.md`, `.codex/gap-list.md`, release checklist, and evidence bundle.
+**Files:** Complete `docs/parity/coverage.md`, `docs/gaps/gap-list.md`, release checklist, and evidence bundle.
 
 **Interfaces:** `npm run check:gaps` fails if any Missing/Partial/unprefixed actionable feature remains, any Present row lacks evidence, or any fixture references an unpinned source.
 
@@ -365,7 +365,7 @@ rg -n "unsafe" --glob "*.rs" .
 docker compose -f infrastructure/compose.yaml config
 ```
 
-Expected final state: every command exits zero; the unsafe search finds no Rust unsafe constructs; `.codex/gap-list.md` contains no actionable `Missing` or `Partial` line; every `Present` feature has a coverage-ledger test ID and source/provenance evidence.
+Expected final state: every command exits zero; the unsafe search finds no Rust unsafe constructs; `docs/gaps/gap-list.md` contains no actionable `Missing` or `Partial` line; every `Present` feature has a coverage-ledger test ID and source/provenance evidence.
 
 ## Execution checkpoints
 

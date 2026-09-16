@@ -27,16 +27,16 @@ Legend:
 - **Missing:** Ground friction matching Soldat. <!-- G01-CHARACTER-MOVEMENT-015 -->
 - **Missing:** Slope movement. <!-- G01-CHARACTER-MOVEMENT-016 -->
 - **Missing:** Sliding along slopes. <!-- G01-CHARACTER-MOVEMENT-017 -->
-- **Missing:** Polygon-edge interaction. <!-- G01-CHARACTER-MOVEMENT-018 -->
-- **Missing:** One-way polygons. <!-- G01-CHARACTER-MOVEMENT-019 -->
-- **Missing:** Bouncy polygons. <!-- G01-CHARACTER-MOVEMENT-020 -->
-- **Missing:** Ice/slippery surfaces. <!-- G01-CHARACTER-MOVEMENT-021 -->
-- **Missing:** Deadly polygons. <!-- G01-CHARACTER-MOVEMENT-022 -->
-- **Missing:** Only-player and only-bullet polygon types. <!-- G01-CHARACTER-MOVEMENT-023 -->
-- **Missing:** Player collision with vertical and angled geometry. <!-- G01-CHARACTER-MOVEMENT-024 -->
-- **Missing:** Proper head/body/legs collision volumes. <!-- G01-CHARACTER-MOVEMENT-025 -->
+- **Present:** Polygon-edge interaction. <!-- G01-CHARACTER-MOVEMENT-018 -->
+- **Present:** One-way polygons. <!-- G01-CHARACTER-MOVEMENT-019 -->
+- **Present:** Bouncy polygons. <!-- G01-CHARACTER-MOVEMENT-020 -->
+- **Present:** Ice/slippery surfaces. <!-- G01-CHARACTER-MOVEMENT-021 -->
+- **Present:** Deadly polygons. <!-- G01-CHARACTER-MOVEMENT-022 -->
+- **Present:** Only-player and only-bullet polygon types. <!-- G01-CHARACTER-MOVEMENT-023 -->
+- **Present:** Player collision with vertical and angled geometry. <!-- G01-CHARACTER-MOVEMENT-024 -->
+- **Present:** Proper head/body/legs collision volumes. <!-- G01-CHARACTER-MOVEMENT-025 -->
 - **Missing:** Character-body ragdoll physics. <!-- G01-CHARACTER-MOVEMENT-026 -->
-- **Missing:** Corpses interacting with terrain. <!-- G01-CHARACTER-MOVEMENT-027 -->
+- **Present:** Corpses interacting with terrain. <!-- G01-CHARACTER-MOVEMENT-027 -->
 - **Missing:** Player-to-player physical interaction. <!-- G01-CHARACTER-MOVEMENT-028 -->
 - **Missing:** Fall/impact behavior. <!-- G01-CHARACTER-MOVEMENT-029 -->
 - **Missing:** Jet force affected by pose and movement. <!-- G01-CHARACTER-MOVEMENT-030 -->
@@ -497,10 +497,10 @@ Supporting systems still needed:
 
 The present arena is not a Soldat map. Add:
 
-- `.pms` map loader. <!-- G16-MAPS-AND-001 -->
-- PMS format validation. <!-- G16-MAPS-AND-002 -->
-- Polygon geometry. <!-- G16-MAPS-AND-003 -->
-- Polygon types and properties. <!-- G16-MAPS-AND-004 -->
+- **Present:** `.pms` map loader. <!-- G16-MAPS-AND-001 -->
+- **Present:** PMS format validation. <!-- G16-MAPS-AND-002 -->
+- **Present:** Polygon geometry. <!-- G16-MAPS-AND-003 -->
+- **Present:** Polygon types and properties. <!-- G16-MAPS-AND-004 -->
 - Texture coordinates. <!-- G16-MAPS-AND-005 -->
 - Map textures. <!-- G16-MAPS-AND-006 -->
 - Edge textures. <!-- G16-MAPS-AND-007 -->
@@ -1329,8 +1329,8 @@ The repository itself identifies several non-gameplay gaps:
 - Jump fixtures. <!-- G37-TESTING-REQUIRED-002 -->
 - Jet fixtures. <!-- G37-TESTING-REQUIRED-003 -->
 - Crouch/prone/roll/backflip fixtures. <!-- G37-TESTING-REQUIRED-004 -->
-- Polygon collision fixtures. <!-- G37-TESTING-REQUIRED-005 -->
-- One-way polygon fixtures. <!-- G37-TESTING-REQUIRED-006 -->
+- **Present:** Polygon collision fixtures. <!-- G37-TESTING-REQUIRED-005 -->
+- **Present:** One-way polygon fixtures. <!-- G37-TESTING-REQUIRED-006 -->
 - Weapon fixture for every weapon and field. <!-- G37-TESTING-REQUIRED-007 -->
 - Fire-rate fixtures. <!-- G37-TESTING-REQUIRED-008 -->
 - Reload fixtures. <!-- G37-TESTING-REQUIRED-009 -->
@@ -1351,7 +1351,7 @@ The repository itself identifies several non-gameplay gaps:
 - Respawn fixtures. <!-- G37-TESTING-REQUIRED-024 -->
 - Map-loading fixtures. <!-- G37-TESTING-REQUIRED-025 -->
 - PMS parser fuzzing. <!-- G37-TESTING-REQUIRED-026 -->
-- Determinism across native Rust and Wasm. <!-- G37-TESTING-REQUIRED-027 -->
+- **Present:** Determinism across native Rust and Wasm. <!-- G37-TESTING-REQUIRED-027 -->
 - Network reconciliation tests. <!-- G37-TESTING-REQUIRED-028 -->
 - Two-player browser integration test. <!-- G37-TESTING-REQUIRED-029 -->
 - Full 16-player test. <!-- G37-TESTING-REQUIRED-030 -->
