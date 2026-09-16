@@ -1,17 +1,16 @@
 import { screenToWorld, viewForCanvas } from './mobile'
 import type { View } from './mobile'
+import { polygonVertexBuffer, type MapPolygon } from './map-render'
 
 export type Vec2 = { x: number; y: number }
 export type Input = { seq: number; left: boolean; right: boolean; jump: boolean; jet: boolean; fire: boolean; throw_grenade: boolean; aim: Vec2; weapon: number }
 export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: number; fuel: number; kills: number; deaths: number; team: number; grounded: boolean; cooldown: number; respawn: number; last_seq: number; weapon: number; ammo: number; reload_timer: number; startup: number; magazines: number[]; grenades: number; grenade_cooldown: number; grenade_held: boolean }
 export const weaponNames = ['Desert Eagles','HK MP5','AK-74','Steyr AUG','SPAS-12','Ruger 77','M79','Barrett M82A1','FN Minimi','XM214 Minigun','USSOCOM','Combat Knife','Chainsaw','M72 LAW']
 export type Projectile = { id: number; pos: Vec2; owner: number }
-export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; scores: number[]; events: unknown[] }
+export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; map_polygons: MapPolygon[]; scores: number[]; events: unknown[] }
 export type Room = { id: number; name: string; mode: string; players: number; capacity: number }
 type Predict = (player: string, input: string) => string
 declare global { interface Window { __arenaWasmReady?: Promise<Predict | null> } }
-const platforms = [ [0,650,1200,50], [120,490,280,20], [800,490,280,20], [480,365,240,20], [510,555,180,20] ]
-
 export class GameClient {
   canvas: HTMLCanvasElement
   gl: WebGL2RenderingContext
@@ -98,6 +97,13 @@ export class GameClient {
   loop = (now: number) => { this.accumulator += Math.min(now - this.last, 100); this.last = now; while (this.accumulator >= 1000 / 60) { this.tick(); this.accumulator -= 1000 / 60 } this.render(); this.frame = requestAnimationFrame(this.loop) }
   tick() { if (!this.world || !this.localId) return; const input: Input = { seq: ++this.seq, left: this.keys.has('KeyA') || this.keys.has('ArrowLeft') || this.touch.left, right: this.keys.has('KeyD') || this.keys.has('ArrowRight') || this.touch.right, jump: this.keys.has('Space') || this.keys.has('KeyW') || this.touch.jump, jet: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.touch.jet, fire: this.touch.fire, throw_grenade: this.keys.has('KeyE') || this.touch.grenade, aim: this.aim, weapon: this.weapon }; this.send(input); if (this.predict && this.predicted) { try { const result = this.predict(JSON.stringify(this.predicted), JSON.stringify(input)); if (result) this.predicted = JSON.parse(result) as Player } catch { this.predict = null } } }
   rect(x: number, y: number, w: number, h: number, c: number[]) { const gl = this.gl; gl.uniform4f(this.color, c[0], c[1], c[2], c[3] ?? 1); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([x,y,x+w,y,x,y+h,x,y+h,x+w,y,x+w,y+h]), gl.STREAM_DRAW); gl.drawArrays(gl.TRIANGLES, 0, 6) }
+  polygon(polygon: MapPolygon) {
+    const colors: Record<string, number[]> = { Ice: [.38,.72,.86,1], Bouncy: [.82,.54,.28,1], Deadly: [.78,.18,.16,1], OneWay: [.55,.57,.50,1] }
+    const color = colors[polygon.kind] ?? [.30,.34,.35,1]
+    this.gl.uniform4f(this.color,color[0],color[1],color[2],color[3])
+    this.gl.bufferData(this.gl.ARRAY_BUFFER,polygonVertexBuffer([polygon]),this.gl.STREAM_DRAW)
+    this.gl.drawArrays(this.gl.TRIANGLES,0,3)
+  }
   sprite(x: number, y: number, w: number, h: number, tint: number[], flip: boolean) {
     const gl = this.gl
     if (!this.soldierTexture) return
@@ -119,13 +125,8 @@ export class GameClient {
     gl.useProgram(this.program); gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer)
     gl.enableVertexAttribArray(this.position); gl.vertexAttribPointer(this.position,2,gl.FLOAT,false,0,0)
     gl.uniform2f(this.resolution,this.view.width,this.view.height); gl.uniform2f(this.camera,this.view.x,this.view.y)
-    for (const [x,y,w,h] of platforms) {
-      this.rect(x,y+7,w,h,[.10,.14,.18,.95])
-      this.rect(x,y,w,7,[.38,.44,.46,1])
-      this.rect(x,y,w,2,[.79,.70,.49,1])
-      if (y < 650) for (let rivet=x+26;rivet<x+w-10;rivet+=52) this.rect(rivet,y+3,3,2,[.13,.18,.20,1])
-    }
     if (!this.world) return
+    for (const polygon of this.world.map_polygons ?? []) this.polygon(polygon)
     const blend = Math.min(1,(performance.now()-this.snapshotAt)/50)
     for (const projectile of this.world.projectiles) {
       this.rect(projectile.pos.x-7,projectile.pos.y-2,14,4,[1,.50,.14,.32])
