@@ -7,6 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run check:gaps
+      - run: node --test scripts/check-gap-coverage.test.mjs
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: '1.88.0'
@@ -15,7 +20,8 @@ jobs:
       - run: cargo fmt --all -- --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace
-      - run: cargo install wasm-pack --locked
+      - run: cargo install wasm-pack --version 0.13.1 --locked
+      - run: npm run test:parity
       - run: wasm-pack build crates/game-core --target web --release --out-dir ../../apps/web/public/wasm --out-name game_core
       - uses: actions/upload-artifact@v4
         with:
@@ -36,6 +42,8 @@ jobs:
           name: game-wasm
           path: apps/web/public/wasm
       - run: npm ci
+        working-directory: apps/web
+      - run: npm test
         working-directory: apps/web
       - run: npm run build
         working-directory: apps/web

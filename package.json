@@ -1,0 +1,12 @@
+{
+  "name": "arena-workspace",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test scripts/*.test.mjs && npm --prefix apps/web test",
+    "test:unit": "node --test scripts/*.test.mjs && npm --prefix apps/web run test:unit",
+    "test:e2e": "npm --prefix apps/web run test:e2e",
+    "test:parity": "wasm-pack build crates/game-core --target nodejs --release --out-dir ../../target/wasm-node --out-name game_core && node apps/web/scripts/wasm-parity.mjs",
+    "check:gaps": "node scripts/check-gap-coverage.mjs"
+  }
+}
