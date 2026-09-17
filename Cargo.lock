@@ -814,6 +814,7 @@ dependencies = [
  "ed25519-dalek",
  "futures-util",
  "game-core",
+ "map-editor",
  "protocol",
  "serde_json",
  "tokio",

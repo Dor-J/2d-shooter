@@ -13,9 +13,10 @@ use axum::{
     Json, Router,
 };
 use futures_util::{SinkExt, StreamExt};
-use game_core::{Input, World, TICK_RATE};
+use game_core::{Input, ValidatedMap, World, TICK_RATE};
+use map_editor::{original_default_map, DEFAULT_MAPS};
 use maps::{MapService, TransferEvent};
-use protocol::{ClientMessage, RoomInfo, ServerMessage, VERSION};
+use protocol::{ClientMessage, MapInfo, RoomInfo, ServerMessage, VERSION};
 use std::{
     collections::{BTreeMap, HashMap},
     sync::Arc,
@@ -46,6 +47,7 @@ struct Room {
     public: bool,
     world: World,
     inputs: BTreeMap<u32, Input>,
+    map: String,
 }
 struct Hub {
     guests: HashMap<u32, Guest>,
@@ -62,6 +64,8 @@ impl Hub {
             .map(std::path::PathBuf::from)
             .map(|path| MapService::load_directory(&path).expect("load signed map packages"))
             .unwrap_or_default();
+        let default_map = ValidatedMap::try_from(original_default_map(DEFAULT_MAPS[0]))
+            .expect("built-in map must validate");
         let mut hub = Self {
             guests: HashMap::new(),
             tokens: HashMap::new(),
@@ -79,8 +83,9 @@ impl Hub {
                 mode: "deathmatch".into(),
                 code: "ARENA1".into(),
                 public: true,
-                world: World::new("deathmatch"),
+                world: World::with_map("deathmatch", &default_map),
                 inputs: BTreeMap::new(),
+                map: "Aero".into(),
             },
         );
         hub
@@ -102,10 +107,27 @@ impl Hub {
                 mode: r.mode.clone(),
                 players: r.world.players.len(),
                 capacity: ROOM_CAPACITY,
+                map: r.map.clone(),
             })
             .collect()
     }
-    fn create_room(&mut self, name: String, mode: String, public: bool) -> u32 {
+    fn create_room(
+        &mut self,
+        name: String,
+        mode: String,
+        public: bool,
+        requested_map: Option<String>,
+    ) -> Result<u32, &'static str> {
+        let entry = requested_map
+            .as_deref()
+            .and_then(|name| DEFAULT_MAPS.iter().find(|entry| entry.name == name))
+            .or_else(|| DEFAULT_MAPS.first())
+            .ok_or("map_missing")?;
+        if !matches!(entry.mode, content::manifest::MapMode::Deathmatch) {
+            return Err("map_mode_mismatch");
+        }
+        let map =
+            ValidatedMap::try_from(original_default_map(*entry)).map_err(|_| "invalid_map")?;
         let room_id = self.next_room;
         self.next_room += 1;
         let code = loop {
@@ -114,12 +136,27 @@ impl Hub {
                 break candidate;
             }
         };
-        self.rooms.insert(room_id, Room { id: room_id, name, mode: mode.clone(), code, public, world: World::new(&mode), inputs: BTreeMap::new() });
-        room_id
+        self.rooms.insert(
+            room_id,
+            Room {
+                id: room_id,
+                name,
+                mode: mode.clone(),
+                code,
+                public,
+                world: World::with_map(&mode, &map),
+                inputs: BTreeMap::new(),
+                map: entry.name.into(),
+            },
+        );
+        Ok(room_id)
     }
     fn room_id_by_code(&self, code: &str) -> Option<u32> {
         let code = code.trim().to_uppercase();
-        self.rooms.values().find(|room| room.code == code).map(|room| room.id)
+        self.rooms
+            .values()
+            .find(|room| room.code == code)
+            .map(|room| room.id)
     }
     fn leave(&mut self, id: u32) {
         if let Some(room_id) = self.guests.get_mut(&id).and_then(|g| g.room.take()) {
@@ -314,6 +351,19 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                         rooms: h.room_list(),
                     },
                 );
+                h.send(
+                    id,
+                    &ServerMessage::MapCatalog {
+                        maps: DEFAULT_MAPS
+                            .iter()
+                            .map(|entry| MapInfo {
+                                name: entry.name.into(),
+                                mode: format!("{:?}", entry.mode).to_lowercase(),
+                                preview: format!("previews/{}.svg", entry.name),
+                            })
+                            .collect(),
+                    },
+                );
                 if let Some(room_id) = h.guests[&id].room {
                     h.send(
                         id,
@@ -348,7 +398,12 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                     rooms: h.room_list(),
                 },
             ),
-            ClientMessage::CreateRoom { name, mode, public } => {
+            ClientMessage::CreateRoom {
+                name,
+                mode,
+                public,
+                map,
+            } => {
                 if h.rooms.len() >= 16 {
                     send_error(&tx, "room_limit");
                     continue;
@@ -358,11 +413,18 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                     send_error(&tx, "invalid_room");
                     continue;
                 }
-                let room_id = h.create_room(name, mode, public);
-                let _ = h.join(id, room_id);
+                match h.create_room(name, mode, public, map) {
+                    Ok(room_id) => {
+                        let _ = h.join(id, room_id);
+                    }
+                    Err(code) => send_error(&tx, code),
+                }
             }
             ClientMessage::JoinRoom { room } => {
-                if h.rooms.get(&room).is_some_and(|candidate| !candidate.public) {
+                if h.rooms
+                    .get(&room)
+                    .is_some_and(|candidate| !candidate.public)
+                {
                     send_error(&tx, "invite_code_required");
                 } else if let Err(code) = h.join(id, room) {
                     send_error(&tx, code);
@@ -370,7 +432,9 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
             }
             ClientMessage::JoinByCode { code } => {
                 if let Some(room) = h.room_id_by_code(&code) {
-                    if let Err(code) = h.join(id, room) { send_error(&tx, code); }
+                    if let Err(code) = h.join(id, room) {
+                        send_error(&tx, code);
+                    }
                 } else {
                     send_error(&tx, "invalid_invite_code");
                 }
@@ -572,7 +636,14 @@ mod tests {
     #[test]
     fn private_rooms_are_hidden_but_resolvable_by_code() {
         let mut hub = Hub::new();
-        let room_id = hub.create_room("Friends".into(), "deathmatch".into(), false);
+        let room_id = hub
+            .create_room(
+                "Friends".into(),
+                "deathmatch".into(),
+                false,
+                Some("Arena".into()),
+            )
+            .unwrap();
         assert!(!hub.room_list().iter().any(|room| room.id == room_id));
         let code = hub.rooms[&room_id].code.clone();
         assert_eq!(hub.room_id_by_code(&code.to_lowercase()), Some(room_id));
