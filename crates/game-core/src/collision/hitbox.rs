@@ -53,6 +53,77 @@ impl BodyShape {
         }
     }
 
+    pub fn crouching() -> Self {
+        Self::pose([-5.0, 1.0, 7.0], [4.5, 8.0, 7.0])
+    }
+
+    pub fn prone() -> Self {
+        Self {
+            parts: vec![
+                BodyPart {
+                    offset: Vec2 { x: 8.0, y: 3.0 },
+                    radius: 4.5,
+                    region: BodyRegion::Head,
+                },
+                BodyPart {
+                    offset: Vec2 { x: 0.0, y: 5.0 },
+                    radius: 7.0,
+                    region: BodyRegion::Chest,
+                },
+                BodyPart {
+                    offset: Vec2 { x: -9.0, y: 6.0 },
+                    radius: 5.0,
+                    region: BodyRegion::Legs,
+                },
+            ],
+        }
+    }
+
+    fn pose(offsets: [f32; 3], radii: [f32; 3]) -> Self {
+        Self {
+            parts: vec![
+                BodyPart {
+                    offset: Vec2 {
+                        x: 0.0,
+                        y: offsets[0],
+                    },
+                    radius: radii[0],
+                    region: BodyRegion::Head,
+                },
+                BodyPart {
+                    offset: Vec2 {
+                        x: 0.0,
+                        y: offsets[1],
+                    },
+                    radius: radii[1],
+                    region: BodyRegion::Chest,
+                },
+                BodyPart {
+                    offset: Vec2 {
+                        x: 0.0,
+                        y: offsets[2],
+                    },
+                    radius: radii[2],
+                    region: BodyRegion::Legs,
+                },
+            ],
+        }
+    }
+
+    pub fn height(&self) -> f32 {
+        let top = self
+            .parts
+            .iter()
+            .map(|part| part.offset.y - part.radius)
+            .fold(f32::INFINITY, f32::min);
+        let bottom = self
+            .parts
+            .iter()
+            .map(|part| part.offset.y + part.radius)
+            .fold(f32::NEG_INFINITY, f32::max);
+        bottom - top
+    }
+
     pub fn parts(&self) -> impl Iterator<Item = &BodyPart> {
         self.parts.iter()
     }
