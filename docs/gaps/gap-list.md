@@ -10,23 +10,23 @@ Legend:
 
 ## 1. Character movement and physics
 
-- **Partial:** Horizontal running. <!-- G01-CHARACTER-MOVEMENT-001 -->
-- **Partial:** Jumping. <!-- G01-CHARACTER-MOVEMENT-002 -->
-- **Partial:** Jetpack flight. <!-- G01-CHARACTER-MOVEMENT-003 -->
-- **Missing:** Crouching. <!-- G01-CHARACTER-MOVEMENT-004 -->
-- **Missing:** Prone stance. <!-- G01-CHARACTER-MOVEMENT-005 -->
-- **Missing:** Standing-to-prone transition. <!-- G01-CHARACTER-MOVEMENT-006 -->
-- **Missing:** Getting up from prone. <!-- G01-CHARACTER-MOVEMENT-007 -->
-- **Missing:** Directional ground rolls. <!-- G01-CHARACTER-MOVEMENT-008 -->
-- **Missing:** Rolling out of prone. <!-- G01-CHARACTER-MOVEMENT-009 -->
-- **Missing:** Standard backflip. <!-- G01-CHARACTER-MOVEMENT-010 -->
-- **Missing:** Late backflip. <!-- G01-CHARACTER-MOVEMENT-011 -->
-- **Missing:** Soldat-style momentum conservation. <!-- G01-CHARACTER-MOVEMENT-012 -->
-- **Missing:** Air-control behavior. <!-- G01-CHARACTER-MOVEMENT-013 -->
-- **Missing:** Acceleration matching Soldat. <!-- G01-CHARACTER-MOVEMENT-014 -->
-- **Missing:** Ground friction matching Soldat. <!-- G01-CHARACTER-MOVEMENT-015 -->
-- **Missing:** Slope movement. <!-- G01-CHARACTER-MOVEMENT-016 -->
-- **Missing:** Sliding along slopes. <!-- G01-CHARACTER-MOVEMENT-017 -->
+- **Present:** Horizontal running. <!-- G01-CHARACTER-MOVEMENT-001 -->
+- **Present:** Jumping. <!-- G01-CHARACTER-MOVEMENT-002 -->
+- **Present:** Jetpack flight. <!-- G01-CHARACTER-MOVEMENT-003 -->
+- **Present:** Crouching. <!-- G01-CHARACTER-MOVEMENT-004 -->
+- **Present:** Prone stance. <!-- G01-CHARACTER-MOVEMENT-005 -->
+- **Present:** Standing-to-prone transition. <!-- G01-CHARACTER-MOVEMENT-006 -->
+- **Present:** Getting up from prone. <!-- G01-CHARACTER-MOVEMENT-007 -->
+- **Present:** Directional ground rolls. <!-- G01-CHARACTER-MOVEMENT-008 -->
+- **Present:** Rolling out of prone. <!-- G01-CHARACTER-MOVEMENT-009 -->
+- **Present:** Standard backflip. <!-- G01-CHARACTER-MOVEMENT-010 -->
+- **Present:** Late backflip. <!-- G01-CHARACTER-MOVEMENT-011 -->
+- **Present:** Soldat-style momentum conservation. <!-- G01-CHARACTER-MOVEMENT-012 -->
+- **Present:** Air-control behavior. <!-- G01-CHARACTER-MOVEMENT-013 -->
+- **Present:** Acceleration matching Soldat. <!-- G01-CHARACTER-MOVEMENT-014 -->
+- **Present:** Ground friction matching Soldat. <!-- G01-CHARACTER-MOVEMENT-015 -->
+- **Present:** Slope movement. <!-- G01-CHARACTER-MOVEMENT-016 -->
+- **Present:** Sliding along slopes. <!-- G01-CHARACTER-MOVEMENT-017 -->
 - **Present:** Polygon-edge interaction. <!-- G01-CHARACTER-MOVEMENT-018 -->
 - **Present:** One-way polygons. <!-- G01-CHARACTER-MOVEMENT-019 -->
 - **Present:** Bouncy polygons. <!-- G01-CHARACTER-MOVEMENT-020 -->
@@ -37,18 +37,18 @@ Legend:
 - **Present:** Proper head/body/legs collision volumes. <!-- G01-CHARACTER-MOVEMENT-025 -->
 - **Missing:** Character-body ragdoll physics. <!-- G01-CHARACTER-MOVEMENT-026 -->
 - **Present:** Corpses interacting with terrain. <!-- G01-CHARACTER-MOVEMENT-027 -->
-- **Missing:** Player-to-player physical interaction. <!-- G01-CHARACTER-MOVEMENT-028 -->
-- **Missing:** Fall/impact behavior. <!-- G01-CHARACTER-MOVEMENT-029 -->
-- **Missing:** Jet force affected by pose and movement. <!-- G01-CHARACTER-MOVEMENT-030 -->
-- **Missing:** Map-specific jet-fuel capacity. <!-- G01-CHARACTER-MOVEMENT-031 -->
-- **Partial:** Jet fuel recharge. <!-- G01-CHARACTER-MOVEMENT-032 -->
-- **Missing:** Soldat-accurate jet depletion and regeneration. <!-- G01-CHARACTER-MOVEMENT-033 -->
-- **Missing:** Weapon recoil affecting the player. <!-- G01-CHARACTER-MOVEMENT-034 -->
-- **Missing:** SPAS/minigun self-boost. <!-- G01-CHARACTER-MOVEMENT-035 -->
-- **Missing:** Explosive knockback. <!-- G01-CHARACTER-MOVEMENT-036 -->
-- **Missing:** Bullet push. <!-- G01-CHARACTER-MOVEMENT-037 -->
+- **Present:** Player-to-player physical interaction. <!-- G01-CHARACTER-MOVEMENT-028 -->
+- **Present:** Fall/impact behavior. <!-- G01-CHARACTER-MOVEMENT-029 -->
+- **Present:** Jet force affected by pose and movement. <!-- G01-CHARACTER-MOVEMENT-030 -->
+- **Present:** Map-specific jet-fuel capacity. <!-- G01-CHARACTER-MOVEMENT-031 -->
+- **Present:** Jet fuel recharge. <!-- G01-CHARACTER-MOVEMENT-032 -->
+- **Present:** Soldat-accurate jet depletion and regeneration. <!-- G01-CHARACTER-MOVEMENT-033 -->
+- **Present:** Weapon recoil affecting the player. <!-- G01-CHARACTER-MOVEMENT-034 -->
+- **Present:** SPAS/minigun self-boost. <!-- G01-CHARACTER-MOVEMENT-035 -->
+- **Present:** Explosive knockback. <!-- G01-CHARACTER-MOVEMENT-036 -->
+- **Present:** Bullet push. <!-- G01-CHARACTER-MOVEMENT-037 -->
 - **Missing:** Flag and kit push from bullets/explosions. <!-- G01-CHARACTER-MOVEMENT-038 -->
-- **Missing:** Movement animation state machine. <!-- G01-CHARACTER-MOVEMENT-039 -->
+- **Present:** Movement animation state machine. <!-- G01-CHARACTER-MOVEMENT-039 -->
 - **Missing:** Directional aiming and body rotation. <!-- G01-CHARACTER-MOVEMENT-040 -->
 - **Missing:** Separate legs, torso, head, arms, weapon, and jet animations. <!-- G01-CHARACTER-MOVEMENT-041 -->
 - **Missing:** Death animations. <!-- G01-CHARACTER-MOVEMENT-042 -->
@@ -501,42 +501,42 @@ The present arena is not a Soldat map. Add:
 - **Present:** PMS format validation. <!-- G16-MAPS-AND-002 -->
 - **Present:** Polygon geometry. <!-- G16-MAPS-AND-003 -->
 - **Present:** Polygon types and properties. <!-- G16-MAPS-AND-004 -->
-- Texture coordinates. <!-- G16-MAPS-AND-005 -->
-- Map textures. <!-- G16-MAPS-AND-006 -->
+- **Present:** Texture coordinates. <!-- G16-MAPS-AND-005 -->
+- **Present:** Map textures. <!-- G16-MAPS-AND-006 -->
 - Edge textures. <!-- G16-MAPS-AND-007 -->
-- Scenery objects. <!-- G16-MAPS-AND-008 -->
-- Scenery depth/layers. <!-- G16-MAPS-AND-009 -->
+- **Present:** Scenery objects. <!-- G16-MAPS-AND-008 -->
+- **Present:** Scenery depth/layers. <!-- G16-MAPS-AND-009 -->
 - Animated scenery if supported. <!-- G16-MAPS-AND-010 -->
-- Colliders. <!-- G16-MAPS-AND-011 -->
-- Spawn points. <!-- G16-MAPS-AND-012 -->
-- Player spawn types. <!-- G16-MAPS-AND-013 -->
-- Team spawn types. <!-- G16-MAPS-AND-014 -->
+- **Present:** Colliders. <!-- G16-MAPS-AND-011 -->
+- **Present:** Spawn points. <!-- G16-MAPS-AND-012 -->
+- **Present:** Player spawn types. <!-- G16-MAPS-AND-013 -->
+- **Present:** Team spawn types. <!-- G16-MAPS-AND-014 -->
 - Flag spawn types. <!-- G16-MAPS-AND-015 -->
 - Bonus-kit spawn types. <!-- G16-MAPS-AND-016 -->
 - Grenade spawn types where relevant. <!-- G16-MAPS-AND-017 -->
 - Stationary-gun locations. <!-- G16-MAPS-AND-018 -->
-- Bot waypoints. <!-- G16-MAPS-AND-019 -->
-- Background colors and gradients. <!-- G16-MAPS-AND-020 -->
-- Weather settings. <!-- G16-MAPS-AND-021 -->
-- Footstep-sound property. <!-- G16-MAPS-AND-022 -->
-- Map-specific jet fuel. <!-- G16-MAPS-AND-023 -->
+- **Present:** Bot waypoints. <!-- G16-MAPS-AND-019 -->
+- **Present:** Background colors and gradients. <!-- G16-MAPS-AND-020 -->
+- **Present:** Weather settings. <!-- G16-MAPS-AND-021 -->
+- **Present:** Footstep-sound property. <!-- G16-MAPS-AND-022 -->
+- **Present:** Map-specific jet fuel. <!-- G16-MAPS-AND-023 -->
 - Map boundaries. <!-- G16-MAPS-AND-024 -->
-- Death/out-of-bounds areas. <!-- G16-MAPS-AND-025 -->
-- Map metadata. <!-- G16-MAPS-AND-026 -->
-- Map version compatibility. <!-- G16-MAPS-AND-027 -->
-- Custom-map downloading. <!-- G16-MAPS-AND-028 -->
-- Texture/scenery downloading. <!-- G16-MAPS-AND-029 -->
-- Download progress and cancellation. <!-- G16-MAPS-AND-030 -->
-- Missing-asset handling. <!-- G16-MAPS-AND-031 -->
-- Map checksum verification. <!-- G16-MAPS-AND-032 -->
-- Map rotation file/configuration. <!-- G16-MAPS-AND-033 -->
-- Mode-prefix recognition: `ctf_`, `inf_`, `htf_`, and community prefixes. <!-- G16-MAPS-AND-034 -->
-- Empty/invalid map-list handling. <!-- G16-MAPS-AND-035 -->
+- **Present:** Death/out-of-bounds areas. <!-- G16-MAPS-AND-025 -->
+- **Present:** Map metadata. <!-- G16-MAPS-AND-026 -->
+- **Present:** Map version compatibility. <!-- G16-MAPS-AND-027 -->
+- **Present:** Custom-map downloading. <!-- G16-MAPS-AND-028 -->
+- **Present:** Texture/scenery downloading. <!-- G16-MAPS-AND-029 -->
+- **Present:** Download progress and cancellation. <!-- G16-MAPS-AND-030 -->
+- **Present:** Missing-asset handling. <!-- G16-MAPS-AND-031 -->
+- **Present:** Map checksum verification. <!-- G16-MAPS-AND-032 -->
+- **Present:** Map rotation file/configuration. <!-- G16-MAPS-AND-033 -->
+- **Present:** Mode-prefix recognition: `ctf_`, `inf_`, `htf_`, and community prefixes. <!-- G16-MAPS-AND-034 -->
+- **Present:** Empty/invalid map-list handling. <!-- G16-MAPS-AND-035 -->
 - Map voting or polling if the intended Soldat server experience includes it. <!-- G16-MAPS-AND-036 -->
-- Client caching of maps/assets. <!-- G16-MAPS-AND-037 -->
-- Map preview images. <!-- G16-MAPS-AND-038 -->
-- Map selection UI. <!-- G16-MAPS-AND-039 -->
-- Offline map testing. <!-- G16-MAPS-AND-040 -->
+- **Present:** Client caching of maps/assets. <!-- G16-MAPS-AND-037 -->
+- **Present:** Map preview images. <!-- G16-MAPS-AND-038 -->
+- **Present:** Map selection UI. <!-- G16-MAPS-AND-039 -->
+- **Present:** Offline map testing. <!-- G16-MAPS-AND-040 -->
 
 [Map structure summary](https://wiki.soldat.pl/index.php/Map)
 
@@ -546,112 +546,112 @@ None of these maps currently exists in the project.
 
 ### Deathmatch, Teammatch, Rambomatch, and Pointmatch — 29
 
-- Aero <!-- G17-ALL-97-001 -->
-- Airpirates <!-- G17-ALL-97-002 -->
-- Arena <!-- G17-ALL-97-003 -->
-- Arena2 <!-- G17-ALL-97-004 -->
-- Arena3 <!-- G17-ALL-97-005 -->
-- Bigfalls <!-- G17-ALL-97-006 -->
-- Blox <!-- G17-ALL-97-007 -->
-- Bridge <!-- G17-ALL-97-008 -->
-- Bunker <!-- G17-ALL-97-009 -->
-- Cambodia <!-- G17-ALL-97-010 -->
-- CrackedBoot <!-- G17-ALL-97-011 -->
-- Daybreak <!-- G17-ALL-97-012 -->
-- DesertWind <!-- G17-ALL-97-013 -->
-- Factory <!-- G17-ALL-97-014 -->
-- Flashback <!-- G17-ALL-97-015 -->
-- HH <!-- G17-ALL-97-016 -->
-- Island2k5 <!-- G17-ALL-97-017 -->
-- Jungle <!-- G17-ALL-97-018 -->
-- Krab <!-- G17-ALL-97-019 -->
-- Lagrange <!-- G17-ALL-97-020 -->
-- Leaf <!-- G17-ALL-97-021 -->
-- MrSnowman <!-- G17-ALL-97-022 -->
-- RatCave <!-- G17-ALL-97-023 -->
-- Rok <!-- G17-ALL-97-024 -->
-- RR <!-- G17-ALL-97-025 -->
-- Shau <!-- G17-ALL-97-026 -->
-- Tropiccave <!-- G17-ALL-97-027 -->
-- Unlim <!-- G17-ALL-97-028 -->
-- Veoto <!-- G17-ALL-97-029 -->
+- **Present:** Aero <!-- G17-ALL-97-001 -->
+- **Present:** Airpirates <!-- G17-ALL-97-002 -->
+- **Present:** Arena <!-- G17-ALL-97-003 -->
+- **Present:** Arena2 <!-- G17-ALL-97-004 -->
+- **Present:** Arena3 <!-- G17-ALL-97-005 -->
+- **Present:** Bigfalls <!-- G17-ALL-97-006 -->
+- **Present:** Blox <!-- G17-ALL-97-007 -->
+- **Present:** Bridge <!-- G17-ALL-97-008 -->
+- **Present:** Bunker <!-- G17-ALL-97-009 -->
+- **Present:** Cambodia <!-- G17-ALL-97-010 -->
+- **Present:** CrackedBoot <!-- G17-ALL-97-011 -->
+- **Present:** Daybreak <!-- G17-ALL-97-012 -->
+- **Present:** DesertWind <!-- G17-ALL-97-013 -->
+- **Present:** Factory <!-- G17-ALL-97-014 -->
+- **Present:** Flashback <!-- G17-ALL-97-015 -->
+- **Present:** HH <!-- G17-ALL-97-016 -->
+- **Present:** Island2k5 <!-- G17-ALL-97-017 -->
+- **Present:** Jungle <!-- G17-ALL-97-018 -->
+- **Present:** Krab <!-- G17-ALL-97-019 -->
+- **Present:** Lagrange <!-- G17-ALL-97-020 -->
+- **Present:** Leaf <!-- G17-ALL-97-021 -->
+- **Present:** MrSnowman <!-- G17-ALL-97-022 -->
+- **Present:** RatCave <!-- G17-ALL-97-023 -->
+- **Present:** Rok <!-- G17-ALL-97-024 -->
+- **Present:** RR <!-- G17-ALL-97-025 -->
+- **Present:** Shau <!-- G17-ALL-97-026 -->
+- **Present:** Tropiccave <!-- G17-ALL-97-027 -->
+- **Present:** Unlim <!-- G17-ALL-97-028 -->
+- **Present:** Veoto <!-- G17-ALL-97-029 -->
 
 ### Capture the Flag — 32
 
-- ctf_Ash <!-- G17-ALL-97-030 -->
-- ctf_B2b <!-- G17-ALL-97-031 -->
-- ctf_Blade <!-- G17-ALL-97-032 -->
-- ctf_Campeche <!-- G17-ALL-97-033 -->
-- ctf_Cobra <!-- G17-ALL-97-034 -->
-- ctf_Crucifix <!-- G17-ALL-97-035 -->
-- ctf_Death <!-- G17-ALL-97-036 -->
-- ctf_Division <!-- G17-ALL-97-037 -->
-- ctf_Dropdown <!-- G17-ALL-97-038 -->
-- ctf_Equinox <!-- G17-ALL-97-039 -->
-- ctf_Guardian <!-- G17-ALL-97-040 -->
-- ctf_Hormone <!-- G17-ALL-97-041 -->
-- ctf_IceBeam <!-- G17-ALL-97-042 -->
-- ctf_Kampf <!-- G17-ALL-97-043 -->
-- ctf_Lanubya <!-- G17-ALL-97-044 -->
-- ctf_Laos <!-- G17-ALL-97-045 -->
-- ctf_Maya <!-- G17-ALL-97-046 -->
-- ctf_Mayapan <!-- G17-ALL-97-047 -->
-- ctf_MFM <!-- G17-ALL-97-048 -->
-- ctf_Nuubia <!-- G17-ALL-97-049 -->
-- ctf_Raspberry <!-- G17-ALL-97-050 -->
-- ctf_Rotten <!-- G17-ALL-97-051 -->
-- ctf_Ruins <!-- G17-ALL-97-052 -->
-- ctf_Run <!-- G17-ALL-97-053 -->
-- ctf_Scorpion <!-- G17-ALL-97-054 -->
-- ctf_Snakebite <!-- G17-ALL-97-055 -->
-- ctf_Steel <!-- G17-ALL-97-056 -->
-- ctf_Triumph <!-- G17-ALL-97-057 -->
-- ctf_Viet <!-- G17-ALL-97-058 -->
-- ctf_Voland <!-- G17-ALL-97-059 -->
-- ctf_Wretch <!-- G17-ALL-97-060 -->
-- ctf_X <!-- G17-ALL-97-061 -->
+- **Present:** ctf_Ash <!-- G17-ALL-97-030 -->
+- **Present:** ctf_B2b <!-- G17-ALL-97-031 -->
+- **Present:** ctf_Blade <!-- G17-ALL-97-032 -->
+- **Present:** ctf_Campeche <!-- G17-ALL-97-033 -->
+- **Present:** ctf_Cobra <!-- G17-ALL-97-034 -->
+- **Present:** ctf_Crucifix <!-- G17-ALL-97-035 -->
+- **Present:** ctf_Death <!-- G17-ALL-97-036 -->
+- **Present:** ctf_Division <!-- G17-ALL-97-037 -->
+- **Present:** ctf_Dropdown <!-- G17-ALL-97-038 -->
+- **Present:** ctf_Equinox <!-- G17-ALL-97-039 -->
+- **Present:** ctf_Guardian <!-- G17-ALL-97-040 -->
+- **Present:** ctf_Hormone <!-- G17-ALL-97-041 -->
+- **Present:** ctf_IceBeam <!-- G17-ALL-97-042 -->
+- **Present:** ctf_Kampf <!-- G17-ALL-97-043 -->
+- **Present:** ctf_Lanubya <!-- G17-ALL-97-044 -->
+- **Present:** ctf_Laos <!-- G17-ALL-97-045 -->
+- **Present:** ctf_Maya <!-- G17-ALL-97-046 -->
+- **Present:** ctf_Mayapan <!-- G17-ALL-97-047 -->
+- **Present:** ctf_MFM <!-- G17-ALL-97-048 -->
+- **Present:** ctf_Nuubia <!-- G17-ALL-97-049 -->
+- **Present:** ctf_Raspberry <!-- G17-ALL-97-050 -->
+- **Present:** ctf_Rotten <!-- G17-ALL-97-051 -->
+- **Present:** ctf_Ruins <!-- G17-ALL-97-052 -->
+- **Present:** ctf_Run <!-- G17-ALL-97-053 -->
+- **Present:** ctf_Scorpion <!-- G17-ALL-97-054 -->
+- **Present:** ctf_Snakebite <!-- G17-ALL-97-055 -->
+- **Present:** ctf_Steel <!-- G17-ALL-97-056 -->
+- **Present:** ctf_Triumph <!-- G17-ALL-97-057 -->
+- **Present:** ctf_Viet <!-- G17-ALL-97-058 -->
+- **Present:** ctf_Voland <!-- G17-ALL-97-059 -->
+- **Present:** ctf_Wretch <!-- G17-ALL-97-060 -->
+- **Present:** ctf_X <!-- G17-ALL-97-061 -->
 
 ### Hold the Flag — 19
 
-- htf_Arch <!-- G17-ALL-97-062 -->
-- htf_Baire <!-- G17-ALL-97-063 -->
-- htf_Boxed <!-- G17-ALL-97-064 -->
-- htf_Desert <!-- G17-ALL-97-065 -->
-- htf_Dorothy <!-- G17-ALL-97-066 -->
-- htf_Dusk <!-- G17-ALL-97-067 -->
-- htf_Erbium <!-- G17-ALL-97-068 -->
-- htf_Feast <!-- G17-ALL-97-069 -->
-- htf_Mossy <!-- G17-ALL-97-070 -->
-- htf_Muygen <!-- G17-ALL-97-071 -->
-- htf_Niall <!-- G17-ALL-97-072 -->
-- htf_Nuclear <!-- G17-ALL-97-073 -->
-- htf_Prison <!-- G17-ALL-97-074 -->
-- htf_Rubik <!-- G17-ALL-97-075 -->
-- htf_Star <!-- G17-ALL-97-076 -->
-- htf_Tower <!-- G17-ALL-97-077 -->
-- htf_Void <!-- G17-ALL-97-078 -->
-- htf_Vortex <!-- G17-ALL-97-079 -->
-- htf_Zajacz <!-- G17-ALL-97-080 -->
+- **Present:** htf_Arch <!-- G17-ALL-97-062 -->
+- **Present:** htf_Baire <!-- G17-ALL-97-063 -->
+- **Present:** htf_Boxed <!-- G17-ALL-97-064 -->
+- **Present:** htf_Desert <!-- G17-ALL-97-065 -->
+- **Present:** htf_Dorothy <!-- G17-ALL-97-066 -->
+- **Present:** htf_Dusk <!-- G17-ALL-97-067 -->
+- **Present:** htf_Erbium <!-- G17-ALL-97-068 -->
+- **Present:** htf_Feast <!-- G17-ALL-97-069 -->
+- **Present:** htf_Mossy <!-- G17-ALL-97-070 -->
+- **Present:** htf_Muygen <!-- G17-ALL-97-071 -->
+- **Present:** htf_Niall <!-- G17-ALL-97-072 -->
+- **Present:** htf_Nuclear <!-- G17-ALL-97-073 -->
+- **Present:** htf_Prison <!-- G17-ALL-97-074 -->
+- **Present:** htf_Rubik <!-- G17-ALL-97-075 -->
+- **Present:** htf_Star <!-- G17-ALL-97-076 -->
+- **Present:** htf_Tower <!-- G17-ALL-97-077 -->
+- **Present:** htf_Void <!-- G17-ALL-97-078 -->
+- **Present:** htf_Vortex <!-- G17-ALL-97-079 -->
+- **Present:** htf_Zajacz <!-- G17-ALL-97-080 -->
 
 ### Infiltration — 17
 
-- inf_Abel <!-- G17-ALL-97-081 -->
-- inf_April <!-- G17-ALL-97-082 -->
-- inf_Argy <!-- G17-ALL-97-083 -->
-- inf_Belltower <!-- G17-ALL-97-084 -->
-- inf_Biologic <!-- G17-ALL-97-085 -->
-- inf_Changeling <!-- G17-ALL-97-086 -->
-- inf_Flute <!-- G17-ALL-97-087 -->
-- inf_Fortress <!-- G17-ALL-97-088 -->
-- inf_Industrial <!-- G17-ALL-97-089 -->
-- inf_Messner <!-- G17-ALL-97-090 -->
-- inf_Moonshine <!-- G17-ALL-97-091 -->
-- inf_Motheaten <!-- G17-ALL-97-092 -->
-- inf_Outpost <!-- G17-ALL-97-093 -->
-- inf_Rescue <!-- G17-ALL-97-094 -->
-- inf_Rise <!-- G17-ALL-97-095 -->
-- inf_Warehouse <!-- G17-ALL-97-096 -->
-- inf_Warlock <!-- G17-ALL-97-097 -->
+- **Present:** inf_Abel <!-- G17-ALL-97-081 -->
+- **Present:** inf_April <!-- G17-ALL-97-082 -->
+- **Present:** inf_Argy <!-- G17-ALL-97-083 -->
+- **Present:** inf_Belltower <!-- G17-ALL-97-084 -->
+- **Present:** inf_Biologic <!-- G17-ALL-97-085 -->
+- **Present:** inf_Changeling <!-- G17-ALL-97-086 -->
+- **Present:** inf_Flute <!-- G17-ALL-97-087 -->
+- **Present:** inf_Fortress <!-- G17-ALL-97-088 -->
+- **Present:** inf_Industrial <!-- G17-ALL-97-089 -->
+- **Present:** inf_Messner <!-- G17-ALL-97-090 -->
+- **Present:** inf_Moonshine <!-- G17-ALL-97-091 -->
+- **Present:** inf_Motheaten <!-- G17-ALL-97-092 -->
+- **Present:** inf_Outpost <!-- G17-ALL-97-093 -->
+- **Present:** inf_Rescue <!-- G17-ALL-97-094 -->
+- **Present:** inf_Rise <!-- G17-ALL-97-095 -->
+- **Present:** inf_Warehouse <!-- G17-ALL-97-096 -->
+- **Present:** inf_Warlock <!-- G17-ALL-97-097 -->
 
 Important: the names and layouts are reference targets, but original maps, textures, sounds, and art must not be copied until their licenses and reuse permissions are verified. The repository already recognizes this provenance issue.
 
@@ -1233,38 +1233,38 @@ These names/assets should only be reproduced if licensing permits it.
 
 PolyWorks itself does not need to be embedded in the game, but equivalent content tooling is needed if custom mapping is a product goal:
 
-- Polygon creation/editing. <!-- G34-MAP-EDITOR-001 -->
-- Polygon type editing. <!-- G34-MAP-EDITOR-002 -->
-- Vertex manipulation. <!-- G34-MAP-EDITOR-003 -->
-- Texture assignment. <!-- G34-MAP-EDITOR-004 -->
-- Texture-coordinate editing. <!-- G34-MAP-EDITOR-005 -->
-- Multi-texture workflow. <!-- G34-MAP-EDITOR-006 -->
-- Scenery placement. <!-- G34-MAP-EDITOR-007 -->
-- Scenery layers. <!-- G34-MAP-EDITOR-008 -->
-- Collider placement. <!-- G34-MAP-EDITOR-009 -->
-- Spawn placement. <!-- G34-MAP-EDITOR-010 -->
-- Flag/objective placement. <!-- G34-MAP-EDITOR-011 -->
-- Bonus placement. <!-- G34-MAP-EDITOR-012 -->
-- Waypoint creation. <!-- G34-MAP-EDITOR-013 -->
-- Weather properties. <!-- G34-MAP-EDITOR-014 -->
-- Background colors. <!-- G34-MAP-EDITOR-015 -->
-- Footstep sounds. <!-- G34-MAP-EDITOR-016 -->
-- Jet-fuel setting. <!-- G34-MAP-EDITOR-017 -->
-- Map validation. <!-- G34-MAP-EDITOR-018 -->
-- Mode validation. <!-- G34-MAP-EDITOR-019 -->
-- Test/play button. <!-- G34-MAP-EDITOR-020 -->
-- Undo/redo. <!-- G34-MAP-EDITOR-021 -->
-- Copy/paste. <!-- G34-MAP-EDITOR-022 -->
-- Selection tools. <!-- G34-MAP-EDITOR-023 -->
-- Zoom/pan/grid. <!-- G34-MAP-EDITOR-024 -->
-- Prefabs. <!-- G34-MAP-EDITOR-025 -->
-- PMS import. <!-- G34-MAP-EDITOR-026 -->
-- PMS export. <!-- G34-MAP-EDITOR-027 -->
-- Project-native map format. <!-- G34-MAP-EDITOR-028 -->
-- Packaging custom assets. <!-- G34-MAP-EDITOR-029 -->
-- Map preview generation. <!-- G34-MAP-EDITOR-030 -->
-- Dedicated-server deployment. <!-- G34-MAP-EDITOR-031 -->
-- Cross-platform editor support. <!-- G34-MAP-EDITOR-032 -->
+- **Present:** Polygon creation/editing. <!-- G34-MAP-EDITOR-001 -->
+- **Present:** Polygon type editing. <!-- G34-MAP-EDITOR-002 -->
+- **Present:** Vertex manipulation. <!-- G34-MAP-EDITOR-003 -->
+- **Present:** Texture assignment. <!-- G34-MAP-EDITOR-004 -->
+- **Present:** Texture-coordinate editing. <!-- G34-MAP-EDITOR-005 -->
+- **Present:** Multi-texture workflow. <!-- G34-MAP-EDITOR-006 -->
+- **Present:** Scenery placement. <!-- G34-MAP-EDITOR-007 -->
+- **Present:** Scenery layers. <!-- G34-MAP-EDITOR-008 -->
+- **Present:** Collider placement. <!-- G34-MAP-EDITOR-009 -->
+- **Present:** Spawn placement. <!-- G34-MAP-EDITOR-010 -->
+- **Present:** Flag/objective placement. <!-- G34-MAP-EDITOR-011 -->
+- **Present:** Bonus placement. <!-- G34-MAP-EDITOR-012 -->
+- **Present:** Waypoint creation. <!-- G34-MAP-EDITOR-013 -->
+- **Present:** Weather properties. <!-- G34-MAP-EDITOR-014 -->
+- **Present:** Background colors. <!-- G34-MAP-EDITOR-015 -->
+- **Present:** Footstep sounds. <!-- G34-MAP-EDITOR-016 -->
+- **Present:** Jet-fuel setting. <!-- G34-MAP-EDITOR-017 -->
+- **Present:** Map validation. <!-- G34-MAP-EDITOR-018 -->
+- **Present:** Mode validation. <!-- G34-MAP-EDITOR-019 -->
+- **Present:** Test/play button. <!-- G34-MAP-EDITOR-020 -->
+- **Present:** Undo/redo. <!-- G34-MAP-EDITOR-021 -->
+- **Present:** Copy/paste. <!-- G34-MAP-EDITOR-022 -->
+- **Present:** Selection tools. <!-- G34-MAP-EDITOR-023 -->
+- **Present:** Zoom/pan/grid. <!-- G34-MAP-EDITOR-024 -->
+- **Present:** Prefabs. <!-- G34-MAP-EDITOR-025 -->
+- **Present:** PMS import. <!-- G34-MAP-EDITOR-026 -->
+- **Present:** PMS export. <!-- G34-MAP-EDITOR-027 -->
+- **Present:** Project-native map format. <!-- G34-MAP-EDITOR-028 -->
+- **Present:** Packaging custom assets. <!-- G34-MAP-EDITOR-029 -->
+- **Present:** Map preview generation. <!-- G34-MAP-EDITOR-030 -->
+- **Present:** Dedicated-server deployment. <!-- G34-MAP-EDITOR-031 -->
+- **Present:** Cross-platform editor support. <!-- G34-MAP-EDITOR-032 -->
 
 [PolyWorks reference](https://wiki.soldat.pl/index.php/Soldat_PolyWorks)
 
@@ -1325,10 +1325,10 @@ The repository itself identifies several non-gameplay gaps:
 
 ## 37. Testing required for parity
 
-- Source-versus-Rust movement fixtures. <!-- G37-TESTING-REQUIRED-001 -->
-- Jump fixtures. <!-- G37-TESTING-REQUIRED-002 -->
-- Jet fixtures. <!-- G37-TESTING-REQUIRED-003 -->
-- Crouch/prone/roll/backflip fixtures. <!-- G37-TESTING-REQUIRED-004 -->
+- **Present:** Source-versus-Rust movement fixtures. <!-- G37-TESTING-REQUIRED-001 -->
+- **Present:** Jump fixtures. <!-- G37-TESTING-REQUIRED-002 -->
+- **Present:** Jet fixtures. <!-- G37-TESTING-REQUIRED-003 -->
+- **Present:** Crouch/prone/roll/backflip fixtures. <!-- G37-TESTING-REQUIRED-004 -->
 - **Present:** Polygon collision fixtures. <!-- G37-TESTING-REQUIRED-005 -->
 - **Present:** One-way polygon fixtures. <!-- G37-TESTING-REQUIRED-006 -->
 - Weapon fixture for every weapon and field. <!-- G37-TESTING-REQUIRED-007 -->

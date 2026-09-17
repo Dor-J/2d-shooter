@@ -10,6 +10,15 @@
 
 **Spec:** `docs/gaps/gap-list.md`
 
+## Progress snapshot — 2026-09-17
+
+- **Completed milestones:** Tasks 1 and 3–6. Task 2's deterministic native/Wasm foundation is complete; its intentionally ongoing “add fixtures as later features land” checkbox remains open.
+- **Current coverage:** 1,104 gap features are mapped; 223 `Present` features have passing evidence in `docs/parity/coverage.json`.
+- **Task 6 evidence:** 13 movement fixtures cover 60 Hz source constants, acceleration/friction/momentum, air control, jump buffering, stances, rolls, standard/late backflips, slopes, impacts, jets, player contact, collision volumes, emotes/death states, and the shared impulse API.
+- **Last completed verification:** `cargo test --workspace`, focused determinism and movement suites, Clippy with warnings denied, Rust formatting, web unit tests, production web build, native/Wasm parity, gap coverage, unsafe-Rust scan, and `git diff --check` passed.
+- **Next task:** Task 7 — rebindable multi-device input and accessibility. It has not started.
+- **Intentionally still open:** visual character animation layers, ragdolls, and automatic bullet/explosion interaction with flag/kit game objects remain assigned to their later owning tasks; their gap lines were not marked `Present` by Task 6.
+
 ## Global Constraints
 
 - Never write, generate, approve, or merge `unsafe` Rust. Add a workspace lint that forbids unsafe code.
@@ -54,11 +63,11 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** Produce IDs `G01-MOVEMENT-001` through `G37-TESTING-*`, each mapped to its exact gap-list line, reference URL/source path, acceptance test, owning phase, and dependency IDs.
 
-- [ ] Pin exact OpenSoldat `develop` and `opensoldat/base` commits; record MIT/CC-BY-4.0 obligations and distinguish code-derived numeric fixtures from redistributable assets.
-- [ ] Convert every Missing/Partial bullet, including unprefixed bullets under missing sections, into a coverage-ledger row; assert with `scripts/check-gap-coverage.mjs` that no actionable bullet is unmapped.
-- [ ] Add a test that fails when a `Present` line lacks at least one passing acceptance-test ID in the ledger.
-- [ ] Add workspace/package scripts `test`, `test:unit`, `test:e2e`, `test:parity`, and `check:gaps`; make CI run them on Linux and the supported browsers.
-- [ ] Add `#![forbid(unsafe_code)]` to `game-core`, `protocol`, `server`, and the new content crate; add CI text and lint checks.
+- [x] Pin exact OpenSoldat `develop` and `opensoldat/base` commits; record MIT/CC-BY-4.0 obligations and distinguish code-derived numeric fixtures from redistributable assets.
+- [x] Convert every Missing/Partial bullet, including unprefixed bullets under missing sections, into a coverage-ledger row; assert with `scripts/check-gap-coverage.mjs` that no actionable bullet is unmapped.
+- [x] Add a test that fails when a `Present` line lacks at least one passing acceptance-test ID in the ledger.
+- [x] Add workspace/package scripts `test`, `test:unit`, `test:e2e`, `test:parity`, and `check:gaps`; make CI run them on Linux and the supported browsers.
+- [x] Add `#![forbid(unsafe_code)]` to `game-core`, `protocol`, `server`, and the new content crate; add CI text and lint checks.
 
 ### Task 2: Establish deterministic simulation fixtures
 
@@ -66,8 +75,8 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** `Fixture { seed: u64, initial: World, frames: Vec<FrameInput>, expected: Vec<WorldDigest> }`; `World::digest() -> WorldDigest`; deterministic `SimRng` owned by `World`.
 
-- [ ] Write failing native replay, stable digest, seeded-randomness, serialization round-trip, and native-versus-Wasm tests.
-- [ ] Remove ambient randomness and unordered iteration from simulation paths; use checked integer tick counters and canonical ordering.
+- [x] Write failing native replay, stable digest, seeded-randomness, serialization round-trip, and native-versus-Wasm tests.
+- [x] Remove ambient randomness and unordered iteration from simulation paths; use checked integer tick counters and canonical ordering.
 - [ ] Add OpenSoldat-derived fixtures for every feature as later tasks land; fixtures store source commit/path/symbol and expected values, not copied source.
 
 ## Phase 1 — Maps, geometry, and content safety (gaps 16, 17, 33, 34)
@@ -78,9 +87,9 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** `content::pms::parse(bytes: &[u8], limits: &ContentLimits) -> Result<MapAsset, ContentError>`; `ValidatedMap::try_from(MapAsset) -> Result<Self, MapValidationError>`; typed polygons, vertices, texture coordinates, scenery layers, colliders, spawns, stationary guns, waypoints, weather, background, footsteps, jet fuel, boundaries, metadata, and checksums.
 
-- [ ] Test truncated, oversized, non-finite, invalid-index, invalid-enum, path-traversal, checksum, version, and valid golden files before implementing parsing.
-- [ ] Implement a cursor-based bounded parser with checked lengths and zero unsafe code; validate mode-required spawns and map prefixes.
-- [ ] Add property/fuzz tests proving parsing never panics or allocates beyond configured limits.
+- [x] Test truncated, oversized, non-finite, invalid-index, invalid-enum, path-traversal, checksum, version, and valid golden files before implementing parsing.
+- [x] Implement a cursor-based bounded parser with checked lengths and zero unsafe code; validate mode-required spawns and map prefixes.
+- [x] Add property/fuzz tests proving parsing never panics or allocates beyond configured limits.
 
 ### Task 4: Polygon collision and material rules
 
@@ -98,9 +107,9 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** signed/hash-addressed `MapManifest`; cancellable chunked download messages; cache keyed by `(map_hash, asset_hashes)`; `MapRotation` rejects empty/invalid lists; editor imports/exports PMS and a versioned native project format.
 
-- [ ] TDD map rotation/loop/next/restart, previews, progress/cancel, missing assets, checksum mismatch, cache hits, mode validation, and offline test-play.
-- [ ] Build editor tools for polygons, vertices, textures/UVs, scenery/layers, colliders, spawns/objectives/bonuses/guns, waypoints, weather/background/footsteps/fuel, selection, grid, zoom, undo/redo, copy/paste, prefabs, validation, preview, packaging, and deployment.
-- [ ] Treat the 97 default-map names as individual content features; admit each only after provenance verification, loader/mode validation, spawn/objective checks, preview generation, and playability smoke test. If redistribution is not licensed, create original compatible maps and document the intentional layout difference.
+- [x] TDD map rotation/loop/next/restart, previews, progress/cancel, missing assets, checksum mismatch, cache hits, mode validation, and offline test-play.
+- [x] Build editor tools for polygons, vertices, textures/UVs, scenery/layers, colliders, spawns/objectives/bonuses/guns, waypoints, weather/background/footsteps/fuel, selection, grid, zoom, undo/redo, copy/paste, prefabs, validation, preview, packaging, and deployment.
+- [x] Treat the 97 default-map names as individual content features; admit each only after provenance verification, loader/mode validation, spawn/objective checks, preview generation, and playability smoke test. If redistribution is not licensed, create original compatible maps and document the intentional layout difference.
 
 ## Phase 2 — Character simulation, input, and bodies (gaps 1, 2, 15)
 
@@ -110,9 +119,9 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** `CharacterState` explicitly models standing, crouching, prone, prone transitions, getting up, rolling (direction/source), standard/late backflip, airborne, dead, and emotes; `MovementConfig` is map/ruleset data.
 
-- [ ] Add source-derived 60 Hz fixtures for running, jump, acceleration, friction, momentum, air control, slopes/sliding, all stance transitions, rolls, backflips, fall/impact, pose-dependent jet force, fuel capacity/depletion/recharge, and player contact.
-- [ ] Implement state transitions as a table with input buffering and deterministic timers; use shared collision volumes for head/chest/legs and clearance checks before standing.
-- [ ] Add recoil, SPAS/minigun boost, explosions, bullets, flags, and kits through one impulse API rather than weapon-specific velocity mutations.
+- [x] Add source-derived 60 Hz fixtures for running, jump, acceleration, friction, momentum, air control, slopes/sliding, all stance transitions, rolls, backflips, fall/impact, pose-dependent jet force, fuel capacity/depletion/recharge, and player contact.
+- [x] Implement state transitions as a table with input buffering and deterministic timers; use shared collision volumes for head/chest/legs and clearance checks before standing.
+- [x] Add recoil, SPAS/minigun boost, explosions, bullets, flags, and kits through one impulse API rather than weapon-specific velocity mutations.
 
 ### Task 7: Rebindable multi-device input and accessibility
 
