@@ -46,7 +46,7 @@ fn fixture_replay_produces_stable_per_frame_digests() {
             .iter()
             .map(|digest| digest.as_str())
             .collect::<Vec<_>>(),
-        ["8e9d727ae63e5cf5", "ec9504afd1e84ced"]
+        ["a5a21254617248e5", "5a44b8a8c350d025"]
     );
 }
 

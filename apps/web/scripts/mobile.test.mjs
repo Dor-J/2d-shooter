@@ -1,6 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { viewForCanvas, screenToWorld, movementFromDrag } from '../src/mobile.ts'
+import { viewForCanvas } from '../src/mobile.ts'
+import { movementFromDrag } from '../src/input/touch.ts'
+import { aimFromPointer } from '../src/input/mouse.ts'
 
 test('portrait camera follows player and stays inside arena', () => {
   const middle = viewForCanvas(390, 700, 600)
@@ -25,7 +27,7 @@ test('wide phone camera crops vertically without distorting world units', () => 
 
 test('pointer position maps through camera without stretching aim', () => {
   const view = viewForCanvas(390, 700, 600)
-  assert.deepEqual(screenToWorld(195, 350, 390, 700, view), { x: 600, y: 350 })
+  assert.deepEqual(aimFromPointer(195, 350, 390, 700, view), { x: 600, y: 350 })
 })
 
 test('movement pad has a dead zone and an upward jump gesture', () => {

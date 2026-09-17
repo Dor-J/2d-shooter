@@ -8,11 +8,3 @@ export function viewForCanvas(pixelWidth: number, pixelHeight: number, playerX: 
   const y = Math.max(0, Math.min(700 - height, playerY - height / 2))
   return { x, y, width, height }
 }
-
-export function screenToWorld(clientX: number, clientY: number, width: number, height: number, view: View) {
-  return { x: view.x + clientX / width * view.width, y: view.y + clientY / height * view.height }
-}
-
-export function movementFromDrag(dx: number, dy: number) {
-  return { left: dx < -18, right: dx > 18, jump: dy < -30 }
-}

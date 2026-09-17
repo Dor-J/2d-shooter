@@ -66,17 +66,17 @@ The current implementation uses a simple rectangle/circle physics model and five
 - **Present:** Mouse aiming. <!-- G02-INPUT-AND-004 -->
 - **Present:** Primary fire. <!-- G02-INPUT-AND-005 -->
 - **Present:** Grenade input. <!-- G02-INPUT-AND-006 -->
-- **Partial:** Numeric weapon selection. <!-- G02-INPUT-AND-007 -->
+- **Present:** Numeric weapon selection. <!-- G02-INPUT-AND-007 -->
 - **Present:** Chat. <!-- G02-INPUT-AND-008 -->
 - **Present:** Touch controls. <!-- G02-INPUT-AND-009 -->
 
 ### Missing controls
 
-- Crouch. <!-- G02-INPUT-AND-010 -->
-- Prone. <!-- G02-INPUT-AND-011 -->
-- Roll. <!-- G02-INPUT-AND-012 -->
-- Backflip combinations. <!-- G02-INPUT-AND-013 -->
-- Explicit reload. <!-- G02-INPUT-AND-014 -->
+- **Present:** Crouch. <!-- G02-INPUT-AND-010 -->
+- **Present:** Prone. <!-- G02-INPUT-AND-011 -->
+- **Present:** Roll. <!-- G02-INPUT-AND-012 -->
+- **Present:** Backflip combinations. <!-- G02-INPUT-AND-013 -->
+- **Present:** Explicit reload. <!-- G02-INPUT-AND-014 -->
 - Switch between carried primary and secondary weapons. <!-- G02-INPUT-AND-015 -->
 - Drop current weapon. <!-- G02-INPUT-AND-016 -->
 - Hold-to-charge weapon throw. <!-- G02-INPUT-AND-017 -->
@@ -86,30 +86,30 @@ The current implementation uses a simple rectangle/circle physics model and five
 - Flag throw using jump+crouch. <!-- G02-INPUT-AND-021 -->
 - Dedicated configurable flag-throw key. <!-- G02-INPUT-AND-022 -->
 - Respawn weapon-selection menu. <!-- G02-INPUT-AND-023 -->
-- Separate primary and secondary selection controls. <!-- G02-INPUT-AND-024 -->
+- **Present:** Separate primary and secondary selection controls. <!-- G02-INPUT-AND-024 -->
 - Team chat. <!-- G02-INPUT-AND-025 -->
 - Command console. <!-- G02-INPUT-AND-026 -->
-- Scoreboard hold/toggle behavior. <!-- G02-INPUT-AND-027 -->
+- **Present:** Scoreboard hold/toggle behavior. <!-- G02-INPUT-AND-027 -->
 - Weapon-statistics screen. <!-- G02-INPUT-AND-028 -->
 - Minimap toggle. <!-- G02-INPUT-AND-029 -->
 - Sniper-line toggle. <!-- G02-INPUT-AND-030 -->
 - Performance-statistics overlay. <!-- G02-INPUT-AND-031 -->
-- Screenshot control. <!-- G02-INPUT-AND-032 -->
+- **Present:** Screenshot control. <!-- G02-INPUT-AND-032 -->
 - Music toggle. <!-- G02-INPUT-AND-033 -->
 - Previous/next music track. <!-- G02-INPUT-AND-034 -->
 - Demo recording. <!-- G02-INPUT-AND-035 -->
 - Demo playback fast-forward. <!-- G02-INPUT-AND-036 -->
 - Pause. <!-- G02-INPUT-AND-037 -->
-- Window minimize shortcut. <!-- G02-INPUT-AND-038 -->
+- **Present:** Window minimize shortcut. <!-- G02-INPUT-AND-038 -->
 - Taunt shortcuts. <!-- G02-INPUT-AND-039 -->
-- Runtime mouse-sensitivity adjustment. <!-- G02-INPUT-AND-040 -->
+- **Present:** Runtime mouse-sensitivity adjustment. <!-- G02-INPUT-AND-040 -->
 - Runtime sound-volume adjustment. <!-- G02-INPUT-AND-041 -->
-- Scoreboard scrolling. <!-- G02-INPUT-AND-042 -->
-- Fully rebindable keyboard controls. <!-- G02-INPUT-AND-043 -->
-- Rebindable mouse buttons. <!-- G02-INPUT-AND-044 -->
-- Controller/gamepad support. <!-- G02-INPUT-AND-045 -->
-- Saved control profiles. <!-- G02-INPUT-AND-046 -->
-- Accessibility alternatives for combined inputs. <!-- G02-INPUT-AND-047 -->
+- **Present:** Scoreboard scrolling. <!-- G02-INPUT-AND-042 -->
+- **Present:** Fully rebindable keyboard controls. <!-- G02-INPUT-AND-043 -->
+- **Present:** Rebindable mouse buttons. <!-- G02-INPUT-AND-044 -->
+- **Present:** Controller/gamepad support. <!-- G02-INPUT-AND-045 -->
+- **Present:** Saved control profiles. <!-- G02-INPUT-AND-046 -->
+- **Present:** Accessibility alternatives for combined inputs. <!-- G02-INPUT-AND-047 -->
 - Mobile equivalents for crouch, prone, roll, reload, weapon switch, weapon throw, flag throw, scoreboard, and team chat. <!-- G02-INPUT-AND-048 -->
 
 ## 3. Weapons

@@ -150,3 +150,23 @@ fn one_way_surface_ignores_side_and_upward_entry() {
         )
         .is_some());
 }
+
+#[test]
+fn standing_clearance_only_looks_at_the_headroom_above_a_low_stance() {
+    // A plain floor: the legs of a crouched body already touch it, so the ground must never be
+    // mistaken for a ceiling that keeps the player down.
+    let open = CollisionWorld::new(vec![triangle(
+        [(0.0, 20.0), (80.0, 20.0), (40.0, 60.0)],
+        PolygonKind::Normal,
+    )]);
+    assert!(open.has_standing_clearance(Vec2 { x: 40.0, y: 10.0 }, CollisionMask::PLAYER));
+
+    // The same floor with a ceiling just above the crouched head keeps the player crouched.
+    let mut polygons = open.polygons().to_vec();
+    polygons.push(triangle(
+        [(0.0, -6.0), (80.0, -6.0), (40.0, 2.0)],
+        PolygonKind::Normal,
+    ));
+    let low = CollisionWorld::new(polygons);
+    assert!(!low.has_standing_clearance(Vec2 { x: 40.0, y: 10.0 }, CollisionMask::PLAYER));
+}

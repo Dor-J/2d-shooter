@@ -65,6 +65,24 @@ const presentEvidence = new Map([
   ['Polygon types and properties.', 'rust:map_validation:materials'],
   ['Polygon collision fixtures.', 'rust:collision_fixtures:geometry'],
   ['One-way polygon fixtures.', 'rust:collision_fixtures:one-way'],
+  // Task 7 — rebindable multi-device input and accessibility.
+  ['Numeric weapon selection.', 'web:input:weapon-selection'],
+  ['Separate primary and secondary selection controls.', 'web:input:weapon-selection'],
+  ['Crouch.', 'web:smoke:stance'],
+  ['Prone.', 'web:smoke:stance'],
+  ['Roll.', 'web:smoke:stance'],
+  ['Backflip combinations.', 'web:input:backflip-combo'],
+  ['Explicit reload.', 'web:smoke:reload'],
+  ['Scoreboard hold/toggle behavior.', 'web:input:scoreboard'],
+  ['Scoreboard scrolling.', 'web:input:scoreboard-scroll'],
+  ['Screenshot control.', 'web:input:screenshot'],
+  ['Window minimize shortcut.', 'web:input:minimize'],
+  ['Runtime mouse-sensitivity adjustment.', 'web:input:sensitivity'],
+  ['Fully rebindable keyboard controls.', 'web:input:rebinding'],
+  ['Rebindable mouse buttons.', 'web:input:mouse-rebinding'],
+  ['Controller/gamepad support.', 'web:input:gamepad'],
+  ['Saved control profiles.', 'web:input:profiles'],
+  ['Accessibility alternatives for combined inputs.', 'web:input:accessibility'],
 ])
 
 for (const feature of features) {

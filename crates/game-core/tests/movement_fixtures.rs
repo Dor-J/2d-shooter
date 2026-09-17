@@ -295,3 +295,64 @@ fn player_contact_is_symmetric_and_deterministic() {
     assert_eq!(left.vel.x, 0.0);
     assert_eq!(right.vel.x, 0.0);
 }
+
+#[test]
+fn a_crouched_player_on_open_ground_stands_again_when_the_input_is_released() {
+    let mut world = World::new("deathmatch");
+    world.add_player(1, "stance".into());
+    for _ in 0..180 {
+        world.step(&Default::default());
+    }
+    assert!(world.players[&1].grounded, "the player should have landed");
+
+    let crouch = Input {
+        crouch: true,
+        ..Input::default()
+    };
+    for _ in 0..5 {
+        world.step(&std::collections::BTreeMap::from([(1, crouch)]));
+    }
+    assert_eq!(world.players[&1].state, CharacterState::Crouching);
+
+    for _ in 0..5 {
+        world.step(&Default::default());
+    }
+    assert_eq!(world.players[&1].state, CharacterState::Standing);
+}
+
+#[test]
+fn getting_up_from_prone_completes_on_open_ground() {
+    let mut world = World::new("deathmatch");
+    world.add_player(1, "stance".into());
+    for _ in 0..180 {
+        world.step(&Default::default());
+    }
+    let prone = Input {
+        prone: true,
+        ..Input::default()
+    };
+    world.step(&std::collections::BTreeMap::from([(1, prone)]));
+    for _ in 0..MovementConfig::soldat_default().prone_transition_ticks + 2 {
+        world.step(&Default::default());
+    }
+    assert_eq!(world.players[&1].state, CharacterState::Prone);
+
+    world.step(&std::collections::BTreeMap::from([(1, prone)]));
+    for _ in 0..MovementConfig::soldat_default().get_up_ticks + 2 {
+        world.step(&Default::default());
+    }
+    assert_eq!(world.players[&1].state, CharacterState::Standing);
+}
+
+#[test]
+fn every_pose_keeps_its_feet_at_one_height_so_a_stance_change_never_lifts_the_body() {
+    let feet = |shape: &BodyShape| {
+        shape
+            .parts()
+            .map(|part| part.offset.y + part.radius)
+            .fold(f32::NEG_INFINITY, f32::max)
+    };
+    let standing = feet(&BodyShape::standing());
+    assert_eq!(feet(&BodyShape::crouching()), standing);
+    assert_eq!(feet(&BodyShape::prone()), standing);
+}

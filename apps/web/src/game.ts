@@ -1,9 +1,15 @@
-import { screenToWorld, viewForCanvas } from './mobile'
+import { viewForCanvas } from './mobile'
 import type { View } from './mobile'
 import { polygonVertexBuffer, type MapPolygon } from './map-render'
+import { InputSystem } from './input'
+import type { InputFrame, InterfaceEvent } from './input'
+import { captureCanvas, downloadBlob } from './input/screenshot'
+import { aimFromStick, STICK_AIM_RANGE } from './input/touch'
+import { aimFromPointer } from './input/mouse'
+import type { Action } from './input/actions'
 
 export type Vec2 = { x: number; y: number }
-export type Input = { seq: number; left: boolean; right: boolean; jump: boolean; jet: boolean; fire: boolean; throw_grenade: boolean; aim: Vec2; weapon: number }
+export type Input = InputFrame
 export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: number; fuel: number; kills: number; deaths: number; team: number; grounded: boolean; cooldown: number; respawn: number; last_seq: number; weapon: number; ammo: number; reload_timer: number; startup: number; magazines: number[]; grenades: number; grenade_cooldown: number; grenade_held: boolean }
 export const weaponNames = ['Desert Eagles','HK MP5','AK-74','Steyr AUG','SPAS-12','Ruger 77','M79','Barrett M82A1','FN Minimi','XM214 Minigun','USSOCOM','Combat Knife','Chainsaw','M72 LAW']
 export type Projectile = { id: number; pos: Vec2; owner: number }
@@ -35,19 +41,19 @@ export class GameClient {
   predicted: Player | null = null
   predict: Predict | null = null
   send: (input: Input) => void
-  keys = new Set<string>()
-  touch = { left: false, right: false, jump: false, jet: false, fire: false, grenade: false }
+  input = new InputSystem()
+  onInterfaceEvent: (event: InterfaceEvent) => void = () => {}
+  onUiChange: (ui: { weapon: number; scoreboardVisible: boolean; scoreboardOffset: number }) => void = () => {}
+  uiSignature = ''
   aim: Vec2 = { x: 600, y: 350 }
-  seq = 0
-  weapon = 0
   last = performance.now()
   accumulator = 0
   frame = 0
   resizeObserver: ResizeObserver
   view: View = { x: 0, y: 0, width: 1200, height: 700 }
 
-  constructor(canvas: HTMLCanvasElement, send: (input: Input) => void) {
-    this.canvas = canvas; this.send = send
+  constructor(canvas: HTMLCanvasElement, send: (input: Input) => void, input?: InputSystem) {
+    this.canvas = canvas; this.send = send; if (input) this.input = input
     const gl = canvas.getContext('webgl2', { antialias: false })
     if (!gl) throw new Error('WebGL2 is required on this device')
     this.gl = gl
@@ -80,22 +86,71 @@ export class GameClient {
     this.resizeObserver = new ResizeObserver(() => this.resize()); this.resizeObserver.observe(canvas)
     window.addEventListener('keydown', this.keydown); window.addEventListener('keyup', this.keyup); window.addEventListener('blur', this.blur)
     canvas.addEventListener('pointermove', this.pointer); canvas.addEventListener('pointerdown', this.pointerDown); window.addEventListener('pointerup', this.pointerUp)
+    canvas.addEventListener('wheel', this.wheel, { passive: false })
     this.resize(); this.frame = requestAnimationFrame(this.loop)
   }
   async loadWasm() {
     this.predict = await (window.__arenaWasmReady ?? Promise.resolve(null))
   }
-  keydown = (e: KeyboardEvent) => { if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault(); this.keys.add(e.code); if (/^Digit[0-9]$/.test(e.code)) this.weapon = e.code === 'Digit0' ? 9 : Number(e.code.slice(-1)) - 1 }
-  keyup = (e: KeyboardEvent) => this.keys.delete(e.code)
-  blur = () => { this.keys.clear(); this.touch = { left: false, right: false, jump: false, jet: false, fire: false, grenade: false } }
-  pointer = (e: PointerEvent) => { const r = this.canvas.getBoundingClientRect(); this.aim = screenToWorld(e.clientX - r.left, e.clientY - r.top, r.width, r.height, this.view) }
-  pointerDown = (e: PointerEvent) => { this.pointer(e); if (e.pointerType === 'mouse') this.touch.fire = true }
-  pointerUp = () => { this.touch.fire = false }
+  keydown = (e: KeyboardEvent) => { this.input.keyboard.keydown(e) }
+  keyup = (e: KeyboardEvent) => { this.input.keyboard.keyup(e) }
+  blur = () => this.input.releaseAll()
+  wheel = (e: WheelEvent) => { this.input.mouse.wheel(e) }
+  pointer = (e: PointerEvent) => { const r = this.canvas.getBoundingClientRect(); this.aim = aimFromPointer(e.clientX - r.left, e.clientY - r.top, r.width, r.height, this.view) }
+  pointerDown = (e: PointerEvent) => { this.pointer(e); this.input.mouse.pointerdown(e) }
+  pointerUp = (e: PointerEvent) => { this.input.mouse.pointerup(e) }
+  get weapon() { return this.input.weapon }
+  set weapon(index: number) { this.input.weapon = index }
+  /** Touch movement pad: one drag drives the three movement actions at once. */
+  touchMove(state: { left: boolean; right: boolean; jump: boolean }) {
+    this.input.state.set('moveLeft', state.left); this.input.state.set('moveRight', state.right); this.input.state.set('jump', state.jump)
+  }
+  /** Touch aim pad: the drag direction becomes a world-space aim point and holds the fire action. */
+  touchAim(state: { dx: number; dy: number; fire: boolean }) {
+    this.input.state.set('fire', state.fire)
+    const player = this.predicted ?? (this.world ? this.world.players[this.localId] : null)
+    if (!state.fire || !player) return
+    const aimed = aimFromStick(player.pos, state.dx, state.dy, STICK_AIM_RANGE)
+    if (aimed) this.aim = aimed
+  }
+  touchAction(pointerId: number, action: Action, down: boolean) { if (down) this.input.touch.press(pointerId, action); else this.input.touch.release(pointerId) }
+  touchCancel() { this.input.touch.cancel(); this.touchMove({ left: false, right: false, jump: false }); this.touchAim({ dx: 0, dy: 0, fire: false }) }
+  suspendInput() { this.input.suspend() }
+  resumeInput() { this.input.resume() }
   resize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); this.canvas.width = Math.max(1, Math.round(this.canvas.clientWidth * dpr)); this.canvas.height = Math.max(1, Math.round(this.canvas.clientHeight * dpr)); this.gl.viewport(0, 0, this.canvas.width, this.canvas.height) }
   updateView() { const player = this.predicted ?? this.world?.players[this.localId]; const rect = this.canvas.getBoundingClientRect(); this.view = viewForCanvas(rect.width, rect.height, player?.pos.x ?? 600, player?.pos.y ?? 350); this.canvas.style.backgroundSize = `${1200 / this.view.width * 100}% ${700 / this.view.height * 100}%`; this.canvas.style.backgroundPosition = `${this.view.width >= 1200 ? 50 : this.view.x / (1200 - this.view.width) * 100}% ${this.view.height >= 700 ? 50 : this.view.y / (700 - this.view.height) * 100}%` }
   setSnapshot(world: World) { this.previousWorld = this.world; this.world = world; this.snapshotAt = performance.now(); this.predicted = world.players[this.localId] ? structuredClone(world.players[this.localId]) : null }
   loop = (now: number) => { this.accumulator += Math.min(now - this.last, 100); this.last = now; while (this.accumulator >= 1000 / 60) { this.tick(); this.accumulator -= 1000 / 60 } this.render(); this.frame = requestAnimationFrame(this.loop) }
-  tick() { if (!this.world || !this.localId) return; const input: Input = { seq: ++this.seq, left: this.keys.has('KeyA') || this.keys.has('ArrowLeft') || this.touch.left, right: this.keys.has('KeyD') || this.keys.has('ArrowRight') || this.touch.right, jump: this.keys.has('Space') || this.keys.has('KeyW') || this.touch.jump, jet: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.touch.jet, fire: this.touch.fire, throw_grenade: this.keys.has('KeyE') || this.touch.grenade, aim: this.aim, weapon: this.weapon }; this.send(input); if (this.predict && this.predicted) { try { const result = this.predict(JSON.stringify(this.predicted), JSON.stringify(input)); if (result) this.predicted = JSON.parse(result) as Player } catch { this.predict = null } } }
+  activeGamepad() {
+    const pads = typeof navigator !== 'undefined' && navigator.getGamepads ? navigator.getGamepads() : []
+    for (const pad of pads ?? []) if (pad && pad.connected) return pad
+    return null
+  }
+  tick() {
+    if (!this.world || !this.localId) return
+    const player = this.predicted ?? this.world.players[this.localId]
+    const gamepad = this.activeGamepad()
+    const stick = this.input.gamepad.aimStick(gamepad)
+    if (stick && player) {
+      const aimed = aimFromStick(player.pos, stick.x, stick.y, STICK_AIM_RANGE * this.input.mouse.sensitivity)
+      if (aimed) this.aim = aimed
+    }
+    const { frame, events } = this.input.tick({ aim: this.aim, airborne: player ? !player.grounded : false, gamepad })
+    for (const event of events) {
+      if (event.type === 'screenshot') captureCanvas(this.canvas, (blob, filename) => downloadBlob(blob as Blob, filename))
+      this.onInterfaceEvent(event)
+    }
+    const ui = { weapon: this.input.weapon, scoreboardVisible: this.input.ui.scoreboardVisible, scoreboardOffset: this.input.ui.scoreboardOffset }
+    const signature = `${ui.weapon}:${ui.scoreboardVisible}:${ui.scoreboardOffset}`
+    if (signature !== this.uiSignature) { this.uiSignature = signature; this.onUiChange(ui) }
+    this.send(frame)
+    if (this.predict && this.predicted) {
+      try {
+        const result = this.predict(JSON.stringify(this.predicted), JSON.stringify(frame))
+        if (result) this.predicted = JSON.parse(result) as Player
+      } catch { this.predict = null }
+    }
+  }
   rect(x: number, y: number, w: number, h: number, c: number[]) { const gl = this.gl; gl.uniform4f(this.color, c[0], c[1], c[2], c[3] ?? 1); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([x,y,x+w,y,x,y+h,x,y+h,x+w,y,x+w,y+h]), gl.STREAM_DRAW); gl.drawArrays(gl.TRIANGLES, 0, 6) }
   polygon(polygon: MapPolygon) {
     const colors: Record<string, number[]> = { Ice: [.38,.72,.86,1], Bouncy: [.82,.54,.28,1], Deadly: [.78,.18,.16,1], OneWay: [.55,.57,.50,1] }
@@ -149,5 +204,5 @@ export class GameClient {
       if (p.id === this.localId) { this.rect(pos.x-2,pos.y-61,4,4,[1,.82,.38,1]); this.rect(pos.x-12,pos.y-59,24,1,[1,.82,.38,.8]) }
     }
   }
-  destroy() { cancelAnimationFrame(this.frame); this.resizeObserver.disconnect(); if (this.soldierTexture) this.gl.deleteTexture(this.soldierTexture); window.removeEventListener('keydown',this.keydown); window.removeEventListener('keyup',this.keyup); window.removeEventListener('blur',this.blur); this.canvas.removeEventListener('pointermove',this.pointer); this.canvas.removeEventListener('pointerdown',this.pointerDown); window.removeEventListener('pointerup',this.pointerUp) }
+  destroy() { cancelAnimationFrame(this.frame); this.resizeObserver.disconnect(); if (this.soldierTexture) this.gl.deleteTexture(this.soldierTexture); window.removeEventListener('keydown',this.keydown); window.removeEventListener('keyup',this.keyup); window.removeEventListener('blur',this.blur); this.canvas.removeEventListener('pointermove',this.pointer); this.canvas.removeEventListener('pointerdown',this.pointerDown); window.removeEventListener('pointerup',this.pointerUp); this.canvas.removeEventListener('wheel',this.wheel) }
 }

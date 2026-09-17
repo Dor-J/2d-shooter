@@ -4,7 +4,7 @@ use content::manifest::SignedMapManifest;
 use game_core::{Input, World};
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 5;
+pub const VERSION: u32 = 6;
 pub const MAX_MESSAGE_BYTES: usize = 4096;
 
 #[derive(Debug, Serialize, Deserialize)]

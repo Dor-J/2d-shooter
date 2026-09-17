@@ -53,14 +53,14 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G02-INPUT-AND-004 | Present | 2. Input and controls | Mouse aiming. | web:smoke:aim-input |
 | G02-INPUT-AND-005 | Present | 2. Input and controls | Primary fire. | rust:game_core::tests::fire_is_rate_limited |
 | G02-INPUT-AND-006 | Present | 2. Input and controls | Grenade input. | rust:game_core::tests::holding_grenade_input_throws_only_once |
-| G02-INPUT-AND-007 | Partial | 2. Input and controls | Numeric weapon selection. | parity:G02-INPUT-AND-007 |
+| G02-INPUT-AND-007 | Present | 2. Input and controls | Numeric weapon selection. | web:input:weapon-selection |
 | G02-INPUT-AND-008 | Present | 2. Input and controls | Chat. | server:chat-handler |
 | G02-INPUT-AND-009 | Present | 2. Input and controls | Touch controls. | web:mobile:movement-pad |
-| G02-INPUT-AND-010 | Missing | 2. Input and controls | Crouch. | parity:G02-INPUT-AND-010 |
-| G02-INPUT-AND-011 | Missing | 2. Input and controls | Prone. | parity:G02-INPUT-AND-011 |
-| G02-INPUT-AND-012 | Missing | 2. Input and controls | Roll. | parity:G02-INPUT-AND-012 |
-| G02-INPUT-AND-013 | Missing | 2. Input and controls | Backflip combinations. | parity:G02-INPUT-AND-013 |
-| G02-INPUT-AND-014 | Missing | 2. Input and controls | Explicit reload. | parity:G02-INPUT-AND-014 |
+| G02-INPUT-AND-010 | Present | 2. Input and controls | Crouch. | web:smoke:stance |
+| G02-INPUT-AND-011 | Present | 2. Input and controls | Prone. | web:smoke:stance |
+| G02-INPUT-AND-012 | Present | 2. Input and controls | Roll. | web:smoke:stance |
+| G02-INPUT-AND-013 | Present | 2. Input and controls | Backflip combinations. | web:input:backflip-combo |
+| G02-INPUT-AND-014 | Present | 2. Input and controls | Explicit reload. | web:smoke:reload |
 | G02-INPUT-AND-015 | Missing | 2. Input and controls | Switch between carried primary and secondary weapons. | parity:G02-INPUT-AND-015 |
 | G02-INPUT-AND-016 | Missing | 2. Input and controls | Drop current weapon. | parity:G02-INPUT-AND-016 |
 | G02-INPUT-AND-017 | Missing | 2. Input and controls | Hold-to-charge weapon throw. | parity:G02-INPUT-AND-017 |
@@ -70,30 +70,30 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G02-INPUT-AND-021 | Missing | 2. Input and controls | Flag throw using jump+crouch. | parity:G02-INPUT-AND-021 |
 | G02-INPUT-AND-022 | Missing | 2. Input and controls | Dedicated configurable flag-throw key. | parity:G02-INPUT-AND-022 |
 | G02-INPUT-AND-023 | Missing | 2. Input and controls | Respawn weapon-selection menu. | parity:G02-INPUT-AND-023 |
-| G02-INPUT-AND-024 | Missing | 2. Input and controls | Separate primary and secondary selection controls. | parity:G02-INPUT-AND-024 |
+| G02-INPUT-AND-024 | Present | 2. Input and controls | Separate primary and secondary selection controls. | web:input:weapon-selection |
 | G02-INPUT-AND-025 | Missing | 2. Input and controls | Team chat. | parity:G02-INPUT-AND-025 |
 | G02-INPUT-AND-026 | Missing | 2. Input and controls | Command console. | parity:G02-INPUT-AND-026 |
-| G02-INPUT-AND-027 | Missing | 2. Input and controls | Scoreboard hold/toggle behavior. | parity:G02-INPUT-AND-027 |
+| G02-INPUT-AND-027 | Present | 2. Input and controls | Scoreboard hold/toggle behavior. | web:input:scoreboard |
 | G02-INPUT-AND-028 | Missing | 2. Input and controls | Weapon-statistics screen. | parity:G02-INPUT-AND-028 |
 | G02-INPUT-AND-029 | Missing | 2. Input and controls | Minimap toggle. | parity:G02-INPUT-AND-029 |
 | G02-INPUT-AND-030 | Missing | 2. Input and controls | Sniper-line toggle. | parity:G02-INPUT-AND-030 |
 | G02-INPUT-AND-031 | Missing | 2. Input and controls | Performance-statistics overlay. | parity:G02-INPUT-AND-031 |
-| G02-INPUT-AND-032 | Missing | 2. Input and controls | Screenshot control. | parity:G02-INPUT-AND-032 |
+| G02-INPUT-AND-032 | Present | 2. Input and controls | Screenshot control. | web:input:screenshot |
 | G02-INPUT-AND-033 | Missing | 2. Input and controls | Music toggle. | parity:G02-INPUT-AND-033 |
 | G02-INPUT-AND-034 | Missing | 2. Input and controls | Previous/next music track. | parity:G02-INPUT-AND-034 |
 | G02-INPUT-AND-035 | Missing | 2. Input and controls | Demo recording. | parity:G02-INPUT-AND-035 |
 | G02-INPUT-AND-036 | Missing | 2. Input and controls | Demo playback fast-forward. | parity:G02-INPUT-AND-036 |
 | G02-INPUT-AND-037 | Missing | 2. Input and controls | Pause. | parity:G02-INPUT-AND-037 |
-| G02-INPUT-AND-038 | Missing | 2. Input and controls | Window minimize shortcut. | parity:G02-INPUT-AND-038 |
+| G02-INPUT-AND-038 | Present | 2. Input and controls | Window minimize shortcut. | web:input:minimize |
 | G02-INPUT-AND-039 | Missing | 2. Input and controls | Taunt shortcuts. | parity:G02-INPUT-AND-039 |
-| G02-INPUT-AND-040 | Missing | 2. Input and controls | Runtime mouse-sensitivity adjustment. | parity:G02-INPUT-AND-040 |
+| G02-INPUT-AND-040 | Present | 2. Input and controls | Runtime mouse-sensitivity adjustment. | web:input:sensitivity |
 | G02-INPUT-AND-041 | Missing | 2. Input and controls | Runtime sound-volume adjustment. | parity:G02-INPUT-AND-041 |
-| G02-INPUT-AND-042 | Missing | 2. Input and controls | Scoreboard scrolling. | parity:G02-INPUT-AND-042 |
-| G02-INPUT-AND-043 | Missing | 2. Input and controls | Fully rebindable keyboard controls. | parity:G02-INPUT-AND-043 |
-| G02-INPUT-AND-044 | Missing | 2. Input and controls | Rebindable mouse buttons. | parity:G02-INPUT-AND-044 |
-| G02-INPUT-AND-045 | Missing | 2. Input and controls | Controller/gamepad support. | parity:G02-INPUT-AND-045 |
-| G02-INPUT-AND-046 | Missing | 2. Input and controls | Saved control profiles. | parity:G02-INPUT-AND-046 |
-| G02-INPUT-AND-047 | Missing | 2. Input and controls | Accessibility alternatives for combined inputs. | parity:G02-INPUT-AND-047 |
+| G02-INPUT-AND-042 | Present | 2. Input and controls | Scoreboard scrolling. | web:input:scoreboard-scroll |
+| G02-INPUT-AND-043 | Present | 2. Input and controls | Fully rebindable keyboard controls. | web:input:rebinding |
+| G02-INPUT-AND-044 | Present | 2. Input and controls | Rebindable mouse buttons. | web:input:mouse-rebinding |
+| G02-INPUT-AND-045 | Present | 2. Input and controls | Controller/gamepad support. | web:input:gamepad |
+| G02-INPUT-AND-046 | Present | 2. Input and controls | Saved control profiles. | web:input:profiles |
+| G02-INPUT-AND-047 | Present | 2. Input and controls | Accessibility alternatives for combined inputs. | web:input:accessibility |
 | G02-INPUT-AND-048 | Missing | 2. Input and controls | Mobile equivalents for crouch, prone, roll, reload, weapon switch, weapon throw, flag throw, scoreboard, and team chat. | parity:G02-INPUT-AND-048 |
 | G03-WEAPONS-001 | Partial | 3. Weapons | Desert Eagles. | parity:G03-WEAPONS-001 |
 | G03-WEAPONS-002 | Partial | 3. Weapons | HK MP5. | parity:G03-WEAPONS-002 |

@@ -136,3 +136,13 @@ header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:s
   .in-match .match-head{height:40px}.in-match .hud{top:max(40px,env(safe-area-inset-top))}
   .in-match .match-head span{display:none}.in-match .match-actions button{min-height:32px;padding:4px 8px}
 }
+
+/* Input layer: controls overlay, live scoreboard, and the header shortcut. */
+.controls-open{font-size:10px;padding:5px 10px}
+.controls-overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:#04080cd1;backdrop-filter:blur(3px)}
+.controls-overlay>*{width:min(760px,100%)}
+.scoreboard-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:min(420px,86%);background:#0a121ae8;border:1px solid #f2eadb42;border-radius:10px;padding:14px 18px;pointer-events:none;box-shadow:0 18px 50px #000a}
+.scoreboard-overlay h2{margin:0 0 8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#f2eadb9c}
+.scoreboard-overlay .row{display:flex;justify-content:space-between;gap:16px;padding:3px 0;font-size:14px;border-bottom:1px solid #ffffff12}
+.scoreboard-overlay small{display:block;margin-top:8px;font-size:10px;letter-spacing:.06em;color:#f2eadb7a}
+@media(max-width:500px){.scoreboard-overlay{min-width:0;width:calc(100% - 28px);padding:10px 12px}.scoreboard-overlay .row{font-size:12px}}

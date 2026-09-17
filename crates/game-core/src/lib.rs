@@ -93,6 +93,8 @@ pub struct Input {
     pub roll: bool,
     #[serde(default)]
     pub emote: Option<Emote>,
+    #[serde(default)]
+    pub reload: bool,
     pub fire: bool,
     pub throw_grenade: bool,
     pub aim: Vec2,
@@ -383,19 +385,17 @@ impl World {
                     player.magazines[player.weapon as usize] = player.ammo;
                 }
             }
+            if input.reload
+                && !player.previous_input.reload
+                && player.reload_timer == 0
+                && player.ammo < weapon.ammo
+            {
+                player.reload_timer = weapon.reload_ticks;
+            }
             let has_standing_clearance = !player.state.is_low()
                 || self
                     .collision
-                    .sweep_shape(
-                        player.pos,
-                        Vec2 {
-                            x: player.pos.x,
-                            y: player.pos.y - 12.0,
-                        },
-                        &BodyShape::crouching(),
-                        CollisionMask::PLAYER,
-                    )
-                    .is_none();
+                    .has_standing_clearance(player.pos, CollisionMask::PLAYER);
             advance_character(player, input, &self.movement, has_standing_clearance);
             let start = player.pos;
             let impact_velocity = player.vel.y.max(0.0);
@@ -969,6 +969,67 @@ mod tests {
             w.step(&BTreeMap::new());
         }
         assert_eq!(w.players[&1].ammo, WEAPONS[0].ammo);
+    }
+    #[test]
+    fn explicit_reload_input_refills_a_partial_magazine_and_ignores_a_full_one() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "A".into());
+        let aim = Vec2 {
+            x: 1000.0,
+            y: 430.0,
+        };
+        w.players.get_mut(&1).unwrap().cooldown = 0;
+        w.step(&BTreeMap::from([(
+            1,
+            Input {
+                fire: true,
+                aim,
+                ..Default::default()
+            },
+        )]));
+        assert_eq!(w.players[&1].ammo, WEAPONS[0].ammo - 1);
+
+        let reload = Input {
+            reload: true,
+            aim,
+            ..Default::default()
+        };
+        w.step(&BTreeMap::from([(1, reload)]));
+        assert_eq!(w.players[&1].reload_timer, WEAPONS[0].reload_ticks);
+        for _ in 0..WEAPONS[0].reload_ticks {
+            w.step(&BTreeMap::new());
+        }
+        assert_eq!(w.players[&1].ammo, WEAPONS[0].ammo);
+
+        w.step(&BTreeMap::from([(1, reload)]));
+        assert_eq!(w.players[&1].reload_timer, 0);
+    }
+    #[test]
+    fn a_held_reload_input_starts_only_one_reload() {
+        let mut w = World::new("deathmatch");
+        w.add_player(1, "A".into());
+        let aim = Vec2 {
+            x: 1000.0,
+            y: 430.0,
+        };
+        w.players.get_mut(&1).unwrap().cooldown = 0;
+        w.step(&BTreeMap::from([(
+            1,
+            Input {
+                fire: true,
+                aim,
+                ..Default::default()
+            },
+        )]));
+        let reload = Input {
+            reload: true,
+            aim,
+            ..Default::default()
+        };
+        w.step(&BTreeMap::from([(1, reload)]));
+        let started = w.players[&1].reload_timer;
+        w.step(&BTreeMap::from([(1, reload)]));
+        assert_eq!(w.players[&1].reload_timer, started - 1);
     }
     #[test]
     fn spas_fires_multiple_pellets_for_one_shell() {

@@ -448,7 +448,7 @@
       "feature": "Numeric weapon selection.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-007"
+        "web:input:weapon-selection"
       ]
     },
     {
@@ -475,7 +475,7 @@
       "feature": "Crouch.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-010"
+        "web:smoke:stance"
       ]
     },
     {
@@ -484,7 +484,7 @@
       "feature": "Prone.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-011"
+        "web:smoke:stance"
       ]
     },
     {
@@ -493,7 +493,7 @@
       "feature": "Roll.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-012"
+        "web:smoke:stance"
       ]
     },
     {
@@ -502,7 +502,7 @@
       "feature": "Backflip combinations.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-013"
+        "web:input:backflip-combo"
       ]
     },
     {
@@ -511,7 +511,7 @@
       "feature": "Explicit reload.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-014"
+        "web:smoke:reload"
       ]
     },
     {
@@ -601,7 +601,7 @@
       "feature": "Separate primary and secondary selection controls.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-024"
+        "web:input:weapon-selection"
       ]
     },
     {
@@ -628,7 +628,7 @@
       "feature": "Scoreboard hold/toggle behavior.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-027"
+        "web:input:scoreboard"
       ]
     },
     {
@@ -673,7 +673,7 @@
       "feature": "Screenshot control.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-032"
+        "web:input:screenshot"
       ]
     },
     {
@@ -727,7 +727,7 @@
       "feature": "Window minimize shortcut.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-038"
+        "web:input:minimize"
       ]
     },
     {
@@ -745,7 +745,7 @@
       "feature": "Runtime mouse-sensitivity adjustment.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-040"
+        "web:input:sensitivity"
       ]
     },
     {
@@ -763,7 +763,7 @@
       "feature": "Scoreboard scrolling.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-042"
+        "web:input:scoreboard-scroll"
       ]
     },
     {
@@ -772,7 +772,7 @@
       "feature": "Fully rebindable keyboard controls.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-043"
+        "web:input:rebinding"
       ]
     },
     {
@@ -781,7 +781,7 @@
       "feature": "Rebindable mouse buttons.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-044"
+        "web:input:mouse-rebinding"
       ]
     },
     {
@@ -790,7 +790,7 @@
       "feature": "Controller/gamepad support.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-045"
+        "web:input:gamepad"
       ]
     },
     {
@@ -799,7 +799,7 @@
       "feature": "Saved control profiles.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-046"
+        "web:input:profiles"
       ]
     },
     {
@@ -808,7 +808,7 @@
       "feature": "Accessibility alternatives for combined inputs.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-047"
+        "web:input:accessibility"
       ]
     },
     {
@@ -9951,8 +9951,22 @@
     "web:smoke:aim-input",
     "rust:game_core::tests::fire_is_rate_limited",
     "rust:game_core::tests::holding_grenade_input_throws_only_once",
+    "web:input:weapon-selection",
     "server:chat-handler",
     "web:mobile:movement-pad",
+    "web:smoke:stance",
+    "web:input:backflip-combo",
+    "web:smoke:reload",
+    "web:input:scoreboard",
+    "web:input:screenshot",
+    "web:input:minimize",
+    "web:input:sensitivity",
+    "web:input:scoreboard-scroll",
+    "web:input:rebinding",
+    "web:input:mouse-rebinding",
+    "web:input:gamepad",
+    "web:input:profiles",
+    "web:input:accessibility",
     "rust:game_core::tests::m79_explosion_damages_nearby_enemy_not_distant_enemy",
     "rust:game_core::tests::self_explosion_is_not_credited_as_a_kill",
     "rust:game_core::tests::deterministic_replay",

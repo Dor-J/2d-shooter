@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { movementFromDrag } from './mobile'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { TOUCH_BUTTONS, movementFromDrag, touchLayout, type TouchButton } from './input/touch'
+import type { Action } from './input/actions'
 
 const emit = defineEmits<{
   move: [state: { left: boolean; right: boolean; jump: boolean }]
   aim: [state: { dx: number; dy: number; fire: boolean }]
-  jet: [active: boolean]
-  grenade: [active: boolean]
+  action: [state: { pointerId: number; action: Action; down: boolean }]
+  cancel: []
 }>()
 
 const movePointer = ref<number | null>(null)
@@ -15,7 +16,34 @@ const moveStart = ref({ x: 0, y: 0 })
 const aimStart = ref({ x: 0, y: 0 })
 const moveKnob = ref({ x: 0, y: 0 })
 const aimKnob = ref({ x: 0, y: 0 })
+const active = ref(new Set<Action>())
+const viewport = ref({ width: 390, height: 780 })
 const limit = (n: number) => Math.max(-40, Math.min(40, n))
+
+const layout = computed(() => touchLayout(viewport.value.width, viewport.value.height))
+const stanceButtons = computed(() => TOUCH_BUTTONS.filter(button => button.group === 'stance'))
+const weaponButtons = computed(() => TOUCH_BUTTONS.filter(button => button.group === 'weapons'))
+const panelButtons = computed(() => TOUCH_BUTTONS.filter(button => button.group === 'panel'))
+const combatButtons = computed(() => TOUCH_BUTTONS.filter(button => button.group === 'combat'))
+
+function measure() {
+  viewport.value = { width: window.innerWidth, height: window.innerHeight }
+}
+onMounted(() => {
+  measure()
+  window.addEventListener('resize', measure)
+  window.addEventListener('orientationchange', measure)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', measure)
+  window.removeEventListener('orientationchange', measure)
+  releaseEverything()
+})
+
+function releaseEverything() {
+  active.value = new Set()
+  emit('cancel')
+}
 
 function startMove(event: PointerEvent) {
   if (movePointer.value !== null) return
@@ -57,36 +85,142 @@ function stopAim(event: PointerEvent) {
   aimKnob.value = { x: 0, y: 0 }
   emit('aim', { dx: 0, dy: 0, fire: false })
 }
+
+function pressButton(button: TouchButton, event: PointerEvent) {
+  ;(event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId)
+  active.value = new Set(active.value).add(button.action)
+  emit('action', { pointerId: event.pointerId, action: button.action, down: true })
+}
+function releaseButton(button: TouchButton, event: PointerEvent) {
+  const next = new Set(active.value)
+  next.delete(button.action)
+  active.value = next
+  emit('action', { pointerId: event.pointerId, action: button.action, down: false })
+}
 </script>
 
 <template>
-  <div class="mobile-controls" aria-label="Touch game controls">
-    <div class="control-pad move-pad" aria-label="Move and jump: drag left, right, or up"
-      @pointerdown.prevent="startMove" @pointermove.prevent="dragMove"
-      @pointerup.prevent="stopMove" @pointercancel.prevent="stopMove">
-      <span class="pad-ring"></span><span class="pad-knob" :style="{ transform: `translate(${moveKnob.x}px, ${moveKnob.y}px)` }"></span>
-      <span class="pad-label">MOVE / JUMP</span>
+  <div
+    class="mobile-controls"
+    :class="layout.orientation"
+    aria-label="Touch game controls"
+    :style="{
+      '--pad-size': `${layout.padSize}px`,
+      '--button-size': `${layout.buttonSize}px`,
+      paddingTop: layout.padding.top,
+      paddingBottom: layout.padding.bottom,
+      paddingLeft: layout.padding.left,
+      paddingRight: layout.padding.right,
+    }"
+    @pointercancel="releaseEverything"
+    @contextmenu.prevent
+  >
+    <div class="column left">
+      <div class="button-row" role="group" aria-label="Stance controls">
+        <button
+          v-for="button in stanceButtons"
+          :key="button.action"
+          class="action-button"
+          :class="{ active: active.has(button.action) }"
+          :aria-label="button.hint"
+          :aria-pressed="active.has(button.action)"
+          @pointerdown.prevent="pressButton(button, $event)"
+          @pointerup.prevent="releaseButton(button, $event)"
+          @pointercancel.prevent="releaseButton(button, $event)"
+        >{{ button.label }}</button>
+      </div>
+      <div
+        class="control-pad move-pad"
+        aria-label="Move and jump: drag left, right, or up"
+        @pointerdown.prevent="startMove"
+        @pointermove.prevent="dragMove"
+        @pointerup.prevent="stopMove"
+        @pointercancel.prevent="stopMove"
+      >
+        <span class="pad-ring"></span>
+        <span class="pad-knob" :style="{ transform: `translate(${moveKnob.x}px, ${moveKnob.y}px)` }"></span>
+        <span class="pad-label">MOVE / JUMP</span>
+      </div>
     </div>
-    <button class="jet-button" aria-label="Hold to use jetpack" @pointerdown.prevent="emit('jet', true)" @pointerup.prevent="emit('jet', false)" @pointercancel.prevent="emit('jet', false)">JET</button>
-    <button class="grenade-button" aria-label="Throw grenade" @pointerdown.prevent="emit('grenade', true)" @pointerup.prevent="emit('grenade', false)" @pointercancel.prevent="emit('grenade', false)">NADE</button>
-    <div class="control-pad aim-pad" aria-label="Aim and fire: drag toward target"
-      @pointerdown.prevent="startAim" @pointermove.prevent="dragAim"
-      @pointerup.prevent="stopAim" @pointercancel.prevent="stopAim">
-      <span class="pad-ring"></span><span class="pad-knob" :style="{ transform: `translate(${aimKnob.x}px, ${aimKnob.y}px)` }"></span>
-      <span class="pad-label">AIM / FIRE</span>
+
+    <div class="column center">
+      <div class="button-row wrap" role="group" aria-label="Panel controls">
+        <button
+          v-for="button in panelButtons"
+          :key="button.action"
+          class="action-button subtle"
+          :class="{ active: active.has(button.action) }"
+          :aria-label="button.hint"
+          :aria-pressed="active.has(button.action)"
+          @pointerdown.prevent="pressButton(button, $event)"
+          @pointerup.prevent="releaseButton(button, $event)"
+          @pointercancel.prevent="releaseButton(button, $event)"
+        >{{ button.label }}</button>
+      </div>
+    </div>
+
+    <div class="column right">
+      <div class="button-row wrap" role="group" aria-label="Weapon controls">
+        <button
+          v-for="button in weaponButtons"
+          :key="button.action"
+          class="action-button"
+          :class="{ active: active.has(button.action) }"
+          :aria-label="button.hint"
+          :aria-pressed="active.has(button.action)"
+          @pointerdown.prevent="pressButton(button, $event)"
+          @pointerup.prevent="releaseButton(button, $event)"
+          @pointercancel.prevent="releaseButton(button, $event)"
+        >{{ button.label }}</button>
+      </div>
+      <div class="pad-with-combat">
+        <div class="button-column" role="group" aria-label="Combat controls">
+          <button
+            v-for="button in combatButtons"
+            :key="button.action"
+            class="action-button strong"
+            :class="{ active: active.has(button.action) }"
+            :aria-label="button.hint"
+            :aria-pressed="active.has(button.action)"
+            @pointerdown.prevent="pressButton(button, $event)"
+            @pointerup.prevent="releaseButton(button, $event)"
+            @pointercancel.prevent="releaseButton(button, $event)"
+          >{{ button.label }}</button>
+        </div>
+        <div
+          class="control-pad aim-pad"
+          aria-label="Aim and fire: drag toward target"
+          @pointerdown.prevent="startAim"
+          @pointermove.prevent="dragAim"
+          @pointerup.prevent="stopAim"
+          @pointercancel.prevent="stopAim"
+        >
+          <span class="pad-ring"></span>
+          <span class="pad-knob" :style="{ transform: `translate(${aimKnob.x}px, ${aimKnob.y}px)` }"></span>
+          <span class="pad-label">AIM / FIRE</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.mobile-controls{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:0 max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));pointer-events:none;user-select:none;-webkit-user-select:none}
-.control-pad{width:clamp(112px,28vw,154px);height:clamp(112px,28vw,154px);position:relative;pointer-events:auto;touch-action:none;border-radius:50%;background:#081019b8;border:1px solid #f2eadb7a;box-shadow:0 8px 28px #0008}
+.mobile-controls{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;pointer-events:none;user-select:none;-webkit-user-select:none}
+.column{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.column.right{align-items:flex-end}
+.column.center{align-self:flex-start;align-items:center;flex:1}
+.button-row{display:flex;gap:8px;pointer-events:none}
+.button-row.wrap{flex-wrap:wrap;justify-content:flex-end;max-width:min(52vw,260px)}
+.button-column{display:flex;flex-direction:column;gap:8px;justify-content:flex-end}
+.pad-with-combat{display:flex;align-items:flex-end;gap:10px}
+.control-pad{width:var(--pad-size);height:var(--pad-size);position:relative;pointer-events:auto;touch-action:none;border-radius:50%;background:#081019b8;border:1px solid #f2eadb7a;box-shadow:0 8px 28px #0008}
 .pad-ring{position:absolute;inset:25%;border:1px solid #f2eadb76;border-radius:50%}
 .pad-knob{position:absolute;left:calc(50% - 22px);top:calc(50% - 22px);width:44px;height:44px;border-radius:50%;background:#e9b94a;box-shadow:0 3px 11px #000a;will-change:transform}
 .aim-pad .pad-knob{background:#f27e62}
 .pad-label{position:absolute;left:0;right:0;bottom:-21px;text-align:center;color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em;text-shadow:0 2px 5px #000}
-.jet-button{pointer-events:auto;touch-action:none;width:64px;height:64px;align-self:flex-end;margin-bottom:16px;border:1px solid #fff9;background:#243d51d9;color:#f5f5ed;border-radius:50%;font-size:13px;box-shadow:0 5px 18px #0008}
-.grenade-button{pointer-events:auto;touch-action:none;width:54px;height:54px;align-self:flex-end;margin-bottom:16px;border:1px solid #fff9;background:#704538e6;color:#fff;border-radius:50%;font-size:11px;box-shadow:0 5px 18px #0008}
-@media(max-width:700px) and (orientation:portrait){.mobile-controls{padding-bottom:max(30px,env(safe-area-inset-bottom))}.control-pad{width:118px;height:118px}.jet-button{width:58px;height:58px;margin-bottom:8px}}
-@media(max-height:420px){.control-pad{width:106px;height:106px}.jet-button{width:54px;height:54px}}
+.action-button{pointer-events:auto;touch-action:none;min-width:var(--button-size);height:var(--button-size);padding:0 9px;border:1px solid #fff9;background:#16222ee0;color:#f5f5ed;border-radius:calc(var(--button-size) / 2);font-size:10px;font-weight:800;letter-spacing:.06em;box-shadow:0 4px 14px #0008}
+.action-button.subtle{background:#101a24c9;opacity:.92}
+.action-button.strong{background:#243d51e6}
+.action-button.active{background:#e9b94a;color:#10161d;border-color:#fff}
+@media(max-height:420px){.button-row.wrap{max-width:min(40vw,220px)}}
 </style>

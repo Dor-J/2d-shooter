@@ -2,7 +2,9 @@
 
 A browser-based 2D multiplayer shooter inspired by Soldat's pace and presentation. The server is authoritative Rust; the same Rust simulation can compile to WebAssembly for local prediction. Vue 3 handles the lobby and HUD, and WebGL2 renders play.
 
-On touch devices, the match uses a player-following camera. Drag the left pad to move and push it upward to jump, drag the right pad to aim and fire, and hold the center button for the jetpack. The weapon selector and score/chat panel stay outside the thumb zones. Both portrait and landscape layouts honor device safe areas.
+Controls are fully rebindable across keyboard, mouse, and gamepad, and they are stored in control profiles you can create, export, and import. Open **Controls** in the header to rebind anything, set mouse sensitivity, or switch a hold control to a toggle. The defaults are A/D to move, Space to jump, S to crouch, X to go prone, C to roll, Shift for the jetpack, R to reload, E or the right mouse button for grenades, Tab for the scoreboard, and 1–0 for weapons.
+
+On touch devices, the match uses a player-following camera. Drag the left pad to move and push it upward to jump, drag the right pad to aim and fire, and use the on-screen buttons for the jetpack, grenades, stance, roll, reload, weapon switch, weapon and flag throws, the scoreboard, and team chat. Both portrait and landscape layouts honor device safe areas, and a cancelled touch releases everything it was holding.
 
 Component guides: [web client](apps/web/README.md), [Rust server](apps/api/README.md), [shared crates](crates/README.md), and [deployment](infrastructure/README.md).
 

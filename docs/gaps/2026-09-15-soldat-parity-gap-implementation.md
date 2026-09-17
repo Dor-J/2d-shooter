@@ -12,12 +12,14 @@
 
 ## Progress snapshot — 2026-09-17
 
-- **Completed milestones:** Tasks 1 and 3–6. Task 2's deterministic native/Wasm foundation is complete; its intentionally ongoing “add fixtures as later features land” checkbox remains open.
-- **Current coverage:** 1,104 gap features are mapped; 223 `Present` features have passing evidence in `docs/parity/coverage.json`.
+- **Completed milestones:** Tasks 1, 3–6, and 7. Task 2's deterministic native/Wasm foundation is complete; its intentionally ongoing “add fixtures as later features land” checkbox remains open.
+- **Current coverage:** 1,104 gap features are mapped; 240 `Present` features have passing evidence in `docs/parity/coverage.json`.
 - **Task 6 evidence:** 13 movement fixtures cover 60 Hz source constants, acceleration/friction/momentum, air control, jump buffering, stances, rolls, standard/late backflips, slopes, impacts, jets, player contact, collision volumes, emotes/death states, and the shared impulse API.
-- **Last completed verification:** `cargo test --workspace`, focused determinism and movement suites, Clippy with warnings denied, Rust formatting, web unit tests, production web build, native/Wasm parity, gap coverage, unsafe-Rust scan, and `git diff --check` passed.
-- **Next task:** Task 7 — rebindable multi-device input and accessibility. It has not started.
-- **Intentionally still open:** visual character animation layers, ragdolls, and automatic bullet/explosion interaction with flag/kit game objects remain assigned to their later owning tasks; their gap lines were not marked `Present` by Task 6.
+- **Task 7 evidence:** 39 web unit tests across `apps/web/scripts/input*.test.mjs` plus an extended two-client browser smoke run. One `Action` list covers every gap-2 control; `apps/web/src/input/` owns bindings, keyboard, mouse, gamepad, touch, profiles, the interface state, and the single protocol encoder. `protocol::VERSION` is 6: `Input` gained `reload`, and the server now starts a manual reload on a partial magazine.
+- **Task 7 defects fixed while wiring the controls:** stance controls exposed two simulation bugs from task 6. `CollisionWorld::has_standing_clearance` now probes only the headroom between the crouched and standing head instead of sweeping the whole crouched body, which had reported the floor underfoot as a blocking ceiling; and every `BodyShape` pose now shares one foot line, so crouching or going prone no longer lifts the body off the ground and drops `grounded`.
+- **Last completed verification:** `cargo test --workspace`, focused determinism and movement suites, Clippy with warnings denied, Rust formatting, web unit tests, ESLint, production web build, the two-client smoke run, gap coverage, unsafe-Rust scan, and `git diff --check` passed.
+- **Next task:** Task 8 — damage, armor, death, corpses, and respawn. It has not started.
+- **Intentionally still open:** visual character animation layers, ragdolls, and automatic bullet/explosion interaction with flag/kit game objects remain assigned to their later owning tasks. Task 7 left 31 gap-2 lines `Missing` on purpose, because their observable behaviour belongs to a later owner even though the control, its binding, and its typed intent already exist: inventory switch/drop/charged throw/knife/pickup and the respawn weapon menu (task 10), the knife throw (task 11), flag throw and its dedicated key (task 13), team chat and taunts (task 21), the command console (tasks 21–22), pause (task 12), minimap/sniper line/performance overlay/weapon statistics (tasks 15 and 18), music and runtime sound volume (task 19), demo recording and fast-forward (task 27), and the mobile-equivalents line, which stays open until those same behaviours land behind its buttons.
 
 ## Global Constraints
 
@@ -129,9 +131,9 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** a single `Action` enum covers every control in gap 2; device bindings produce `ActionState`, then one encoder produces protocol `InputFrame` with pressed/held/released semantics.
 
-- [ ] TDD keyboard/mouse rebinding, primary/secondary selection, reload/switch/drop/charged throw/knife/flag throw, chat/team chat/console, scoreboard, stats/minimap/sniper/performance toggles, screenshots, music/demo/pause/taunts, runtime sensitivity/volume, scrolling, gamepad, saved profiles, and combined-input alternatives.
-- [ ] Add mobile controls for stance, roll, reload, switch, weapon/flag throw, scoreboard, and team chat; verify portrait/landscape safe areas and touch cancellation.
-- [ ] Make gameplay input suspend while text fields/menus own focus and restore cleanly afterward.
+- [x] TDD keyboard/mouse rebinding, primary/secondary selection, reload/switch/drop/charged throw/knife/flag throw, chat/team chat/console, scoreboard, stats/minimap/sniper/performance toggles, screenshots, music/demo/pause/taunts, runtime sensitivity/volume, scrolling, gamepad, saved profiles, and combined-input alternatives. Controls whose effect belongs to a later task raise a typed intent instead of a faked result, and their gap lines stay open until that owner lands.
+- [x] Add mobile controls for stance, roll, reload, switch, weapon/flag throw, scoreboard, and team chat; verify portrait/landscape safe areas and touch cancellation.
+- [x] Make gameplay input suspend while text fields/menus own focus and restore cleanly afterward.
 
 ### Task 8: Damage, armor, death, corpses, and respawn
 
