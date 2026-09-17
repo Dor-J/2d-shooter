@@ -2,17 +2,22 @@
 
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+mod character;
 mod collision;
 mod fixtures;
 mod map;
 mod weapons;
-pub use fixtures::{replay_fixture_json, Fixture, FrameInput, SimRng, WorldDigest};
-pub use map::{MapValidationError, ValidatedMap};
+pub use character::{
+    advance_character, apply_impulse, resolve_player_contact, CharacterState, Direction, Emote,
+    Impulse, ImpulseSource, ImpulseTarget, MovementConfig, RollSource,
+};
 pub use collision::{
     resolve_material_velocity, Aabb, BodyPart, BodyRegion, BodyShape, CollisionMask,
     CollisionPolygon, CollisionWorld, Contact, ContactManifold, DynamicBody, DynamicBodyKind,
     MaterialResponse, PolygonKind, RayHit, ShapeHit, SweepHit,
 };
+pub use fixtures::{replay_fixture_json, Fixture, FrameInput, SimRng, WorldDigest};
+pub use map::{MapValidationError, ValidatedMap};
 pub use weapons::{Weapon, WeaponStyle, WEAPONS};
 
 pub const TICK_RATE: u32 = 60;
@@ -80,6 +85,14 @@ pub struct Input {
     pub right: bool,
     pub jump: bool,
     pub jet: bool,
+    #[serde(default)]
+    pub crouch: bool,
+    #[serde(default)]
+    pub prone: bool,
+    #[serde(default)]
+    pub roll: bool,
+    #[serde(default)]
+    pub emote: Option<Emote>,
     pub fire: bool,
     pub throw_grenade: bool,
     pub aim: Vec2,
@@ -98,6 +111,20 @@ pub struct Player {
     pub deaths: u32,
     pub team: u8,
     pub grounded: bool,
+    #[serde(default)]
+    pub state: CharacterState,
+    #[serde(default)]
+    pub facing: Direction,
+    #[serde(default)]
+    pub previous_input: Input,
+    #[serde(default)]
+    pub jump_buffer_ticks: u8,
+    #[serde(default)]
+    pub airborne_ticks: u16,
+    #[serde(default)]
+    pub last_impact: f32,
+    #[serde(default)]
+    pub last_impulse: Option<ImpulseSource>,
     pub cooldown: u16,
     pub respawn: u16,
     pub last_seq: u32,
@@ -123,6 +150,13 @@ impl Player {
             deaths: 0,
             team,
             grounded: false,
+            state: CharacterState::Airborne,
+            facing: Direction::Right,
+            previous_input: Input::default(),
+            jump_buffer_ticks: 0,
+            airborne_ticks: 0,
+            last_impact: 0.0,
+            last_impulse: None,
             cooldown: 0,
             respawn: 0,
             last_seq: 0,
@@ -150,6 +184,21 @@ fn spawn(id: u32, team: u8) -> Vec2 {
     Vec2 { x: side, y: 430.0 }
 }
 
+fn map_spawn(spawns: &[MapSpawn], id: u32, team: u8) -> Vec2 {
+    let matching = spawns
+        .iter()
+        .filter(|spawn| spawn.team == team || (team == 0 && spawn.team == 0))
+        .collect::<Vec<_>>();
+    let candidates = if matching.is_empty() {
+        spawns.iter().collect::<Vec<_>>()
+    } else {
+        matching
+    };
+    candidates
+        .get(id as usize % candidates.len().max(1))
+        .map_or_else(|| spawn(id, team), |selected| selected.position)
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Projectile {
     pub id: u32,
@@ -161,6 +210,11 @@ pub struct Projectile {
     pub explosive: bool,
     pub kind: ProjectileKind,
     pub splash_radius: f32,
+}
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+pub struct MapSpawn {
+    pub position: Vec2,
+    pub team: u8,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ProjectileKind {
@@ -178,6 +232,14 @@ pub enum Event {
     Kill { killer: u32, target: u32 },
     Respawn { player: u32 },
 }
+
+#[derive(Clone, Copy)]
+struct PendingHit {
+    killer: u32,
+    target: u32,
+    damage: i32,
+    impulse: Impulse,
+}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct World {
     pub tick: u64,
@@ -188,8 +250,12 @@ pub struct World {
     pub objects: Vec<DynamicBody>,
     #[serde(default)]
     pub map_polygons: Vec<CollisionPolygon>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub map_spawns: Vec<MapSpawn>,
     pub scores: [u32; 2],
     pub events: Vec<Event>,
+    #[serde(default)]
+    pub movement: MovementConfig,
     #[serde(default)]
     pub rng: SimRng,
     #[serde(default)]
@@ -212,8 +278,10 @@ impl World {
             projectiles: Vec::new(),
             objects: Vec::new(),
             map_polygons,
+            map_spawns: Vec::new(),
             scores: [0, 0],
             events: Vec::new(),
+            movement: MovementConfig::default(),
             rng: SimRng::default(),
             next_projectile: 1,
             collision,
@@ -221,7 +289,22 @@ impl World {
     }
 
     pub fn with_map(mode: &str, map: &ValidatedMap) -> Self {
-        Self::with_collision(mode, CollisionWorld::from_map(map))
+        let mut world = Self::with_collision(mode, CollisionWorld::from_map(map));
+        world.movement.fuel_capacity = (map.asset().start_jet.max(0) as f32 / 100.0).max(0.01);
+        world.map_spawns = map
+            .asset()
+            .spawnpoints
+            .iter()
+            .filter(|spawn| spawn.active)
+            .map(|spawn| MapSpawn {
+                position: Vec2 {
+                    x: spawn.x as f32,
+                    y: spawn.y as f32,
+                },
+                team: spawn.team.clamp(0, u8::MAX as i32) as u8,
+            })
+            .collect();
+        world
     }
 
     pub fn digest(&self) -> WorldDigest {
@@ -237,18 +320,22 @@ impl World {
         } else {
             0
         };
-        self.players.insert(id, Player::new(id, name, team));
+        let mut player = Player::new(id, name, team);
+        player.pos = map_spawn(&self.map_spawns, id, team);
+        player.fuel = self.movement.fuel_capacity;
+        self.players.insert(id, player);
     }
     pub fn step(&mut self, inputs: &BTreeMap<u32, Input>) {
         self.tick += 1;
         self.events.clear();
+        let map_spawns = self.map_spawns.clone();
         for player in self.players.values_mut() {
             if player.hp <= 0 {
                 if player.respawn > 0 {
                     player.respawn -= 1;
                 } else {
                     player.hp = 100;
-                    player.pos = spawn(player.id, player.team);
+                    player.pos = map_spawn(&map_spawns, player.id, player.team);
                     player.vel = Vec2::default();
                     player.fuel = 1.0;
                     player.magazines = WEAPONS.map(|weapon| weapon.ammo);
@@ -258,6 +345,12 @@ impl World {
                     player.grenades = 2;
                     player.grenade_cooldown = 0;
                     player.grenade_held = false;
+                    player.state = CharacterState::Airborne;
+                    player.previous_input = Input::default();
+                    player.jump_buffer_ticks = 0;
+                    player.airborne_ticks = 0;
+                    player.last_impact = 0.0;
+                    player.last_impulse = None;
                     self.events.push(Event::Respawn { player: player.id });
                 }
                 continue;
@@ -290,37 +383,44 @@ impl World {
                     player.magazines[player.weapon as usize] = player.ammo;
                 }
             }
-            let horizontal = (input.right as i32 - input.left as i32) as f32;
-            player.vel.x = (player.vel.x + horizontal * 1050.0 * DT).clamp(-270.0, 270.0);
-            if horizontal == 0.0 {
-                player.vel.x *= 0.82;
-            }
-            if input.jump && player.grounded {
-                player.vel.y = -390.0;
-                player.grounded = false;
-            }
-            if input.jet && player.fuel > 0.0 {
-                player.vel.y = (player.vel.y - 950.0 * DT).max(-300.0);
-                player.fuel = (player.fuel - 0.45 * DT).max(0.0);
-            } else if player.grounded {
-                player.fuel = (player.fuel + 0.5 * DT).min(1.0);
-            }
-            player.vel.y = (player.vel.y + 950.0 * DT).min(600.0);
+            let has_standing_clearance = !player.state.is_low()
+                || self
+                    .collision
+                    .sweep_shape(
+                        player.pos,
+                        Vec2 {
+                            x: player.pos.x,
+                            y: player.pos.y - 12.0,
+                        },
+                        &BodyShape::crouching(),
+                        CollisionMask::PLAYER,
+                    )
+                    .is_none();
+            advance_character(player, input, &self.movement, has_standing_clearance);
             let start = player.pos;
+            let impact_velocity = player.vel.y.max(0.0);
             let desired = Vec2 {
                 x: (start.x + player.vel.x * DT).clamp(16.0, WIDTH - 16.0),
                 y: (start.y + player.vel.y * DT).clamp(16.0, HEIGHT - 16.0),
             };
             player.grounded = false;
-            if let Some(shape_hit) = self
-                .collision
-                .sweep_shape(start, desired, &BodyShape::standing(), CollisionMask::PLAYER)
-            {
+            if let Some(shape_hit) = self.collision.sweep_shape(
+                start,
+                desired,
+                &character::body::shape_for(player.state),
+                CollisionMask::PLAYER,
+            ) {
                 let hit = shape_hit.hit;
                 player.pos = hit.position;
                 let response = resolve_material_velocity(player.vel, hit.normal, hit.kind);
                 player.vel = response.velocity;
                 player.grounded = hit.normal.y < -0.5;
+                if player.grounded {
+                    player.last_impact = impact_velocity;
+                    if matches!(player.state, CharacterState::Airborne) {
+                        player.state = CharacterState::Standing;
+                    }
+                }
                 if response.deadly {
                     player.hp = 0;
                     player.respawn = 120;
@@ -400,6 +500,21 @@ impl World {
                     if player.ammo == 0 {
                         player.reload_timer = weapon.reload_ticks;
                     }
+                    let (source, strength) = match player.weapon {
+                        4 => (ImpulseSource::SpasBoost, 34.0),
+                        9 => (ImpulseSource::MinigunBoost, 4.0),
+                        _ => (ImpulseSource::Recoil, 1.5),
+                    };
+                    apply_impulse(
+                        player,
+                        Impulse {
+                            velocity: Vec2 {
+                                x: -dx / len * strength,
+                                y: -dy / len * strength,
+                            },
+                            source,
+                        },
+                    );
                     self.events.push(Event::Shot { player: player.id });
                 }
             }
@@ -432,6 +547,17 @@ impl World {
                 }
             }
             player.grenade_held = input.throw_grenade;
+        }
+        let player_ids = self.players.keys().copied().collect::<Vec<_>>();
+        for (index, left_id) in player_ids.iter().copied().enumerate() {
+            for right_id in player_ids.iter().copied().skip(index + 1) {
+                if let Some(mut right) = self.players.remove(&right_id) {
+                    if let Some(left) = self.players.get_mut(&left_id) {
+                        resolve_player_contact(left, &mut right);
+                    }
+                    self.players.insert(right_id, right);
+                }
+            }
         }
         for object in &mut self.objects {
             object.step(&self.collision, DT);
@@ -496,28 +622,43 @@ impl World {
                 } else if player_t
                     .is_some_and(|hit_t| hit_t <= platform_hit.unwrap_or(f32::INFINITY))
                 {
-                    hits.push((bullet.owner, player_hit.unwrap().1, bullet.damage));
+                    let direction_length = (bullet.vel.x * bullet.vel.x
+                        + bullet.vel.y * bullet.vel.y)
+                        .sqrt()
+                        .max(1.0);
+                    hits.push(PendingHit {
+                        killer: bullet.owner,
+                        target: player_hit.unwrap().1,
+                        damage: bullet.damage,
+                        impulse: Impulse {
+                            velocity: Vec2 {
+                                x: bullet.vel.x / direction_length * 8.0,
+                                y: bullet.vel.y / direction_length * 8.0,
+                            },
+                            source: ImpulseSource::Bullet,
+                        },
+                    });
                 }
                 return false;
             }
             true
         });
-        for (killer, target_id, damage) in hits {
+        for hit in hits {
+            let killer = hit.killer;
+            let target_id = hit.target;
             if let Some(target) = self.players.get_mut(&target_id) {
                 if target.hp <= 0 {
                     continue;
                 }
-                target.hp = (target.hp - damage).max(0);
+                target.hp = (target.hp - hit.damage).max(0);
+                apply_impulse(target, hit.impulse);
                 self.events.push(Event::Hit {
                     target: target_id,
                     hp: target.hp,
                 });
                 if target.hp == 0 {
-                    self.objects.push(DynamicBody::new(
-                        DynamicBodyKind::Corpse,
-                        target.pos,
-                        10.0,
-                    ));
+                    self.objects
+                        .push(DynamicBody::new(DynamicBodyKind::Corpse, target.pos, 10.0));
                     target.deaths += 1;
                     target.respawn = 120;
                     if self.mode == "team" && killer != target_id {
@@ -579,7 +720,7 @@ fn splash_hits(
     bullet: &Projectile,
     players: &BTreeMap<u32, Player>,
     teams: &BTreeMap<u32, u8>,
-    hits: &mut Vec<(u32, u32, i32)>,
+    hits: &mut Vec<PendingHit>,
 ) {
     for target in players.values() {
         if target.hp <= 0 {
@@ -595,11 +736,27 @@ fn splash_hits(
         let dy = target.pos.y - bullet.pos.y;
         let distance = (dx * dx + dy * dy).sqrt();
         if distance < bullet.splash_radius {
-            hits.push((
-                bullet.owner,
-                target.id,
-                ((1.0 - distance / bullet.splash_radius) * bullet.damage as f32).ceil() as i32,
-            ));
+            let scale = 1.0 - distance / bullet.splash_radius;
+            let normal = if distance > f32::EPSILON {
+                Vec2 {
+                    x: dx / distance,
+                    y: dy / distance,
+                }
+            } else {
+                Vec2 { x: 0.0, y: -1.0 }
+            };
+            hits.push(PendingHit {
+                killer: bullet.owner,
+                target: target.id,
+                damage: (scale * bullet.damage as f32).ceil() as i32,
+                impulse: Impulse {
+                    velocity: Vec2 {
+                        x: normal.x * 90.0 * scale,
+                        y: normal.y * 90.0 * scale,
+                    },
+                    source: ImpulseSource::Explosion,
+                },
+            });
         }
     }
 }

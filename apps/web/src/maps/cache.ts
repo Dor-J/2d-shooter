@@ -11,6 +11,28 @@ export class MemoryMapStorage implements MapStorage {
   async set(key: string, value: Uint8Array) { this.values.set(key, value) }
 }
 
+export class BrowserMapStorage implements MapStorage {
+  private database: Promise<IDBDatabase>
+  constructor() {
+    this.database = new Promise((resolve, reject) => {
+      const request = indexedDB.open('arena-map-cache', 1)
+      request.onupgradeneeded = () => request.result.createObjectStore('packages')
+      request.onsuccess = () => resolve(request.result)
+      request.onerror = () => reject(request.error)
+    })
+  }
+  async get(key: string) { return this.request<Uint8Array | undefined>('readonly', store => store.get(key)) }
+  async set(key: string, value: Uint8Array) { await this.request('readwrite', store => store.put(value, key)) }
+  private async request<T>(mode: IDBTransactionMode, operation: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
+    const database = await this.database
+    return new Promise((resolve, reject) => {
+      const request = operation(database.transaction('packages', mode).objectStore('packages'))
+      request.onsuccess = () => resolve(request.result)
+      request.onerror = () => reject(request.error)
+    })
+  }
+}
+
 export function mapCacheKey(manifest: MapManifest): string {
   const hashes = manifest.assets.map(asset => hex(asset.sha256)).sort().join('.')
   return `${manifest.map_hash}:${hashes}`
@@ -18,7 +40,7 @@ export function mapCacheKey(manifest: MapManifest): string {
 
 export class MapCache {
   private storage: MapStorage
-  constructor(storage: MapStorage = new MemoryMapStorage()) { this.storage = storage }
+  constructor(storage: MapStorage = typeof indexedDB === 'undefined' ? new MemoryMapStorage() : new BrowserMapStorage()) { this.storage = storage }
   async has(manifest: MapManifest) { return (await this.storage.get(mapCacheKey(manifest))) !== undefined }
   async put(manifest: MapManifest, packageBytes: Uint8Array) { await this.storage.set(mapCacheKey(manifest), packageBytes) }
   async get(manifest: MapManifest) { return this.storage.get(mapCacheKey(manifest)) }

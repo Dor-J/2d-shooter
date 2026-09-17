@@ -4,7 +4,7 @@ function connect(name) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(endpoint)
     const timeout = setTimeout(() => reject(new Error(`Timed out connecting ${name}`)), 5000)
-    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 3, name, resume: null })))
+    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 5, name, resume: null })))
     ws.addEventListener('message', event => {
       const message = JSON.parse(event.data)
       if (message.type === 'welcome') { clearTimeout(timeout); resolve({ ws, player: message.player }) }
@@ -29,7 +29,7 @@ const a = await connect('Smoke A')
 const b = await connect('Smoke B')
 try {
   const first = waitFor(a.ws, 'joined')
-  a.ws.send(JSON.stringify({ type: 'create_room', name: 'Private Smoke', mode: 'deathmatch', public: false }))
+  a.ws.send(JSON.stringify({ type: 'create_room', name: 'Private Smoke', mode: 'deathmatch', public: false, map: 'Arena' }))
   const created = await first
   const roomsReady = waitFor(b.ws, 'rooms')
   b.ws.send(JSON.stringify({ type: 'rooms' }))

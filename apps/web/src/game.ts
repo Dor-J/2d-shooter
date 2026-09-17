@@ -8,7 +8,7 @@ export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: numbe
 export const weaponNames = ['Desert Eagles','HK MP5','AK-74','Steyr AUG','SPAS-12','Ruger 77','M79','Barrett M82A1','FN Minimi','XM214 Minigun','USSOCOM','Combat Knife','Chainsaw','M72 LAW']
 export type Projectile = { id: number; pos: Vec2; owner: number }
 export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; map_polygons: MapPolygon[]; scores: number[]; events: unknown[] }
-export type Room = { id: number; name: string; mode: string; players: number; capacity: number }
+export type Room = { id: number; name: string; mode: string; players: number; capacity: number; map: string }
 type Predict = (player: string, input: string) => string
 declare global { interface Window { __arenaWasmReady?: Promise<Predict | null> } }
 export class GameClient {
