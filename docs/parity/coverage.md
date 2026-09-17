@@ -29,7 +29,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G01-CHARACTER-MOVEMENT-023 | Present | 1. Character movement and physics | Only-player and only-bullet polygon types. | rust:map_validation:filters |
 | G01-CHARACTER-MOVEMENT-024 | Present | 1. Character movement and physics | Player collision with vertical and angled geometry. | rust:collision_fixtures:geometry |
 | G01-CHARACTER-MOVEMENT-025 | Present | 1. Character movement and physics | Proper head/body/legs collision volumes. | rust:collision_fixtures:body-shape |
-| G01-CHARACTER-MOVEMENT-026 | Missing | 1. Character movement and physics | Character-body ragdoll physics. | parity:G01-CHARACTER-MOVEMENT-026 |
+| G01-CHARACTER-MOVEMENT-026 | Present | 1. Character movement and physics | Character-body ragdoll physics. | rust:damage_fixtures:ragdoll |
 | G01-CHARACTER-MOVEMENT-027 | Present | 1. Character movement and physics | Corpses interacting with terrain. | rust:game_core:corpse-terrain |
 | G01-CHARACTER-MOVEMENT-028 | Present | 1. Character movement and physics | Player-to-player physical interaction. | rust:movement_fixtures |
 | G01-CHARACTER-MOVEMENT-029 | Present | 1. Character movement and physics | Fall/impact behavior. | rust:movement_fixtures |
@@ -69,7 +69,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G02-INPUT-AND-020 | Missing | 2. Input and controls | Pick up flags and kits. | parity:G02-INPUT-AND-020 |
 | G02-INPUT-AND-021 | Missing | 2. Input and controls | Flag throw using jump+crouch. | parity:G02-INPUT-AND-021 |
 | G02-INPUT-AND-022 | Missing | 2. Input and controls | Dedicated configurable flag-throw key. | parity:G02-INPUT-AND-022 |
-| G02-INPUT-AND-023 | Missing | 2. Input and controls | Respawn weapon-selection menu. | parity:G02-INPUT-AND-023 |
+| G02-INPUT-AND-023 | Present | 2. Input and controls | Respawn weapon-selection menu. | rust:damage_fixtures:weapon-choice |
 | G02-INPUT-AND-024 | Present | 2. Input and controls | Separate primary and secondary selection controls. | web:input:weapon-selection |
 | G02-INPUT-AND-025 | Missing | 2. Input and controls | Team chat. | parity:G02-INPUT-AND-025 |
 | G02-INPUT-AND-026 | Missing | 2. Input and controls | Command console. | parity:G02-INPUT-AND-026 |
@@ -237,7 +237,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G05-GAME-MODES-032 | Missing | 5. Game modes | Map-loop option. | parity:G05-GAME-MODES-032 |
 | G05-GAME-MODES-033 | Missing | 5. Game modes | Next-map transition. | parity:G05-GAME-MODES-033 |
 | G05-GAME-MODES-034 | Missing | 5. Game modes | Match restart. | parity:G05-GAME-MODES-034 |
-| G05-GAME-MODES-035 | Missing | 5. Game modes | Configurable respawn time. | parity:G05-GAME-MODES-035 |
+| G05-GAME-MODES-035 | Missing | 5. Game modes | Configurable respawn time. | rust:damage_fixtures:respawn |
 | G05-GAME-MODES-036 | Missing | 5. Game modes | Survival round elimination. | parity:G05-GAME-MODES-036 |
 | G05-GAME-MODES-037 | Missing | 5. Game modes | Survival dead-player restrictions. | parity:G05-GAME-MODES-037 |
 | G05-GAME-MODES-038 | Missing | 5. Game modes | Advance-mode weapon unlocking. | parity:G05-GAME-MODES-038 |
@@ -363,28 +363,28 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G15-HEALTH-ARMOR-001 | Present | 15. Health, armor, death, and respawn | Basic 100 HP. | rust:game_core::tests::m79_explosion_damages_nearby_enemy_not_distant_enemy |
 | G15-HEALTH-ARMOR-002 | Present | 15. Health, armor, death, and respawn | Death count. | rust:game_core::tests::self_explosion_is_not_credited_as_a_kill |
 | G15-HEALTH-ARMOR-003 | Present | 15. Health, armor, death, and respawn | Automatic respawn. | rust:game_core::tests::deterministic_replay |
-| G15-HEALTH-ARMOR-004 | Missing | 15. Health, armor, death, and respawn | Body-part damage. | parity:G15-HEALTH-ARMOR-004 |
+| G15-HEALTH-ARMOR-004 | Present | 15. Health, armor, death, and respawn | Body-part damage. | rust:damage_fixtures:regions |
 | G15-HEALTH-ARMOR-005 | Missing | 15. Health, armor, death, and respawn | Bulletproof vest/armor. | parity:G15-HEALTH-ARMOR-005 |
-| G15-HEALTH-ARMOR-006 | Missing | 15. Health, armor, death, and respawn | Bleeding. | parity:G15-HEALTH-ARMOR-006 |
-| G15-HEALTH-ARMOR-007 | Missing | 15. Health, armor, death, and respawn | Blood particles. | parity:G15-HEALTH-ARMOR-007 |
+| G15-HEALTH-ARMOR-006 | Present | 15. Health, armor, death, and respawn | Bleeding. | rust:damage_fixtures:bleeding |
+| G15-HEALTH-ARMOR-007 | Present | 15. Health, armor, death, and respawn | Blood particles. | web:render:particles |
 | G15-HEALTH-ARMOR-008 | Missing | 15. Health, armor, death, and respawn | Blood remaining on the character. | parity:G15-HEALTH-ARMOR-008 |
-| G15-HEALTH-ARMOR-009 | Missing | 15. Health, armor, death, and respawn | Gore/gibs. | parity:G15-HEALTH-ARMOR-009 |
-| G15-HEALTH-ARMOR-010 | Missing | 15. Health, armor, death, and respawn | Ragdoll corpses. | parity:G15-HEALTH-ARMOR-010 |
-| G15-HEALTH-ARMOR-011 | Missing | 15. Health, armor, death, and respawn | Corpse persistence. | parity:G15-HEALTH-ARMOR-011 |
-| G15-HEALTH-ARMOR-012 | Missing | 15. Health, armor, death, and respawn | Death causes. | parity:G15-HEALTH-ARMOR-012 |
-| G15-HEALTH-ARMOR-013 | Missing | 15. Health, armor, death, and respawn | Kill feed. | parity:G15-HEALTH-ARMOR-013 |
-| G15-HEALTH-ARMOR-014 | Missing | 15. Health, armor, death, and respawn | Headshot messaging/effects. | parity:G15-HEALTH-ARMOR-014 |
-| G15-HEALTH-ARMOR-015 | Missing | 15. Health, armor, death, and respawn | Multi-kill messages. | parity:G15-HEALTH-ARMOR-015 |
-| G15-HEALTH-ARMOR-016 | Missing | 15. Health, armor, death, and respawn | Self-kill messages. | parity:G15-HEALTH-ARMOR-016 |
-| G15-HEALTH-ARMOR-017 | Missing | 15. Health, armor, death, and respawn | Teamkill messages. | parity:G15-HEALTH-ARMOR-017 |
-| G15-HEALTH-ARMOR-018 | Missing | 15. Health, armor, death, and respawn | Spawn protection if applicable. | parity:G15-HEALTH-ARMOR-018 |
-| G15-HEALTH-ARMOR-019 | Missing | 15. Health, armor, death, and respawn | Configurable respawn time. | parity:G15-HEALTH-ARMOR-019 |
-| G15-HEALTH-ARMOR-020 | Missing | 15. Health, armor, death, and respawn | Respawn countdown HUD. | parity:G15-HEALTH-ARMOR-020 |
-| G15-HEALTH-ARMOR-021 | Missing | 15. Health, armor, death, and respawn | Weapon selection while dead. | parity:G15-HEALTH-ARMOR-021 |
-| G15-HEALTH-ARMOR-022 | Missing | 15. Health, armor, death, and respawn | Proper mode/team/map spawn selection. | parity:G15-HEALTH-ARMOR-022 |
-| G15-HEALTH-ARMOR-023 | Missing | 15. Health, armor, death, and respawn | Kill attribution after delayed damage. | parity:G15-HEALTH-ARMOR-023 |
-| G15-HEALTH-ARMOR-024 | Missing | 15. Health, armor, death, and respawn | Assist tracking if desired. | parity:G15-HEALTH-ARMOR-024 |
-| G15-HEALTH-ARMOR-025 | Missing | 15. Health, armor, death, and respawn | Damage direction feedback. | parity:G15-HEALTH-ARMOR-025 |
+| G15-HEALTH-ARMOR-009 | Present | 15. Health, armor, death, and respawn | Gore/gibs. | web:render:particles |
+| G15-HEALTH-ARMOR-010 | Present | 15. Health, armor, death, and respawn | Ragdoll corpses. | rust:damage_fixtures:ragdoll |
+| G15-HEALTH-ARMOR-011 | Present | 15. Health, armor, death, and respawn | Corpse persistence. | rust:damage_fixtures:ragdoll |
+| G15-HEALTH-ARMOR-012 | Present | 15. Health, armor, death, and respawn | Death causes. | rust:damage_fixtures:death-causes |
+| G15-HEALTH-ARMOR-013 | Present | 15. Health, armor, death, and respawn | Kill feed. | web:hud:kill-feed |
+| G15-HEALTH-ARMOR-014 | Present | 15. Health, armor, death, and respawn | Headshot messaging/effects. | web:hud:kill-feed |
+| G15-HEALTH-ARMOR-015 | Present | 15. Health, armor, death, and respawn | Multi-kill messages. | web:hud:kill-feed |
+| G15-HEALTH-ARMOR-016 | Present | 15. Health, armor, death, and respawn | Self-kill messages. | web:hud:kill-feed |
+| G15-HEALTH-ARMOR-017 | Present | 15. Health, armor, death, and respawn | Teamkill messages. | web:hud:kill-feed |
+| G15-HEALTH-ARMOR-018 | Present | 15. Health, armor, death, and respawn | Spawn protection if applicable. | rust:damage_fixtures:spawn-protection |
+| G15-HEALTH-ARMOR-019 | Present | 15. Health, armor, death, and respawn | Configurable respawn time. | rust:damage_fixtures:respawn |
+| G15-HEALTH-ARMOR-020 | Present | 15. Health, armor, death, and respawn | Respawn countdown HUD. | web:hud:respawn |
+| G15-HEALTH-ARMOR-021 | Present | 15. Health, armor, death, and respawn | Weapon selection while dead. | rust:damage_fixtures:weapon-choice |
+| G15-HEALTH-ARMOR-022 | Present | 15. Health, armor, death, and respawn | Proper mode/team/map spawn selection. | rust:damage_fixtures:spawn-selection |
+| G15-HEALTH-ARMOR-023 | Present | 15. Health, armor, death, and respawn | Kill attribution after delayed damage. | rust:damage_fixtures:attribution |
+| G15-HEALTH-ARMOR-024 | Present | 15. Health, armor, death, and respawn | Assist tracking if desired. | rust:damage_fixtures:attribution |
+| G15-HEALTH-ARMOR-025 | Present | 15. Health, armor, death, and respawn | Damage direction feedback. | web:hud:damage-arrow |
 | G15-HEALTH-ARMOR-026 | Missing | 15. Health, armor, death, and respawn | Explosion deafness/whistling effect. | parity:G15-HEALTH-ARMOR-026 |
 | G16-MAPS-AND-001 | Present | 16. Maps and terrain engine | `.pms` map loader. | rust:content::pms |
 | G16-MAPS-AND-002 | Present | 16. Maps and terrain engine | PMS format validation. | rust:content::pms-validation |
@@ -577,7 +577,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G19-HUD-AND-026 | Missing | 19. HUD and game screen | Grenade type/count. | parity:G19-HUD-AND-026 |
 | G19-HUD-AND-027 | Missing | 19. HUD and game screen | Reload progress rather than only “RELOADING.” | parity:G19-HUD-AND-027 |
 | G19-HUD-AND-028 | Missing | 19. HUD and game screen | Respawn countdown. | parity:G19-HUD-AND-028 |
-| G19-HUD-AND-029 | Missing | 19. HUD and game screen | Kill feed. | parity:G19-HUD-AND-029 |
+| G19-HUD-AND-029 | Missing | 19. HUD and game screen | Kill feed. | web:hud:kill-feed |
 | G19-HUD-AND-030 | Missing | 19. HUD and game screen | Chat overlay inside the game. | parity:G19-HUD-AND-030 |
 | G19-HUD-AND-031 | Missing | 19. HUD and game screen | Team-chat distinction. | parity:G19-HUD-AND-031 |
 | G19-HUD-AND-032 | Missing | 19. HUD and game screen | Server messages. | parity:G19-HUD-AND-032 |

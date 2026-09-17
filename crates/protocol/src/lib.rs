@@ -4,7 +4,7 @@ use content::manifest::SignedMapManifest;
 use game_core::{Input, World};
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 6;
+pub const VERSION: u32 = 7;
 pub const MAX_MESSAGE_BYTES: usize = 4096;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -88,7 +88,8 @@ pub enum ServerMessage {
     },
     Snapshot {
         room: u32,
-        world: World,
+        /// Boxed so one large snapshot does not inflate every other server message.
+        world: Box<World>,
     },
     Chat {
         player: u32,

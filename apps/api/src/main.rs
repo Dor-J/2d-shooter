@@ -13,7 +13,7 @@ use axum::{
     Json, Router,
 };
 use futures_util::{SinkExt, StreamExt};
-use game_core::{Input, ValidatedMap, World, TICK_RATE};
+use game_core::{Event, Input, ValidatedMap, World, TICK_RATE};
 use map_editor::{original_default_map, DEFAULT_MAPS};
 use maps::{MapService, TransferEvent};
 use protocol::{ClientMessage, MapInfo, RoomInfo, ServerMessage, VERSION};
@@ -48,6 +48,9 @@ struct Room {
     world: World,
     inputs: BTreeMap<u32, Input>,
     map: String,
+    /// The simulation clears its events every tick but snapshots go out less often, so they are
+    /// gathered here and drained into the snapshot. Otherwise kills and hits would be dropped.
+    pending_events: Vec<Event>,
 }
 struct Hub {
     guests: HashMap<u32, Guest>,
@@ -85,6 +88,7 @@ impl Hub {
                 public: true,
                 world: World::with_map("deathmatch", &default_map),
                 inputs: BTreeMap::new(),
+                pending_events: Vec::new(),
                 map: "Aero".into(),
             },
         );
@@ -146,6 +150,7 @@ impl Hub {
                 public,
                 world: World::with_map(&mode, &map),
                 inputs: BTreeMap::new(),
+                pending_events: Vec::new(),
                 map: entry.name.into(),
             },
         );
@@ -564,10 +569,18 @@ async fn tick_loop(hub: Shared) {
             let (world, participants) = {
                 let room = h.rooms.get_mut(&room_id).unwrap();
                 room.world.step(&room.inputs);
-                (
-                    room.world.clone(),
-                    room.world.players.keys().copied().collect::<Vec<_>>(),
-                )
+                room.pending_events
+                    .extend(room.world.events.iter().cloned());
+                let mut snapshot = room.world.clone();
+                snapshot.events = std::mem::take(&mut room.pending_events);
+                let participants = room.world.players.keys().copied().collect::<Vec<_>>();
+                if snapshot.tick % 3 != 0 {
+                    // Not a snapshot tick: put the events back and wait for the next one.
+                    room.pending_events = snapshot.events;
+                    (room.world.clone(), participants)
+                } else {
+                    (snapshot, participants)
+                }
             };
             if world.tick % 3 == 0 {
                 for id in participants {
@@ -575,7 +588,7 @@ async fn tick_loop(hub: Shared) {
                         id,
                         &ServerMessage::Snapshot {
                             room: room_id,
-                            world: world.clone(),
+                            world: Box::new(world.clone()),
                         },
                     );
                 }

@@ -1,7 +1,9 @@
 use super::{CollisionMask, CollisionWorld, SweepHit};
 use crate::Vec2;
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum BodyRegion {
     Head,
     Chest,
@@ -128,6 +130,19 @@ impl BodyShape {
 
     pub fn parts(&self) -> impl Iterator<Item = &BodyPart> {
         self.parts.iter()
+    }
+
+    /// Which part covers a world point, falling back to the nearest part when none contains it.
+    pub fn region_at(&self, origin: Vec2, point: Vec2) -> BodyRegion {
+        let distance = |part: &BodyPart| {
+            let dx = point.x - (origin.x + part.offset.x);
+            let dy = point.y - (origin.y + part.offset.y);
+            (dx * dx + dy * dy).sqrt() - part.radius
+        };
+        self.parts
+            .iter()
+            .min_by(|left, right| distance(left).total_cmp(&distance(right)))
+            .map_or(BodyRegion::Chest, |part| part.region)
     }
 
     /// The head part of this pose, falling back to the first part for single-circle shapes.

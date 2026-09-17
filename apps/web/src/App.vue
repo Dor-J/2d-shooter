@@ -5,6 +5,7 @@ import MobileControls from './MobileControls.vue'
 import ControlsSettings from './ControlsSettings.vue'
 import { InputSystem } from './input'
 import { ProfileStore } from './input/profiles'
+import { KillFeed, respawnCountdown, damageArrowAngle, type KillFeedEntry, type FeedLine } from './hud/feed'
 import type { InterfaceEvent } from './input'
 import type { Action } from './input/actions'
 
@@ -34,6 +35,9 @@ const selectedWeapon = ref(0)
 const scoreboardVisible = ref(false)
 const scoreboardOffset = ref(0)
 const SCOREBOARD_WINDOW = 8
+const feedLines = ref<FeedLine[]>([])
+const killFeed = new KillFeed()
+let feedTimer = 0
 
 const inputSystem = new InputSystem()
 const profileStore = new ProfileStore(localStorage)
@@ -44,6 +48,19 @@ let game: GameClient | null = null
 let reconnectTimer = 0
 let shouldReconnect = false
 const me = computed(() => world.value?.players[playerId.value])
+const dead = computed(() => (me.value?.hp ?? 100) <= 0)
+const respawnIn = computed(() => respawnCountdown(me.value?.respawn ?? 0))
+const damageAngle = computed(() => damageArrowAngle(me.value?.last_damage_direction ?? { x: 0, y: 0 }))
+function playerName(id: number) {
+  return world.value?.players[id]?.name ?? `Player ${id}`
+}
+function refreshFeed() {
+  feedLines.value = [...killFeed.visible(performance.now())]
+}
+function recordKills(entries: KillFeedEntry[]) {
+  killFeed.push(entries, playerName, performance.now())
+  refreshFeed()
+}
 const scoreboard = computed(() => Object.values(world.value?.players || {}).sort((a, b) => b.kills - a.kills))
 const scoreboardPage = computed(() => scoreboard.value.slice(scoreboardOffset.value, scoreboardOffset.value + SCOREBOARD_WINDOW))
 const endpoint = (import.meta.env.VITE_WS_URL as string | undefined) || `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/ws`
@@ -54,7 +71,7 @@ function connect() {
   localStorage.setItem('arena-name', name.value.trim())
   shouldReconnect = true; status.value = 'Connecting'; error.value = ''
   socket = new WebSocket(endpoint)
-  socket.onopen = () => send({ type: 'hello', version: 6, name: name.value.trim(), resume: sessionStorage.getItem('arena-token') })
+  socket.onopen = () => send({ type: 'hello', version: 7, name: name.value.trim(), resume: sessionStorage.getItem('arena-token') })
   socket.onmessage = async event => {
     let message: any
     try { message = JSON.parse(event.data) } catch { return }
@@ -71,7 +88,7 @@ function connect() {
   socket.onclose = () => { status.value = 'Disconnected'; roomId.value = null; world.value = null; game?.destroy(); game = null; if (shouldReconnect) reconnectTimer = window.setTimeout(connect, 2000) }
   socket.onerror = () => { error.value = 'Connection failed. Is the server running?' }
 }
-function disconnect() { shouldReconnect = false; clearTimeout(reconnectTimer); socket?.close(); socket = null; game?.destroy(); game = null; roomId.value = null; world.value = null; status.value = 'Disconnected' }
+function disconnect() { shouldReconnect = false; clearTimeout(reconnectTimer); clearInterval(feedTimer); socket?.close(); socket = null; game?.destroy(); game = null; roomId.value = null; world.value = null; status.value = 'Disconnected'; killFeed.clear(); feedLines.value = [] }
 
 function handleInterfaceEvent(event: InterfaceEvent) {
   if (event.type === 'chat') { chatScope.value = event.scope; openChat() }
@@ -86,6 +103,9 @@ function mountGame() {
     game.localId = playerId.value
     game.onInterfaceEvent = handleInterfaceEvent
     game.onUiChange = ui => { selectedWeapon.value = ui.weapon; scoreboardVisible.value = ui.scoreboardVisible; scoreboardOffset.value = ui.scoreboardOffset }
+    game.onKills = recordKills
+    clearInterval(feedTimer)
+    feedTimer = window.setInterval(refreshFeed, 500)
     void game.loadWasm()
   } catch (e) { error.value = e instanceof Error ? e.message : 'Game cannot start' }
 }
@@ -132,7 +152,7 @@ function toggleControls() {
   else inputSystem.resume()
 }
 onMounted(() => { inputSystem.ui.setScoreboardExtent(0, SCOREBOARD_WINDOW) })
-onBeforeUnmount(disconnect)
+onBeforeUnmount(() => { clearInterval(feedTimer); disconnect() })
 </script>
 
 <template>
@@ -160,7 +180,14 @@ onBeforeUnmount(disconnect)
       <div class="rooms"><div v-for="room in rooms" :key="room.id" class="room"><div><strong>{{ room.name }}</strong><span>{{ room.map }} · {{ room.mode === 'team' ? 'Team deathmatch' : 'Deathmatch' }} · {{ room.players }}/{{ room.capacity }} players</span></div><button :disabled="room.players >= room.capacity" @click="join(room.id)">Join</button></div></div>
       <div class="create"><h2>Create a room</h2><p>Private rooms are hidden from the browser. Share their invite code with friends.</p><input v-model="newRoom" maxlength="24" aria-label="Room name" @focus="suspendGameplayInput" @blur="resumeGameplayInput"/><select v-model="mode" aria-label="Game mode"><option value="deathmatch">Deathmatch</option><option value="team">Team deathmatch</option></select><select v-model="selectedMap" aria-label="Map selection"><option v-for="map in maps.filter(map => map.mode === 'deathmatch')" :key="map.name" :value="map.name">{{ map.name }}</option></select><div class="map-preview" role="img" :aria-label="`Preview of ${selectedMap}`"><strong>{{ selectedMap }}</strong><span>Original compatible layout</span></div><select v-model="visibility" aria-label="Room visibility"><option value="private">Private · code only</option><option value="public">Public · listed</option></select><button @click="createRoom">Create & join</button></div>
     </main>
-    <main v-else class="match"><div class="match-head"><div><strong>{{ activeRoom?.name || rooms.find(r => r.id === roomId)?.name || 'Arena' }}</strong><span>{{ activeRoom?.public ? 'Public room' : 'Private room' }} · {{ world?.mode === 'team' ? 'Team deathmatch' : 'Deathmatch' }}</span></div><button class="invite-chip" :aria-label="`Copy invite code ${activeRoom?.code}`" @click="copyInviteCode"><small>INVITE CODE</small><b>{{ activeRoom?.code }}</b><span>COPY</span></button><div class="match-actions"><button v-if="mobile" class="outline" @click="toggleInfo">{{ showInfo ? "Close panel" : "Score / chat" }}</button><button class="outline" @click="leave">Leave match</button></div></div><div class="game-wrap"><canvas ref="canvas" aria-label="Game arena"></canvas><div class="hud"><div class="stat"><small>HEALTH</small><strong>{{ me?.hp ?? 100 }}</strong></div><div class="stat"><small>JET FUEL</small><strong>{{ Math.round((me?.fuel ?? 1) * 100) }}%</strong></div><div class="stat"><small>AMMO / GRENADES</small><strong>{{ me?.ammo ?? 0 }} / {{ me?.grenades ?? 0 }}{{ me?.reload_timer ? " · RELOADING" : "" }}</strong></div><div class="stat"><small>KILLS / DEATHS</small><strong>{{ me?.kills ?? 0 }} / {{ me?.deaths ?? 0 }}</strong></div></div>
+    <main v-else class="match"><div class="match-head"><div><strong>{{ activeRoom?.name || rooms.find(r => r.id === roomId)?.name || 'Arena' }}</strong><span>{{ activeRoom?.public ? 'Public room' : 'Private room' }} · {{ world?.mode === 'team' ? 'Team deathmatch' : 'Deathmatch' }}</span></div><button class="invite-chip" :aria-label="`Copy invite code ${activeRoom?.code}`" @click="copyInviteCode"><small>INVITE CODE</small><b>{{ activeRoom?.code }}</b><span>COPY</span></button><div class="match-actions"><button v-if="mobile" class="outline" @click="toggleInfo">{{ showInfo ? "Close panel" : "Score / chat" }}</button><button class="outline" @click="leave">Leave match</button></div></div><div class="game-wrap"><canvas ref="canvas" aria-label="Game arena"></canvas><div class="hud"><div class="stat"><small>HEALTH</small><strong>{{ me?.hp ?? 100 }}</strong></div><div class="stat"><small>JET FUEL</small><strong>{{ Math.round((me?.fuel ?? 1) * 100) }}%</strong></div><div class="stat"><small>AMMO / GRENADES</small><strong>{{ me?.ammo ?? 0 }} / {{ me?.grenades ?? 0 }}{{ me?.reload_timer ? " · RELOADING" : "" }}</strong></div><div class="stat"><small>KILLS / DEATHS</small><strong>{{ me?.kills ?? 0 }} / {{ me?.deaths ?? 0 }}</strong></div><div v-if="(me?.armor ?? 0) > 0" class="stat"><small>ARMOR</small><strong>{{ me?.armor }}</strong></div></div>
+      <div v-if="feedLines.length" class="kill-feed" role="log" aria-label="Kill feed"><p v-for="line in feedLines" :key="line.id" :class="line.tone">{{ line.text }}</p></div>
+      <div v-if="damageAngle !== null && !dead" class="damage-arrow" aria-hidden="true" :style="{ transform: `rotate(${damageAngle}deg)` }"></div>
+      <div v-if="dead" class="respawn-panel" role="status">
+        <p class="respawn-count">RESPAWN IN <b>{{ respawnIn || '0' }}</b></p>
+        <p class="respawn-hint">Choose the weapon you come back with</p>
+        <div class="respawn-weapons"><button v-for="(weapon, index) in weaponNames" :key="weapon" :class="{ selected: selectedWeapon === index }" @click="pickWeapon(index)">{{ index + 1 }} · {{ weapon }}</button></div>
+      </div>
       <div v-if="scoreboardVisible" class="scoreboard-overlay" role="status" aria-label="Scoreboard"><h2>Scoreboard</h2><div v-for="p in scoreboardPage" :key="p.id" class="row"><span>{{ p.name }}{{ p.id === playerId ? ' (you)' : '' }}</span><b>{{ p.kills }} / {{ p.deaths }}</b></div><small v-if="scoreboard.length > SCOREBOARD_WINDOW">Showing {{ scoreboardOffset + 1 }}–{{ Math.min(scoreboard.length, scoreboardOffset + SCOREBOARD_WINDOW) }} of {{ scoreboard.length }} · scroll with the wheel or Page Up/Down</small></div>
       <MobileControls v-if="mobile && !showInfo" @move="moveTouch" @aim="aimTouch" @action="actionTouch" @cancel="cancelTouch" /></div><div v-if="mobile" class="mobile-weapon"><button aria-label="Previous weapon" @click="changeWeapon(-1)">−</button><span>{{ weaponNames[selectedWeapon] }}</span><button aria-label="Next weapon" @click="changeWeapon(1)">+</button></div><div class="weapons"><button v-for="(weapon, index) in weaponNames" :key="weapon" :class="{ selected: selectedWeapon === index }" @click="pickWeapon(index)">{{ index + 1 }} · {{ weapon }}</button></div><div class="match-bottom" :class="{ open: showInfo }"><section class="scoreboard"><h2>Scoreboard</h2><div v-for="p in scoreboard" :key="p.id"><span>{{ p.name }}{{ p.id === playerId ? ' (you)' : '' }}</span><b>{{ p.kills }} / {{ p.deaths }}</b></div></section><section class="chat"><h2>Match chat</h2><div class="chat-log"><p v-for="(line,index) in chat" :key="index"><b>{{ line.name }}:</b> {{ line.text }}</p></div><form @submit.prevent="sendChat"><input ref="chatField" v-model="chatDraft" maxlength="120" :placeholder="chatScope === 'team' ? 'Team chat is not available on this server yet' : 'Say something…'" aria-label="Chat message" @focus="suspendGameplayInput" @blur="resumeGameplayInput"/><button :disabled="chatScope === 'team'">Send</button><button v-if="chatScope === 'team'" type="button" class="outline" @click="chatScope = 'all'">Switch to all</button></form></section></div><p class="controls">Move A/D · Jump Space · Crouch S · Prone X · Roll C · Jet Shift · Reload R · Grenade E or right mouse · Scoreboard Tab · Weapons 1–0 · Rebind everything under Controls</p></main>
     <div v-if="showControls" class="controls-overlay" @click.self="toggleControls">

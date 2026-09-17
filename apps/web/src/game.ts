@@ -6,14 +6,23 @@ import type { InputFrame, InterfaceEvent } from './input'
 import { captureCanvas, downloadBlob } from './input/screenshot'
 import { aimFromStick, STICK_AIM_RANGE } from './input/touch'
 import { aimFromPointer } from './input/mouse'
+import { ParticleField } from './render/particles'
+import type { KillFeedEntry } from './hud/feed'
 import type { Action } from './input/actions'
 
 export type Vec2 = { x: number; y: number }
 export type Input = InputFrame
-export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: number; fuel: number; kills: number; deaths: number; team: number; grounded: boolean; cooldown: number; respawn: number; last_seq: number; weapon: number; ammo: number; reload_timer: number; startup: number; magazines: number[]; grenades: number; grenade_cooldown: number; grenade_held: boolean }
+export type Player = { id: number; name: string; pos: Vec2; vel: Vec2; hp: number; fuel: number; kills: number; deaths: number; team: number; grounded: boolean; cooldown: number; respawn: number; last_seq: number; weapon: number; ammo: number; reload_timer: number; startup: number; magazines: number[]; grenades: number; grenade_cooldown: number; grenade_held: boolean; armor: number; assists: number; spawn_protection: number; bleed: unknown; last_damage_direction: Vec2 }
+export type RagdollSegment = { region: string; pos: Vec2; vel: Vec2; radius: number; grounded: boolean }
+export type Ragdoll = { player: number; team: number; segments: RagdollSegment[]; ticks_left: number; gibbed: boolean }
+export type WorldEvent =
+  | { Blood: { target: number; position: Vec2; direction: Vec2; amount: number } }
+  | { Gibs: { target: number; position: Vec2; velocity: Vec2 } }
+  | { KillFeed: KillFeedEntry }
+  | Record<string, unknown>
 export const weaponNames = ['Desert Eagles','HK MP5','AK-74','Steyr AUG','SPAS-12','Ruger 77','M79','Barrett M82A1','FN Minimi','XM214 Minigun','USSOCOM','Combat Knife','Chainsaw','M72 LAW']
 export type Projectile = { id: number; pos: Vec2; owner: number }
-export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; map_polygons: MapPolygon[]; scores: number[]; events: unknown[] }
+export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; map_polygons: MapPolygon[]; ragdolls: Ragdoll[]; scores: number[]; events: WorldEvent[] }
 export type Room = { id: number; name: string; mode: string; players: number; capacity: number; map: string }
 type Predict = (player: string, input: string) => string
 declare global { interface Window { __arenaWasmReady?: Promise<Predict | null> } }
@@ -42,7 +51,9 @@ export class GameClient {
   predict: Predict | null = null
   send: (input: Input) => void
   input = new InputSystem()
+  particles = new ParticleField()
   onInterfaceEvent: (event: InterfaceEvent) => void = () => {}
+  onKills: (entries: KillFeedEntry[]) => void = () => {}
   onUiChange: (ui: { weapon: number; scoreboardVisible: boolean; scoreboardOffset: number }) => void = () => {}
   uiSignature = ''
   aim: Vec2 = { x: 600, y: 350 }
@@ -119,7 +130,24 @@ export class GameClient {
   resumeInput() { this.input.resume() }
   resize() { const dpr = Math.min(window.devicePixelRatio || 1, 2); this.canvas.width = Math.max(1, Math.round(this.canvas.clientWidth * dpr)); this.canvas.height = Math.max(1, Math.round(this.canvas.clientHeight * dpr)); this.gl.viewport(0, 0, this.canvas.width, this.canvas.height) }
   updateView() { const player = this.predicted ?? this.world?.players[this.localId]; const rect = this.canvas.getBoundingClientRect(); this.view = viewForCanvas(rect.width, rect.height, player?.pos.x ?? 600, player?.pos.y ?? 350); this.canvas.style.backgroundSize = `${1200 / this.view.width * 100}% ${700 / this.view.height * 100}%`; this.canvas.style.backgroundPosition = `${this.view.width >= 1200 ? 50 : this.view.x / (1200 - this.view.width) * 100}% ${this.view.height >= 700 ? 50 : this.view.y / (700 - this.view.height) * 100}%` }
-  setSnapshot(world: World) { this.previousWorld = this.world; this.world = world; this.snapshotAt = performance.now(); this.predicted = world.players[this.localId] ? structuredClone(world.players[this.localId]) : null }
+  setSnapshot(world: World) {
+    this.previousWorld = this.world; this.world = world; this.snapshotAt = performance.now()
+    this.predicted = world.players[this.localId] ? structuredClone(world.players[this.localId]) : null
+    this.consumeEvents(world)
+  }
+  /** Turns authoritative damage events into cosmetics; nothing here is sent back to the server. */
+  consumeEvents(world: World) {
+    const kills: KillFeedEntry[] = []
+    for (const event of world.events ?? []) {
+      const blood = (event as { Blood?: { target: number; position: Vec2; direction: Vec2; amount: number } }).Blood
+      if (blood) this.particles.emitBlood(blood.position, blood.direction, blood.amount, world.tick * 31 + blood.target)
+      const gibs = (event as { Gibs?: { target: number; position: Vec2; velocity: Vec2 } }).Gibs
+      if (gibs) this.particles.emitGibs(gibs.position, gibs.velocity, world.tick * 17 + gibs.target)
+      const feed = (event as { KillFeed?: KillFeedEntry }).KillFeed
+      if (feed) kills.push(feed)
+    }
+    if (kills.length > 0) this.onKills(kills)
+  }
   loop = (now: number) => { this.accumulator += Math.min(now - this.last, 100); this.last = now; while (this.accumulator >= 1000 / 60) { this.tick(); this.accumulator -= 1000 / 60 } this.render(); this.frame = requestAnimationFrame(this.loop) }
   activeGamepad() {
     const pads = typeof navigator !== 'undefined' && navigator.getGamepads ? navigator.getGamepads() : []
@@ -182,6 +210,20 @@ export class GameClient {
     gl.uniform2f(this.resolution,this.view.width,this.view.height); gl.uniform2f(this.camera,this.view.x,this.view.y)
     if (!this.world) return
     for (const polygon of this.world.map_polygons ?? []) this.polygon(polygon)
+    this.particles.step(1 / 60)
+    for (const ragdoll of this.world.ragdolls ?? []) {
+      const fade = Math.min(1, ragdoll.ticks_left / 60)
+      const tint = ragdoll.team === 1 ? [.42,.53,.72] : ragdoll.team === 2 ? [.72,.44,.42] : [.62,.58,.50]
+      for (const segment of ragdoll.segments) {
+        const size = segment.radius * 2
+        this.rect(segment.pos.x - segment.radius, segment.pos.y - segment.radius, size, size, [tint[0],tint[1],tint[2],.85 * fade])
+      }
+    }
+    for (const particle of this.particles.particles) {
+      const fade = Math.max(0, particle.life / particle.maxLife)
+      const color = particle.kind === 'gib' ? [.55,.10,.10,fade] : [.78,.12,.14,fade]
+      this.rect(particle.x - particle.size / 2, particle.y - particle.size / 2, particle.size, particle.size, color)
+    }
     const blend = Math.min(1,(performance.now()-this.snapshotAt)/50)
     for (const projectile of this.world.projectiles) {
       this.rect(projectile.pos.x-7,projectile.pos.y-2,14,4,[1,.50,.14,.32])

@@ -35,7 +35,7 @@ Legend:
 - **Present:** Only-player and only-bullet polygon types. <!-- G01-CHARACTER-MOVEMENT-023 -->
 - **Present:** Player collision with vertical and angled geometry. <!-- G01-CHARACTER-MOVEMENT-024 -->
 - **Present:** Proper head/body/legs collision volumes. <!-- G01-CHARACTER-MOVEMENT-025 -->
-- **Missing:** Character-body ragdoll physics. <!-- G01-CHARACTER-MOVEMENT-026 -->
+- **Present:** Character-body ragdoll physics. <!-- G01-CHARACTER-MOVEMENT-026 -->
 - **Present:** Corpses interacting with terrain. <!-- G01-CHARACTER-MOVEMENT-027 -->
 - **Present:** Player-to-player physical interaction. <!-- G01-CHARACTER-MOVEMENT-028 -->
 - **Present:** Fall/impact behavior. <!-- G01-CHARACTER-MOVEMENT-029 -->
@@ -85,7 +85,7 @@ The current implementation uses a simple rectangle/circle physics model and five
 - Pick up flags and kits. <!-- G02-INPUT-AND-020 -->
 - Flag throw using jump+crouch. <!-- G02-INPUT-AND-021 -->
 - Dedicated configurable flag-throw key. <!-- G02-INPUT-AND-022 -->
-- Respawn weapon-selection menu. <!-- G02-INPUT-AND-023 -->
+- **Present:** Respawn weapon-selection menu. <!-- G02-INPUT-AND-023 -->
 - **Present:** Separate primary and secondary selection controls. <!-- G02-INPUT-AND-024 -->
 - Team chat. <!-- G02-INPUT-AND-025 -->
 - Command console. <!-- G02-INPUT-AND-026 -->
@@ -469,28 +469,28 @@ Supporting systems still needed:
 - **Present:** Basic 100 HP. <!-- G15-HEALTH-ARMOR-001 -->
 - **Present:** Death count. <!-- G15-HEALTH-ARMOR-002 -->
 - **Present:** Automatic respawn. <!-- G15-HEALTH-ARMOR-003 -->
-- **Missing:** Body-part damage. <!-- G15-HEALTH-ARMOR-004 -->
+- **Present:** Body-part damage. <!-- G15-HEALTH-ARMOR-004 -->
 - **Missing:** Bulletproof vest/armor. <!-- G15-HEALTH-ARMOR-005 -->
-- **Missing:** Bleeding. <!-- G15-HEALTH-ARMOR-006 -->
-- **Missing:** Blood particles. <!-- G15-HEALTH-ARMOR-007 -->
+- **Present:** Bleeding. <!-- G15-HEALTH-ARMOR-006 -->
+- **Present:** Blood particles. <!-- G15-HEALTH-ARMOR-007 -->
 - **Missing:** Blood remaining on the character. <!-- G15-HEALTH-ARMOR-008 -->
-- **Missing:** Gore/gibs. <!-- G15-HEALTH-ARMOR-009 -->
-- **Missing:** Ragdoll corpses. <!-- G15-HEALTH-ARMOR-010 -->
-- **Missing:** Corpse persistence. <!-- G15-HEALTH-ARMOR-011 -->
-- **Missing:** Death causes. <!-- G15-HEALTH-ARMOR-012 -->
-- **Missing:** Kill feed. <!-- G15-HEALTH-ARMOR-013 -->
-- **Missing:** Headshot messaging/effects. <!-- G15-HEALTH-ARMOR-014 -->
-- **Missing:** Multi-kill messages. <!-- G15-HEALTH-ARMOR-015 -->
-- **Missing:** Self-kill messages. <!-- G15-HEALTH-ARMOR-016 -->
-- **Missing:** Teamkill messages. <!-- G15-HEALTH-ARMOR-017 -->
-- **Missing:** Spawn protection if applicable. <!-- G15-HEALTH-ARMOR-018 -->
-- **Missing:** Configurable respawn time. <!-- G15-HEALTH-ARMOR-019 -->
-- **Missing:** Respawn countdown HUD. <!-- G15-HEALTH-ARMOR-020 -->
-- **Missing:** Weapon selection while dead. <!-- G15-HEALTH-ARMOR-021 -->
-- **Missing:** Proper mode/team/map spawn selection. <!-- G15-HEALTH-ARMOR-022 -->
-- **Missing:** Kill attribution after delayed damage. <!-- G15-HEALTH-ARMOR-023 -->
-- **Missing:** Assist tracking if desired. <!-- G15-HEALTH-ARMOR-024 -->
-- **Missing:** Damage direction feedback. <!-- G15-HEALTH-ARMOR-025 -->
+- **Present:** Gore/gibs. <!-- G15-HEALTH-ARMOR-009 -->
+- **Present:** Ragdoll corpses. <!-- G15-HEALTH-ARMOR-010 -->
+- **Present:** Corpse persistence. <!-- G15-HEALTH-ARMOR-011 -->
+- **Present:** Death causes. <!-- G15-HEALTH-ARMOR-012 -->
+- **Present:** Kill feed. <!-- G15-HEALTH-ARMOR-013 -->
+- **Present:** Headshot messaging/effects. <!-- G15-HEALTH-ARMOR-014 -->
+- **Present:** Multi-kill messages. <!-- G15-HEALTH-ARMOR-015 -->
+- **Present:** Self-kill messages. <!-- G15-HEALTH-ARMOR-016 -->
+- **Present:** Teamkill messages. <!-- G15-HEALTH-ARMOR-017 -->
+- **Present:** Spawn protection if applicable. <!-- G15-HEALTH-ARMOR-018 -->
+- **Present:** Configurable respawn time. <!-- G15-HEALTH-ARMOR-019 -->
+- **Present:** Respawn countdown HUD. <!-- G15-HEALTH-ARMOR-020 -->
+- **Present:** Weapon selection while dead. <!-- G15-HEALTH-ARMOR-021 -->
+- **Present:** Proper mode/team/map spawn selection. <!-- G15-HEALTH-ARMOR-022 -->
+- **Present:** Kill attribution after delayed damage. <!-- G15-HEALTH-ARMOR-023 -->
+- **Present:** Assist tracking if desired. <!-- G15-HEALTH-ARMOR-024 -->
+- **Present:** Damage direction feedback. <!-- G15-HEALTH-ARMOR-025 -->
 - **Missing:** Explosion deafness/whistling effect. <!-- G15-HEALTH-ARMOR-026 -->
 
 ## 16. Maps and terrain engine

@@ -232,7 +232,7 @@
       "feature": "Character-body ragdoll physics.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-026"
+        "rust:damage_fixtures:ragdoll"
       ]
     },
     {
@@ -592,7 +592,7 @@
       "feature": "Respawn weapon-selection menu.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-023"
+        "rust:damage_fixtures:weapon-choice"
       ]
     },
     {
@@ -2104,7 +2104,7 @@
       "feature": "Configurable respawn time.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-035"
+        "rust:damage_fixtures:respawn"
       ]
     },
     {
@@ -3238,7 +3238,7 @@
       "feature": "Body-part damage.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-004"
+        "rust:damage_fixtures:regions"
       ]
     },
     {
@@ -3256,7 +3256,7 @@
       "feature": "Bleeding.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-006"
+        "rust:damage_fixtures:bleeding"
       ]
     },
     {
@@ -3265,7 +3265,7 @@
       "feature": "Blood particles.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-007"
+        "web:render:particles"
       ]
     },
     {
@@ -3283,7 +3283,7 @@
       "feature": "Gore/gibs.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-009"
+        "web:render:particles"
       ]
     },
     {
@@ -3292,7 +3292,7 @@
       "feature": "Ragdoll corpses.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-010"
+        "rust:damage_fixtures:ragdoll"
       ]
     },
     {
@@ -3301,7 +3301,7 @@
       "feature": "Corpse persistence.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-011"
+        "rust:damage_fixtures:ragdoll"
       ]
     },
     {
@@ -3310,7 +3310,7 @@
       "feature": "Death causes.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-012"
+        "rust:damage_fixtures:death-causes"
       ]
     },
     {
@@ -3319,7 +3319,7 @@
       "feature": "Kill feed.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-013"
+        "web:hud:kill-feed"
       ]
     },
     {
@@ -3328,7 +3328,7 @@
       "feature": "Headshot messaging/effects.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-014"
+        "web:hud:kill-feed"
       ]
     },
     {
@@ -3337,7 +3337,7 @@
       "feature": "Multi-kill messages.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-015"
+        "web:hud:kill-feed"
       ]
     },
     {
@@ -3346,7 +3346,7 @@
       "feature": "Self-kill messages.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-016"
+        "web:hud:kill-feed"
       ]
     },
     {
@@ -3355,7 +3355,7 @@
       "feature": "Teamkill messages.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-017"
+        "web:hud:kill-feed"
       ]
     },
     {
@@ -3364,7 +3364,7 @@
       "feature": "Spawn protection if applicable.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-018"
+        "rust:damage_fixtures:spawn-protection"
       ]
     },
     {
@@ -3373,7 +3373,7 @@
       "feature": "Configurable respawn time.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-019"
+        "rust:damage_fixtures:respawn"
       ]
     },
     {
@@ -3382,7 +3382,7 @@
       "feature": "Respawn countdown HUD.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-020"
+        "web:hud:respawn"
       ]
     },
     {
@@ -3391,7 +3391,7 @@
       "feature": "Weapon selection while dead.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-021"
+        "rust:damage_fixtures:weapon-choice"
       ]
     },
     {
@@ -3400,7 +3400,7 @@
       "feature": "Proper mode/team/map spawn selection.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-022"
+        "rust:damage_fixtures:spawn-selection"
       ]
     },
     {
@@ -3409,7 +3409,7 @@
       "feature": "Kill attribution after delayed damage.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-023"
+        "rust:damage_fixtures:attribution"
       ]
     },
     {
@@ -3418,7 +3418,7 @@
       "feature": "Assist tracking if desired.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-024"
+        "rust:damage_fixtures:attribution"
       ]
     },
     {
@@ -3427,7 +3427,7 @@
       "feature": "Damage direction feedback.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-025"
+        "web:hud:damage-arrow"
       ]
     },
     {
@@ -5164,7 +5164,7 @@
       "feature": "Kill feed.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-029"
+        "web:hud:kill-feed"
       ]
     },
     {
@@ -9947,6 +9947,7 @@
     "rust:map_validation:filters",
     "rust:collision_fixtures:geometry",
     "rust:collision_fixtures:body-shape",
+    "rust:damage_fixtures:ragdoll",
     "rust:game_core:corpse-terrain",
     "web:smoke:aim-input",
     "rust:game_core::tests::fire_is_rate_limited",
@@ -9957,6 +9958,7 @@
     "web:smoke:stance",
     "web:input:backflip-combo",
     "web:smoke:reload",
+    "rust:damage_fixtures:weapon-choice",
     "web:input:scoreboard",
     "web:input:screenshot",
     "web:input:minimize",
@@ -9970,6 +9972,17 @@
     "rust:game_core::tests::m79_explosion_damages_nearby_enemy_not_distant_enemy",
     "rust:game_core::tests::self_explosion_is_not_credited_as_a_kill",
     "rust:game_core::tests::deterministic_replay",
+    "rust:damage_fixtures:regions",
+    "rust:damage_fixtures:bleeding",
+    "web:render:particles",
+    "rust:damage_fixtures:death-causes",
+    "web:hud:kill-feed",
+    "rust:damage_fixtures:spawn-protection",
+    "rust:damage_fixtures:respawn",
+    "web:hud:respawn",
+    "rust:damage_fixtures:spawn-selection",
+    "rust:damage_fixtures:attribution",
+    "web:hud:damage-arrow",
     "rust:content::pms",
     "rust:content::pms-validation",
     "web:map-render:coordinates",

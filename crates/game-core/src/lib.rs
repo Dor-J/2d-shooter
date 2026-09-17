@@ -8,8 +8,11 @@ mod fixtures;
 mod map;
 mod weapons;
 pub use character::{
-    advance_character, apply_impulse, resolve_player_contact, CharacterState, Direction, Emote,
-    Impulse, ImpulseSource, ImpulseTarget, MovementConfig, RollSource,
+    absorb, advance_character, apply_impulse, assists, fallback_spawn, multi_kill_label,
+    record_attribution, region_multiplier, resolve_player_contact, select_spawn, Absorbed,
+    Attribution, Bleed, CharacterState, DamageCause, DamageConfig, DamageEvent, DeathCause,
+    Direction, Emote, Impulse, ImpulseSource, ImpulseTarget, KillFeedEntry, MovementConfig,
+    MultiKill, Ragdoll, RagdollSegment, RespawnConfig, RollSource, MAX_ATTRIBUTIONS,
 };
 pub use collision::{
     resolve_material_velocity, Aabb, BodyPart, BodyRegion, BodyShape, CollisionMask,
@@ -58,7 +61,7 @@ fn default_collision_world() -> CollisionWorld {
     CollisionWorld::new(polygons)
 }
 
-#[derive(Clone, Copy, Default, Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Vec2 {
     pub x: f32,
     pub y: f32,
@@ -138,6 +141,28 @@ pub struct Player {
     pub grenades: u8,
     pub grenade_cooldown: u16,
     pub grenade_held: bool,
+    #[serde(default)]
+    pub armor: i32,
+    #[serde(default)]
+    pub bleed: Option<Bleed>,
+    #[serde(default)]
+    pub attackers: Vec<Attribution>,
+    #[serde(default)]
+    pub spawn_protection: u16,
+    #[serde(default)]
+    pub assists: u32,
+    #[serde(default)]
+    pub teamkills: u32,
+    #[serde(default)]
+    pub suicides: u32,
+    #[serde(default)]
+    pub headshots: u32,
+    #[serde(default)]
+    pub multi_kill: MultiKill,
+    #[serde(default)]
+    pub last_death: Option<DeathCause>,
+    #[serde(default)]
+    pub last_damage_direction: Vec2,
 }
 impl Player {
     pub fn new(id: u32, name: String, team: u8) -> Self {
@@ -170,6 +195,17 @@ impl Player {
             grenades: 2,
             grenade_cooldown: 0,
             grenade_held: false,
+            armor: 0,
+            bleed: None,
+            attackers: Vec::new(),
+            spawn_protection: 0,
+            assists: 0,
+            teamkills: 0,
+            suicides: 0,
+            headshots: 0,
+            multi_kill: MultiKill::default(),
+            last_death: None,
+            last_damage_direction: Vec2::default(),
         }
     }
 }
@@ -229,10 +265,42 @@ pub enum ProjectileKind {
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Event {
-    Shot { player: u32 },
-    Hit { target: u32, hp: i32 },
-    Kill { killer: u32, target: u32 },
-    Respawn { player: u32 },
+    Shot {
+        player: u32,
+    },
+    Hit {
+        target: u32,
+        hp: i32,
+    },
+    Kill {
+        killer: u32,
+        target: u32,
+    },
+    Respawn {
+        player: u32,
+    },
+    /// Authoritative damage, for the damage-direction indicator and hit feedback.
+    Damage {
+        target: u32,
+        attacker: Option<u32>,
+        amount: i32,
+        region: BodyRegion,
+        cause: DamageCause,
+        direction: Vec2,
+    },
+    KillFeed(KillFeedEntry),
+    /// Presentation only: derived from authoritative damage, never read back by the simulation.
+    Blood {
+        target: u32,
+        position: Vec2,
+        direction: Vec2,
+        amount: i32,
+    },
+    Gibs {
+        target: u32,
+        position: Vec2,
+        velocity: Vec2,
+    },
 }
 
 #[derive(Clone, Copy)]
@@ -241,6 +309,8 @@ struct PendingHit {
     target: u32,
     damage: i32,
     impulse: Impulse,
+    region: BodyRegion,
+    cause: DamageCause,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct World {
@@ -254,10 +324,16 @@ pub struct World {
     pub map_polygons: Vec<CollisionPolygon>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub map_spawns: Vec<MapSpawn>,
+    #[serde(default)]
+    pub ragdolls: Vec<Ragdoll>,
     pub scores: [u32; 2],
     pub events: Vec<Event>,
     #[serde(default)]
     pub movement: MovementConfig,
+    #[serde(default)]
+    pub damage: DamageConfig,
+    #[serde(default)]
+    pub respawn: RespawnConfig,
     #[serde(default)]
     pub rng: SimRng,
     #[serde(default)]
@@ -281,9 +357,12 @@ impl World {
             objects: Vec::new(),
             map_polygons,
             map_spawns: Vec::new(),
+            ragdolls: Vec::new(),
             scores: [0, 0],
             events: Vec::new(),
             movement: MovementConfig::default(),
+            damage: DamageConfig::default(),
+            respawn: RespawnConfig::default(),
             rng: SimRng::default(),
             next_projectile: 1,
             collision,
@@ -331,13 +410,33 @@ impl World {
         self.tick += 1;
         self.events.clear();
         let map_spawns = self.map_spawns.clone();
+        let mode = self.mode.clone();
+        let respawn_config = self.respawn;
+        let damage_config = self.damage;
+        let opponents = self.opponent_positions();
+        // Damage raised inside the player loop is queued and applied afterwards so that every hit
+        // takes the same authoritative path through apply_damage.
+        let mut pending: Vec<DamageEvent> = Vec::new();
+        self.ragdolls
+            .retain_mut(|ragdoll| ragdoll.step(&self.collision));
         for player in self.players.values_mut() {
             if player.hp <= 0 {
+                // A dead player still picks the weapon they will carry back in.
+                if let Some(input) = inputs.get(&player.id) {
+                    player.last_seq = input.seq;
+                    player.weapon = input.weapon.min((WEAPONS.len() - 1) as u8);
+                }
                 if player.respawn > 0 {
                     player.respawn -= 1;
                 } else {
+                    let enemies = opponents.get(&player.id).cloned().unwrap_or_default();
                     player.hp = 100;
-                    player.pos = map_spawn(&map_spawns, player.id, player.team);
+                    player.armor = 0;
+                    player.bleed = None;
+                    player.attackers.clear();
+                    player.last_damage_direction = Vec2::default();
+                    player.spawn_protection = respawn_config.protection_ticks;
+                    player.pos = select_spawn(&map_spawns, &mode, player.team, player.id, &enemies);
                     player.vel = Vec2::default();
                     player.fuel = 1.0;
                     player.magazines = WEAPONS.map(|weapon| weapon.ammo);
@@ -356,6 +455,22 @@ impl World {
                     self.events.push(Event::Respawn { player: player.id });
                 }
                 continue;
+            }
+            player.spawn_protection = player.spawn_protection.saturating_sub(1);
+            if let Some(bleed) = player.bleed.as_mut() {
+                if let Some(amount) = bleed.tick() {
+                    pending.push(DamageEvent {
+                        attacker: bleed.attacker,
+                        target: player.id,
+                        amount,
+                        region: BodyRegion::Chest,
+                        cause: DamageCause::Bleeding,
+                        direction: Vec2::default(),
+                    });
+                }
+                if bleed.finished() {
+                    player.bleed = None;
+                }
             }
             let input = inputs.get(&player.id).copied().unwrap_or_default();
             player.last_seq = input.seq;
@@ -403,30 +518,66 @@ impl World {
                 x: (start.x + player.vel.x * DT).clamp(16.0, WIDTH - 16.0),
                 y: (start.y + player.vel.y * DT).clamp(16.0, HEIGHT - 16.0),
             };
+            let was_grounded = player.grounded;
             player.grounded = false;
-            if let Some(shape_hit) = self.collision.sweep_shape(
+            let contact = self.collision.sweep_shape(
                 start,
                 desired,
                 &character::body::shape_for(player.state),
                 CollisionMask::PLAYER,
-            ) {
+            );
+            let collided = contact.is_some();
+            if let Some(shape_hit) = contact {
                 let hit = shape_hit.hit;
                 player.pos = hit.position;
                 let response = resolve_material_velocity(player.vel, hit.normal, hit.kind);
                 player.vel = response.velocity;
                 player.grounded = hit.normal.y < -0.5;
-                if player.grounded {
-                    player.last_impact = impact_velocity;
-                    if matches!(player.state, CharacterState::Airborne) {
-                        player.state = CharacterState::Standing;
-                    }
+                if player.grounded && matches!(player.state, CharacterState::Airborne) {
+                    player.state = CharacterState::Standing;
                 }
                 if response.deadly {
-                    player.hp = 0;
-                    player.respawn = 120;
+                    pending.push(DamageEvent {
+                        attacker: None,
+                        target: player.id,
+                        amount: player.hp + player.armor + 1,
+                        region: BodyRegion::Chest,
+                        cause: DamageCause::Deadly,
+                        direction: Vec2 { x: 0.0, y: -1.0 },
+                    });
                 }
             } else {
                 player.pos = desired;
+            }
+            // How hard this descent is going. In free flight it simply follows the current
+            // downward speed, so a jet burn genuinely softens the landing; once something is being
+            // hit it keeps the fastest reading, because terrain usually bleeds off a fast fall over
+            // two ticks and the body settles at a speed that no longer describes the fall.
+            if was_grounded && !player.grounded {
+                player.last_impact = 0.0;
+            } else if !was_grounded {
+                player.last_impact = if collided {
+                    player.last_impact.max(impact_velocity)
+                } else {
+                    impact_velocity
+                };
+            }
+            if !was_grounded
+                && player.grounded
+                && player.last_impact > damage_config.fall_damage_speed
+            {
+                let over = player.last_impact - damage_config.fall_damage_speed;
+                let amount = (over * damage_config.fall_damage_per_speed)
+                    .round()
+                    .max(1.0) as i32;
+                pending.push(DamageEvent {
+                    attacker: None,
+                    target: player.id,
+                    amount,
+                    region: BodyRegion::Legs,
+                    cause: DamageCause::Fall,
+                    direction: Vec2 { x: 0.0, y: 1.0 },
+                });
             }
             if input.fire {
                 player.startup = player.startup.saturating_add(1);
@@ -626,9 +777,17 @@ impl World {
                         + bullet.vel.y * bullet.vel.y)
                         .sqrt()
                         .max(1.0);
+                    let target_id = player_hit.unwrap().1;
+                    let region = self
+                        .players
+                        .get(&target_id)
+                        .map_or(BodyRegion::Chest, |target| {
+                            character::body::shape_for(target.state)
+                                .region_at(target.pos, bullet.pos)
+                        });
                     hits.push(PendingHit {
                         killer: bullet.owner,
-                        target: player_hit.unwrap().1,
+                        target: target_id,
                         damage: bullet.damage,
                         impulse: Impulse {
                             velocity: Vec2 {
@@ -637,6 +796,12 @@ impl World {
                             },
                             source: ImpulseSource::Bullet,
                         },
+                        region,
+                        cause: match bullet.kind {
+                            ProjectileKind::Melee => DamageCause::Melee,
+                            ProjectileKind::ShotgunPellet => DamageCause::Pellet,
+                            _ => DamageCause::Bullet,
+                        },
                     });
                 }
                 return false;
@@ -644,40 +809,217 @@ impl World {
             true
         });
         for hit in hits {
-            let killer = hit.killer;
-            let target_id = hit.target;
-            if let Some(target) = self.players.get_mut(&target_id) {
-                if target.hp <= 0 {
+            if let Some(target) = self.players.get_mut(&hit.target) {
+                if target.hp <= 0 || target.spawn_protection > 0 {
                     continue;
                 }
-                target.hp = (target.hp - hit.damage).max(0);
                 apply_impulse(target, hit.impulse);
-                self.events.push(Event::Hit {
-                    target: target_id,
-                    hp: target.hp,
-                });
-                if target.hp == 0 {
-                    self.objects
-                        .push(DynamicBody::new(DynamicBodyKind::Corpse, target.pos, 10.0));
-                    target.deaths += 1;
-                    target.respawn = 120;
-                    if self.mode == "team" && killer != target_id {
-                        if let Some(team) = teams.get(&killer) {
-                            self.scores[(*team - 1) as usize] += 1;
-                        }
-                    }
-                    self.events.push(Event::Kill {
-                        killer,
-                        target: target_id,
-                    });
-                    if killer != target_id {
-                        if let Some(k) = self.players.get_mut(&killer) {
-                            k.kills += 1;
-                        }
-                    }
+            }
+            let direction = hit.impulse.velocity;
+            self.apply_damage(DamageEvent {
+                attacker: Some(hit.killer),
+                target: hit.target,
+                amount: hit.damage,
+                region: hit.region,
+                cause: hit.cause,
+                direction,
+            });
+        }
+        for event in pending {
+            self.apply_damage(event);
+        }
+    }
+
+    /// Living players this one would rather not spawn next to: the other team in team modes and
+    /// everybody else otherwise.
+    fn opponent_positions(&self) -> BTreeMap<u32, Vec<Vec2>> {
+        let team_mode = self.mode == "team";
+        self.players
+            .keys()
+            .map(|&id| {
+                let team = self.players.get(&id).map_or(0, |player| player.team);
+                let positions = self
+                    .players
+                    .values()
+                    .filter(|other| other.id != id && other.hp > 0)
+                    .filter(|other| !team_mode || other.team != team)
+                    .map(|other| other.pos)
+                    .collect();
+                (id, positions)
+            })
+            .collect()
+    }
+
+    /// The single authoritative damage path. Bullets, explosions, melee, falls, bleeding, and
+    /// deadly polygons all arrive here, so armor, attribution, death, and the kill feed can never
+    /// disagree about what happened.
+    pub fn apply_damage(&mut self, event: DamageEvent) {
+        let tick = self.tick;
+        let config = self.damage;
+        let respawn_config = self.respawn;
+        let team_mode = self.mode == "team";
+        let teams: BTreeMap<u32, u8> = self
+            .players
+            .iter()
+            .map(|(&id, player)| (id, player.team))
+            .collect();
+
+        let Some(target) = self.players.get_mut(&event.target) else {
+            return;
+        };
+        if target.hp <= 0 {
+            return;
+        }
+        let self_inflicted = event.attacker == Some(event.target);
+        if target.spawn_protection > 0 && !self_inflicted {
+            return;
+        }
+        let scaled = ((event.amount.max(0) as f32) * region_multiplier(&config, event.region))
+            .round() as i32;
+        if scaled <= 0 {
+            return;
+        }
+        let split = absorb(&config, target.armor, scaled);
+        target.armor = (target.armor - split.armor).max(0);
+        target.hp = (target.hp - split.health).max(0);
+        target.last_damage_direction = event.direction;
+        if let Some(attacker) = event.attacker.filter(|id| *id != event.target) {
+            record_attribution(&mut target.attackers, attacker, tick, split.health);
+        }
+        if event.cause.draws_blood() && split.health >= config.bleed_threshold && target.hp > 0 {
+            target.bleed = Some(Bleed::open(&config, event.attacker));
+        }
+        let hp = target.hp;
+        let position = target.pos;
+        let velocity = target.vel;
+        let target_team = target.team;
+        let attackers = target.attackers.clone();
+        let died = hp == 0;
+        let gibbed = died && split.health >= config.gib_damage;
+        if died {
+            target.deaths += 1;
+            target.respawn = respawn_config.delay_ticks;
+            target.bleed = None;
+            target.state = CharacterState::Dead;
+        }
+
+        self.events.push(Event::Damage {
+            target: event.target,
+            attacker: event.attacker,
+            amount: split.health,
+            region: event.region,
+            cause: event.cause,
+            direction: event.direction,
+        });
+        self.events.push(Event::Hit {
+            target: event.target,
+            hp,
+        });
+        if event.cause.draws_blood() {
+            self.events.push(Event::Blood {
+                target: event.target,
+                position,
+                direction: event.direction,
+                amount: split.health,
+            });
+        }
+        if !died {
+            return;
+        }
+
+        let killer = event.attacker.filter(|id| *id != event.target);
+        let teamkill = killer.is_some_and(|id| {
+            team_mode && target_team != 0 && teams.get(&id) == Some(&target_team)
+        });
+        let suicide = killer.is_none() && event.attacker.is_some();
+        let assisting = assists(
+            &attackers,
+            killer,
+            event.target,
+            tick,
+            config.attribution_ticks,
+        );
+        let headshot = !teamkill && killer.is_some() && event.region == BodyRegion::Head;
+
+        let mut multi = 0;
+        if let Some(id) = killer.filter(|_| !teamkill) {
+            if let Some(attacker) = self.players.get_mut(&id) {
+                attacker.kills += 1;
+                if headshot {
+                    attacker.headshots += 1;
+                }
+                multi = attacker.multi_kill.record(tick, config.multi_kill_ticks);
+            }
+            if team_mode {
+                if let Some(team) = teams.get(&id).filter(|team| **team > 0) {
+                    self.scores[(*team - 1) as usize] += 1;
                 }
             }
         }
+        if let Some(id) = killer.filter(|_| teamkill) {
+            if let Some(attacker) = self.players.get_mut(&id) {
+                attacker.teamkills += 1;
+            }
+        }
+        for assist in &assisting {
+            if let Some(helper) = self.players.get_mut(assist) {
+                helper.assists += 1;
+            }
+        }
+
+        let cause = if teamkill {
+            DeathCause::TeamKill {
+                by: killer.unwrap_or(event.target),
+            }
+        } else if let Some(id) = killer {
+            DeathCause::Killed {
+                by: id,
+                cause: event.cause,
+                region: event.region,
+            }
+        } else if suicide {
+            DeathCause::Suicide(event.cause)
+        } else {
+            DeathCause::Environment(event.cause)
+        };
+        if let Some(target) = self.players.get_mut(&event.target) {
+            target.last_death = Some(cause);
+            if suicide {
+                target.suicides += 1;
+            }
+        }
+
+        self.ragdolls.push(Ragdoll::spawn(
+            event.target,
+            target_team,
+            position,
+            velocity,
+            event.direction,
+            respawn_config.corpse_ticks,
+            gibbed,
+        ));
+        if gibbed {
+            self.events.push(Event::Gibs {
+                target: event.target,
+                position,
+                velocity,
+            });
+        }
+        self.events.push(Event::Kill {
+            killer: killer.unwrap_or(event.target),
+            target: event.target,
+        });
+        self.events.push(Event::KillFeed(KillFeedEntry {
+            killer,
+            target: event.target,
+            cause: event.cause,
+            region: event.region,
+            headshot,
+            teamkill,
+            suicide: killer.is_none(),
+            multi,
+            assists: assisting,
+        }));
     }
 }
 
@@ -756,6 +1098,9 @@ fn splash_hits(
                     },
                     source: ImpulseSource::Explosion,
                 },
+                // A blast wraps the whole body, so it is never a headshot.
+                region: BodyRegion::Chest,
+                cause: DamageCause::Explosion,
             });
         }
     }
@@ -1123,12 +1468,18 @@ mod tests {
         w.step(&BTreeMap::new());
         assert_eq!(w.players[&1].hp, 0);
         assert_eq!(w.players[&1].kills, 0);
-        assert_eq!(w.objects.len(), 1);
-        assert_eq!(w.objects[0].kind, DynamicBodyKind::Corpse);
+        assert_eq!(w.players[&1].suicides, 1);
+        assert_eq!(w.ragdolls.len(), 1);
         for _ in 0..120 {
             w.step(&BTreeMap::new());
         }
-        assert!(w.objects[0].grounded);
+        assert!(
+            w.ragdolls[0]
+                .segments
+                .iter()
+                .any(|segment| segment.grounded),
+            "a corpse settles on the terrain"
+        );
     }
     #[test]
     fn deterministic_replay() {

@@ -23,4 +23,20 @@ build does. A page cannot minimise itself, so the minimize control sends the mat
 and releases input instead. Mouse aiming is absolute — the cursor is the crosshair — so the mouse
 sensitivity setting scales stick and pad aiming rather than cursor movement.
 
+## Damage and death
+
+Every unit of damage is one `DamageEvent` handled by `World::apply_damage`, so bullets, pellets,
+explosions, melee, falls, bleeding, and deadly polygons all share one path. That path scales damage
+by the body region that was hit, spends armor before health, opens a bleeding wound on a heavy hit,
+records who hurt the player and when, and resolves the death: the killer, assists inside the
+attribution window, headshots, team kills, suicides, multi-kill streaks, and the kill-feed line.
+Death leaves a three-segment ragdoll that falls, settles on the terrain, and is cleared after a
+configured lifetime; a big enough hit gibs the body instead. Respawn picks a spawn point by mode,
+team, and distance from the players you would rather not land next to, and grants a short period of
+spawn protection. Blood and gore reach the client as presentation events derived from that same
+authoritative damage; nothing cosmetic is ever read back into the simulation.
+
+Region multipliers, bleeding rates, fall-damage thresholds, and armor absorption are this project's
+own values in `DamageConfig`, not yet a port of Soldat's per-projectile damage model.
+
 Before claiming gameplay parity, port the relevant routines from `shared/mechanics`, `shared/PolyMap.pas`, `shared/Game.pas`, and client/server rule paths, then create source-versus-Rust replay fixtures for movement, collisions, every weapon style, damage zones, flags, and respawn. Exact original map and art reuse also requires the asset provenance review in `docs/provenance.md`.
