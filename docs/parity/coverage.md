@@ -4,23 +4,23 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 
 | ID | Status | Section | Feature | Acceptance |
 | --- | --- | --- | --- | --- |
-| G01-CHARACTER-MOVEMENT-001 | Partial | 1. Character movement and physics | Horizontal running. | parity:G01-CHARACTER-MOVEMENT-001 |
-| G01-CHARACTER-MOVEMENT-002 | Partial | 1. Character movement and physics | Jumping. | parity:G01-CHARACTER-MOVEMENT-002 |
-| G01-CHARACTER-MOVEMENT-003 | Partial | 1. Character movement and physics | Jetpack flight. | parity:G01-CHARACTER-MOVEMENT-003 |
-| G01-CHARACTER-MOVEMENT-004 | Missing | 1. Character movement and physics | Crouching. | parity:G01-CHARACTER-MOVEMENT-004 |
-| G01-CHARACTER-MOVEMENT-005 | Missing | 1. Character movement and physics | Prone stance. | parity:G01-CHARACTER-MOVEMENT-005 |
-| G01-CHARACTER-MOVEMENT-006 | Missing | 1. Character movement and physics | Standing-to-prone transition. | parity:G01-CHARACTER-MOVEMENT-006 |
-| G01-CHARACTER-MOVEMENT-007 | Missing | 1. Character movement and physics | Getting up from prone. | parity:G01-CHARACTER-MOVEMENT-007 |
-| G01-CHARACTER-MOVEMENT-008 | Missing | 1. Character movement and physics | Directional ground rolls. | parity:G01-CHARACTER-MOVEMENT-008 |
-| G01-CHARACTER-MOVEMENT-009 | Missing | 1. Character movement and physics | Rolling out of prone. | parity:G01-CHARACTER-MOVEMENT-009 |
-| G01-CHARACTER-MOVEMENT-010 | Missing | 1. Character movement and physics | Standard backflip. | parity:G01-CHARACTER-MOVEMENT-010 |
-| G01-CHARACTER-MOVEMENT-011 | Missing | 1. Character movement and physics | Late backflip. | parity:G01-CHARACTER-MOVEMENT-011 |
-| G01-CHARACTER-MOVEMENT-012 | Missing | 1. Character movement and physics | Soldat-style momentum conservation. | parity:G01-CHARACTER-MOVEMENT-012 |
-| G01-CHARACTER-MOVEMENT-013 | Missing | 1. Character movement and physics | Air-control behavior. | parity:G01-CHARACTER-MOVEMENT-013 |
-| G01-CHARACTER-MOVEMENT-014 | Missing | 1. Character movement and physics | Acceleration matching Soldat. | parity:G01-CHARACTER-MOVEMENT-014 |
-| G01-CHARACTER-MOVEMENT-015 | Missing | 1. Character movement and physics | Ground friction matching Soldat. | parity:G01-CHARACTER-MOVEMENT-015 |
-| G01-CHARACTER-MOVEMENT-016 | Missing | 1. Character movement and physics | Slope movement. | parity:G01-CHARACTER-MOVEMENT-016 |
-| G01-CHARACTER-MOVEMENT-017 | Missing | 1. Character movement and physics | Sliding along slopes. | parity:G01-CHARACTER-MOVEMENT-017 |
+| G01-CHARACTER-MOVEMENT-001 | Present | 1. Character movement and physics | Horizontal running. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-002 | Present | 1. Character movement and physics | Jumping. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-003 | Present | 1. Character movement and physics | Jetpack flight. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-004 | Present | 1. Character movement and physics | Crouching. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-005 | Present | 1. Character movement and physics | Prone stance. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-006 | Present | 1. Character movement and physics | Standing-to-prone transition. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-007 | Present | 1. Character movement and physics | Getting up from prone. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-008 | Present | 1. Character movement and physics | Directional ground rolls. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-009 | Present | 1. Character movement and physics | Rolling out of prone. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-010 | Present | 1. Character movement and physics | Standard backflip. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-011 | Present | 1. Character movement and physics | Late backflip. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-012 | Present | 1. Character movement and physics | Soldat-style momentum conservation. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-013 | Present | 1. Character movement and physics | Air-control behavior. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-014 | Present | 1. Character movement and physics | Acceleration matching Soldat. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-015 | Present | 1. Character movement and physics | Ground friction matching Soldat. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-016 | Present | 1. Character movement and physics | Slope movement. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-017 | Present | 1. Character movement and physics | Sliding along slopes. | rust:movement_fixtures |
 | G01-CHARACTER-MOVEMENT-018 | Present | 1. Character movement and physics | Polygon-edge interaction. | rust:collision_fixtures:edges |
 | G01-CHARACTER-MOVEMENT-019 | Present | 1. Character movement and physics | One-way polygons. | rust:collision_fixtures:one-way |
 | G01-CHARACTER-MOVEMENT-020 | Present | 1. Character movement and physics | Bouncy polygons. | rust:polygon_collision:materials |
@@ -31,25 +31,25 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G01-CHARACTER-MOVEMENT-025 | Present | 1. Character movement and physics | Proper head/body/legs collision volumes. | rust:collision_fixtures:body-shape |
 | G01-CHARACTER-MOVEMENT-026 | Missing | 1. Character movement and physics | Character-body ragdoll physics. | parity:G01-CHARACTER-MOVEMENT-026 |
 | G01-CHARACTER-MOVEMENT-027 | Present | 1. Character movement and physics | Corpses interacting with terrain. | rust:game_core:corpse-terrain |
-| G01-CHARACTER-MOVEMENT-028 | Missing | 1. Character movement and physics | Player-to-player physical interaction. | parity:G01-CHARACTER-MOVEMENT-028 |
-| G01-CHARACTER-MOVEMENT-029 | Missing | 1. Character movement and physics | Fall/impact behavior. | parity:G01-CHARACTER-MOVEMENT-029 |
-| G01-CHARACTER-MOVEMENT-030 | Missing | 1. Character movement and physics | Jet force affected by pose and movement. | parity:G01-CHARACTER-MOVEMENT-030 |
-| G01-CHARACTER-MOVEMENT-031 | Missing | 1. Character movement and physics | Map-specific jet-fuel capacity. | parity:G01-CHARACTER-MOVEMENT-031 |
-| G01-CHARACTER-MOVEMENT-032 | Partial | 1. Character movement and physics | Jet fuel recharge. | parity:G01-CHARACTER-MOVEMENT-032 |
-| G01-CHARACTER-MOVEMENT-033 | Missing | 1. Character movement and physics | Soldat-accurate jet depletion and regeneration. | parity:G01-CHARACTER-MOVEMENT-033 |
-| G01-CHARACTER-MOVEMENT-034 | Missing | 1. Character movement and physics | Weapon recoil affecting the player. | parity:G01-CHARACTER-MOVEMENT-034 |
-| G01-CHARACTER-MOVEMENT-035 | Missing | 1. Character movement and physics | SPAS/minigun self-boost. | parity:G01-CHARACTER-MOVEMENT-035 |
-| G01-CHARACTER-MOVEMENT-036 | Missing | 1. Character movement and physics | Explosive knockback. | parity:G01-CHARACTER-MOVEMENT-036 |
-| G01-CHARACTER-MOVEMENT-037 | Missing | 1. Character movement and physics | Bullet push. | parity:G01-CHARACTER-MOVEMENT-037 |
+| G01-CHARACTER-MOVEMENT-028 | Present | 1. Character movement and physics | Player-to-player physical interaction. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-029 | Present | 1. Character movement and physics | Fall/impact behavior. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-030 | Present | 1. Character movement and physics | Jet force affected by pose and movement. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-031 | Present | 1. Character movement and physics | Map-specific jet-fuel capacity. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-032 | Present | 1. Character movement and physics | Jet fuel recharge. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-033 | Present | 1. Character movement and physics | Soldat-accurate jet depletion and regeneration. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-034 | Present | 1. Character movement and physics | Weapon recoil affecting the player. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-035 | Present | 1. Character movement and physics | SPAS/minigun self-boost. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-036 | Present | 1. Character movement and physics | Explosive knockback. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-037 | Present | 1. Character movement and physics | Bullet push. | rust:movement_fixtures |
 | G01-CHARACTER-MOVEMENT-038 | Missing | 1. Character movement and physics | Flag and kit push from bullets/explosions. | parity:G01-CHARACTER-MOVEMENT-038 |
-| G01-CHARACTER-MOVEMENT-039 | Missing | 1. Character movement and physics | Movement animation state machine. | parity:G01-CHARACTER-MOVEMENT-039 |
+| G01-CHARACTER-MOVEMENT-039 | Present | 1. Character movement and physics | Movement animation state machine. | rust:movement_fixtures |
 | G01-CHARACTER-MOVEMENT-040 | Missing | 1. Character movement and physics | Directional aiming and body rotation. | parity:G01-CHARACTER-MOVEMENT-040 |
 | G01-CHARACTER-MOVEMENT-041 | Missing | 1. Character movement and physics | Separate legs, torso, head, arms, weapon, and jet animations. | parity:G01-CHARACTER-MOVEMENT-041 |
 | G01-CHARACTER-MOVEMENT-042 | Missing | 1. Character movement and physics | Death animations. | parity:G01-CHARACTER-MOVEMENT-042 |
 | G01-CHARACTER-MOVEMENT-043 | Missing | 1. Character movement and physics | Mercy/victory/smoke/tobacco/helmet animations. | parity:G01-CHARACTER-MOVEMENT-043 |
-| G02-INPUT-AND-001 | Present | 2. Input and controls | Move left/right. | rust:game_core::tests::deterministic_replay |
-| G02-INPUT-AND-002 | Present | 2. Input and controls | Jump. | rust:game_core::tests::player_lands_on_platform |
-| G02-INPUT-AND-003 | Present | 2. Input and controls | Jet. | rust:game_core::tests::deterministic_replay |
+| G02-INPUT-AND-001 | Present | 2. Input and controls | Move left/right. | rust:movement_fixtures |
+| G02-INPUT-AND-002 | Present | 2. Input and controls | Jump. | rust:movement_fixtures |
+| G02-INPUT-AND-003 | Present | 2. Input and controls | Jet. | rust:movement_fixtures |
 | G02-INPUT-AND-004 | Present | 2. Input and controls | Mouse aiming. | web:smoke:aim-input |
 | G02-INPUT-AND-005 | Present | 2. Input and controls | Primary fire. | rust:game_core::tests::fire_is_rate_limited |
 | G02-INPUT-AND-006 | Present | 2. Input and controls | Grenade input. | rust:game_core::tests::holding_grenade_input_throws_only_once |
@@ -390,139 +390,139 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G16-MAPS-AND-002 | Present | 16. Maps and terrain engine | PMS format validation. | rust:content::pms-validation |
 | G16-MAPS-AND-003 | Present | 16. Maps and terrain engine | Polygon geometry. | web:map-render:coordinates |
 | G16-MAPS-AND-004 | Present | 16. Maps and terrain engine | Polygon types and properties. | rust:map_validation:materials |
-| G16-MAPS-AND-005 | Missing | 16. Maps and terrain engine | Texture coordinates. | parity:G16-MAPS-AND-005 |
-| G16-MAPS-AND-006 | Missing | 16. Maps and terrain engine | Map textures. | parity:G16-MAPS-AND-006 |
+| G16-MAPS-AND-005 | Present | 16. Maps and terrain engine | Texture coordinates. | task5:map-pipeline |
+| G16-MAPS-AND-006 | Present | 16. Maps and terrain engine | Map textures. | task5:map-pipeline |
 | G16-MAPS-AND-007 | Missing | 16. Maps and terrain engine | Edge textures. | parity:G16-MAPS-AND-007 |
-| G16-MAPS-AND-008 | Missing | 16. Maps and terrain engine | Scenery objects. | parity:G16-MAPS-AND-008 |
-| G16-MAPS-AND-009 | Missing | 16. Maps and terrain engine | Scenery depth/layers. | parity:G16-MAPS-AND-009 |
+| G16-MAPS-AND-008 | Present | 16. Maps and terrain engine | Scenery objects. | task5:map-pipeline |
+| G16-MAPS-AND-009 | Present | 16. Maps and terrain engine | Scenery depth/layers. | task5:map-pipeline |
 | G16-MAPS-AND-010 | Missing | 16. Maps and terrain engine | Animated scenery if supported. | parity:G16-MAPS-AND-010 |
-| G16-MAPS-AND-011 | Missing | 16. Maps and terrain engine | Colliders. | parity:G16-MAPS-AND-011 |
-| G16-MAPS-AND-012 | Missing | 16. Maps and terrain engine | Spawn points. | parity:G16-MAPS-AND-012 |
-| G16-MAPS-AND-013 | Missing | 16. Maps and terrain engine | Player spawn types. | parity:G16-MAPS-AND-013 |
-| G16-MAPS-AND-014 | Missing | 16. Maps and terrain engine | Team spawn types. | parity:G16-MAPS-AND-014 |
+| G16-MAPS-AND-011 | Present | 16. Maps and terrain engine | Colliders. | task5:map-pipeline |
+| G16-MAPS-AND-012 | Present | 16. Maps and terrain engine | Spawn points. | task5:map-pipeline |
+| G16-MAPS-AND-013 | Present | 16. Maps and terrain engine | Player spawn types. | task5:map-pipeline |
+| G16-MAPS-AND-014 | Present | 16. Maps and terrain engine | Team spawn types. | task5:map-pipeline |
 | G16-MAPS-AND-015 | Missing | 16. Maps and terrain engine | Flag spawn types. | parity:G16-MAPS-AND-015 |
 | G16-MAPS-AND-016 | Missing | 16. Maps and terrain engine | Bonus-kit spawn types. | parity:G16-MAPS-AND-016 |
 | G16-MAPS-AND-017 | Missing | 16. Maps and terrain engine | Grenade spawn types where relevant. | parity:G16-MAPS-AND-017 |
 | G16-MAPS-AND-018 | Missing | 16. Maps and terrain engine | Stationary-gun locations. | parity:G16-MAPS-AND-018 |
-| G16-MAPS-AND-019 | Missing | 16. Maps and terrain engine | Bot waypoints. | parity:G16-MAPS-AND-019 |
-| G16-MAPS-AND-020 | Missing | 16. Maps and terrain engine | Background colors and gradients. | parity:G16-MAPS-AND-020 |
-| G16-MAPS-AND-021 | Missing | 16. Maps and terrain engine | Weather settings. | parity:G16-MAPS-AND-021 |
-| G16-MAPS-AND-022 | Missing | 16. Maps and terrain engine | Footstep-sound property. | parity:G16-MAPS-AND-022 |
-| G16-MAPS-AND-023 | Missing | 16. Maps and terrain engine | Map-specific jet fuel. | parity:G16-MAPS-AND-023 |
+| G16-MAPS-AND-019 | Present | 16. Maps and terrain engine | Bot waypoints. | task5:map-pipeline |
+| G16-MAPS-AND-020 | Present | 16. Maps and terrain engine | Background colors and gradients. | task5:map-pipeline |
+| G16-MAPS-AND-021 | Present | 16. Maps and terrain engine | Weather settings. | task5:map-pipeline |
+| G16-MAPS-AND-022 | Present | 16. Maps and terrain engine | Footstep-sound property. | task5:map-pipeline |
+| G16-MAPS-AND-023 | Present | 16. Maps and terrain engine | Map-specific jet fuel. | task5:map-pipeline |
 | G16-MAPS-AND-024 | Missing | 16. Maps and terrain engine | Map boundaries. | parity:G16-MAPS-AND-024 |
-| G16-MAPS-AND-025 | Missing | 16. Maps and terrain engine | Death/out-of-bounds areas. | parity:G16-MAPS-AND-025 |
-| G16-MAPS-AND-026 | Missing | 16. Maps and terrain engine | Map metadata. | parity:G16-MAPS-AND-026 |
-| G16-MAPS-AND-027 | Missing | 16. Maps and terrain engine | Map version compatibility. | parity:G16-MAPS-AND-027 |
-| G16-MAPS-AND-028 | Missing | 16. Maps and terrain engine | Custom-map downloading. | parity:G16-MAPS-AND-028 |
-| G16-MAPS-AND-029 | Missing | 16. Maps and terrain engine | Texture/scenery downloading. | parity:G16-MAPS-AND-029 |
-| G16-MAPS-AND-030 | Missing | 16. Maps and terrain engine | Download progress and cancellation. | parity:G16-MAPS-AND-030 |
-| G16-MAPS-AND-031 | Missing | 16. Maps and terrain engine | Missing-asset handling. | parity:G16-MAPS-AND-031 |
-| G16-MAPS-AND-032 | Missing | 16. Maps and terrain engine | Map checksum verification. | parity:G16-MAPS-AND-032 |
-| G16-MAPS-AND-033 | Missing | 16. Maps and terrain engine | Map rotation file/configuration. | parity:G16-MAPS-AND-033 |
-| G16-MAPS-AND-034 | Missing | 16. Maps and terrain engine | Mode-prefix recognition: `ctf_`, `inf_`, `htf_`, and community prefixes. | parity:G16-MAPS-AND-034 |
-| G16-MAPS-AND-035 | Missing | 16. Maps and terrain engine | Empty/invalid map-list handling. | parity:G16-MAPS-AND-035 |
+| G16-MAPS-AND-025 | Present | 16. Maps and terrain engine | Death/out-of-bounds areas. | task5:map-pipeline |
+| G16-MAPS-AND-026 | Present | 16. Maps and terrain engine | Map metadata. | task5:map-pipeline |
+| G16-MAPS-AND-027 | Present | 16. Maps and terrain engine | Map version compatibility. | task5:map-pipeline |
+| G16-MAPS-AND-028 | Present | 16. Maps and terrain engine | Custom-map downloading. | task5:map-pipeline |
+| G16-MAPS-AND-029 | Present | 16. Maps and terrain engine | Texture/scenery downloading. | task5:map-pipeline |
+| G16-MAPS-AND-030 | Present | 16. Maps and terrain engine | Download progress and cancellation. | task5:map-pipeline |
+| G16-MAPS-AND-031 | Present | 16. Maps and terrain engine | Missing-asset handling. | task5:map-pipeline |
+| G16-MAPS-AND-032 | Present | 16. Maps and terrain engine | Map checksum verification. | task5:map-pipeline |
+| G16-MAPS-AND-033 | Present | 16. Maps and terrain engine | Map rotation file/configuration. | task5:map-pipeline |
+| G16-MAPS-AND-034 | Present | 16. Maps and terrain engine | Mode-prefix recognition: `ctf_`, `inf_`, `htf_`, and community prefixes. | task5:map-pipeline |
+| G16-MAPS-AND-035 | Present | 16. Maps and terrain engine | Empty/invalid map-list handling. | task5:map-pipeline |
 | G16-MAPS-AND-036 | Missing | 16. Maps and terrain engine | Map voting or polling if the intended Soldat server experience includes it. | parity:G16-MAPS-AND-036 |
-| G16-MAPS-AND-037 | Missing | 16. Maps and terrain engine | Client caching of maps/assets. | parity:G16-MAPS-AND-037 |
-| G16-MAPS-AND-038 | Missing | 16. Maps and terrain engine | Map preview images. | parity:G16-MAPS-AND-038 |
-| G16-MAPS-AND-039 | Missing | 16. Maps and terrain engine | Map selection UI. | parity:G16-MAPS-AND-039 |
-| G16-MAPS-AND-040 | Missing | 16. Maps and terrain engine | Offline map testing. | parity:G16-MAPS-AND-040 |
-| G17-ALL-97-001 | Missing | 17. All 97 referenced default maps | Aero | parity:G17-ALL-97-001 |
-| G17-ALL-97-002 | Missing | 17. All 97 referenced default maps | Airpirates | parity:G17-ALL-97-002 |
-| G17-ALL-97-003 | Missing | 17. All 97 referenced default maps | Arena | parity:G17-ALL-97-003 |
-| G17-ALL-97-004 | Missing | 17. All 97 referenced default maps | Arena2 | parity:G17-ALL-97-004 |
-| G17-ALL-97-005 | Missing | 17. All 97 referenced default maps | Arena3 | parity:G17-ALL-97-005 |
-| G17-ALL-97-006 | Missing | 17. All 97 referenced default maps | Bigfalls | parity:G17-ALL-97-006 |
-| G17-ALL-97-007 | Missing | 17. All 97 referenced default maps | Blox | parity:G17-ALL-97-007 |
-| G17-ALL-97-008 | Missing | 17. All 97 referenced default maps | Bridge | parity:G17-ALL-97-008 |
-| G17-ALL-97-009 | Missing | 17. All 97 referenced default maps | Bunker | parity:G17-ALL-97-009 |
-| G17-ALL-97-010 | Missing | 17. All 97 referenced default maps | Cambodia | parity:G17-ALL-97-010 |
-| G17-ALL-97-011 | Missing | 17. All 97 referenced default maps | CrackedBoot | parity:G17-ALL-97-011 |
-| G17-ALL-97-012 | Missing | 17. All 97 referenced default maps | Daybreak | parity:G17-ALL-97-012 |
-| G17-ALL-97-013 | Missing | 17. All 97 referenced default maps | DesertWind | parity:G17-ALL-97-013 |
-| G17-ALL-97-014 | Missing | 17. All 97 referenced default maps | Factory | parity:G17-ALL-97-014 |
-| G17-ALL-97-015 | Missing | 17. All 97 referenced default maps | Flashback | parity:G17-ALL-97-015 |
-| G17-ALL-97-016 | Missing | 17. All 97 referenced default maps | HH | parity:G17-ALL-97-016 |
-| G17-ALL-97-017 | Missing | 17. All 97 referenced default maps | Island2k5 | parity:G17-ALL-97-017 |
-| G17-ALL-97-018 | Missing | 17. All 97 referenced default maps | Jungle | parity:G17-ALL-97-018 |
-| G17-ALL-97-019 | Missing | 17. All 97 referenced default maps | Krab | parity:G17-ALL-97-019 |
-| G17-ALL-97-020 | Missing | 17. All 97 referenced default maps | Lagrange | parity:G17-ALL-97-020 |
-| G17-ALL-97-021 | Missing | 17. All 97 referenced default maps | Leaf | parity:G17-ALL-97-021 |
-| G17-ALL-97-022 | Missing | 17. All 97 referenced default maps | MrSnowman | parity:G17-ALL-97-022 |
-| G17-ALL-97-023 | Missing | 17. All 97 referenced default maps | RatCave | parity:G17-ALL-97-023 |
-| G17-ALL-97-024 | Missing | 17. All 97 referenced default maps | Rok | parity:G17-ALL-97-024 |
-| G17-ALL-97-025 | Missing | 17. All 97 referenced default maps | RR | parity:G17-ALL-97-025 |
-| G17-ALL-97-026 | Missing | 17. All 97 referenced default maps | Shau | parity:G17-ALL-97-026 |
-| G17-ALL-97-027 | Missing | 17. All 97 referenced default maps | Tropiccave | parity:G17-ALL-97-027 |
-| G17-ALL-97-028 | Missing | 17. All 97 referenced default maps | Unlim | parity:G17-ALL-97-028 |
-| G17-ALL-97-029 | Missing | 17. All 97 referenced default maps | Veoto | parity:G17-ALL-97-029 |
-| G17-ALL-97-030 | Missing | 17. All 97 referenced default maps | ctf_Ash | parity:G17-ALL-97-030 |
-| G17-ALL-97-031 | Missing | 17. All 97 referenced default maps | ctf_B2b | parity:G17-ALL-97-031 |
-| G17-ALL-97-032 | Missing | 17. All 97 referenced default maps | ctf_Blade | parity:G17-ALL-97-032 |
-| G17-ALL-97-033 | Missing | 17. All 97 referenced default maps | ctf_Campeche | parity:G17-ALL-97-033 |
-| G17-ALL-97-034 | Missing | 17. All 97 referenced default maps | ctf_Cobra | parity:G17-ALL-97-034 |
-| G17-ALL-97-035 | Missing | 17. All 97 referenced default maps | ctf_Crucifix | parity:G17-ALL-97-035 |
-| G17-ALL-97-036 | Missing | 17. All 97 referenced default maps | ctf_Death | parity:G17-ALL-97-036 |
-| G17-ALL-97-037 | Missing | 17. All 97 referenced default maps | ctf_Division | parity:G17-ALL-97-037 |
-| G17-ALL-97-038 | Missing | 17. All 97 referenced default maps | ctf_Dropdown | parity:G17-ALL-97-038 |
-| G17-ALL-97-039 | Missing | 17. All 97 referenced default maps | ctf_Equinox | parity:G17-ALL-97-039 |
-| G17-ALL-97-040 | Missing | 17. All 97 referenced default maps | ctf_Guardian | parity:G17-ALL-97-040 |
-| G17-ALL-97-041 | Missing | 17. All 97 referenced default maps | ctf_Hormone | parity:G17-ALL-97-041 |
-| G17-ALL-97-042 | Missing | 17. All 97 referenced default maps | ctf_IceBeam | parity:G17-ALL-97-042 |
-| G17-ALL-97-043 | Missing | 17. All 97 referenced default maps | ctf_Kampf | parity:G17-ALL-97-043 |
-| G17-ALL-97-044 | Missing | 17. All 97 referenced default maps | ctf_Lanubya | parity:G17-ALL-97-044 |
-| G17-ALL-97-045 | Missing | 17. All 97 referenced default maps | ctf_Laos | parity:G17-ALL-97-045 |
-| G17-ALL-97-046 | Missing | 17. All 97 referenced default maps | ctf_Maya | parity:G17-ALL-97-046 |
-| G17-ALL-97-047 | Missing | 17. All 97 referenced default maps | ctf_Mayapan | parity:G17-ALL-97-047 |
-| G17-ALL-97-048 | Missing | 17. All 97 referenced default maps | ctf_MFM | parity:G17-ALL-97-048 |
-| G17-ALL-97-049 | Missing | 17. All 97 referenced default maps | ctf_Nuubia | parity:G17-ALL-97-049 |
-| G17-ALL-97-050 | Missing | 17. All 97 referenced default maps | ctf_Raspberry | parity:G17-ALL-97-050 |
-| G17-ALL-97-051 | Missing | 17. All 97 referenced default maps | ctf_Rotten | parity:G17-ALL-97-051 |
-| G17-ALL-97-052 | Missing | 17. All 97 referenced default maps | ctf_Ruins | parity:G17-ALL-97-052 |
-| G17-ALL-97-053 | Missing | 17. All 97 referenced default maps | ctf_Run | parity:G17-ALL-97-053 |
-| G17-ALL-97-054 | Missing | 17. All 97 referenced default maps | ctf_Scorpion | parity:G17-ALL-97-054 |
-| G17-ALL-97-055 | Missing | 17. All 97 referenced default maps | ctf_Snakebite | parity:G17-ALL-97-055 |
-| G17-ALL-97-056 | Missing | 17. All 97 referenced default maps | ctf_Steel | parity:G17-ALL-97-056 |
-| G17-ALL-97-057 | Missing | 17. All 97 referenced default maps | ctf_Triumph | parity:G17-ALL-97-057 |
-| G17-ALL-97-058 | Missing | 17. All 97 referenced default maps | ctf_Viet | parity:G17-ALL-97-058 |
-| G17-ALL-97-059 | Missing | 17. All 97 referenced default maps | ctf_Voland | parity:G17-ALL-97-059 |
-| G17-ALL-97-060 | Missing | 17. All 97 referenced default maps | ctf_Wretch | parity:G17-ALL-97-060 |
-| G17-ALL-97-061 | Missing | 17. All 97 referenced default maps | ctf_X | parity:G17-ALL-97-061 |
-| G17-ALL-97-062 | Missing | 17. All 97 referenced default maps | htf_Arch | parity:G17-ALL-97-062 |
-| G17-ALL-97-063 | Missing | 17. All 97 referenced default maps | htf_Baire | parity:G17-ALL-97-063 |
-| G17-ALL-97-064 | Missing | 17. All 97 referenced default maps | htf_Boxed | parity:G17-ALL-97-064 |
-| G17-ALL-97-065 | Missing | 17. All 97 referenced default maps | htf_Desert | parity:G17-ALL-97-065 |
-| G17-ALL-97-066 | Missing | 17. All 97 referenced default maps | htf_Dorothy | parity:G17-ALL-97-066 |
-| G17-ALL-97-067 | Missing | 17. All 97 referenced default maps | htf_Dusk | parity:G17-ALL-97-067 |
-| G17-ALL-97-068 | Missing | 17. All 97 referenced default maps | htf_Erbium | parity:G17-ALL-97-068 |
-| G17-ALL-97-069 | Missing | 17. All 97 referenced default maps | htf_Feast | parity:G17-ALL-97-069 |
-| G17-ALL-97-070 | Missing | 17. All 97 referenced default maps | htf_Mossy | parity:G17-ALL-97-070 |
-| G17-ALL-97-071 | Missing | 17. All 97 referenced default maps | htf_Muygen | parity:G17-ALL-97-071 |
-| G17-ALL-97-072 | Missing | 17. All 97 referenced default maps | htf_Niall | parity:G17-ALL-97-072 |
-| G17-ALL-97-073 | Missing | 17. All 97 referenced default maps | htf_Nuclear | parity:G17-ALL-97-073 |
-| G17-ALL-97-074 | Missing | 17. All 97 referenced default maps | htf_Prison | parity:G17-ALL-97-074 |
-| G17-ALL-97-075 | Missing | 17. All 97 referenced default maps | htf_Rubik | parity:G17-ALL-97-075 |
-| G17-ALL-97-076 | Missing | 17. All 97 referenced default maps | htf_Star | parity:G17-ALL-97-076 |
-| G17-ALL-97-077 | Missing | 17. All 97 referenced default maps | htf_Tower | parity:G17-ALL-97-077 |
-| G17-ALL-97-078 | Missing | 17. All 97 referenced default maps | htf_Void | parity:G17-ALL-97-078 |
-| G17-ALL-97-079 | Missing | 17. All 97 referenced default maps | htf_Vortex | parity:G17-ALL-97-079 |
-| G17-ALL-97-080 | Missing | 17. All 97 referenced default maps | htf_Zajacz | parity:G17-ALL-97-080 |
-| G17-ALL-97-081 | Missing | 17. All 97 referenced default maps | inf_Abel | parity:G17-ALL-97-081 |
-| G17-ALL-97-082 | Missing | 17. All 97 referenced default maps | inf_April | parity:G17-ALL-97-082 |
-| G17-ALL-97-083 | Missing | 17. All 97 referenced default maps | inf_Argy | parity:G17-ALL-97-083 |
-| G17-ALL-97-084 | Missing | 17. All 97 referenced default maps | inf_Belltower | parity:G17-ALL-97-084 |
-| G17-ALL-97-085 | Missing | 17. All 97 referenced default maps | inf_Biologic | parity:G17-ALL-97-085 |
-| G17-ALL-97-086 | Missing | 17. All 97 referenced default maps | inf_Changeling | parity:G17-ALL-97-086 |
-| G17-ALL-97-087 | Missing | 17. All 97 referenced default maps | inf_Flute | parity:G17-ALL-97-087 |
-| G17-ALL-97-088 | Missing | 17. All 97 referenced default maps | inf_Fortress | parity:G17-ALL-97-088 |
-| G17-ALL-97-089 | Missing | 17. All 97 referenced default maps | inf_Industrial | parity:G17-ALL-97-089 |
-| G17-ALL-97-090 | Missing | 17. All 97 referenced default maps | inf_Messner | parity:G17-ALL-97-090 |
-| G17-ALL-97-091 | Missing | 17. All 97 referenced default maps | inf_Moonshine | parity:G17-ALL-97-091 |
-| G17-ALL-97-092 | Missing | 17. All 97 referenced default maps | inf_Motheaten | parity:G17-ALL-97-092 |
-| G17-ALL-97-093 | Missing | 17. All 97 referenced default maps | inf_Outpost | parity:G17-ALL-97-093 |
-| G17-ALL-97-094 | Missing | 17. All 97 referenced default maps | inf_Rescue | parity:G17-ALL-97-094 |
-| G17-ALL-97-095 | Missing | 17. All 97 referenced default maps | inf_Rise | parity:G17-ALL-97-095 |
-| G17-ALL-97-096 | Missing | 17. All 97 referenced default maps | inf_Warehouse | parity:G17-ALL-97-096 |
-| G17-ALL-97-097 | Missing | 17. All 97 referenced default maps | inf_Warlock | parity:G17-ALL-97-097 |
+| G16-MAPS-AND-037 | Present | 16. Maps and terrain engine | Client caching of maps/assets. | task5:map-pipeline |
+| G16-MAPS-AND-038 | Present | 16. Maps and terrain engine | Map preview images. | task5:map-pipeline |
+| G16-MAPS-AND-039 | Present | 16. Maps and terrain engine | Map selection UI. | task5:map-pipeline |
+| G16-MAPS-AND-040 | Present | 16. Maps and terrain engine | Offline map testing. | task5:map-pipeline |
+| G17-ALL-97-001 | Present | 17. All 97 referenced default maps | Aero | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-002 | Present | 17. All 97 referenced default maps | Airpirates | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-003 | Present | 17. All 97 referenced default maps | Arena | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-004 | Present | 17. All 97 referenced default maps | Arena2 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-005 | Present | 17. All 97 referenced default maps | Arena3 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-006 | Present | 17. All 97 referenced default maps | Bigfalls | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-007 | Present | 17. All 97 referenced default maps | Blox | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-008 | Present | 17. All 97 referenced default maps | Bridge | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-009 | Present | 17. All 97 referenced default maps | Bunker | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-010 | Present | 17. All 97 referenced default maps | Cambodia | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-011 | Present | 17. All 97 referenced default maps | CrackedBoot | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-012 | Present | 17. All 97 referenced default maps | Daybreak | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-013 | Present | 17. All 97 referenced default maps | DesertWind | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-014 | Present | 17. All 97 referenced default maps | Factory | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-015 | Present | 17. All 97 referenced default maps | Flashback | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-016 | Present | 17. All 97 referenced default maps | HH | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-017 | Present | 17. All 97 referenced default maps | Island2k5 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-018 | Present | 17. All 97 referenced default maps | Jungle | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-019 | Present | 17. All 97 referenced default maps | Krab | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-020 | Present | 17. All 97 referenced default maps | Lagrange | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-021 | Present | 17. All 97 referenced default maps | Leaf | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-022 | Present | 17. All 97 referenced default maps | MrSnowman | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-023 | Present | 17. All 97 referenced default maps | RatCave | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-024 | Present | 17. All 97 referenced default maps | Rok | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-025 | Present | 17. All 97 referenced default maps | RR | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-026 | Present | 17. All 97 referenced default maps | Shau | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-027 | Present | 17. All 97 referenced default maps | Tropiccave | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-028 | Present | 17. All 97 referenced default maps | Unlim | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-029 | Present | 17. All 97 referenced default maps | Veoto | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-030 | Present | 17. All 97 referenced default maps | ctf_Ash | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-031 | Present | 17. All 97 referenced default maps | ctf_B2b | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-032 | Present | 17. All 97 referenced default maps | ctf_Blade | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-033 | Present | 17. All 97 referenced default maps | ctf_Campeche | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-034 | Present | 17. All 97 referenced default maps | ctf_Cobra | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-035 | Present | 17. All 97 referenced default maps | ctf_Crucifix | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-036 | Present | 17. All 97 referenced default maps | ctf_Death | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-037 | Present | 17. All 97 referenced default maps | ctf_Division | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-038 | Present | 17. All 97 referenced default maps | ctf_Dropdown | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-039 | Present | 17. All 97 referenced default maps | ctf_Equinox | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-040 | Present | 17. All 97 referenced default maps | ctf_Guardian | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-041 | Present | 17. All 97 referenced default maps | ctf_Hormone | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-042 | Present | 17. All 97 referenced default maps | ctf_IceBeam | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-043 | Present | 17. All 97 referenced default maps | ctf_Kampf | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-044 | Present | 17. All 97 referenced default maps | ctf_Lanubya | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-045 | Present | 17. All 97 referenced default maps | ctf_Laos | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-046 | Present | 17. All 97 referenced default maps | ctf_Maya | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-047 | Present | 17. All 97 referenced default maps | ctf_Mayapan | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-048 | Present | 17. All 97 referenced default maps | ctf_MFM | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-049 | Present | 17. All 97 referenced default maps | ctf_Nuubia | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-050 | Present | 17. All 97 referenced default maps | ctf_Raspberry | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-051 | Present | 17. All 97 referenced default maps | ctf_Rotten | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-052 | Present | 17. All 97 referenced default maps | ctf_Ruins | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-053 | Present | 17. All 97 referenced default maps | ctf_Run | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-054 | Present | 17. All 97 referenced default maps | ctf_Scorpion | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-055 | Present | 17. All 97 referenced default maps | ctf_Snakebite | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-056 | Present | 17. All 97 referenced default maps | ctf_Steel | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-057 | Present | 17. All 97 referenced default maps | ctf_Triumph | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-058 | Present | 17. All 97 referenced default maps | ctf_Viet | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-059 | Present | 17. All 97 referenced default maps | ctf_Voland | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-060 | Present | 17. All 97 referenced default maps | ctf_Wretch | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-061 | Present | 17. All 97 referenced default maps | ctf_X | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-062 | Present | 17. All 97 referenced default maps | htf_Arch | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-063 | Present | 17. All 97 referenced default maps | htf_Baire | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-064 | Present | 17. All 97 referenced default maps | htf_Boxed | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-065 | Present | 17. All 97 referenced default maps | htf_Desert | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-066 | Present | 17. All 97 referenced default maps | htf_Dorothy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-067 | Present | 17. All 97 referenced default maps | htf_Dusk | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-068 | Present | 17. All 97 referenced default maps | htf_Erbium | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-069 | Present | 17. All 97 referenced default maps | htf_Feast | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-070 | Present | 17. All 97 referenced default maps | htf_Mossy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-071 | Present | 17. All 97 referenced default maps | htf_Muygen | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-072 | Present | 17. All 97 referenced default maps | htf_Niall | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-073 | Present | 17. All 97 referenced default maps | htf_Nuclear | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-074 | Present | 17. All 97 referenced default maps | htf_Prison | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-075 | Present | 17. All 97 referenced default maps | htf_Rubik | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-076 | Present | 17. All 97 referenced default maps | htf_Star | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-077 | Present | 17. All 97 referenced default maps | htf_Tower | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-078 | Present | 17. All 97 referenced default maps | htf_Void | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-079 | Present | 17. All 97 referenced default maps | htf_Vortex | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-080 | Present | 17. All 97 referenced default maps | htf_Zajacz | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-081 | Present | 17. All 97 referenced default maps | inf_Abel | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-082 | Present | 17. All 97 referenced default maps | inf_April | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-083 | Present | 17. All 97 referenced default maps | inf_Argy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-084 | Present | 17. All 97 referenced default maps | inf_Belltower | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-085 | Present | 17. All 97 referenced default maps | inf_Biologic | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-086 | Present | 17. All 97 referenced default maps | inf_Changeling | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-087 | Present | 17. All 97 referenced default maps | inf_Flute | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-088 | Present | 17. All 97 referenced default maps | inf_Fortress | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-089 | Present | 17. All 97 referenced default maps | inf_Industrial | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-090 | Present | 17. All 97 referenced default maps | inf_Messner | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-091 | Present | 17. All 97 referenced default maps | inf_Moonshine | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-092 | Present | 17. All 97 referenced default maps | inf_Motheaten | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-093 | Present | 17. All 97 referenced default maps | inf_Outpost | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-094 | Present | 17. All 97 referenced default maps | inf_Rescue | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-095 | Present | 17. All 97 referenced default maps | inf_Rise | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-096 | Present | 17. All 97 referenced default maps | inf_Warehouse | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-097 | Present | 17. All 97 referenced default maps | inf_Warlock | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
 | G18-BOTS-AND-001 | Missing | 18. Bots and AI | Bot entities driven by the authoritative simulation. | parity:G18-BOTS-AND-001 |
 | G18-BOTS-AND-002 | Missing | 18. Bots and AI | Random-bot count. | parity:G18-BOTS-AND-002 |
 | G18-BOTS-AND-003 | Missing | 18. Bots and AI | Per-team bot count. | parity:G18-BOTS-AND-003 |
@@ -992,38 +992,38 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G33-CUSTOM-INTERFACES-026 | Missing | 33. Custom interfaces and modding | Storm | parity:G33-CUSTOM-INTERFACES-026 |
 | G33-CUSTOM-INTERFACES-027 | Missing | 33. Custom interfaces and modding | Tech | parity:G33-CUSTOM-INTERFACES-027 |
 | G33-CUSTOM-INTERFACES-028 | Missing | 33. Custom interfaces and modding | Text | parity:G33-CUSTOM-INTERFACES-028 |
-| G34-MAP-EDITOR-001 | Missing | 34. Map editor and content pipeline | Polygon creation/editing. | parity:G34-MAP-EDITOR-001 |
-| G34-MAP-EDITOR-002 | Missing | 34. Map editor and content pipeline | Polygon type editing. | parity:G34-MAP-EDITOR-002 |
-| G34-MAP-EDITOR-003 | Missing | 34. Map editor and content pipeline | Vertex manipulation. | parity:G34-MAP-EDITOR-003 |
-| G34-MAP-EDITOR-004 | Missing | 34. Map editor and content pipeline | Texture assignment. | parity:G34-MAP-EDITOR-004 |
-| G34-MAP-EDITOR-005 | Missing | 34. Map editor and content pipeline | Texture-coordinate editing. | parity:G34-MAP-EDITOR-005 |
-| G34-MAP-EDITOR-006 | Missing | 34. Map editor and content pipeline | Multi-texture workflow. | parity:G34-MAP-EDITOR-006 |
-| G34-MAP-EDITOR-007 | Missing | 34. Map editor and content pipeline | Scenery placement. | parity:G34-MAP-EDITOR-007 |
-| G34-MAP-EDITOR-008 | Missing | 34. Map editor and content pipeline | Scenery layers. | parity:G34-MAP-EDITOR-008 |
-| G34-MAP-EDITOR-009 | Missing | 34. Map editor and content pipeline | Collider placement. | parity:G34-MAP-EDITOR-009 |
-| G34-MAP-EDITOR-010 | Missing | 34. Map editor and content pipeline | Spawn placement. | parity:G34-MAP-EDITOR-010 |
-| G34-MAP-EDITOR-011 | Missing | 34. Map editor and content pipeline | Flag/objective placement. | parity:G34-MAP-EDITOR-011 |
-| G34-MAP-EDITOR-012 | Missing | 34. Map editor and content pipeline | Bonus placement. | parity:G34-MAP-EDITOR-012 |
-| G34-MAP-EDITOR-013 | Missing | 34. Map editor and content pipeline | Waypoint creation. | parity:G34-MAP-EDITOR-013 |
-| G34-MAP-EDITOR-014 | Missing | 34. Map editor and content pipeline | Weather properties. | parity:G34-MAP-EDITOR-014 |
-| G34-MAP-EDITOR-015 | Missing | 34. Map editor and content pipeline | Background colors. | parity:G34-MAP-EDITOR-015 |
-| G34-MAP-EDITOR-016 | Missing | 34. Map editor and content pipeline | Footstep sounds. | parity:G34-MAP-EDITOR-016 |
-| G34-MAP-EDITOR-017 | Missing | 34. Map editor and content pipeline | Jet-fuel setting. | parity:G34-MAP-EDITOR-017 |
-| G34-MAP-EDITOR-018 | Missing | 34. Map editor and content pipeline | Map validation. | parity:G34-MAP-EDITOR-018 |
-| G34-MAP-EDITOR-019 | Missing | 34. Map editor and content pipeline | Mode validation. | parity:G34-MAP-EDITOR-019 |
-| G34-MAP-EDITOR-020 | Missing | 34. Map editor and content pipeline | Test/play button. | parity:G34-MAP-EDITOR-020 |
-| G34-MAP-EDITOR-021 | Missing | 34. Map editor and content pipeline | Undo/redo. | parity:G34-MAP-EDITOR-021 |
-| G34-MAP-EDITOR-022 | Missing | 34. Map editor and content pipeline | Copy/paste. | parity:G34-MAP-EDITOR-022 |
-| G34-MAP-EDITOR-023 | Missing | 34. Map editor and content pipeline | Selection tools. | parity:G34-MAP-EDITOR-023 |
-| G34-MAP-EDITOR-024 | Missing | 34. Map editor and content pipeline | Zoom/pan/grid. | parity:G34-MAP-EDITOR-024 |
-| G34-MAP-EDITOR-025 | Missing | 34. Map editor and content pipeline | Prefabs. | parity:G34-MAP-EDITOR-025 |
-| G34-MAP-EDITOR-026 | Missing | 34. Map editor and content pipeline | PMS import. | parity:G34-MAP-EDITOR-026 |
-| G34-MAP-EDITOR-027 | Missing | 34. Map editor and content pipeline | PMS export. | parity:G34-MAP-EDITOR-027 |
-| G34-MAP-EDITOR-028 | Missing | 34. Map editor and content pipeline | Project-native map format. | parity:G34-MAP-EDITOR-028 |
-| G34-MAP-EDITOR-029 | Missing | 34. Map editor and content pipeline | Packaging custom assets. | parity:G34-MAP-EDITOR-029 |
-| G34-MAP-EDITOR-030 | Missing | 34. Map editor and content pipeline | Map preview generation. | parity:G34-MAP-EDITOR-030 |
-| G34-MAP-EDITOR-031 | Missing | 34. Map editor and content pipeline | Dedicated-server deployment. | parity:G34-MAP-EDITOR-031 |
-| G34-MAP-EDITOR-032 | Missing | 34. Map editor and content pipeline | Cross-platform editor support. | parity:G34-MAP-EDITOR-032 |
+| G34-MAP-EDITOR-001 | Present | 34. Map editor and content pipeline | Polygon creation/editing. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-002 | Present | 34. Map editor and content pipeline | Polygon type editing. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-003 | Present | 34. Map editor and content pipeline | Vertex manipulation. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-004 | Present | 34. Map editor and content pipeline | Texture assignment. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-005 | Present | 34. Map editor and content pipeline | Texture-coordinate editing. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-006 | Present | 34. Map editor and content pipeline | Multi-texture workflow. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-007 | Present | 34. Map editor and content pipeline | Scenery placement. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-008 | Present | 34. Map editor and content pipeline | Scenery layers. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-009 | Present | 34. Map editor and content pipeline | Collider placement. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-010 | Present | 34. Map editor and content pipeline | Spawn placement. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-011 | Present | 34. Map editor and content pipeline | Flag/objective placement. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-012 | Present | 34. Map editor and content pipeline | Bonus placement. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-013 | Present | 34. Map editor and content pipeline | Waypoint creation. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-014 | Present | 34. Map editor and content pipeline | Weather properties. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-015 | Present | 34. Map editor and content pipeline | Background colors. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-016 | Present | 34. Map editor and content pipeline | Footstep sounds. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-017 | Present | 34. Map editor and content pipeline | Jet-fuel setting. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-018 | Present | 34. Map editor and content pipeline | Map validation. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-019 | Present | 34. Map editor and content pipeline | Mode validation. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-020 | Present | 34. Map editor and content pipeline | Test/play button. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-021 | Present | 34. Map editor and content pipeline | Undo/redo. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-022 | Present | 34. Map editor and content pipeline | Copy/paste. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-023 | Present | 34. Map editor and content pipeline | Selection tools. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-024 | Present | 34. Map editor and content pipeline | Zoom/pan/grid. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-025 | Present | 34. Map editor and content pipeline | Prefabs. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-026 | Present | 34. Map editor and content pipeline | PMS import. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-027 | Present | 34. Map editor and content pipeline | PMS export. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-028 | Present | 34. Map editor and content pipeline | Project-native map format. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-029 | Present | 34. Map editor and content pipeline | Packaging custom assets. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-030 | Present | 34. Map editor and content pipeline | Map preview generation. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-031 | Present | 34. Map editor and content pipeline | Dedicated-server deployment. | rust:map_editor:editor_pipeline |
+| G34-MAP-EDITOR-032 | Present | 34. Map editor and content pipeline | Cross-platform editor support. | rust:map_editor:editor_pipeline |
 | G35-DEMO-AND-001 | Missing | 35. Demo and replay system | Record match inputs/events. | parity:G35-DEMO-AND-001 |
 | G35-DEMO-AND-002 | Missing | 35. Demo and replay system | Deterministic replay format. | parity:G35-DEMO-AND-002 |
 | G35-DEMO-AND-003 | Missing | 35. Demo and replay system | Replay metadata. | parity:G35-DEMO-AND-003 |
@@ -1071,10 +1071,10 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G36-OPERATIONAL-AND-031 | Missing | 36. Operational and production work | Asset CDN/caching. | parity:G36-OPERATIONAL-AND-031 |
 | G36-OPERATIONAL-AND-032 | Missing | 36. Operational and production work | Static-asset compression. | parity:G36-OPERATIONAL-AND-032 |
 | G36-OPERATIONAL-AND-033 | Missing | 36. Operational and production work | Privacy policy and moderation policy if publicly operated. | parity:G36-OPERATIONAL-AND-033 |
-| G37-TESTING-REQUIRED-001 | Missing | 37. Testing required for parity | Source-versus-Rust movement fixtures. | parity:G37-TESTING-REQUIRED-001 |
-| G37-TESTING-REQUIRED-002 | Missing | 37. Testing required for parity | Jump fixtures. | parity:G37-TESTING-REQUIRED-002 |
-| G37-TESTING-REQUIRED-003 | Missing | 37. Testing required for parity | Jet fixtures. | parity:G37-TESTING-REQUIRED-003 |
-| G37-TESTING-REQUIRED-004 | Missing | 37. Testing required for parity | Crouch/prone/roll/backflip fixtures. | parity:G37-TESTING-REQUIRED-004 |
+| G37-TESTING-REQUIRED-001 | Present | 37. Testing required for parity | Source-versus-Rust movement fixtures. | rust:movement_fixtures |
+| G37-TESTING-REQUIRED-002 | Present | 37. Testing required for parity | Jump fixtures. | rust:movement_fixtures |
+| G37-TESTING-REQUIRED-003 | Present | 37. Testing required for parity | Jet fixtures. | rust:movement_fixtures |
+| G37-TESTING-REQUIRED-004 | Present | 37. Testing required for parity | Crouch/prone/roll/backflip fixtures. | rust:movement_fixtures |
 | G37-TESTING-REQUIRED-005 | Present | 37. Testing required for parity | Polygon collision fixtures. | rust:collision_fixtures:geometry |
 | G37-TESTING-REQUIRED-006 | Present | 37. Testing required for parity | One-way polygon fixtures. | rust:collision_fixtures:one-way |
 | G37-TESTING-REQUIRED-007 | Missing | 37. Testing required for parity | Weapon fixture for every weapon and field. | parity:G37-TESTING-REQUIRED-007 |

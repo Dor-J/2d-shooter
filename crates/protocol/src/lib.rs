@@ -1,10 +1,10 @@
 #![forbid(unsafe_code)]
 
-use game_core::{Input, World};
 use content::manifest::SignedMapManifest;
+use game_core::{Input, World};
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 3;
+pub const VERSION: u32 = 5;
 pub const MAX_MESSAGE_BYTES: usize = 4096;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -20,6 +20,8 @@ pub enum ClientMessage {
         name: String,
         mode: String,
         public: bool,
+        #[serde(default)]
+        map: Option<String>,
     },
     JoinRoom {
         room: u32,
@@ -53,6 +55,14 @@ pub struct RoomInfo {
     pub mode: String,
     pub players: usize,
     pub capacity: usize,
+    pub map: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct MapInfo {
+    pub name: String,
+    pub mode: String,
+    pub preview: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -65,6 +75,9 @@ pub enum ServerMessage {
     },
     Rooms {
         rooms: Vec<RoomInfo>,
+    },
+    MapCatalog {
+        maps: Vec<MapInfo>,
     },
     Joined {
         room: u32,
@@ -133,7 +146,9 @@ mod tests {
     #[test]
     fn room_visibility_and_invite_code_messages_parse() {
         assert!(matches!(
-            parse_client(r#"{"type":"create_room","name":"Friends","mode":"deathmatch","public":false}"#),
+            parse_client(
+                r#"{"type":"create_room","name":"Friends","mode":"deathmatch","public":false}"#
+            ),
             Ok(ClientMessage::CreateRoom { public: false, .. })
         ));
         assert!(matches!(

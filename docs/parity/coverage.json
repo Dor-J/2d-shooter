@@ -7,7 +7,7 @@
       "feature": "Horizontal running.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-001"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -16,7 +16,7 @@
       "feature": "Jumping.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-002"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -25,7 +25,7 @@
       "feature": "Jetpack flight.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-003"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -34,7 +34,7 @@
       "feature": "Crouching.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-004"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -43,7 +43,7 @@
       "feature": "Prone stance.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-005"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -52,7 +52,7 @@
       "feature": "Standing-to-prone transition.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-006"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -61,7 +61,7 @@
       "feature": "Getting up from prone.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-007"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -70,7 +70,7 @@
       "feature": "Directional ground rolls.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-008"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -79,7 +79,7 @@
       "feature": "Rolling out of prone.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-009"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -88,7 +88,7 @@
       "feature": "Standard backflip.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-010"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -97,7 +97,7 @@
       "feature": "Late backflip.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-011"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -106,7 +106,7 @@
       "feature": "Soldat-style momentum conservation.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-012"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -115,7 +115,7 @@
       "feature": "Air-control behavior.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-013"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -124,7 +124,7 @@
       "feature": "Acceleration matching Soldat.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-014"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -133,7 +133,7 @@
       "feature": "Ground friction matching Soldat.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-015"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -142,7 +142,7 @@
       "feature": "Slope movement.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-016"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -151,7 +151,7 @@
       "feature": "Sliding along slopes.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-017"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -250,7 +250,7 @@
       "feature": "Player-to-player physical interaction.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-028"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -259,7 +259,7 @@
       "feature": "Fall/impact behavior.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-029"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -268,7 +268,7 @@
       "feature": "Jet force affected by pose and movement.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-030"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -277,7 +277,7 @@
       "feature": "Map-specific jet-fuel capacity.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-031"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -286,7 +286,7 @@
       "feature": "Jet fuel recharge.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-032"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -295,7 +295,7 @@
       "feature": "Soldat-accurate jet depletion and regeneration.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-033"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -304,7 +304,7 @@
       "feature": "Weapon recoil affecting the player.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-034"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -313,7 +313,7 @@
       "feature": "SPAS/minigun self-boost.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-035"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -322,7 +322,7 @@
       "feature": "Explosive knockback.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-036"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -331,7 +331,7 @@
       "feature": "Bullet push.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-037"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -349,7 +349,7 @@
       "feature": "Movement animation state machine.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-039"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -394,7 +394,7 @@
       "feature": "Move left/right.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "rust:game_core::tests::deterministic_replay"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -403,7 +403,7 @@
       "feature": "Jump.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "rust:game_core::tests::player_lands_on_platform"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -412,7 +412,7 @@
       "feature": "Jet.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "rust:game_core::tests::deterministic_replay"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -3481,7 +3481,7 @@
       "feature": "Texture coordinates.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-005"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3490,7 +3490,7 @@
       "feature": "Map textures.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-006"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3508,7 +3508,7 @@
       "feature": "Scenery objects.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-008"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3517,7 +3517,7 @@
       "feature": "Scenery depth/layers.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-009"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3535,7 +3535,7 @@
       "feature": "Colliders.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-011"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3544,7 +3544,7 @@
       "feature": "Spawn points.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-012"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3553,7 +3553,7 @@
       "feature": "Player spawn types.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-013"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3562,7 +3562,7 @@
       "feature": "Team spawn types.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-014"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3607,7 +3607,7 @@
       "feature": "Bot waypoints.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-019"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3616,7 +3616,7 @@
       "feature": "Background colors and gradients.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-020"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3625,7 +3625,7 @@
       "feature": "Weather settings.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-021"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3634,7 +3634,7 @@
       "feature": "Footstep-sound property.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-022"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3643,7 +3643,7 @@
       "feature": "Map-specific jet fuel.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-023"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3661,7 +3661,7 @@
       "feature": "Death/out-of-bounds areas.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-025"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3670,7 +3670,7 @@
       "feature": "Map metadata.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-026"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3679,7 +3679,7 @@
       "feature": "Map version compatibility.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-027"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3688,7 +3688,7 @@
       "feature": "Custom-map downloading.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-028"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3697,7 +3697,7 @@
       "feature": "Texture/scenery downloading.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-029"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3706,7 +3706,7 @@
       "feature": "Download progress and cancellation.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-030"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3715,7 +3715,7 @@
       "feature": "Missing-asset handling.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-031"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3724,7 +3724,7 @@
       "feature": "Map checksum verification.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-032"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3733,7 +3733,7 @@
       "feature": "Map rotation file/configuration.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-033"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3742,7 +3742,7 @@
       "feature": "Mode-prefix recognition: `ctf_`, `inf_`, `htf_`, and community prefixes.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-034"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3751,7 +3751,7 @@
       "feature": "Empty/invalid map-list handling.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-035"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3769,7 +3769,7 @@
       "feature": "Client caching of maps/assets.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-037"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3778,7 +3778,7 @@
       "feature": "Map preview images.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-038"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3787,7 +3787,7 @@
       "feature": "Map selection UI.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-039"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3796,7 +3796,7 @@
       "feature": "Offline map testing.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-040"
+        "task5:map-pipeline"
       ]
     },
     {
@@ -3805,7 +3805,7 @@
       "feature": "Aero",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-001"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3814,7 +3814,7 @@
       "feature": "Airpirates",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-002"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3823,7 +3823,7 @@
       "feature": "Arena",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-003"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3832,7 +3832,7 @@
       "feature": "Arena2",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-004"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3841,7 +3841,7 @@
       "feature": "Arena3",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-005"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3850,7 +3850,7 @@
       "feature": "Bigfalls",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-006"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3859,7 +3859,7 @@
       "feature": "Blox",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-007"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3868,7 +3868,7 @@
       "feature": "Bridge",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-008"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3877,7 +3877,7 @@
       "feature": "Bunker",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-009"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3886,7 +3886,7 @@
       "feature": "Cambodia",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-010"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3895,7 +3895,7 @@
       "feature": "CrackedBoot",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-011"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3904,7 +3904,7 @@
       "feature": "Daybreak",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-012"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3913,7 +3913,7 @@
       "feature": "DesertWind",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-013"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3922,7 +3922,7 @@
       "feature": "Factory",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-014"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3931,7 +3931,7 @@
       "feature": "Flashback",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-015"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3940,7 +3940,7 @@
       "feature": "HH",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-016"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3949,7 +3949,7 @@
       "feature": "Island2k5",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-017"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3958,7 +3958,7 @@
       "feature": "Jungle",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-018"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3967,7 +3967,7 @@
       "feature": "Krab",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-019"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3976,7 +3976,7 @@
       "feature": "Lagrange",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-020"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3985,7 +3985,7 @@
       "feature": "Leaf",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-021"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -3994,7 +3994,7 @@
       "feature": "MrSnowman",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-022"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4003,7 +4003,7 @@
       "feature": "RatCave",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-023"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4012,7 +4012,7 @@
       "feature": "Rok",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-024"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4021,7 +4021,7 @@
       "feature": "RR",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-025"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4030,7 +4030,7 @@
       "feature": "Shau",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-026"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4039,7 +4039,7 @@
       "feature": "Tropiccave",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-027"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4048,7 +4048,7 @@
       "feature": "Unlim",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-028"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4057,7 +4057,7 @@
       "feature": "Veoto",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-029"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4066,7 +4066,7 @@
       "feature": "ctf_Ash",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-030"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4075,7 +4075,7 @@
       "feature": "ctf_B2b",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-031"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4084,7 +4084,7 @@
       "feature": "ctf_Blade",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-032"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4093,7 +4093,7 @@
       "feature": "ctf_Campeche",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-033"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4102,7 +4102,7 @@
       "feature": "ctf_Cobra",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-034"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4111,7 +4111,7 @@
       "feature": "ctf_Crucifix",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-035"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4120,7 +4120,7 @@
       "feature": "ctf_Death",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-036"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4129,7 +4129,7 @@
       "feature": "ctf_Division",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-037"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4138,7 +4138,7 @@
       "feature": "ctf_Dropdown",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-038"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4147,7 +4147,7 @@
       "feature": "ctf_Equinox",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-039"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4156,7 +4156,7 @@
       "feature": "ctf_Guardian",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-040"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4165,7 +4165,7 @@
       "feature": "ctf_Hormone",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-041"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4174,7 +4174,7 @@
       "feature": "ctf_IceBeam",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-042"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4183,7 +4183,7 @@
       "feature": "ctf_Kampf",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-043"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4192,7 +4192,7 @@
       "feature": "ctf_Lanubya",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-044"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4201,7 +4201,7 @@
       "feature": "ctf_Laos",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-045"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4210,7 +4210,7 @@
       "feature": "ctf_Maya",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-046"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4219,7 +4219,7 @@
       "feature": "ctf_Mayapan",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-047"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4228,7 +4228,7 @@
       "feature": "ctf_MFM",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-048"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4237,7 +4237,7 @@
       "feature": "ctf_Nuubia",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-049"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4246,7 +4246,7 @@
       "feature": "ctf_Raspberry",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-050"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4255,7 +4255,7 @@
       "feature": "ctf_Rotten",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-051"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4264,7 +4264,7 @@
       "feature": "ctf_Ruins",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-052"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4273,7 +4273,7 @@
       "feature": "ctf_Run",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-053"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4282,7 +4282,7 @@
       "feature": "ctf_Scorpion",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-054"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4291,7 +4291,7 @@
       "feature": "ctf_Snakebite",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-055"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4300,7 +4300,7 @@
       "feature": "ctf_Steel",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-056"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4309,7 +4309,7 @@
       "feature": "ctf_Triumph",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-057"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4318,7 +4318,7 @@
       "feature": "ctf_Viet",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-058"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4327,7 +4327,7 @@
       "feature": "ctf_Voland",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-059"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4336,7 +4336,7 @@
       "feature": "ctf_Wretch",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-060"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4345,7 +4345,7 @@
       "feature": "ctf_X",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-061"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4354,7 +4354,7 @@
       "feature": "htf_Arch",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-062"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4363,7 +4363,7 @@
       "feature": "htf_Baire",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-063"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4372,7 +4372,7 @@
       "feature": "htf_Boxed",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-064"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4381,7 +4381,7 @@
       "feature": "htf_Desert",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-065"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4390,7 +4390,7 @@
       "feature": "htf_Dorothy",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-066"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4399,7 +4399,7 @@
       "feature": "htf_Dusk",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-067"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4408,7 +4408,7 @@
       "feature": "htf_Erbium",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-068"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4417,7 +4417,7 @@
       "feature": "htf_Feast",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-069"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4426,7 +4426,7 @@
       "feature": "htf_Mossy",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-070"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4435,7 +4435,7 @@
       "feature": "htf_Muygen",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-071"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4444,7 +4444,7 @@
       "feature": "htf_Niall",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-072"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4453,7 +4453,7 @@
       "feature": "htf_Nuclear",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-073"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4462,7 +4462,7 @@
       "feature": "htf_Prison",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-074"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4471,7 +4471,7 @@
       "feature": "htf_Rubik",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-075"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4480,7 +4480,7 @@
       "feature": "htf_Star",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-076"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4489,7 +4489,7 @@
       "feature": "htf_Tower",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-077"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4498,7 +4498,7 @@
       "feature": "htf_Void",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-078"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4507,7 +4507,7 @@
       "feature": "htf_Vortex",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-079"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4516,7 +4516,7 @@
       "feature": "htf_Zajacz",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-080"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4525,7 +4525,7 @@
       "feature": "inf_Abel",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-081"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4534,7 +4534,7 @@
       "feature": "inf_April",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-082"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4543,7 +4543,7 @@
       "feature": "inf_Argy",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-083"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4552,7 +4552,7 @@
       "feature": "inf_Belltower",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-084"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4561,7 +4561,7 @@
       "feature": "inf_Biologic",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-085"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4570,7 +4570,7 @@
       "feature": "inf_Changeling",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-086"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4579,7 +4579,7 @@
       "feature": "inf_Flute",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-087"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4588,7 +4588,7 @@
       "feature": "inf_Fortress",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-088"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4597,7 +4597,7 @@
       "feature": "inf_Industrial",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-089"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4606,7 +4606,7 @@
       "feature": "inf_Messner",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-090"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4615,7 +4615,7 @@
       "feature": "inf_Moonshine",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-091"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4624,7 +4624,7 @@
       "feature": "inf_Motheaten",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-092"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4633,7 +4633,7 @@
       "feature": "inf_Outpost",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-093"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4642,7 +4642,7 @@
       "feature": "inf_Rescue",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-094"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4651,7 +4651,7 @@
       "feature": "inf_Rise",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-095"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4660,7 +4660,7 @@
       "feature": "inf_Warehouse",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-096"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -4669,7 +4669,7 @@
       "feature": "inf_Warlock",
       "source": "docs/gaps/gap-list.md#17-all-97-referenced-default-maps",
       "acceptance": [
-        "parity:G17-ALL-97-097"
+        "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline"
       ]
     },
     {
@@ -8899,7 +8899,7 @@
       "feature": "Polygon creation/editing.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-001"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8908,7 +8908,7 @@
       "feature": "Polygon type editing.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-002"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8917,7 +8917,7 @@
       "feature": "Vertex manipulation.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-003"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8926,7 +8926,7 @@
       "feature": "Texture assignment.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-004"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8935,7 +8935,7 @@
       "feature": "Texture-coordinate editing.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-005"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8944,7 +8944,7 @@
       "feature": "Multi-texture workflow.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-006"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8953,7 +8953,7 @@
       "feature": "Scenery placement.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-007"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8962,7 +8962,7 @@
       "feature": "Scenery layers.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-008"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8971,7 +8971,7 @@
       "feature": "Collider placement.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-009"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8980,7 +8980,7 @@
       "feature": "Spawn placement.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-010"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8989,7 +8989,7 @@
       "feature": "Flag/objective placement.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-011"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -8998,7 +8998,7 @@
       "feature": "Bonus placement.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-012"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9007,7 +9007,7 @@
       "feature": "Waypoint creation.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-013"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9016,7 +9016,7 @@
       "feature": "Weather properties.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-014"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9025,7 +9025,7 @@
       "feature": "Background colors.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-015"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9034,7 +9034,7 @@
       "feature": "Footstep sounds.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-016"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9043,7 +9043,7 @@
       "feature": "Jet-fuel setting.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-017"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9052,7 +9052,7 @@
       "feature": "Map validation.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-018"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9061,7 +9061,7 @@
       "feature": "Mode validation.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-019"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9070,7 +9070,7 @@
       "feature": "Test/play button.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-020"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9079,7 +9079,7 @@
       "feature": "Undo/redo.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-021"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9088,7 +9088,7 @@
       "feature": "Copy/paste.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-022"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9097,7 +9097,7 @@
       "feature": "Selection tools.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-023"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9106,7 +9106,7 @@
       "feature": "Zoom/pan/grid.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-024"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9115,7 +9115,7 @@
       "feature": "Prefabs.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-025"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9124,7 +9124,7 @@
       "feature": "PMS import.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-026"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9133,7 +9133,7 @@
       "feature": "PMS export.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-027"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9142,7 +9142,7 @@
       "feature": "Project-native map format.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-028"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9151,7 +9151,7 @@
       "feature": "Packaging custom assets.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-029"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9160,7 +9160,7 @@
       "feature": "Map preview generation.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-030"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9169,7 +9169,7 @@
       "feature": "Dedicated-server deployment.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-031"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9178,7 +9178,7 @@
       "feature": "Cross-platform editor support.",
       "source": "docs/gaps/gap-list.md#34-map-editor-and-content-pipeline",
       "acceptance": [
-        "parity:G34-MAP-EDITOR-032"
+        "rust:map_editor:editor_pipeline"
       ]
     },
     {
@@ -9610,7 +9610,7 @@
       "feature": "Source-versus-Rust movement fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-001"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -9619,7 +9619,7 @@
       "feature": "Jump fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-002"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -9628,7 +9628,7 @@
       "feature": "Jet fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-003"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -9637,7 +9637,7 @@
       "feature": "Crouch/prone/roll/backflip fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-004"
+        "rust:movement_fixtures"
       ]
     },
     {
@@ -9939,6 +9939,7 @@
     }
   ],
   "passingEvidence": [
+    "rust:movement_fixtures",
     "rust:collision_fixtures:edges",
     "rust:collision_fixtures:one-way",
     "rust:polygon_collision:materials",
@@ -9947,8 +9948,6 @@
     "rust:collision_fixtures:geometry",
     "rust:collision_fixtures:body-shape",
     "rust:game_core:corpse-terrain",
-    "rust:game_core::tests::deterministic_replay",
-    "rust:game_core::tests::player_lands_on_platform",
     "web:smoke:aim-input",
     "rust:game_core::tests::fire_is_rate_limited",
     "rust:game_core::tests::holding_grenade_input_throws_only_once",
@@ -9956,16 +9955,20 @@
     "web:mobile:movement-pad",
     "rust:game_core::tests::m79_explosion_damages_nearby_enemy_not_distant_enemy",
     "rust:game_core::tests::self_explosion_is_not_credited_as_a_kill",
+    "rust:game_core::tests::deterministic_replay",
     "rust:content::pms",
     "rust:content::pms-validation",
     "web:map-render:coordinates",
     "rust:map_validation:materials",
+    "task5:map-pipeline",
+    "rust:map_editor:all_97_original_maps_pass_the_admission_pipeline",
     "web:smoke:hud-health",
     "web:smoke:hud-jet",
     "web:smoke:hud-ammo",
     "web:smoke:hud-score",
     "web:smoke:scoreboard",
     "server:chat-rate-limit",
+    "rust:map_editor:editor_pipeline",
     "parity:G37-TESTING-REQUIRED-027"
   ]
 }

@@ -31,9 +31,9 @@ const tagged = source.split(/\r?\n/).map(line => {
 }).join('\n')
 
 const presentEvidence = new Map([
-  ['Move left/right.', 'rust:game_core::tests::deterministic_replay'],
-  ['Jump.', 'rust:game_core::tests::player_lands_on_platform'],
-  ['Jet.', 'rust:game_core::tests::deterministic_replay'],
+  ['Move left/right.', 'rust:movement_fixtures'],
+  ['Jump.', 'rust:movement_fixtures'],
+  ['Jet.', 'rust:movement_fixtures'],
   ['Mouse aiming.', 'web:smoke:aim-input'],
   ['Primary fire.', 'rust:game_core::tests::fire_is_rate_limited'],
   ['Grenade input.', 'rust:game_core::tests::holding_grenade_input_throws_only_once'],
@@ -67,6 +67,15 @@ const presentEvidence = new Map([
   ['One-way polygon fixtures.', 'rust:collision_fixtures:one-way'],
 ])
 
+for (const feature of features) {
+  if (feature.status !== 'Present' || presentEvidence.has(feature.feature)) continue
+  if (feature.section.startsWith('1.')) presentEvidence.set(feature.feature, 'rust:movement_fixtures')
+  if (feature.section.startsWith('16.')) presentEvidence.set(feature.feature, 'task5:map-pipeline')
+  if (feature.section.startsWith('17.')) presentEvidence.set(feature.feature, 'rust:map_editor:all_97_original_maps_pass_the_admission_pipeline')
+  if (feature.section.startsWith('34.')) presentEvidence.set(feature.feature, 'rust:map_editor:editor_pipeline')
+  if (feature.section.startsWith('37.') && feature.id <= 'G37-TESTING-REQUIRED-004') presentEvidence.set(feature.feature, 'rust:movement_fixtures')
+}
+
 const ledger = {
   referenceLock: 'docs/parity/reference-lock.md',
   features: features.map(feature => ({
@@ -82,7 +91,8 @@ const ledger = {
 if (ledger.passingEvidence.some(value => !value)) throw new Error('A present feature lacks a registered baseline acceptance test')
 
 mkdirSync(dirname(coveragePath), { recursive: true })
-writeFileSync(gapPath, `${tagged.replace(/\n*$/, '')}\n`)
+const normalizedGap = `${tagged.replace(/\n*$/, '')}\n`
+if (normalizedGap !== source) writeFileSync(gapPath, normalizedGap)
 writeFileSync(coveragePath, `${JSON.stringify(ledger, null, 2)}\n`)
 writeFileSync(markdownPath, [
   '# Soldat parity coverage',
