@@ -7,8 +7,8 @@ Vue 3 and TypeScript provide the guest-name screen, room browser, match HUD, cha
 From this directory:
 
 ```sh
-npm ci
-npm run dev
+bun install
+bun run dev
 ```
 
 Open the URL Vite prints, normally `http://localhost:5173`. Start the server from the repository root with `cargo run -p server` before connecting. Open a second browser tab with a different guest name to test multiplayer. If WebGL2 is unavailable, the match view reports an error.
@@ -24,11 +24,11 @@ The generated `public/wasm` files are ignored by Git. Without them, the client s
 ## Checks
 
 ```sh
-npm run lint
-npm run build
+bun run lint
+bun run build
 ```
 
-Husky installs repository-level hooks during `npm ci` when `.git` is present: pre-commit runs lint; pre-push runs build. `npm run smoke` checks a running server by connecting two guest sockets and sending movement input. It does not test browser rendering.
+Husky installs repository-level hooks during `bun install` when `.git` is present: pre-commit runs lint; pre-push runs build. `bun run smoke` checks a running server by connecting two guest sockets and sending movement input. It does not test browser rendering.
 
 ## Controls and limits
 

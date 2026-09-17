@@ -8,7 +8,7 @@ Component guides: [web client](apps/web/README.md), [Rust server](apps/api/READM
 
 ## Local development
 
-Install Rust 1.88 with `wasm32-unknown-unknown`, Node 22+, and `wasm-pack`. Run `npm ci` in `apps/web`. In separate terminals, run `cargo run -p server` and `npm run dev` in `apps/web`; open the Vite URL in two tabs. The browser uses authoritative snapshots without Wasm, but prediction requires `wasm-pack build crates/game-core --target web --release --out-dir ../../apps/web/public/wasm --out-name game_core` from the repository root. Run `cargo test --workspace` and `npm run build` to check the code.
+Install Rust 1.88 with `wasm32-unknown-unknown`, Bun, and `wasm-pack`. Run `bun install` in `apps/web`. In separate terminals, run `cargo run -p server` and `bun run dev` in `apps/web`; open the Vite URL in two tabs. The browser uses authoritative snapshots without Wasm, but prediction requires `wasm-pack build crates/game-core --target web --release --out-dir ../../apps/web/public/wasm --out-name game_core` from the repository root. Run `cargo test --workspace` and `bun run build` to check the code.
 
 ## Production container
 

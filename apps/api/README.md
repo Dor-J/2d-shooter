@@ -25,4 +25,4 @@ cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 ```
 
-With the server running, `npm --prefix apps/web run smoke` checks a two-guest join and movement update. This is a development foundation; the server still needs sustained load, abuse, and restart testing before public deployment.
+With the server running, `bun --cwd apps/web run smoke` checks a two-guest join and movement update. This is a development foundation; the server still needs sustained load, abuse, and restart testing before public deployment.

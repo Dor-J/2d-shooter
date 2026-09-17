@@ -1,1 +1,1 @@
-npm --prefix apps/web run build
+bun --cwd apps/web run build

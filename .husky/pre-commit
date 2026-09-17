@@ -1,1 +1,1 @@
-npm --prefix apps/web run lint
+bun --cwd apps/web run lint
