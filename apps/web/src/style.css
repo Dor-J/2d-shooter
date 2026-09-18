@@ -101,32 +101,35 @@ header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:s
   .chat-log{flex:1;height:auto;min-height:90px}
   .controls{grid-column:1/-1;margin:12px 0 0}
 }
-.weapons{flex-wrap:wrap}.weapons button{flex:1 1 120px;background:#243b44;color:#dce9df;border:1px solid #47616a}.weapons button.selected{background:#e2fc68;color:#142022}
+.weapons{flex-wrap:wrap}.weapons button{flex:1 1 120px;background:#243b44;color:#dce9df;border:1px solid #47616a}.weapons button.selected{background:#e2fc68;color:#142022}.weapons button.owned{border-color:#e9b94a}.pickup-hint{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);padding:6px 10px;background:#10161dd9;color:#e9b94a;font-size:12px;border:1px solid #e9b94a}
 .match-actions{display:flex;gap:8px}.mobile-weapon{display:none}
+
+/* Soldat-style: the match fills the window. HUD/chat sit on top. */
+.in-match{height:100dvh;overflow:hidden;background:#080d12}
+.in-match>header{display:none}
+.in-match .match{height:100dvh;max-width:none;padding:0;position:relative;display:block}
+.in-match .match-head{height:48px;padding:max(5px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) 5px max(10px,env(safe-area-inset-left));position:absolute;inset:0 0 auto;z-index:5;background:linear-gradient(#080e16e8,#080e1696,transparent)}
+.in-match .match-head strong{font-size:17px}.in-match .match-head span{font-size:9px;margin-top:1px}
+.in-match .match-actions button{min-height:38px;padding:7px 10px;font-size:10px;background:#101c26d9}
+.in-match .invite-chip{position:absolute;left:50%;top:max(7px,env(safe-area-inset-top));transform:translateX(-50%);height:36px;padding:4px 8px}.in-match .invite-chip small,.in-match .invite-chip span{display:none}.in-match .invite-chip b{font-size:12px}
+.in-match .game-wrap{width:100%;height:100%;min-height:0;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}
+.in-match .game-wrap canvas{height:100%;background-repeat:no-repeat;cursor:none}
+.in-match .hud{top:max(51px,calc(env(safe-area-inset-top) + 46px));left:max(8px,env(safe-area-inset-left));right:auto;max-width:calc(100% - 16px)}
+.in-match .weapons{display:none}
+.in-match .match-bottom{display:none;position:absolute;z-index:8;inset:max(52px,calc(env(safe-area-inset-top) + 48px)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));overflow:auto;margin:0;padding:0;background:#101a24f5;border:1px solid #59666d;box-shadow:0 12px 40px #000b}
+.in-match .match-bottom.open{display:block}
+.in-match .scoreboard,.in-match .chat{padding:16px;border:0;border-bottom:1px solid #ffffff24;background:transparent}
+.in-match .chat-log{height:min(25vh,140px)}
+.in-match .controls{display:none}
 
 @media(pointer:coarse){
   button:hover{transform:none}
-  .in-match{height:100dvh;overflow:hidden;background:#080d12}
-  .in-match>header{display:none}
-  .in-match .match{height:100dvh;max-width:none;padding:0;position:relative;display:block}
-  .in-match .match-head{height:48px;padding:max(5px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) 5px max(10px,env(safe-area-inset-left));position:absolute;inset:0 0 auto;z-index:5;background:linear-gradient(#080e16e8,#080e1696,transparent)}
-  .in-match .match-head strong{font-size:17px}.in-match .match-head span{font-size:9px;margin-top:1px}
-  .in-match .match-actions button{min-height:38px;padding:7px 10px;font-size:10px;background:#101c26d9}
-  .in-match .invite-chip{position:absolute;left:50%;top:max(7px,env(safe-area-inset-top));transform:translateX(-50%);height:36px;padding:4px 8px}.in-match .invite-chip small,.in-match .invite-chip span{display:none}.in-match .invite-chip b{font-size:12px}
-  .in-match .game-wrap{width:100%;height:100%;min-height:0;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none}
-  .in-match .game-wrap canvas{height:100%;background-repeat:no-repeat}
-  .in-match .hud{top:max(51px,calc(env(safe-area-inset-top) + 46px));left:max(8px,env(safe-area-inset-left));right:auto;max-width:calc(100% - 16px);padding:2px 3px}
+  .in-match .hud{padding:2px 3px}
   .in-match .stat{padding:4px 6px}.in-match .stat small{font-size:6px}.in-match .stat strong{font-size:12px}
-  .in-match .weapons{display:none}
   .in-match .mobile-weapon{display:flex;position:absolute;z-index:6;left:50%;bottom:max(9px,env(safe-area-inset-bottom));transform:translateX(-50%);align-items:center;background:#071019d9;border:1px solid #f0e8d067;box-shadow:0 5px 18px #0009;height:34px;min-width:158px}
   .in-match .mobile-weapon button{width:40px;height:32px;padding:0;background:transparent;color:#f5f5ed;font-size:19px;border-radius:0}
   .in-match .mobile-weapon span{flex:1;text-align:center;font:800 10px 'DM Sans',sans-serif;letter-spacing:.035em;white-space:nowrap}
-  .in-match .match-bottom{display:none;position:absolute;z-index:8;inset:max(52px,calc(env(safe-area-inset-top) + 48px)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));overflow:auto;margin:0;padding:0;background:#101a24f5;border:1px solid #59666d;box-shadow:0 12px 40px #000b}
-  .in-match .match-bottom.open{display:block}
-  .in-match .scoreboard,.in-match .chat{padding:16px;border:0;border-bottom:1px solid #ffffff24;background:transparent}
-  .in-match .chat-log{height:min(25vh,140px)}
   .in-match .chat input{font-size:16px}
-  .in-match .controls{display:none}
 }
 @media(pointer:coarse) and (orientation:portrait){
   .in-match .match-head span{display:none}
@@ -161,3 +164,306 @@ header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:s
 .respawn-weapons button{padding:5px 9px;font-size:10px;letter-spacing:.04em;border:1px solid #f2eadb3d;border-radius:6px;background:#16222e;color:#f5f5ed}
 .respawn-weapons button.selected{background:#e9b94a;color:#10161d;border-color:#fff}
 @media(max-width:500px){.kill-feed p{font-size:10px;padding:2px 6px}.respawn-weapons button{font-size:9px;padding:4px 7px}}
+
+/* The phase banner: a countdown, overtime, or the result, across the middle of the arena. */
+.match-banner {
+  position: absolute;
+  inset-inline: 0;
+  top: 22%;
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+  font-size: clamp(1.4rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f4f6fb;
+  text-shadow: 0 2px 18px rgba(3, 8, 20, 0.9);
+}
+
+/* Flag status: one line per flag, so a glance says where every objective is. */
+.flag-status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  gap: 2px;
+  justify-items: end;
+  pointer-events: none;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+.flag-status p {
+  margin: 0;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(6, 12, 24, 0.66);
+  color: #dbe3f2;
+}
+.flag-status p.alpha { border-left: 3px solid #e2574c; }
+.flag-status p.bravo { border-left: 3px solid #4d8ce0; }
+.flag-status p.yellow { border-left: 3px solid #e6c34a; }
+.flag-status p.missing { color: #ffd9a0; }
+
+.carrying-flag {
+  position: absolute;
+  inset-inline: 0;
+  top: 34%;
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffe6a8;
+  text-shadow: 0 2px 12px rgba(3, 8, 20, 0.9);
+}
+
+/* Room badges: which modifiers or community ruleset a room is running. */
+.room-badges {
+  margin: 4px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.room-badges span {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(96, 132, 210, 0.22);
+  color: #cfe0ff;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+}
+
+.create fieldset.modifiers {
+  margin: 0;
+  padding: 6px 10px 8px;
+  border: 1px solid rgba(140, 160, 200, 0.28);
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.create fieldset.modifiers legend {
+  padding: 0 4px;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+.create fieldset.modifiers label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+}
+.create fieldset.modifiers:disabled { opacity: 0.45; }
+
+/* The spectator bar: who is being watched and how to change it. */
+.spectator-bar {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 12px;
+}
+.spectator-bar span {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(6, 12, 24, 0.78);
+  color: #dbe3f2;
+  font-size: 0.82rem;
+}
+.spectator-bar button { padding: 3px 10px; font-size: 0.78rem; }
+
+.scoreboard .limit,
+.weapon-stats .limit {
+  margin: 0 0 6px;
+  font-size: 0.74rem;
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+.spectate-controls { margin-top: 8px; }
+.bot-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+.bot-controls button { min-width: 40px; }
+.bot-setup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bot-setup label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.bot-setup input { width: 72px; }
+.weapon-stats div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+
+/* The active-bonus panel and the tint its effect puts over the screen. */
+.bonus-panel {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 12px;
+  border-radius: 999px;
+  pointer-events: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: rgba(6, 12, 24, 0.78);
+  color: #f2f5fb;
+}
+.bonus-panel.flame-god { border: 1px solid rgba(255, 168, 64, 0.8); color: #ffd9a8; }
+.bonus-panel.berserker { border: 1px solid rgba(226, 87, 76, 0.85); color: #ffc4be; }
+.bonus-panel.predator { border: 1px solid rgba(120, 208, 190, 0.8); color: #bdeee3; }
+
+.bonus-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.bonus-overlay.flame-god { background: radial-gradient(circle at 50% 60%, rgba(255, 140, 40, 0.16), transparent 70%); }
+.bonus-overlay.berserker { background: radial-gradient(circle at 50% 60%, rgba(220, 40, 40, 0.16), transparent 70%); }
+.bonus-overlay.predator { background: radial-gradient(circle at 50% 60%, rgba(80, 200, 180, 0.12), transparent 70%); }
+
+.kit-hint {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 84px;
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+  font-size: 0.82rem;
+  color: #d8e6ff;
+  text-shadow: 0 2px 10px rgba(3, 8, 20, 0.9);
+}
+
+/* The HUD across the top: standing, team scores, objectives, and the connection. */
+.hud-top {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  left: 12px;
+  right: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  pointer-events: none;
+  font-size: 12px;
+}
+.hud-top .standing {
+  display: flex;
+  flex-direction: column;
+  background: rgba(6, 10, 14, 0.62);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.hud-top .standing b { font-size: 15px; }
+.hud-top .standing small { opacity: 0.7; }
+.hud-top .team-scores {
+  display: flex;
+  gap: 12px;
+  margin-inline: auto;
+  background: rgba(6, 10, 14, 0.62);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.hud-top .team-scores .leading { text-shadow: 0 0 8px currentColor; }
+.hud-top .team-scores .own { text-decoration: underline; }
+.hud-top .flag-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  order: 3;
+}
+.hud-top .flag-row span {
+  background: rgba(6, 10, 14, 0.62);
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+.hud-top .flag-row .taken { color: #ff8f84; }
+.hud-top .flag-row .carried { color: #9ad8a0; }
+.hud-top .flag-row .dropped { color: #f0c64f; }
+.hud-top .network {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  background: rgba(6, 10, 14, 0.62);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.hud-top .network .dot { border-radius: 50%; display: inline-block; }
+
+/* The weapon corner, beside the weapon buttons. */
+.weapon-corner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+.weapon-corner b { font-size: 14px; }
+
+/* The end-of-round screen, over the match while the next map loads. */
+.end-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(4, 6, 10, 0.78);
+  text-align: center;
+  padding: 24px 16px;
+}
+.end-screen h2 { font-size: 28px; margin: 0; }
+.end-screen p { margin: 0; opacity: 0.8; }
+.end-screen .podium { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.end-screen .weapon-screen { width: min(420px, 100%); display: grid; gap: 4px; }
+.end-screen .weapon-screen div { display: flex; justify-content: space-between; gap: 10px; }
+.end-screen .next-map { opacity: 0.65; }
+
+.scoreboard-overlay .row.own { font-weight: 700; }
+.scoreboard-overlay .row.spectating { opacity: 0.6; }
+.scoreboard-overlay .row { border-left: 3px solid transparent; padding-left: 6px; }
+
+/* Video settings. */
+.video-settings {
+  display: grid;
+  gap: 12px;
+  background: #12161c;
+  border-radius: 12px;
+  padding: 18px;
+  width: min(420px, 92vw);
+  max-height: 86vh;
+  overflow-y: auto;
+}
+.video-settings header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.video-settings h2 { margin: 0; }
+.video-settings label { display: grid; gap: 6px; font-size: 13px; }
+.video-settings label.switch { display: flex; align-items: center; gap: 8px; }
+.video-settings input[type='range'] { width: 100%; }
