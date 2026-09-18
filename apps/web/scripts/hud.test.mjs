@@ -110,6 +110,16 @@ test('gibs are thrown from the body and particles fade out and are collected', (
   assert.ok(before > 0)
 })
 
+test('muzzle flashes and casings are short-lived presentation particles', () => {
+  const field = new ParticleField({ limit: 20 })
+  field.emitFlash({ x: 8, y: 9 })
+  field.emitCasing({ x: 8, y: 9 })
+  assert.ok(field.particles.some(particle => particle.kind === 'flash'))
+  assert.ok(field.particles.some(particle => particle.kind === 'casing'))
+  for (let i = 0; i < 60; i += 1) field.step(1 / 60)
+  assert.equal(field.particles.length, 0)
+})
+
 test('the particle field never exceeds its limit', () => {
   const field = new ParticleField({ limit: 24 })
   for (let i = 0; i < 40; i += 1) field.emitBlood({ x: i, y: i }, { x: 1, y: 0 }, 80, i)

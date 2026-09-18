@@ -228,7 +228,30 @@ test('the encoder produces one protocol input frame covering stance, reload, and
     throw_grenade: false,
     aim: { x: 800, y: 120 },
     weapon: 3,
+    drop: false,
+    throw_weapon: false,
+    throw_knife: false,
+    pickup: false,
   })
+})
+
+test('drop, throw, knife, and pickup reach the protocol frame', () => {
+  const state = new ActionState()
+  state.set('dropWeapon', true)
+  state.set('throwWeapon', true)
+  state.set('throwKnife', true)
+  state.set('pickup', true)
+  const frame = encodeInput(state, { seq: 1, aim: { x: 0, y: 0 }, weapon: 0 })
+  assert.equal(frame.drop, true)
+  assert.equal(frame.throw_weapon, true)
+  assert.equal(frame.throw_knife, true)
+  assert.equal(frame.pickup, true)
+})
+
+test('switchWeapon toggles between the two carried slots', () => {
+  const state = new ActionState()
+  state.set('switchWeapon', true)
+  assert.equal(resolveWeapon(0, state, { primary: 0, secondary: 10 }, [0, 10]), 10)
 })
 
 test('roll and backflip reach the simulation through the same roll field', () => {

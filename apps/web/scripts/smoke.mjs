@@ -9,7 +9,7 @@ function connect(name) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(endpoint)
     const timeout = setTimeout(() => reject(new Error(`Timed out connecting ${name}`)), 5000)
-    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 7, name, resume: null })))
+    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 13, name, resume: null })))
     ws.addEventListener('message', event => {
       const message = JSON.parse(event.data)
       if (message.type === 'welcome') { clearTimeout(timeout); resolve({ ws, player: message.player }) }
@@ -46,12 +46,14 @@ try {
   const joined = await second
   if (joined.room !== created.room) throw new Error('Invite code joined the wrong room')
   const snapshot = await snapshotReady
+  if (snapshot.world.weapons?.hash !== 911431262) throw new Error(`Expected default weapon hash, got ${JSON.stringify(snapshot.world.weapons)}`)
+  if (!snapshot.world.weapons?.names?.includes('LAW')) throw new Error('Expected HUD weapon names on the snapshot table')
   let seq = 0
   const input = overrides => {
     seq += 1
     a.ws.send(JSON.stringify({
       type: 'input',
-      input: { seq, left: false, right: false, jump: false, jet: false, crouch: false, prone: false, roll: false, reload: false, fire: false, throw_grenade: false, aim: { x: 800, y: 400 }, weapon: 0, ...overrides },
+      input: { seq, left: false, right: false, jump: false, jet: false, crouch: false, prone: false, roll: false, reload: false, fire: false, throw_grenade: false, drop: false, throw_weapon: false, throw_knife: false, pickup: false, aim: { x: 800, y: 400 }, weapon: 0, ...overrides },
     }))
   }
   const mine = message => message.world.players[a.player]
@@ -70,19 +72,19 @@ try {
   await waitFor(a.ws, 'snapshot', m => ['standing', 'airborne'].includes(mine(m).state?.pose), 'return to standing')
 
   // Explicit reload: fire one slow round, stop, then ask for a reload while the magazine is partial.
-  input({ fire: true, weapon: 7 })
-  const fired = await waitFor(a.ws, 'snapshot', m => mine(m).ammo < 10 && mine(m).weapon === 7, 'first shot')
+  input({ fire: true, weapon: 0 })
+  const fired = await waitFor(a.ws, 'snapshot', m => mine(m).ammo < 7 && mine(m).weapon === 0, 'first shot')
   if (fired.world.players[a.player].ammo === 0) throw new Error('Expected a partial magazine for the reload check')
-  input({ weapon: 7 })
+  input({ weapon: 0 })
   const idle = await waitFor(a.ws, 'snapshot', m => mine(m).reload_timer === 0 && mine(m).ammo > 0, 'partial magazine')
-  if (idle.world.players[a.player].ammo === 10) throw new Error('Reload check needs a partial magazine')
-  input({ weapon: 7, reload: true })
+  if (idle.world.players[a.player].ammo === 7) throw new Error('Reload check needs a partial magazine')
+  input({ weapon: 0, reload: true })
   const reloading = await waitFor(a.ws, 'snapshot', m => mine(m).reload_timer > 0, 'explicit reload')
 
   // Damage, death attribution, the corpse, and the respawn countdown are all server-owned.
   const settled = await waitFor(a.ws, 'snapshot', m => m.world.players[b.player].grounded, 'victim settled')
   const victim = settled.world.players[b.player]
-  input({ fire: true, weapon: 2, aim: { x: victim.pos.x, y: victim.pos.y } })
+  input({ fire: true, weapon: 0, aim: { x: victim.pos.x, y: victim.pos.y } })
   await waitFor(a.ws, 'snapshot', m => m.world.players[b.player].hp < 100, 'damage applied')
   const killed = await waitFor(a.ws, 'snapshot', m => m.world.players[b.player].hp === 0, 'kill')
   const corpse = killed.world.players[b.player]
@@ -92,7 +94,7 @@ try {
   if (killed.world.players[a.player].kills !== 1) throw new Error('Expected one frag for the shooter')
   if ((killed.world.ragdolls ?? []).length === 0) throw new Error('Expected a corpse to be left behind')
   if (!(corpse.respawn > 0)) throw new Error('Expected a respawn countdown')
-  input({ weapon: 2, aim: { x: victim.pos.x, y: victim.pos.y } })
+  input({ weapon: 0, aim: { x: victim.pos.x, y: victim.pos.y } })
   const respawned = await waitFor(
     a.ws,
     'snapshot',
