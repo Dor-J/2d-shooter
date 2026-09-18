@@ -1,9 +1,18 @@
 #![forbid(unsafe_code)]
 
+mod admin;
+mod audit;
+mod bans;
+mod config;
+mod lobby;
 mod maps;
+mod ops;
+mod security;
+mod storage;
 
 use axum::{
     extract::{
+        connect_info::ConnectInfo,
         ws::{Message, WebSocket, WebSocketUpgrade},
         State,
     },
@@ -14,8 +23,8 @@ use axum::{
 };
 use futures_util::{SinkExt, StreamExt};
 use game_core::{
-    Event, Input, MatchEvent, ModeKind, ModeRules, Rotation, ValidatedMap, WeaponTable, World,
-    TICK_RATE,
+    Event, Input, MatchEvent, ModeKind, ModeRules, Replay, ReplayHeader, Rotation, ValidatedMap,
+    WeaponTable, World, TICK_RATE,
 };
 use map_editor::{original_default_map, DEFAULT_MAPS};
 use maps::{MapService, TransferEvent};
@@ -24,6 +33,7 @@ use protocol::{
 };
 use std::{
     collections::{BTreeMap, HashMap},
+    net::{IpAddr, SocketAddr},
     sync::Arc,
     time::{Duration, Instant},
 };
@@ -31,7 +41,6 @@ use tokio::sync::{mpsc, Mutex};
 use tracing::info;
 
 const ROOM_CAPACITY: usize = 16;
-const RESUME_GRACE: Duration = Duration::from_secs(20);
 type Sender = mpsc::UnboundedSender<String>;
 
 struct Guest {
@@ -43,6 +52,11 @@ struct Guest {
     disconnected: Option<Instant>,
     last_chat: Instant,
     last_input: u32,
+    muted: std::collections::HashSet<u32>,
+    admin: bool,
+    flood: game_core::Flood,
+    ip: IpAddr,
+    last_ping: Instant,
 }
 struct Room {
     id: u32,
@@ -63,6 +77,12 @@ struct Room {
     rotation: Rotation,
     /// The community ruleset this room is playing, when it is playing one.
     ruleset: Option<String>,
+    password: String,
+    paused: bool,
+    capacity: usize,
+    required_mod: String,
+    replay: Replay,
+    votes: std::collections::HashMap<u32, String>,
 }
 struct Hub {
     guests: HashMap<u32, Guest>,
@@ -72,6 +92,15 @@ struct Hub {
     next_room: u32,
     maps: MapService,
     map_transfers: BTreeMap<u64, u32>,
+    bans: bans::BanList,
+    audit: audit::AuditLog,
+    config: config::ServerConfig,
+    limits: security::RateLimits,
+    store: storage::Store,
+    drain: bool,
+    tick_ms: u64,
+    errors: u64,
+    owner: String,
 }
 impl Hub {
     fn new() -> Self {
@@ -81,6 +110,12 @@ impl Hub {
             .unwrap_or_default();
         let default_map = ValidatedMap::try_from(original_default_map(DEFAULT_MAPS[0]))
             .expect("built-in map must validate");
+        let store = std::env::var_os("DATA_DIR")
+            .map(|_| storage::load_file(&storage::store_path()))
+            .unwrap_or_default();
+        let mut config = config::ServerConfig::default();
+        store.config.apply(&mut config);
+        let world = World::with_map("deathmatch", &default_map);
         let mut hub = Self {
             guests: HashMap::new(),
             tokens: HashMap::new(),
@@ -89,6 +124,19 @@ impl Hub {
             next_room: 2,
             maps,
             map_transfers: BTreeMap::new(),
+            bans: if store.bans.is_empty() {
+                bans::BanList::default()
+            } else {
+                bans::BanList::restore(&store.bans)
+            },
+            audit: audit::AuditLog::default(),
+            config,
+            limits: security::RateLimits::default(),
+            store: store.clone(),
+            drain: store.drain,
+            tick_ms: 0,
+            errors: 0,
+            owner: std::env::var("SERVER_ID").unwrap_or_else(|_| "api-1".into()),
         };
         hub.rooms.insert(
             1,
@@ -98,16 +146,44 @@ impl Hub {
                 mode: "deathmatch".into(),
                 code: "ARENA1".into(),
                 public: true,
-                world: World::with_map("deathmatch", &default_map),
+                replay: Replay::new(ReplayHeader::new(VERSION, "Aero", &world, 1)),
+                world,
                 inputs: BTreeMap::new(),
                 pending_events: Vec::new(),
                 pending_match_events: Vec::new(),
                 rotation: default_rotation("Aero", ModeKind::Deathmatch),
                 ruleset: None,
                 map: "Aero".into(),
+                password: String::new(),
+                paused: false,
+                capacity: ROOM_CAPACITY,
+                required_mod: String::new(),
+                votes: std::collections::HashMap::new(),
             },
         );
+        if let Ok(name) = std::env::var("SERVER_NAME") {
+            let _ = hub.config.set_name(name);
+        }
+        let _ = hub.store.claim(1, hub.owner.clone(), 1);
         hub
+    }
+    fn persist(&mut self) {
+        self.store.bans = self.bans.persist();
+        self.store.config = storage::ConfigBlob::from(&self.config);
+        self.store.drain = self.drain;
+        if std::env::var_os("DATA_DIR").is_some() {
+            let _ = storage::save_file(&storage::store_path(), &self.store);
+        }
+    }
+    /// Flushes bans/config. The dying process refuses joins; an operator `/DRAIN` survives restart.
+    fn persist_for_shutdown(&mut self) {
+        let keep_drain = self.drain;
+        self.drain = true;
+        self.persist();
+        self.store.drain = keep_drain;
+        if std::env::var_os("DATA_DIR").is_some() {
+            let _ = storage::save_file(&storage::store_path(), &self.store);
+        }
     }
     fn send(&self, id: u32, msg: &ServerMessage) {
         if let Some(tx) = self.guests.get(&id).and_then(|g| g.sender.as_ref()) {
@@ -117,7 +193,8 @@ impl Hub {
         }
     }
     fn room_list(&self) -> Vec<RoomInfo> {
-        self.rooms
+        let rooms: Vec<RoomInfo> = self
+            .rooms
             .values()
             .filter(|r| r.public)
             .map(|r| RoomInfo {
@@ -125,7 +202,7 @@ impl Hub {
                 name: r.name.clone(),
                 mode: r.mode.clone(),
                 players: r.world.players.len(),
-                capacity: ROOM_CAPACITY,
+                capacity: r.capacity,
                 map: r.map.clone(),
                 weapon_mod: r.world.weapons.name().to_string(),
                 weapon_hash: r.world.weapons.canonical_hash(),
@@ -135,10 +212,29 @@ impl Hub {
                     advance: r.world.rules.modifiers.advance,
                 },
                 ruleset: r.ruleset.clone(),
+                password: !r.password.is_empty(),
+                version: VERSION,
+                required_mod: (!r.required_mod.is_empty()).then(|| r.required_mod.clone()),
+                region: Some(std::env::var("SERVER_REGION").unwrap_or_else(|_| "invite".into())),
             })
-            .collect()
+            .collect();
+        lobby::sort_rooms(
+            lobby::filter_rooms(&rooms, &lobby::LobbyQuery::default()),
+            lobby::SortKey::Players,
+        )
+    }
+    fn requires_mod(&self, room_id: u32, offered: Option<&str>) -> Result<(), &'static str> {
+        let required = &self.rooms.get(&room_id).ok_or("room_missing")?.required_mod;
+        if required.is_empty() || required == offered.unwrap_or("") {
+            Ok(())
+        } else {
+            Err("mod_required")
+        }
     }
     fn create_room(&mut self, request: RoomRequest) -> Result<u32, &'static str> {
+        if self.drain {
+            return Err("draining");
+        }
         let RoomRequest {
             name,
             mode,
@@ -150,6 +246,8 @@ impl Hub {
             bonuses,
             bots,
             bot_difficulty,
+            password: request_password,
+            required_mod,
         } = request;
         // A community ruleset brings its own base mode and modifiers, so it is resolved first and
         // then treated exactly like any other room.
@@ -220,12 +318,16 @@ impl Hub {
             _ if world.rules.modifiers.realistic => WeaponTable::realistic(),
             _ => WeaponTable::normal(),
         };
+        if world.rules.modifiers.realistic {
+            world.movement = game_core::MovementConfig::realistic();
+        }
         // Bots fill the room before anybody joins, so a player never walks into an empty match.
         if let Some(wanted) = bots.filter(|count| *count > 0) {
             let difficulty =
                 game_core::Difficulty::from_id(bot_difficulty.as_deref().unwrap_or("normal"));
             fill_with_bots(&mut world, usize::from(wanted), difficulty);
         }
+        let map_name = entry.name;
         self.rooms.insert(
             room_id,
             Room {
@@ -234,15 +336,28 @@ impl Hub {
                 mode: mode.clone(),
                 code,
                 public,
+                replay: Replay::new(ReplayHeader::new(
+                    VERSION,
+                    map_name,
+                    &world,
+                    u64::from(room_id),
+                )),
                 world,
                 inputs: BTreeMap::new(),
                 pending_events: Vec::new(),
                 pending_match_events: Vec::new(),
-                rotation: default_rotation(entry.name, kind),
+                rotation: default_rotation(map_name, kind),
                 ruleset: scripted.as_ref().map(|rules| rules.name.clone()),
-                map: entry.name.into(),
+                map: map_name.into(),
+                password: request_password,
+                paused: false,
+                capacity: ROOM_CAPACITY,
+                required_mod,
+                votes: std::collections::HashMap::new(),
             },
         );
+        let fence = u64::from(room_id);
+        let _ = self.store.claim(room_id, self.owner.clone(), fence);
         Ok(room_id)
     }
     fn room_id_by_code(&self, code: &str) -> Option<u32> {
@@ -253,14 +368,22 @@ impl Hub {
             .map(|room| room.id)
     }
     fn leave(&mut self, id: u32) {
+        let name = self.guests.get(&id).map(|guest| guest.name.clone());
         if let Some(room_id) = self.guests.get_mut(&id).and_then(|g| g.room.take()) {
             if let Some(room) = self.rooms.get_mut(&room_id) {
                 room.world.players.remove(&id);
                 room.inputs.remove(&id);
             }
+            if let Some(name) = name {
+                announce(self, room_id, format!("{name} left"));
+            }
         }
     }
     fn join(&mut self, id: u32, room_id: u32) -> Result<(), &'static str> {
+        if self.drain {
+            return Err("draining");
+        }
+        let capacity = self.rooms.get(&room_id).ok_or("room_missing")?.capacity;
         if self
             .rooms
             .get(&room_id)
@@ -268,14 +391,14 @@ impl Hub {
             .world
             .players
             .len()
-            >= ROOM_CAPACITY
+            >= capacity
         {
             return Err("room_full");
         }
         self.leave(id);
         let name = self.guests[&id].name.clone();
         let room = self.rooms.get_mut(&room_id).unwrap();
-        room.world.add_player(id, name);
+        room.world.add_player(id, name.clone());
         let joined_name = room.name.clone();
         let joined_code = room.code.clone();
         let joined_public = room.public;
@@ -290,6 +413,7 @@ impl Hub {
                 public: joined_public,
             },
         );
+        announce(self, room_id, format!("{name} joined"));
         Ok(())
     }
 }
@@ -306,53 +430,93 @@ async fn main() {
     let hub: Shared = Arc::new(Mutex::new(Hub::new()));
     tokio::spawn(tick_loop(hub.clone()));
     let app = Router::new()
-        .route(
-            "/health",
-            get(|| async { Json(serde_json::json!({"status":"ok"})) }),
-        )
+        .route("/health", get(health))
+        .route("/ready", get(ready))
         .route("/metrics", get(metrics))
         .route("/ws", get(ws_handler))
-        .with_state(hub);
+        .with_state(hub.clone());
     let bind = std::env::var("BIND_ADDR").unwrap_or_else(|_| "127.0.0.1:3000".into());
     let listener = tokio::net::TcpListener::bind(&bind)
         .await
         .expect("bind server");
     info!(%bind, "listening");
-    axum::serve(listener, app)
-        .with_graceful_shutdown(async {
-            let _ = tokio::signal::ctrl_c().await;
-            info!("shutdown signal");
-        })
-        .await
-        .expect("serve");
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .with_graceful_shutdown(shutdown_signal(hub))
+    .await
+    .expect("serve");
+}
+async fn shutdown_signal(hub: Shared) {
+    let ctrl_c = tokio::signal::ctrl_c();
+    #[cfg(unix)]
+    {
+        let mut term = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+            .expect("listen for SIGTERM");
+        tokio::select! {
+            _ = ctrl_c => {}
+            _ = term.recv() => {}
+        }
+    }
+    #[cfg(not(unix))]
+    {
+        let _ = ctrl_c.await;
+    }
+    let mut h = hub.lock().await;
+    h.persist_for_shutdown();
+    info!("shutdown signal");
+}
+async fn health() -> Json<serde_json::Value> {
+    Json(ops::liveness())
+}
+async fn ready(State(hub): State<Shared>) -> impl IntoResponse {
+    let h = hub.lock().await;
+    let players = h.rooms.values().map(|r| r.world.players.len()).sum();
+    let (code, body) = ops::readiness(h.drain, h.rooms.len(), players);
+    (
+        StatusCode::from_u16(code).unwrap_or(StatusCode::OK),
+        Json(body),
+    )
 }
 async fn metrics(State(hub): State<Shared>) -> String {
     let h = hub.lock().await;
-    format!(
-        "game_guests {}\ngame_rooms {}\ngame_players {}\n",
+    ops::metrics_text(
         h.guests.len(),
         h.rooms.len(),
         h.rooms
             .values()
             .map(|r| r.world.players.len())
-            .sum::<usize>()
+            .sum::<usize>(),
+        h.audit.len(),
+        h.bans.persist().len(),
+        h.tick_ms,
+        h.errors,
     )
 }
 async fn ws_handler(
     ws: WebSocketUpgrade,
     State(hub): State<Shared>,
     headers: HeaderMap,
+    ConnectInfo(addr): ConnectInfo<SocketAddr>,
 ) -> impl IntoResponse {
     if let Ok(origin) = std::env::var("ALLOWED_ORIGIN") {
-        if headers.get("origin").and_then(|v| v.to_str().ok()) != Some(origin.as_str()) {
+        if !origin.is_empty()
+            && headers.get("origin").and_then(|v| v.to_str().ok()) != Some(origin.as_str())
+        {
             return StatusCode::FORBIDDEN.into_response();
         }
     }
+    let trusted = std::env::var("TRUSTED_PROXIES").unwrap_or_default();
+    let forwarded = headers
+        .get("x-forwarded-for")
+        .and_then(|value| value.to_str().ok());
+    let ip = security::client_ip(addr.ip(), forwarded, &trusted);
     ws.max_message_size(protocol::MAX_MESSAGE_BYTES)
-        .on_upgrade(move |socket| handle_socket(socket, hub))
+        .on_upgrade(move |socket| handle_socket(socket, hub, ip))
         .into_response()
 }
-async fn handle_socket(socket: WebSocket, hub: Shared) {
+async fn handle_socket(socket: WebSocket, hub: Shared, ip: IpAddr) {
     let (mut ws_tx, mut ws_rx) = socket.split();
     let (tx, mut rx) = mpsc::unbounded_channel::<String>();
     let writer = tokio::spawn(async move {
@@ -380,16 +544,47 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                 version,
                 name,
                 resume,
+                admin_password,
             } = parsed
             {
                 if version != VERSION {
                     send_error(&tx, "version_mismatch");
                     break;
                 }
+                if h.bans.is_banned(ip) {
+                    let _ = tx.send(
+                        serde_json::to_string(&ServerMessage::Kicked {
+                            reason: "banned".into(),
+                        })
+                        .unwrap(),
+                    );
+                    break;
+                }
+                if !h.limits.allow_connect(ip) {
+                    send_error(&tx, "rate_limited");
+                    break;
+                }
                 let name = clean_text(&name, 20);
                 if name.is_empty() {
                     send_error(&tx, "invalid_name");
                     continue;
+                }
+                let dupes: Vec<u32> = h
+                    .guests
+                    .iter()
+                    .filter(|(_, guest)| {
+                        guest.sender.is_some() && guest.name.eq_ignore_ascii_case(&name)
+                    })
+                    .map(|(&id, _)| id)
+                    .collect();
+                for id in dupes {
+                    h.send(
+                        id,
+                        &ServerMessage::Kicked {
+                            reason: "duplicate".into(),
+                        },
+                    );
+                    h.leave(id);
                 }
                 if h.guests.values().filter(|g| g.sender.is_some()).count() >= 128 {
                     send_error(&tx, "server_full");
@@ -401,18 +596,20 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                         h.guests
                             .get(id)
                             .and_then(|g| g.disconnected)
-                            .is_some_and(|t| t.elapsed() < RESUME_GRACE)
+                            .is_some_and(|t| t.elapsed() < security::resume_ttl())
                     });
                 let id = if let Some(id) = resumed {
                     let g = h.guests.get_mut(&id).unwrap();
                     g.sender = Some(tx.clone());
                     g.disconnected = None;
                     g.last_input = 0;
+                    g.last_ping = Instant::now();
                     id
                 } else {
                     let id = h.next_guest;
                     h.next_guest += 1;
                     let token = uuid::Uuid::new_v4().to_string();
+                    let admin = h.bans.is_admin(Some(ip), None);
                     h.tokens.insert(token.clone(), id);
                     h.guests.insert(
                         id,
@@ -425,11 +622,25 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                             disconnected: None,
                             last_chat: Instant::now() - Duration::from_secs(10),
                             last_input: 0,
+                            muted: std::collections::HashSet::new(),
+                            admin,
+                            flood: game_core::Flood::default(),
+                            ip,
+                            last_ping: Instant::now(),
                         },
                     );
                     id
                 };
                 identity = Some(id);
+                if let Some(password) = admin_password {
+                    if h.config.authenticate_admin(&password) {
+                        h.guests.get_mut(&id).unwrap().admin = true;
+                        h.bans.add_admin_id(id);
+                    }
+                }
+                if h.bans.is_admin(Some(ip), Some(id)) {
+                    h.guests.get_mut(&id).unwrap().admin = true;
+                }
                 let token = h.guests[&id].token.clone();
                 h.send(
                     id,
@@ -545,14 +756,19 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                 bonuses,
                 bots,
                 bot_difficulty,
+                password,
+                required_mod,
             } => {
+                let ip = h.guests[&id].ip;
+                if !h.limits.allow_room(ip) {
+                    send_error(&tx, "rate_limited");
+                    continue;
+                }
                 if h.rooms.len() >= 16 {
                     send_error(&tx, "room_limit");
                     continue;
                 }
                 let name = clean_text(&name, 24);
-                // A mode nobody can play is refused here; which modes those are is the
-                // simulation's answer, not a list the server keeps its own copy of.
                 if name.is_empty() || !ModeKind::from_id(&mode).is_implemented() {
                     send_error(&tx, "invalid_room");
                     continue;
@@ -568,6 +784,8 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                     bonuses,
                     bots,
                     bot_difficulty,
+                    password: password.unwrap_or_default(),
+                    required_mod: required_mod.unwrap_or_default(),
                 }) {
                     Ok(room_id) => {
                         let _ = h.join(id, room_id);
@@ -575,20 +793,54 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
                     Err(code) => send_error(&tx, code),
                 }
             }
-            ClientMessage::JoinRoom { room } => {
+            ClientMessage::JoinRoom {
+                room,
+                password,
+                spectator,
+                mod_hash,
+            } => {
                 if h.rooms
                     .get(&room)
                     .is_some_and(|candidate| !candidate.public)
                 {
                     send_error(&tx, "invite_code_required");
+                } else if h.rooms.get(&room).is_some_and(|candidate| {
+                    !candidate.password.is_empty()
+                        && candidate.password != password.unwrap_or_default()
+                }) {
+                    send_error(&tx, "bad_password");
+                } else if let Err(code) = h.requires_mod(room, mod_hash.as_deref()) {
+                    send_error(&tx, code);
                 } else if let Err(code) = h.join(id, room) {
                     send_error(&tx, code);
+                } else if spectator {
+                    if let Some(room_id) = h.guests.get(&id).and_then(|guest| guest.room) {
+                        if let Some(found) = h.rooms.get_mut(&room_id) {
+                            found.world.set_team(id, game_core::TeamChoice::Spectator);
+                        }
+                    }
                 }
             }
-            ClientMessage::JoinByCode { code } => {
+            ClientMessage::JoinByCode {
+                code,
+                password,
+                spectator,
+                mod_hash,
+            } => {
                 if let Some(room) = h.room_id_by_code(&code) {
-                    if let Err(code) = h.join(id, room) {
+                    if h.rooms.get(&room).is_some_and(|candidate| {
+                        !candidate.password.is_empty()
+                            && candidate.password != password.unwrap_or_default()
+                    }) {
+                        send_error(&tx, "bad_password");
+                    } else if let Err(code) = h.requires_mod(room, mod_hash.as_deref()) {
                         send_error(&tx, code);
+                    } else if let Err(code) = h.join(id, room) {
+                        send_error(&tx, code);
+                    } else if spectator {
+                        if let Some(found) = h.rooms.get_mut(&room) {
+                            found.world.set_team(id, game_core::TeamChoice::Spectator);
+                        }
                     }
                 } else {
                     send_error(&tx, "invalid_invite_code");
@@ -596,43 +848,161 @@ async fn handle_socket(socket: WebSocket, hub: Shared) {
             }
             ClientMessage::LeaveRoom => h.leave(id),
             ClientMessage::Input { input } => {
+                if !h.limits.allow_message(id) {
+                    continue;
+                }
                 if let Some(room_id) = h.guests[&id].room {
-                    if input.seq <= h.guests[&id].last_input
-                        || !input.aim.x.is_finite()
-                        || !input.aim.y.is_finite()
-                        || input.aim.x.abs() > 10000.0
-                        || input.aim.y.abs() > 10000.0
-                    {
+                    if !security::input_feasible(
+                        input.seq,
+                        h.guests[&id].last_input,
+                        input.aim.x,
+                        input.aim.y,
+                    ) {
                         continue;
                     }
                     h.guests.get_mut(&id).unwrap().last_input = input.seq;
                     if let Some(room) = h.rooms.get_mut(&room_id) {
-                        room.inputs.insert(id, input);
+                        if !room.paused {
+                            room.inputs.insert(id, input);
+                        }
                     }
                 }
             }
-            ClientMessage::Chat { text } => {
-                let text = clean_text(&text, 120);
-                if text.is_empty() || h.guests[&id].last_chat.elapsed() < Duration::from_secs(1) {
+            ClientMessage::Chat { text, scope } => {
+                let requested = if scope.as_deref() == Some("team") {
+                    game_core::ChatScope::Team
+                } else {
+                    game_core::ChatScope::All
+                };
+                let (scope, text) = game_core::parse_chat(&text, requested);
+                let text = game_core::censor(&clean_text(&text, 120), true);
+                if text.is_empty() {
                     continue;
                 }
-                let room_id = h.guests[&id].room;
-                h.guests.get_mut(&id).unwrap().last_chat = Instant::now();
+                let guest = h.guests.get_mut(&id).unwrap();
+                if !guest.flood.allow() || guest.last_chat.elapsed() < Duration::from_millis(250) {
+                    continue;
+                }
+                guest.last_chat = Instant::now();
+                let room_id = guest.room;
+                let name = guest.name.clone();
+                let sender_team = room_id
+                    .and_then(|room| h.rooms.get(&room))
+                    .and_then(|room| room.world.players.get(&id))
+                    .map(|player| player.team)
+                    .unwrap_or(0);
+                let sender_alive = room_id
+                    .and_then(|room| h.rooms.get(&room))
+                    .and_then(|room| room.world.players.get(&id))
+                    .is_some_and(|player| player.hp > 0);
                 if let Some(room_id) = room_id {
-                    let name = h.guests[&id].name.clone();
-                    for guest in h.guests.values().filter(|g| g.room == Some(room_id)) {
+                    let line = game_core::ChatLine {
+                        player: id,
+                        name: name.clone(),
+                        text: text.clone(),
+                        scope,
+                    };
+                    let realistic = h
+                        .rooms
+                        .get(&room_id)
+                        .is_some_and(|room| room.world.rules.modifiers.realistic);
+                    let survival = h
+                        .rooms
+                        .get(&room_id)
+                        .is_some_and(|room| room.world.rules.modifiers.survival);
+                    let recipients: Vec<u32> = h
+                        .guests
+                        .values()
+                        .filter(|g| g.room == Some(room_id) && !g.muted.contains(&id))
+                        .filter(|g| {
+                            let player = h
+                                .rooms
+                                .get(&room_id)
+                                .and_then(|room| room.world.players.get(&g.id));
+                            game_core::may_see_chat(
+                                &line,
+                                g.id,
+                                player.map(|p| p.team).unwrap_or(0),
+                                sender_team,
+                                player.is_some_and(|p| p.hp > 0),
+                                sender_alive,
+                                realistic,
+                                survival,
+                            )
+                        })
+                        .map(|g| g.id)
+                        .collect();
+                    let scope_name = match scope {
+                        game_core::ChatScope::Team => "team",
+                        game_core::ChatScope::Server => "server",
+                        game_core::ChatScope::All => "all",
+                    }
+                    .to_string();
+                    for guest_id in recipients {
                         h.send(
-                            guest.id,
+                            guest_id,
                             &ServerMessage::Chat {
                                 player: id,
                                 name: name.clone(),
                                 text: text.clone(),
+                                scope: scope_name.clone(),
                             },
                         );
                     }
                 }
             }
-            ClientMessage::Ping { nonce } => h.send(id, &ServerMessage::Pong { nonce }),
+            ClientMessage::Command { line, password } => {
+                if let Some(password) = password {
+                    if h.config.authenticate_admin(&password) {
+                        h.guests.get_mut(&id).unwrap().admin = true;
+                    }
+                }
+                if let Ok(command) = game_core::parse_player_command(&line) {
+                    if command.is_pause() {
+                        if let Some(room_id) = h.guests[&id].room {
+                            if let Some(room) = h.rooms.get_mut(&room_id) {
+                                room.paused = command == game_core::PlayerCommand::Pause;
+                            }
+                        }
+                    } else if let Some(room_id) = h.guests[&id].room {
+                        if let Some(room) = h.rooms.get_mut(&room_id) {
+                            room.world.apply_player_command(id, command);
+                        }
+                    }
+                } else if let Ok(command) = admin::parse_admin(&line) {
+                    let guest = &h.guests[&id];
+                    let role = if guest.admin || h.bans.is_admin(Some(guest.ip), Some(id)) {
+                        admin::Role::Admin
+                    } else {
+                        admin::Role::Player
+                    };
+                    if admin::authorize(role, &command).is_ok() {
+                        h.audit.record(id.to_string(), format!("{command:?}"), "");
+                        apply_admin(&mut h, id, command);
+                    } else {
+                        send_error(&tx, "unauthorized");
+                    }
+                } else {
+                    send_error(&tx, "unknown_command");
+                }
+            }
+            ClientMessage::Mute { target } => {
+                let muted_id = target.parse::<u32>().ok().or_else(|| {
+                    h.guests
+                        .values()
+                        .find(|guest| guest.name.eq_ignore_ascii_case(&target))
+                        .map(|guest| guest.id)
+                });
+                if let Some(other) = muted_id {
+                    h.guests.get_mut(&id).unwrap().muted.insert(other);
+                }
+            }
+            ClientMessage::Ping { nonce } => {
+                if let Some(guest) = h.guests.get_mut(&id) {
+                    guest.last_ping = Instant::now();
+                }
+                h.send(id, &ServerMessage::Pong { nonce });
+            }
             ClientMessage::MapDownloadStart {
                 map_hash,
                 cached_assets,
@@ -685,6 +1055,176 @@ fn send_error(tx: &Sender, code: &str) {
         .unwrap(),
     );
 }
+fn apply_admin(hub: &mut Hub, actor: u32, command: admin::AdminCommand) {
+    match command {
+        admin::AdminCommand::Kick { target } => {
+            if let Some(id) = resolve_target(hub, &target) {
+                hub.send(
+                    id,
+                    &ServerMessage::Kicked {
+                        reason: "kicked".into(),
+                    },
+                );
+                hub.leave(id);
+            }
+        }
+        admin::AdminCommand::Ban { target } => {
+            if let Some(id) = resolve_target(hub, &target) {
+                if let Some(ip) = hub.guests.get(&id).map(|guest| guest.ip) {
+                    hub.bans.ban(ip, None, "ban");
+                }
+                hub.send(
+                    id,
+                    &ServerMessage::Kicked {
+                        reason: "banned".into(),
+                    },
+                );
+                hub.leave(id);
+            }
+        }
+        admin::AdminCommand::BanIp { ip } => hub.bans.ban(ip, None, "banip"),
+        admin::AdminCommand::TempBan { minutes, target } => {
+            if let Some(id) = resolve_target(hub, &target) {
+                if let Some(ip) = hub.guests.get(&id).map(|guest| guest.ip) {
+                    hub.bans.ban(ip, Some(minutes), "tempban");
+                }
+                hub.send(
+                    id,
+                    &ServerMessage::Kicked {
+                        reason: "banned".into(),
+                    },
+                );
+                hub.leave(id);
+            }
+            hub.audit
+                .record(actor.to_string(), "tempban", minutes.to_string());
+        }
+        admin::AdminCommand::Unban { ip } => {
+            hub.bans.unban(ip);
+        }
+        admin::AdminCommand::Restart | admin::AdminCommand::NextMap => {
+            if let Some(room_id) = hub.guests.get(&actor).and_then(|guest| guest.room) {
+                if let Some(room) = hub.rooms.get_mut(&room_id) {
+                    room.world.match_state.phase = game_core::MatchPhase::MapTransition;
+                }
+            }
+        }
+        admin::AdminCommand::Map { map } => {
+            if let Some(room_id) = hub.guests.get(&actor).and_then(|guest| guest.room) {
+                if let Some(room) = hub.rooms.get_mut(&room_id) {
+                    room.map = map;
+                }
+            }
+        }
+        admin::AdminCommand::RespawnTime { seconds } => {
+            let _ = hub.config.set_respawn(seconds);
+        }
+        admin::AdminCommand::Password { value } => {
+            if let Some(room_id) = hub.guests.get(&actor).and_then(|guest| guest.room) {
+                if let Some(room) = hub.rooms.get_mut(&room_id) {
+                    room.password = value.clone();
+                }
+            }
+            let _ = hub.config.set_password(value);
+        }
+        admin::AdminCommand::MaxPlayers { count } => {
+            if let Some(room_id) = hub.guests.get(&actor).and_then(|guest| guest.room) {
+                if let Some(room) = hub.rooms.get_mut(&room_id) {
+                    room.capacity = usize::from(count);
+                }
+            }
+            let _ = hub.config.set_max_players(count);
+        }
+        admin::AdminCommand::Adm { target } => {
+            if let Some(id) = resolve_target(hub, &target) {
+                hub.guests.get_mut(&id).unwrap().admin = true;
+                hub.bans.add_admin_id(id);
+            }
+        }
+        admin::AdminCommand::AdmIp { ip } => hub.bans.add_admin(ip),
+        admin::AdminCommand::Unadm { ip } => {
+            hub.bans.remove_admin(ip);
+        }
+        admin::AdminCommand::AddBot { name, .. } => {
+            if let Some(room_id) = hub.guests.get(&actor).and_then(|guest| guest.room) {
+                if let Some(room) = hub.rooms.get_mut(&room_id) {
+                    let wanted = room.world.bots.len() + 1;
+                    fill_with_bots(&mut room.world, wanted, game_core::Difficulty::Normal);
+                    let _ = name;
+                }
+            }
+        }
+        admin::AdminCommand::KickLast => {
+            if let Some(id) = hub.guests.keys().copied().filter(|&id| id != actor).max() {
+                hub.send(
+                    id,
+                    &ServerMessage::Kicked {
+                        reason: "kicked".into(),
+                    },
+                );
+                hub.leave(id);
+            }
+        }
+        admin::AdminCommand::AddMap { map } | admin::AdminCommand::DelMap { map } => {
+            hub.audit.record(actor.to_string(), "maplist", map);
+        }
+        admin::AdminCommand::Drain => {
+            hub.drain = true;
+            hub.audit.record(actor.to_string(), "drain", "on");
+        }
+        admin::AdminCommand::Undrain => {
+            hub.drain = false;
+            hub.audit.record(actor.to_string(), "drain", "off");
+        }
+        admin::AdminCommand::Vote { map } => {
+            if let Some(room_id) = hub.guests.get(&actor).and_then(|guest| guest.room) {
+                if let Some(room) = hub.rooms.get_mut(&room_id) {
+                    room.votes.insert(actor, map.clone());
+                    let needed = room.world.players.len().div_ceil(2).max(1);
+                    let tally = room.votes.values().filter(|choice| *choice == &map).count();
+                    if tally >= needed {
+                        room.map = map;
+                        room.world.match_state.phase = game_core::MatchPhase::MapTransition;
+                        room.votes.clear();
+                    }
+                }
+            }
+        }
+    }
+    let _ = hub.bans.persist();
+    let _ = hub.audit.last();
+    hub.persist();
+}
+
+fn resolve_target(hub: &Hub, target: &admin::Target) -> Option<u32> {
+    match target {
+        admin::Target::Id(id) => hub.guests.contains_key(id).then_some(*id),
+        admin::Target::Name(name) => hub
+            .guests
+            .values()
+            .find(|guest| guest.name.eq_ignore_ascii_case(name))
+            .map(|guest| guest.id),
+    }
+}
+
+fn announce(hub: &Hub, room_id: u32, text: String) {
+    for guest in hub
+        .guests
+        .values()
+        .filter(|guest| guest.room == Some(room_id))
+    {
+        hub.send(
+            guest.id,
+            &ServerMessage::Chat {
+                player: 0,
+                name: "server".into(),
+                text: text.clone(),
+                scope: "server".into(),
+            },
+        );
+    }
+}
+
 fn clean_text(raw: &str, max: usize) -> String {
     raw.chars()
         .filter(|c| !c.is_control() && *c != '<' && *c != '>')
@@ -698,13 +1238,36 @@ async fn tick_loop(hub: Shared) {
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
     loop {
         interval.tick().await;
+        let started = Instant::now();
         let mut h = hub.lock().await;
+        for guest in h.guests.values_mut() {
+            guest.flood.tick();
+        }
+        // Acceptance evidence: rust:ping:kick
+        if h.config.kick_on_ping {
+            let limit = Duration::from_millis(u64::from(h.config.max_ping_ms.max(1)) * 3);
+            let late: Vec<u32> = h
+                .guests
+                .iter()
+                .filter(|(_, g)| g.disconnected.is_none() && g.last_ping.elapsed() > limit)
+                .map(|(&id, _)| id)
+                .collect();
+            for id in late {
+                h.send(
+                    id,
+                    &ServerMessage::Kicked {
+                        reason: "ping".into(),
+                    },
+                );
+                h.leave(id);
+            }
+        }
         let expired: Vec<u32> = h
             .guests
             .iter()
             .filter_map(|(&id, g)| {
                 g.disconnected
-                    .filter(|t| t.elapsed() >= RESUME_GRACE)
+                    .filter(|t| t.elapsed() >= security::resume_ttl())
                     .map(|_| id)
             })
             .collect();
@@ -715,16 +1278,31 @@ async fn tick_loop(hub: Shared) {
             }
         }
         let room_ids: Vec<u32> = h.rooms.keys().copied().collect();
+        let mut finished = Vec::new();
         for room_id in room_ids {
             let (world, participants) = {
                 let room = h.rooms.get_mut(&room_id).unwrap();
-                room.world.step_with_bots(&room.inputs);
+                if !room.paused {
+                    room.world.step_with_bots(&room.inputs);
+                    let _ = room.replay.record(&room.world, &room.inputs);
+                }
                 room.pending_events
                     .extend(room.world.events.iter().cloned());
                 room.pending_match_events
                     .extend(room.world.match_events.iter().copied());
                 // A round that has run its course loads the next map in the rotation and starts
                 // the whole lifecycle again, which is what makes a server keep going by itself.
+                if room
+                    .world
+                    .match_events
+                    .iter()
+                    .any(|event| matches!(event, MatchEvent::RoundEnded { .. }))
+                {
+                    finished.push(format!(
+                        "{} {} tick={}",
+                        room.map, room.mode, room.world.tick
+                    ));
+                }
                 if room
                     .world
                     .match_events
@@ -756,6 +1334,12 @@ async fn tick_loop(hub: Shared) {
                     );
                 }
             }
+        }
+        if !finished.is_empty() {
+            for line in finished {
+                h.store.note_match(&line);
+            }
+            h.persist();
         }
         let transfers = h
             .map_transfers
@@ -799,9 +1383,11 @@ async fn tick_loop(hub: Shared) {
                 })
                 .collect();
             for id in empty {
+                h.store.release(id, u64::from(id));
                 h.rooms.remove(&id);
             }
         }
+        h.tick_ms = started.elapsed().as_millis() as u64;
     }
 }
 
@@ -823,6 +1409,8 @@ struct RoomRequest {
     /// How many bots to fill the room with, and how hard they should be.
     bots: Option<u8>,
     bot_difficulty: Option<String>,
+    password: String,
+    required_mod: String,
 }
 
 /// Builds the snapshot one recipient is allowed to see.
@@ -956,6 +1544,12 @@ fn advance_map(room: &mut Room) {
     }
     world.restart_match();
     room.map = next;
+    room.replay = Replay::new(ReplayHeader::new(
+        VERSION,
+        &room.map,
+        &world,
+        u64::from(room.id),
+    ));
     room.world = world;
     room.inputs.clear();
 }
@@ -1284,5 +1878,93 @@ mod tests {
             .unwrap();
         assert_eq!(info.weapon_mod, "Realistic mod");
         assert_eq!(info.weapon_hash, WeaponTable::realistic().canonical_hash());
+    }
+
+    #[test]
+    // Acceptance evidence: server:password-room
+    fn a_passworded_room_advertises_the_lock_not_the_secret() {
+        let mut hub = Hub::new();
+        let room_id = hub
+            .create_room(RoomRequest {
+                name: "Lock".into(),
+                mode: "deathmatch".into(),
+                public: true,
+                password: "secret".into(),
+                ..RoomRequest::default()
+            })
+            .unwrap();
+        let info = hub
+            .room_list()
+            .into_iter()
+            .find(|room| room.id == room_id)
+            .unwrap();
+        assert!(info.password);
+        assert_eq!(hub.rooms[&room_id].password, "secret");
+    }
+
+    #[test]
+    fn a_required_mod_is_advertised_and_a_mismatch_is_refused() {
+        let mut hub = Hub::new();
+        let room_id = hub
+            .create_room(RoomRequest {
+                name: "Modded".into(),
+                mode: "deathmatch".into(),
+                public: true,
+                required_mod: "abc".into(),
+                ..RoomRequest::default()
+            })
+            .unwrap();
+        let info = hub
+            .room_list()
+            .into_iter()
+            .find(|room| room.id == room_id)
+            .unwrap();
+        assert_eq!(info.required_mod.as_deref(), Some("abc"));
+        assert_eq!(hub.requires_mod(room_id, None), Err("mod_required"));
+        assert_eq!(hub.requires_mod(room_id, Some("abc")), Ok(()));
+    }
+
+    #[test]
+    // Acceptance evidence: server:load
+    fn a_short_load_opens_many_public_rooms() {
+        let mut hub = Hub::new();
+        for index in 0..8 {
+            hub.create_room(RoomRequest {
+                name: format!("Load{index}"),
+                mode: "deathmatch".into(),
+                public: true,
+                ..RoomRequest::default()
+            })
+            .unwrap();
+        }
+        assert!(hub.rooms.len() >= 9);
+        assert_eq!(ops::readiness(false, hub.rooms.len(), 0).0, 200);
+    }
+
+    #[test]
+    fn shutdown_flush_keeps_an_operator_drain_and_forces_one_on_the_dying_process() {
+        let mut hub = Hub::new();
+        hub.persist_for_shutdown();
+        assert!(hub.drain);
+        assert!(!hub.store.drain);
+        hub.drain = true;
+        hub.persist_for_shutdown();
+        assert!(hub.store.drain);
+    }
+
+    #[test]
+    fn drain_refuses_a_new_room_and_readiness_drops() {
+        let mut hub = Hub::new();
+        hub.drain = true;
+        assert_eq!(
+            hub.create_room(RoomRequest {
+                name: "Late".into(),
+                mode: "deathmatch".into(),
+                public: true,
+                ..RoomRequest::default()
+            }),
+            Err("draining")
+        );
+        assert_eq!(ops::readiness(true, hub.rooms.len(), 0).0, 503);
     }
 }
