@@ -6,6 +6,9 @@ pub struct RayHit {
     pub time: f32,
     pub position: Vec2,
     pub polygon: usize,
+    /// Unit normal of the edge that was struck, pointing back towards where the ray came from.
+    /// Projectiles that bounce or skip off terrain need it; those that stop can ignore it.
+    pub normal: Vec2,
 }
 
 #[derive(Clone, Copy, Debug)]

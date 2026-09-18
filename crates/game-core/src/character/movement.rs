@@ -51,7 +51,7 @@ impl MovementConfig {
             jump_speed: 390.0,
             gravity: 950.0,
             terminal_velocity: 600.0,
-            jet_acceleration: 950.0,
+            jet_acceleration: 1400.0,
             max_jet_speed: 300.0,
             crouch_jet_multiplier: 0.85,
             prone_jet_multiplier: 0.60,

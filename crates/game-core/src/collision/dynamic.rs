@@ -10,7 +10,7 @@ pub enum DynamicBodyKind {
     DroppedWeapon,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DynamicBody {
     pub kind: DynamicBodyKind,
     pub pos: Vec2,
@@ -18,6 +18,10 @@ pub struct DynamicBody {
     pub radius: f32,
     pub grounded: bool,
     pub active: bool,
+    #[serde(default)]
+    pub weapon_slot: Option<u8>,
+    #[serde(default)]
+    pub ammo: u16,
 }
 
 impl DynamicBody {
@@ -29,6 +33,8 @@ impl DynamicBody {
             radius,
             grounded: false,
             active: true,
+            weapon_slot: None,
+            ammo: 0,
         }
     }
 

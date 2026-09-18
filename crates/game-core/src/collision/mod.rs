@@ -120,15 +120,18 @@ impl CollisionWorld {
                     .copied()
                     .zip(polygon.vertices.iter().copied().cycle().skip(1))
                     .take(3)
-                    .filter_map(|(a, b)| segment_intersection(start, end, a, b))
-                    .min_by(|left, right| left.total_cmp(right))
-                    .map(|time| RayHit {
+                    .filter_map(|(a, b)| {
+                        segment_intersection(start, end, a, b).map(|time| (time, a, b))
+                    })
+                    .min_by(|left, right| left.0.total_cmp(&right.0))
+                    .map(|(time, a, b)| RayHit {
                         time,
                         position: Vec2 {
                             x: start.x + (end.x - start.x) * time,
                             y: start.y + (end.y - start.y) * time,
                         },
                         polygon: polygon_index,
+                        normal: edge_normal_facing(a, b, start),
                     })
             })
             .min_by(|left, right| left.time.total_cmp(&right.time))
@@ -302,5 +305,36 @@ fn lerp(start: Vec2, end: Vec2, time: f32) -> Vec2 {
     Vec2 {
         x: start.x + (end.x - start.x) * time,
         y: start.y + (end.y - start.y) * time,
+    }
+}
+
+/// The unit normal of edge `a`-`b`, flipped so it points towards `towards`.
+///
+/// A projectile that reflects needs the side of the surface it actually arrived from, not the
+/// side the polygon's winding order happens to name.
+fn edge_normal_facing(a: Vec2, b: Vec2, towards: Vec2) -> Vec2 {
+    let edge = Vec2 {
+        x: b.x - a.x,
+        y: b.y - a.y,
+    };
+    let length = (edge.x * edge.x + edge.y * edge.y).sqrt();
+    if length <= f32::EPSILON {
+        return Vec2 { x: 0.0, y: -1.0 };
+    }
+    let normal = Vec2 {
+        x: -edge.y / length,
+        y: edge.x / length,
+    };
+    let to_source = Vec2 {
+        x: towards.x - a.x,
+        y: towards.y - a.y,
+    };
+    if normal.x * to_source.x + normal.y * to_source.y < 0.0 {
+        Vec2 {
+            x: -normal.x,
+            y: -normal.y,
+        }
+    } else {
+        normal
     }
 }

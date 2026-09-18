@@ -4,7 +4,9 @@ use serde::{Deserialize, Serialize};
 
 /// What produced a unit of damage. Death messages and statistics read this rather than guessing
 /// from the projectile that happened to land.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+/// Ordered so a per-cause breakdown keeps a stable order on the scoreboard rather than reshuffling
+/// itself between snapshots.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum DamageCause {
     Bullet,
@@ -36,10 +38,17 @@ pub struct DamageEvent {
     pub region: BodyRegion,
     pub cause: DamageCause,
     pub direction: Vec2,
+    /// When true, `amount` already includes the weapon hitbox modifier, so apply_damage must not
+    /// apply the global region table a second time.
+    #[serde(default)]
+    pub pre_scaled: bool,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct DamageConfig {
+    /// The most grenades a player may carry, from `sv_maxgrenades`.
+    #[serde(default = "default_max_grenades")]
+    pub max_grenades: u8,
     pub head_multiplier: f32,
     pub chest_multiplier: f32,
     pub legs_multiplier: f32,
@@ -60,9 +69,15 @@ pub struct DamageConfig {
     pub gib_damage: i32,
 }
 
+/// Soldat's default grenade allowance.
+fn default_max_grenades() -> u8 {
+    2
+}
+
 impl DamageConfig {
     pub const fn soldat_default() -> Self {
         Self {
+            max_grenades: 2,
             head_multiplier: 1.5,
             chest_multiplier: 1.0,
             legs_multiplier: 0.75,
