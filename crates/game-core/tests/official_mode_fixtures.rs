@@ -200,9 +200,10 @@ fn pointmatch_is_won_on_points_rather_than_on_kills() {
 #[test]
 fn rambomatch_has_one_contested_weapon_rather_than_a_flag_on_a_base() {
     let state = objectives(ModeKind::Rambomatch);
-    assert!(
-        state.flags.is_empty(),
-        "the bow is the objective, and it is a weapon rather than a flag"
+    assert_eq!(
+        state.flags.len(),
+        1,
+        "the bow stands in as the yellow contested objective"
     );
     assert_eq!(
         ObjectiveRules::Rambomatch.layout(),
@@ -737,6 +738,7 @@ fn a_flag_mode_refuses_a_map_with_nowhere_to_stand_its_bases() {
     let spawn = |x: f32, team: u8| MapSpawn {
         position: Vec2 { x, y: 400.0 },
         team,
+        kind: game_core::SpawnKind::Player,
     };
 
     // Two neutral spawns are enough for Teammatch: both sides simply start somewhere.

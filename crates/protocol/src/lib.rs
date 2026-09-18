@@ -4,7 +4,7 @@ use content::manifest::SignedMapManifest;
 use game_core::{Input, World};
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 13;
+pub const VERSION: u32 = 15;
 pub const MAX_MESSAGE_BYTES: usize = 4096;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -14,6 +14,8 @@ pub enum ClientMessage {
         version: u32,
         name: String,
         resume: Option<String>,
+        #[serde(default)]
+        admin_password: Option<String>,
     },
     Rooms,
     CreateRoom {
@@ -39,12 +41,30 @@ pub enum ClientMessage {
         /// How hard those bots should be.
         #[serde(default)]
         bot_difficulty: Option<String>,
+        /// Room password. Absent means none.
+        #[serde(default)]
+        password: Option<String>,
+        /// Content-addressed mod the room requires. Absent means stock assets.
+        #[serde(default)]
+        required_mod: Option<String>,
     },
     JoinRoom {
         room: u32,
+        #[serde(default)]
+        password: Option<String>,
+        #[serde(default)]
+        spectator: bool,
+        #[serde(default)]
+        mod_hash: Option<String>,
     },
     JoinByCode {
         code: String,
+        #[serde(default)]
+        password: Option<String>,
+        #[serde(default)]
+        spectator: bool,
+        #[serde(default)]
+        mod_hash: Option<String>,
     },
     LeaveRoom,
     Input {
@@ -52,6 +72,17 @@ pub enum ClientMessage {
     },
     Chat {
         text: String,
+        #[serde(default)]
+        scope: Option<String>,
+    },
+    /// A `/` command, player or admin. The server decides which.
+    Command {
+        line: String,
+        #[serde(default)]
+        password: Option<String>,
+    },
+    Mute {
+        target: String,
     },
     Ping {
         nonce: u64,
@@ -127,6 +158,18 @@ pub struct RoomInfo {
     /// The community ruleset, when the room is playing one.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ruleset: Option<String>,
+    /// Whether a password is required. The password itself never leaves the server.
+    #[serde(default)]
+    pub password: bool,
+    /// Protocol version this room is running, so an old client can refuse it.
+    #[serde(default)]
+    pub version: u32,
+    /// Hash of the required interface/mod package, when the room asked for one.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub required_mod: Option<String>,
+    /// Operator region label, when one is set.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub region: Option<String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -166,6 +209,11 @@ pub enum ServerMessage {
         player: u32,
         name: String,
         text: String,
+        #[serde(default)]
+        scope: String,
+    },
+    Kicked {
+        reason: String,
     },
     Error {
         code: String,
@@ -225,7 +273,7 @@ mod tests {
         ));
         assert!(matches!(
             parse_client(r#"{"type":"join_by_code","code":"AB12CD"}"#),
-            Ok(ClientMessage::JoinByCode { code }) if code == "AB12CD"
+            Ok(ClientMessage::JoinByCode { code, .. }) if code == "AB12CD"
         ));
     }
     #[test]
@@ -300,6 +348,35 @@ mod tests {
         assert!(matches!(
             parse_client(r#"{"type":"map_download_cancel","transfer":7}"#),
             Ok(ClientMessage::MapDownloadCancel { transfer: 7 })
+        ));
+    }
+
+    #[test]
+    fn create_room_accepts_a_required_mod_hash() {
+        assert!(matches!(
+            parse_client(
+                r#"{"type":"create_room","name":"R","mode":"deathmatch","public":true,"required_mod":"abc"}"#
+            ),
+            Ok(ClientMessage::CreateRoom {
+                required_mod: Some(hash),
+                ..
+            }) if hash == "abc"
+        ));
+    }
+
+    #[test]
+    fn chat_scope_command_and_mute_parse() {
+        assert!(matches!(
+            parse_client(r#"{"type":"chat","text":"hi","scope":"team"}"#),
+            Ok(ClientMessage::Chat { scope: Some(scope), .. }) if scope == "team"
+        ));
+        assert!(matches!(
+            parse_client(r#"{"type":"/KILL"}"#).or_else(|_| parse_client(r#"{"type":"command","line":"/KILL"}"#)),
+            Ok(ClientMessage::Command { line, .. }) if line == "/KILL"
+        ));
+        assert!(matches!(
+            parse_client(r#"{"type":"mute","target":"Ace"}"#),
+            Ok(ClientMessage::Mute { target }) if target == "Ace"
         ));
     }
 }

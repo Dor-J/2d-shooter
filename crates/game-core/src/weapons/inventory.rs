@@ -109,6 +109,16 @@ impl Inventory {
         } else if kind.is_secondary() {
             self.slots[1] = Some(slot);
             self.active = 1;
+        } else {
+            self.force_equip(kind, ammo);
+        }
+    }
+
+    /// Put any weapon — including the bow, the flamer, and fists — in a slot and select it.
+    pub fn force_equip(&mut self, kind: WeaponKind, ammo: u16) {
+        self.pickup(WeaponSlot { kind, ammo });
+        if let Some(slot) = self.slot_of(kind) {
+            self.active = slot;
         }
     }
 

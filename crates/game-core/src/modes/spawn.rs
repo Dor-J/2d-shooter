@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use super::objective::{FlagLayout, ObjectiveRules};
 use super::rules::{ModeKind, ModeRules};
 use super::team::{ALPHA, BRAVO};
-use crate::MapSpawn;
+use crate::{MapSpawn, SpawnKind};
 
 /// Why a map cannot host a mode.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -31,8 +31,12 @@ pub fn validate(rules: &ModeRules, spawns: &[MapSpawn]) -> Result<(), SpawnProbl
     if spawns.is_empty() {
         return Err(SpawnProblem::NoSpawns);
     }
+    let players: Vec<&MapSpawn> = spawns
+        .iter()
+        .filter(|spawn| spawn.kind == SpawnKind::Player)
+        .collect();
     if !rules.is_team_mode() {
-        let usable = spawns.len();
+        let usable = players.len();
         if usable < MINIMUM_FREE_FOR_ALL_SPAWNS {
             return Err(SpawnProblem::NotEnoughSpawns {
                 found: usable,
@@ -42,7 +46,7 @@ pub fn validate(rules: &ModeRules, spawns: &[MapSpawn]) -> Result<(), SpawnProbl
         return Ok(());
     }
     for team in [ALPHA, BRAVO] {
-        let has_side = spawns
+        let has_side = players
             .iter()
             .any(|spawn| spawn.team == team || spawn.team == 0);
         if !has_side {
@@ -54,7 +58,7 @@ pub fn validate(rules: &ModeRules, spawns: &[MapSpawn]) -> Result<(), SpawnProbl
     // no use as a base: both flags would start on the same square.
     if ObjectiveRules::for_mode(rules.kind).layout() == FlagLayout::PerTeam {
         for team in [ALPHA, BRAVO] {
-            if !spawns.iter().any(|spawn| spawn.team == team) {
+            if !players.iter().any(|spawn| spawn.team == team) {
                 return Err(SpawnProblem::NoBaseForFlag { team });
             }
         }
@@ -68,9 +72,9 @@ pub fn usable<'a>(
     spawns: &'a [MapSpawn],
     team: u8,
 ) -> impl Iterator<Item = &'a MapSpawn> + 'a {
-    spawns
-        .iter()
-        .filter(move |spawn| rules.spawn_is_valid(spawn.team, team))
+    spawns.iter().filter(move |spawn| {
+        spawn.kind == SpawnKind::Player && rules.spawn_is_valid(spawn.team, team)
+    })
 }
 
 /// How long a dead player waits before coming back.

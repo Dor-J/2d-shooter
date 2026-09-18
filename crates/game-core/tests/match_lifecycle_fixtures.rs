@@ -604,6 +604,7 @@ fn a_map_is_checked_against_the_mode_before_it_is_loaded() {
     let spawn = |x: f32, team: u8| MapSpawn {
         position: Vec2 { x, y: 400.0 },
         team,
+        kind: game_core::SpawnKind::Player,
     };
 
     assert_eq!(
@@ -635,14 +636,17 @@ fn a_player_only_spawns_where_their_mode_allows() {
         MapSpawn {
             position: Vec2 { x: 100.0, y: 400.0 },
             team: ALPHA,
+            kind: game_core::SpawnKind::Player,
         },
         MapSpawn {
             position: Vec2 { x: 900.0, y: 400.0 },
             team: BRAVO,
+            kind: game_core::SpawnKind::Player,
         },
         MapSpawn {
             position: Vec2 { x: 500.0, y: 400.0 },
             team: 0,
+            kind: game_core::SpawnKind::Player,
         },
     ];
 
@@ -670,8 +674,7 @@ fn every_mode_but_rambomatch_is_built_on_the_shared_lifecycle() {
     ] {
         assert!(playable.is_implemented(), "{playable:?}");
     }
-    // Rambomatch waits on the bow, which is a weapon rather than a flag.
-    assert!(!ModeKind::Rambomatch.is_implemented());
+    assert!(ModeKind::Rambomatch.is_implemented());
     for objective_mode in [
         ModeKind::Pointmatch,
         ModeKind::Rambomatch,

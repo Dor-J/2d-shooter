@@ -68,11 +68,8 @@ impl ModeKind {
     }
 
     /// Whether the mode is playable right now.
-    ///
-    /// Rambomatch is the one that is not: its objective is the bow, which is a weapon rather than
-    /// a flag, and nothing can put one in a player's hands until the bonus weapons land.
     pub const fn is_implemented(self) -> bool {
-        !matches!(self, Self::Rambomatch)
+        true
     }
 }
 

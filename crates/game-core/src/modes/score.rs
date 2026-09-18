@@ -78,6 +78,11 @@ impl ScoreLedger {
         self.players.entry(id).or_default();
     }
 
+    /// A death that is not worth a kill, which is what Rambomatch does to everyone but the bow holder.
+    pub fn note_death(&mut self, id: u32) {
+        self.players.entry(id).or_default().deaths += 1;
+    }
+
     /// Forgets a player entirely. Only used when a match ends or a player is removed for good.
     pub fn forget(&mut self, id: u32) {
         self.players.remove(&id);

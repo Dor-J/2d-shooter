@@ -127,13 +127,15 @@ pub fn steer(nav: &Navigation, pos: Vec2, fuel: f32) -> Movement {
     let dy = destination.y - pos.y;
 
     if nav.is_recovering() {
-        // Back out the way it did not come, and hop, which clears most snags.
+        // Back out, hop, then roll — that is how a bot gets off a ledge it wedged against.
         return Movement {
             left: nav.recovery_left,
             right: !nav.recovery_left,
             jump: true,
             jet: fuel > 0.25,
-            ..Movement::default()
+            crouch: nav.recovery_ticks < 40,
+            prone: nav.recovery_ticks < 20,
+            roll: nav.recovery_ticks < 20,
         };
     }
 
@@ -149,6 +151,8 @@ pub fn steer(nav: &Navigation, pos: Vec2, fuel: f32) -> Movement {
         if dy < -90.0 && fuel > 0.2 {
             movement.jet = true;
         }
+    } else if dy > 24.0 {
+        movement.crouch = true;
     }
     movement
 }

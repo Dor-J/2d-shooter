@@ -104,10 +104,10 @@ pub fn choose(
     }
 
     match policy {
-        ObjectiveRules::None | ObjectiveRules::Rambomatch => Objective::fight(),
+        ObjectiveRules::None => Objective::fight(),
 
-        // Whoever holds the yellow flag scores, so go and get it, or take it back.
-        ObjectiveRules::Pointmatch | ObjectiveRules::HoldTheFlag => {
+        // Whoever holds the yellow flag (or the bow) scores, so go and get it.
+        ObjectiveRules::Pointmatch | ObjectiveRules::HoldTheFlag | ObjectiveRules::Rambomatch => {
             let Some(flag) = objectives.flag(FlagKind::Yellow) else {
                 return Objective::fight();
             };

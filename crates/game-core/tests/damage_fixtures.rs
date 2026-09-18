@@ -348,14 +348,17 @@ fn spawns_are_chosen_by_mode_team_and_distance_from_enemies() {
         MapSpawn {
             team: 1,
             position: Vec2 { x: 100.0, y: 400.0 },
+            kind: game_core::SpawnKind::Player,
         },
         MapSpawn {
             team: 1,
             position: Vec2 { x: 900.0, y: 400.0 },
+            kind: game_core::SpawnKind::Player,
         },
         MapSpawn {
             team: 2,
             position: Vec2 { x: 500.0, y: 400.0 },
+            kind: game_core::SpawnKind::Player,
         },
     ];
     let enemies = [Vec2 { x: 120.0, y: 400.0 }];

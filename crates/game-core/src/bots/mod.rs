@@ -66,6 +66,8 @@ pub struct BotWorld<'a> {
     pub collision: &'a CollisionWorld,
     /// Somewhere to head for when there is nothing else to do.
     pub spawns: &'a [Vec2],
+    /// Kits and dropped guns the bot may walk over.
+    pub loot: &'a [Vec2],
 }
 
 /// Everything a bot needs to know about itself this tick.
@@ -101,6 +103,7 @@ pub fn think(
         table,
         collision,
         spawns,
+        loot,
     } = world;
     bot.chat_cooldown = bot.chat_cooldown.saturating_sub(1);
 
@@ -148,7 +151,8 @@ pub fn think(
             Some(contact.pos)
         }
         (_, Some(_), _) => None,
-        _ => objectives::wander_target(spawns, rng.next_u64()),
+        _ => nearest_loot(view.me.pos, loot)
+            .or_else(|| objectives::wander_target(spawns, rng.next_u64())),
     };
 
     if let Some(place) = destination {
@@ -193,6 +197,11 @@ pub fn think(
         (rng.next_u64() % u64::from(u32::MAX)) as u32,
     );
     let weapon = combat::preferred_weapon(&bot.profile, table, view.unlocked, distance);
+    let pickup = nearest_loot(view.me.pos, loot).is_some_and(|pos| {
+        let dx = pos.x - view.me.pos.x;
+        let dy = pos.y - view.me.pos.y;
+        dx * dx + dy * dy <= 28.0 * 28.0
+    });
 
     Input {
         seq,
@@ -206,10 +215,22 @@ pub fn think(
         fire,
         reload,
         throw_grenade,
+        pickup,
         aim,
         weapon: weapon.unwrap_or(0),
         ..Input::default()
     }
+}
+
+fn nearest_loot(from: Vec2, loot: &[Vec2]) -> Option<Vec2> {
+    loot.iter().copied().min_by(|left, right| {
+        let d = |pos: Vec2| {
+            let dx = pos.x - from.x;
+            let dy = pos.y - from.y;
+            dx * dx + dy * dy
+        };
+        d(*left).total_cmp(&d(*right))
+    })
 }
 
 /// Somewhere in front of a bot to point at when it has no target, so it is not aiming at its feet.

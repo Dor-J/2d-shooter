@@ -68,8 +68,8 @@ impl FlagLayout {
     /// The flags this layout puts on a map.
     pub fn flags(self) -> &'static [FlagKind] {
         match self {
-            Self::None | Self::Contested => &[],
-            Self::Neutral => &[FlagKind::Yellow],
+            Self::None => &[],
+            Self::Neutral | Self::Contested => &[FlagKind::Yellow],
             Self::PerTeam => &[FlagKind::Alpha, FlagKind::Bravo],
         }
     }
@@ -307,6 +307,7 @@ impl ObjectivePolicy for ObjectiveRules {
     fn kill_points(&self, carrying: bool) -> u32 {
         match self {
             Self::Pointmatch if carrying => POINTMATCH_FLAG_MULTIPLIER,
+            Self::Rambomatch if !carrying => 0,
             _ => 1,
         }
     }

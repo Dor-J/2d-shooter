@@ -68,6 +68,15 @@ impl MovementConfig {
             backflip_speed: 260.0,
         }
     }
+
+    /// Realistic is the same locomotion, just heavier on the feet.
+    pub const fn realistic() -> Self {
+        let mut config = Self::soldat_default();
+        config.max_run_speed = 230.0;
+        config.jump_speed = 350.0;
+        config.air_acceleration = 280.0;
+        config
+    }
 }
 
 impl Default for MovementConfig {
