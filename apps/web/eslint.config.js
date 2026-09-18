@@ -23,4 +23,14 @@ export default [
     files: ['vite.config.ts', 'eslint.config.js'],
     languageOptions: { globals: globals.node },
   },
+  {
+    // Test harnesses and tooling: Node scripts that also drive browser APIs through stubs.
+    files: ['scripts/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
+  {
+    // Plain browser scripts served as-is, outside the bundle.
+    files: ['public/**/*.js'],
+    languageOptions: { globals: globals.browser },
+  },
 ]
