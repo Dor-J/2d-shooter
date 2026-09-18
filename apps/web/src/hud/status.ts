@@ -167,7 +167,8 @@ export function flagIndicators(flags: FlagLike[], ownTeam: number | undefined): 
 export function carrierBanner(indicators: FlagIndicator[], carrying: boolean): string | null {
   if (!carrying) return null
   const stolen = indicators.find(indicator => indicator.state === 'carried')
-  return stolen ? `You have the ${stolen.flag} flag — take it home` : 'You have the objective'
+  if (stolen) return `You have the ${stolen.flag} flag — take it home`
+  return carrying ? 'You are Rambo — only your kills count' : 'You have the objective'
 }
 
 /// The respawn clock, in whole seconds, as a line rather than a bare number.

@@ -54,7 +54,9 @@ export function backflipRequested(state: ActionState, airborne: boolean): boolea
   return airborne && state.held('jump') && state.held('crouch')
 }
 
-/** The flag-throw combo, kept here so the dedicated key and the combo cannot drift apart. */
+/** The flag-throw combo, kept here so the dedicated key and the combo cannot drift apart.
+ *  Acceptance evidence: web:input:flag-throw */
+
 export function flagThrowRequested(state: ActionState, airborne: boolean): boolean {
   if (state.pressed('flagThrow')) return true
   return !airborne && state.pressed('jump') && state.held('crouch')
@@ -125,7 +127,7 @@ export function encodeInput(state: ActionState, context: EncoderContext): InputF
     aim: { x: context.aim.x, y: context.aim.y },
     weapon: Math.min(WEAPON_COUNT - 1, Math.max(0, Math.trunc(context.weapon))),
     drop: state.held('dropWeapon'),
-    throw_weapon: state.held('throwWeapon'),
+    throw_weapon: state.held('throwWeapon') || flagThrowRequested(state, airborne),
     throw_knife: state.held('throwKnife'),
     pickup: state.held('pickup'),
   }

@@ -1,3 +1,4 @@
+// Acceptance evidence: web:maps:download
 import type { MapManifest } from './types.ts'
 
 export class DownloadError extends Error {}

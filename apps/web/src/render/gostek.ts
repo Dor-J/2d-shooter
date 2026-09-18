@@ -62,12 +62,15 @@ export function defaultAppearance(): Appearance {
 }
 
 /// The pose a soldier's body is in, which the simulation decides and the rig only draws.
-export const POSES = ['stand', 'walk', 'run', 'crouch', 'prone', 'roll', 'jet', 'fall', 'dead'] as const
+export const POSES = ['stand', 'walk', 'run', 'crouch', 'prone', 'roll', 'jet', 'fall', 'dead', 'emote'] as const
 export type Pose = (typeof POSES)[number]
 
 export function readPose(state: string | undefined, grounded: boolean, hp: number): Pose {
   if (hp <= 0) return 'dead'
   const named = (state ?? '').toLowerCase()
+  if (named.includes('emote') || named.includes('victory') || named.includes('mercy') || named.includes('cigar') || named.includes('taunt')) {
+    return 'emote'
+  }
   if (named.includes('prone')) return 'prone'
   if (named.includes('roll')) return 'roll'
   if (named.includes('crouch')) return 'crouch'
@@ -86,6 +89,7 @@ export const POSE_HEIGHT: Record<Pose, number> = {
   jet: 32,
   fall: 30,
   dead: 10,
+  emote: 32,
 }
 
 export type Placement = {
@@ -236,8 +240,12 @@ export function buildRig(input: RigInput): Placement[] {
   if (chain) {
     add('chain', pos.x + side * 1, top + height * 0.34, 7, 3, chain)
   }
-  add('front-arm', shoulder.x + side * 4, shoulder.y + 2, 13, 5, appearance.skin, angle)
+  const salute = pose === 'emote' ? -Math.PI / 2 : angle
+  add('front-arm', shoulder.x + side * 4, shoulder.y + 2, 13, 5, appearance.skin, salute)
   add('weapon', shoulder.x + side * 13, shoulder.y + 2, 24, 5, [0.2, 0.19, 0.17, 1], angle)
+  if (pose === 'emote') {
+    add('headgear', pos.x + side * 8, headY + 4, 4, 8, [0.55, 0.36, 0.18, 1])
+  }
 
   return parts.sort((a, b) => BODY_PARTS.indexOf(a.part) - BODY_PARTS.indexOf(b.part))
 }
@@ -257,6 +265,21 @@ export function muzzlePoint(rig: Placement[]): Vec2 | null {
 export function corpseFade(ticksLeft: number, fadeTicks = 60): number {
   if (ticksLeft <= 0) return 0
   return Math.min(1, ticksLeft / fadeTicks)
+}
+
+/// Blood that stays on the soldier. Particles spray and vanish; this is the stain that remains.
+///
+/// Amount is 0–1. Shirt and pants take it; skin and hair do not, so a stained soldier is still
+/// recognisable as the same player.
+export function bloodStain(base: Rgba, amount: number): Rgba {
+  if (!Number.isFinite(amount) || amount <= 0) return base
+  const stain = Math.min(1, amount)
+  return [
+    base[0] * (1 - stain * 0.35) + 0.42 * stain,
+    base[1] * (1 - stain * 0.65),
+    base[2] * (1 - stain * 0.65),
+    base[3],
+  ]
 }
 
 /// A soldier that is on fire is drawn hotter as they burn, which is also how a player knows to find

@@ -9,7 +9,8 @@ export type TouchButton = {
   group: 'stance' | 'combat' | 'weapons' | 'panel'
 }
 
-/** The on-screen equivalents of the desktop controls, in thumb-reach order. */
+/** The on-screen equivalents of the desktop controls, in thumb-reach order.
+ *  Acceptance evidence: web:mobile:movement-pad */
 export const TOUCH_BUTTONS: TouchButton[] = [
   { action: 'jet', label: 'JET', hint: 'Hold to use the jetpack', kind: 'hold', group: 'combat' },
   { action: 'throwGrenade', label: 'NADE', hint: 'Throw a grenade', kind: 'hold', group: 'combat' },

@@ -27,9 +27,9 @@ export class InterfaceState {
   scoreboardOffset = 0
   scoreboardRows = 0
   scoreboardWindow = 8
-  minimap = false
-  sniperLine = false
-  performanceStats = false
+  minimap = true
+  sniperLine = true
+  performanceStats = true
   weaponStats = false
   consoleOpen = false
   weaponMenuOpen = false

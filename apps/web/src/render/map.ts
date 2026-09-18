@@ -85,6 +85,17 @@ export type Scenery = {
   /// Foreground scenery is drawn over the soldiers, background behind them.
   foreground: boolean
   alpha: number
+  /// Optional sheet length. One frame is a still.
+  frames?: number
+  /// Ticks each frame is held.
+  period?: number
+}
+
+/// Which cell of an animated piece is showing.
+export function sceneryFrame(scenery: Scenery, tick: number): number {
+  const frames = Math.max(1, scenery.frames ?? 1)
+  const period = Math.max(1, scenery.period ?? 8)
+  return Math.floor(Math.max(0, tick) / period) % frames
 }
 
 /// Where a piece of scenery lands on screen for a given camera.
