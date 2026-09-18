@@ -1,3 +1,4 @@
+// Acceptance evidence: web:hud:status
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
@@ -137,7 +138,7 @@ test('carrying the objective is said in the middle of the screen, not left to an
   const indicators = flagIndicators([{ kind: 'Bravo', state: { Carried: { by: 1 } }, team: 2 }], 1)
   assert.equal(carrierBanner(indicators, true), 'You have the Bravo flag — take it home')
   assert.equal(carrierBanner(indicators, false), null)
-  assert.equal(carrierBanner([], true), 'You have the objective')
+  assert.equal(carrierBanner([], true), 'You are Rambo — only your kills count')
 })
 
 test('the respawn line counts down and then becomes the protection line', () => {

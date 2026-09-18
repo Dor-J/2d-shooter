@@ -4,6 +4,7 @@
 //   web:input:sensitivity      — runtime mouse-sensitivity adjustment inside safe bounds
 //   web:input:weapon-selection — numeric, cycling, and separate primary/secondary selection
 //   web:input:backflip-combo   — the backflip key and the crouch+jump combination
+//   web:input:flag-throw       — the dedicated key and the jump+crouch combo
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -246,6 +247,17 @@ test('drop, throw, knife, and pickup reach the protocol frame', () => {
   assert.equal(frame.throw_weapon, true)
   assert.equal(frame.throw_knife, true)
   assert.equal(frame.pickup, true)
+})
+
+test('the dedicated flag-throw key and the jump-plus-crouch combo set throw_weapon', () => {
+  const state = new ActionState()
+  state.set('flagThrow', true)
+  assert.equal(encodeInput(state, { seq: 1, aim: { x: 0, y: 0 }, weapon: 0, airborne: true }).throw_weapon, true)
+  state.releaseAll()
+  state.commit()
+  state.set('jump', true)
+  state.set('crouch', true)
+  assert.equal(encodeInput(state, { seq: 2, aim: { x: 0, y: 0 }, weapon: 0, airborne: false }).throw_weapon, true)
 })
 
 test('switchWeapon toggles between the two carried slots', () => {

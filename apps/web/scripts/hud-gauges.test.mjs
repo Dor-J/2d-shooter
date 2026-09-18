@@ -1,3 +1,4 @@
+// Acceptance evidence: web:hud:gauges
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {

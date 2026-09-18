@@ -1,3 +1,4 @@
+// Acceptance evidence: web:render:effects web:render:weather
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {

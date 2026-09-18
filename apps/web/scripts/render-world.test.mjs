@@ -1,3 +1,4 @@
+// Acceptance evidence: web:render:objects web:render:map
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
@@ -15,6 +16,7 @@ import {
   edgesOf,
   parallaxPosition,
   polygonColor,
+  sceneryFrame,
   sceneryLayers,
   sceneryVisible,
   textureCoords,
@@ -161,4 +163,11 @@ test('scenery off the side of the view is not drawn at all', () => {
   const view = { width: 800, height: 600 }
   assert.equal(sceneryVisible(piece, { x: 0, y: 0 }, view), true)
   assert.equal(sceneryVisible(piece, { x: 4000, y: 0 }, view), false)
+})
+
+test('animated scenery advances through its sheet', () => {
+  const piece = { sprite: 'fan', x: 0, y: 0, width: 8, height: 8, angle: 0, parallax: 1, foreground: false, alpha: 1, frames: 4, period: 2 }
+  assert.equal(sceneryFrame(piece, 0), 0)
+  assert.equal(sceneryFrame(piece, 2), 1)
+  assert.equal(sceneryFrame(piece, 8), 0)
 })

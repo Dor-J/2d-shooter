@@ -1,3 +1,4 @@
+// Acceptance evidence: web:render:gostek
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
@@ -10,6 +11,7 @@ import {
   aimAngle,
   armAngle,
   buildRig,
+  bloodStain,
   burningTint,
   corpseFade,
   defaultAppearance,
@@ -117,6 +119,8 @@ test('the pose is read from what the simulation said, with death winning over ev
   assert.equal(readPose('Standing', true, 100), 'stand')
   assert.equal(readPose('Prone', true, 0), 'dead')
   assert.equal(readPose(undefined, true, 100), 'stand')
+  assert.equal(readPose('Emote victory', true, 100), 'emote')
+  assert.equal(readPose('Mercy', true, 100), 'emote')
 })
 
 test('a prone soldier is drawn lower than a standing one', () => {
@@ -174,6 +178,16 @@ test('a corpse fades out over its last second rather than vanishing', () => {
   assert.equal(corpseFade(30, 60), 0.5)
   assert.equal(corpseFade(0), 0)
   assert.equal(corpseFade(600, 60), 1, 'a fresh corpse is not more than solid')
+})
+
+test('blood stays on the shirt and never washes the colour out of range', () => {
+  const shirt = defaultAppearance().shirt
+  assert.deepEqual(bloodStain(shirt, 0), shirt)
+  const stained = bloodStain(shirt, 1)
+  assert.ok(stained[1] < shirt[1], 'the stain takes the green out')
+  assert.ok(stained[0] > 0.3)
+  for (const channel of stained) assert.ok(channel >= 0 && channel <= 1)
+  assert.deepEqual(bloodStain(shirt, -4), shirt, 'a negative stain is nothing')
 })
 
 test('a burning soldier is drawn hotter the longer they burn', () => {

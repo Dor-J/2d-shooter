@@ -9,7 +9,7 @@ function connect(name) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(endpoint)
     const timeout = setTimeout(() => reject(new Error(`Timed out connecting ${name}`)), 5000)
-    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 13, name, resume: null })))
+    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 15, name, resume: null })))
     ws.addEventListener('message', event => {
       const message = JSON.parse(event.data)
       if (message.type === 'welcome') { clearTimeout(timeout); resolve({ ws, player: message.player }) }

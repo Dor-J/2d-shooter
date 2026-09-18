@@ -1,3 +1,4 @@
+// Acceptance evidence: web:hud:screens
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {

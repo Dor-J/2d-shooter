@@ -53,7 +53,7 @@ export function connect({ name = 'Agent', url = DEFAULT_URL } = {}) {
     const snapshotListeners = []
     let opened = false
 
-    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 13, name, resume: null })))
+    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 15, name, resume: null })))
     ws.addEventListener('message', event => {
       const message = JSON.parse(event.data)
       if (message.type === 'welcome') {
