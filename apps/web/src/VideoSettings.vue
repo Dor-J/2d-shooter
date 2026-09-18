@@ -19,8 +19,30 @@ const emit = defineEmits<{
   (event: 'update:hudScale', value: number): void
   (event: 'update:quality', value: QualitySettings): void
   (event: 'update:weather', value: WeatherSettings): void
+  (event: 'custom-hud', value: import('./hud/layout.ts').HudLayout | null): void
+  (event: 'fullscreen'): void
+  (event: 'background', value: string): void
   (event: 'close'): void
 }>()
+
+const desktop = `${typeof window !== 'undefined' ? window.screen.width : 0}×${typeof window !== 'undefined' ? window.screen.height : 0}`
+
+async function loadCustomHud(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  try {
+    const parsed = JSON.parse(await file.text())
+    const { readLayout } = await import('./hud/layout.ts')
+    const result = readLayout(parsed)
+    if ('errors' in result) {
+      emit('custom-hud', null)
+      return
+    }
+    emit('custom-hud', result.layout)
+  } catch {
+    emit('custom-hud', null)
+  }
+}
 
 const scalePercent = computed(() => Math.round(props.hudScale * 100))
 
@@ -50,6 +72,12 @@ function titleCase(value: string) {
         <option v-for="name in HUD_PRESETS" :key="name" :value="name">{{ titleCase(name) }}</option>
       </select>
     </label>
+
+    <label>
+      Custom HUD
+      <input type="file" accept="application/json" aria-label="Load custom HUD" @change="loadCustomHud" />
+    </label>
+    <button class="outline" type="button" @click="emit('custom-hud', null)">Reset HUD</button>
 
     <label>
       HUD size · {{ scalePercent }}%
@@ -92,6 +120,13 @@ function titleCase(value: string) {
     <label class="switch">
       <input type="checkbox" :checked="quality.mipmaps" aria-label="Mipmapping" @change="setQuality({ mipmaps: ($event.target as HTMLInputElement).checked })" />
       Mipmapping
+    </label>
+
+    <p class="desktop-res">Desktop {{ desktop }}</p>
+    <button class="outline" type="button" @click="emit('fullscreen')">Fullscreen</button>
+    <label>
+      Background
+      <input type="url" aria-label="Background image URL" placeholder="https://…" @change="emit('background', ($event.target as HTMLInputElement).value)" />
     </label>
 
     <label class="switch">

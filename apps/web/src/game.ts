@@ -7,13 +7,14 @@ import { captureCanvas, downloadBlob } from './input/screenshot.ts'
 import { aimFromStick, STICK_AIM_RANGE } from './input/touch.ts'
 import { aimFromPointer } from './input/mouse.ts'
 import { ParticleField } from './render/particles.ts'
-import { buildRig, defaultAppearance, readPose, burningTint, type Appearance } from './render/gostek.ts'
+import { buildRig, defaultAppearance, readPose, burningTint, bloodStain, type Appearance } from './render/gostek.ts'
 import { ScreenShake, blastShake, bonusOverlay, bulletTimeScale, damageFeedback } from './render/effects.ts'
-import { defaultQuality, drawingBufferSize, particleLimit, particleBudget, type QualitySettings } from './render/quality.ts'
+import { defaultQuality, drawingBufferSize, particleLimit, particleBudget, textureParameters, type QualitySettings } from './render/quality.ts'
 import { defaultWeather, makeWeather, stepWeather, windForce, type WeatherDrop, type WeatherSettings } from './render/weather.ts'
 import { bulletTrail, flagSprite, kitSprite, projectileSprite } from './render/objects.ts'
+import { edgesOf, polygonColor, textureCoords } from './render/map.ts'
 import { defaultLayout, placeLayout, presetLayout, type HudLayout, type HudPreset, type PlacedElement } from './hud/layout.ts'
-import { ammoGauge, damageVignette, gaugeFillRect, healthGauge, jetGauge, playerTint } from './hud/gauges.ts'
+import { ammoGauge, armorGauge, damageVignette, fireIntervalGauge, gaugeFillRect, healthGauge, jetGauge, playerTint } from './hud/gauges.ts'
 import { blips, boundsOf, crosshair, projectToMinimap, sniperLine } from './hud/minimap.ts'
 import { BandwidthMeter, FrameMeter, PingMeter } from './hud/net.ts'
 import type { KillFeedEntry } from './hud/feed.ts'
@@ -24,6 +25,9 @@ import type { WireObjectives } from './objectives.ts'
 import type { WireTimedEffect } from './bonuses.ts'
 import type { WireSpectator } from './spectate.ts'
 import { DEFAULT_WEAPON_NAMES, fireRefusalText, muzzleOrigin, nearestPickup, ownedSlots, syncWeaponFromSnapshot, type WireInventory, type WireWeaponTable } from './weapons.ts'
+import { AudioEngine } from './audio/engine.ts'
+import { DemoPlayer, DemoRecorder } from './replay/player.ts'
+import { InputRing, interpolate, reconcile } from './network/prediction.ts'
 
 export type Vec2 = { x: number; y: number }
 export type Input = InputFrame
@@ -61,7 +65,7 @@ const PARTICLE_COLORS: Record<string, ParticleTint> = {
 export type Projectile = { id: number; pos: Vec2; owner: number }
 export type GroundObject = { kind: string; pos: Vec2; weapon_slot?: number | null; active?: boolean }
 export type World = { tick: number; mode: string; players: Record<string, Player>; projectiles: Projectile[]; objects?: GroundObject[]; map_polygons: MapPolygon[]; ragdolls: Ragdoll[]; scores: number[]; events: WorldEvent[]; weapons?: WireWeaponTable; movement?: { fuel_capacity?: number }; rules?: WireRules; match_state?: WireMatchState; objectives?: WireObjectives; spectators?: Record<string, WireSpectator>; stats?: Record<string, unknown>; pickups?: { items: { kind: string; body: { pos: Vec2 } }[] } }
-export type Room = { id: number; name: string; mode: string; players: number; capacity: number; map: string; weapon_mod?: string; weapon_hash?: number; modifiers?: WireModifiers; ruleset?: string | null }
+export type Room = { id: number; name: string; mode: string; players: number; capacity: number; map: string; weapon_mod?: string; weapon_hash?: number; modifiers?: WireModifiers; ruleset?: string | null; password?: boolean; ping?: number; version?: number; required_mod?: string | null; region?: string | null }
 type Predict = (player: string, input: string) => string
 declare global { interface Window { __arenaWasmReady?: Promise<Predict | null> } }
 export class GameClient {
@@ -81,6 +85,8 @@ export class GameClient {
   spriteCamera: WebGLUniformLocation
   spriteTint: WebGLUniformLocation
   soldierTexture: WebGLTexture | null = null
+  /** A procedural surface for the terrain, generated here rather than shipped as a file. */
+  terrainTexture: WebGLTexture | null = null
   /** Every GL object this client made, so teardown can release all of them rather than some. */
   shaders: WebGLShader[] = []
   released = false
@@ -93,6 +99,8 @@ export class GameClient {
   send: (input: Input) => void
   input = new InputSystem()
   particles = new ParticleField()
+  audio = new AudioEngine()
+  ring = new InputRing()
   /** The whole-screen effects, each of which decays on its own. */
   shake = new ScreenShake()
   quality: QualitySettings = defaultQuality()
@@ -117,14 +125,19 @@ export class GameClient {
   onKills: (entries: KillFeedEntry[]) => void = () => {}
   /** A one-line note for the player, such as why a shot did not go off. */
   onNotice: (text: string) => void = () => {}
-  onUiChange: (ui: { weapon: number; scoreboardVisible: boolean; scoreboardOffset: number }) => void = () => {}
+  onUiChange: (ui: { weapon: number; scoreboardVisible: boolean; scoreboardOffset: number; minimap: boolean; sniperLine: boolean; performanceStats: boolean; weaponStats: boolean }) => void = () => {}
   uiSignature = ''
+  /** Blood that stayed on each soldier, 0–1, so a hit is still visible after the spray fades. */
+  blood = new Map<number, number>()
   aim: Vec2 = { x: 600, y: 350 }
   last = performance.now()
   accumulator = 0
   frame = 0
   resizeObserver: ResizeObserver
   view: View = { x: 0, y: 0, width: 1200, height: 700 }
+  recorder: DemoRecorder | null = null
+  demo: DemoPlayer | null = null
+  backgroundUrl = ''
 
   constructor(canvas: HTMLCanvasElement, send: (input: Input) => void, input?: InputSystem) {
     this.canvas = canvas; this.send = send; if (input) this.input = input
@@ -158,6 +171,7 @@ export class GameClient {
     const soldier = new Image()
     soldier.src = '/art/soldier.png'
     soldier.onload = () => { const texture = gl.createTexture(); if (!texture) return; gl.bindTexture(gl.TEXTURE_2D,texture); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,soldier); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); this.soldierTexture = texture }
+    this.terrainTexture = this.makeTerrainTexture()
     gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
     this.resizeObserver = new ResizeObserver(() => this.resize()); this.resizeObserver.observe(canvas)
     window.addEventListener('keydown', this.keydown); window.addEventListener('keyup', this.keyup); window.addEventListener('blur', this.blur)
@@ -197,6 +211,7 @@ export class GameClient {
     this.particles.limit = particleLimit(quality.particles)
     this.particles.budget = particleBudget(quality.particles)
     if (!quality.weather) this.weatherDrops = []
+    if (this.terrainTexture) { this.gl.deleteTexture(this.terrainTexture); this.terrainTexture = this.makeTerrainTexture() }
     this.resize()
   }
 
@@ -223,13 +238,20 @@ export class GameClient {
     this.view = viewForCanvas(rect.width, rect.height, player?.pos.x ?? 600, player?.pos.y ?? 350, this.aim.x, this.aim.y)
     const shake = this.shake.offset()
     this.view.x += shake.x; this.view.y += shake.y
+    if (this.backgroundUrl) this.canvas.style.backgroundImage = `url("${this.backgroundUrl}")`
     this.canvas.style.backgroundSize = `${ARENA_W / this.view.width * 100}% ${ARENA_H / this.view.height * 100}%`
     this.canvas.style.backgroundPosition = `${this.view.width >= ARENA_W ? 50 : this.view.x / (ARENA_W - this.view.width) * 100}% ${this.view.height >= ARENA_H ? 50 : this.view.y / (ARENA_H - this.view.height) * 100}%`
   }
   setSnapshot(world: World) {
     this.previousWorld = this.world; this.world = world; this.snapshotAt = performance.now()
-    this.predicted = world.players[this.localId] ? structuredClone(world.players[this.localId]) : null
     const me = world.players[this.localId]
+    if (me) {
+      this.ring.dropThrough(me.last_seq)
+      const replayed = reconcile({ id: me.id, pos: me.pos, vel: me.vel, last_seq: me.last_seq }, this.ring.frames)
+      this.predicted = { ...structuredClone(me), pos: replayed.pos, vel: replayed.vel, last_seq: replayed.last_seq }
+    } else {
+      this.predicted = null
+    }
     if (me) {
       // The server says which of our frames it has seen; the round trip is the honest ping.
       const sent = this.sentAt.get(me.last_seq)
@@ -240,13 +262,22 @@ export class GameClient {
     }
     if (me && me.hp > 0) this.input.weapon = syncWeaponFromSnapshot(this.input.weapon, me.weapon, ownedSlots(me.inventory))
     this.consumeEvents(world)
+    this.recorder?.record(world.tick, String(world.tick))
   }
   /** Turns authoritative damage events into cosmetics; nothing here is sent back to the server. */
   consumeEvents(world: World) {
     const kills: KillFeedEntry[] = []
+    const listener = world.players[this.localId]?.pos ?? { x: 0, y: 0 }
+    this.audio.lastListener = listener
     for (const event of world.events ?? []) {
       const blood = (event as { Blood?: { target: number; position: Vec2; direction: Vec2; amount: number } }).Blood
-      if (blood) this.particles.emitBlood(blood.position, blood.direction, blood.amount, world.tick * 31 + blood.target)
+      if (blood) {
+        this.particles.emitBlood(blood.position, blood.direction, blood.amount, world.tick * 31 + blood.target)
+        const stain = Math.min(1, (this.blood.get(blood.target) ?? 0) + Math.min(1, blood.amount / 40))
+        this.blood.set(blood.target, stain)
+      }
+      const respawn = (event as { Respawn?: { player: number } }).Respawn
+      if (respawn) this.blood.delete(respawn.player)
       const gibs = (event as { Gibs?: { target: number; position: Vec2; velocity: Vec2 } }).Gibs
       if (gibs) this.particles.emitGibs(gibs.position, gibs.velocity, world.tick * 17 + gibs.target)
       const feed = (event as { KillFeed?: KillFeedEntry }).KillFeed
@@ -274,6 +305,11 @@ export class GameClient {
       // A refused shot is not a dropped packet: say why, so the player knows to crouch.
       const refused = (event as { FireRefused?: { player: number; reason: string } }).FireRefused
       if (refused && refused.player === this.localId) this.onNotice(fireRefusalText(refused.reason))
+      const named = Object.keys(event)[0]
+      if (named) {
+        const body = (event as Record<string, { pos?: Vec2 } | undefined>)[named]
+        this.audio.hear(named, { at: body?.pos, listener })
+      }
     }
     if (kills.length > 0) this.onKills(kills)
   }
@@ -294,23 +330,42 @@ export class GameClient {
     }
     const owned = player && player.hp > 0 ? ownedSlots(player.inventory) : undefined
     const { frame, events } = this.input.tick({ aim: this.aim, airborne: player ? !player.grounded : false, gamepad, owned })
+    if (this.input.ui.fastForward && this.demo) this.demo.fastForward()
     for (const event of events) {
       if (event.type === 'screenshot') captureCanvas(this.canvas, (blob, filename) => downloadBlob(blob as Blob, filename))
+      if (event.type === 'demo') {
+        if (event.recording) this.recorder = new DemoRecorder()
+        else this.flushDemo()
+      }
       this.onInterfaceEvent(event)
     }
-    const ui = { weapon: this.input.weapon, scoreboardVisible: this.input.ui.scoreboardVisible, scoreboardOffset: this.input.ui.scoreboardOffset }
-    const signature = `${ui.weapon}:${ui.scoreboardVisible}:${ui.scoreboardOffset}`
+    const ui = {
+      weapon: this.input.weapon,
+      scoreboardVisible: this.input.ui.scoreboardVisible,
+      scoreboardOffset: this.input.ui.scoreboardOffset,
+      minimap: this.input.ui.minimap,
+      sniperLine: this.input.ui.sniperLine,
+      performanceStats: this.input.ui.performanceStats,
+      weaponStats: this.input.ui.weaponStats,
+    }
+    const signature = `${ui.weapon}:${ui.scoreboardVisible}:${ui.scoreboardOffset}:${ui.minimap}:${ui.sniperLine}:${ui.performanceStats}:${ui.weaponStats}`
     if (signature !== this.uiSignature) { this.uiSignature = signature; this.onUiChange(ui) }
     this.sentAt.set(frame.seq, performance.now())
     // Only the last second of frames can still be acknowledged; the rest is dead weight.
     if (this.sentAt.size > 120) { const oldest = this.sentAt.keys().next().value; if (oldest !== undefined) this.sentAt.delete(oldest) }
     this.bandwidth.sent(JSON.stringify(frame).length, performance.now())
     this.send(frame)
+    this.ring.push({ seq: frame.seq, left: frame.left, right: frame.right, jump: frame.jump, jet: frame.jet, aim: frame.aim })
+    this.audio.step(1 / 60)
     if (this.predict && this.predicted) {
       try {
         const result = this.predict(JSON.stringify(this.predicted), JSON.stringify(frame))
         if (result) this.predicted = JSON.parse(result) as Player
       } catch { this.predict = null }
+    } else if (this.predicted && this.world.players[this.localId]) {
+      const acked = this.world.players[this.localId]
+      const replayed = reconcile({ id: acked.id, pos: acked.pos, vel: acked.vel, last_seq: acked.last_seq }, this.ring.frames)
+      this.predicted = { ...this.predicted, pos: replayed.pos, vel: replayed.vel, last_seq: replayed.last_seq }
     }
   }
   /** Draws in screen pixels rather than world units, for the HUD on top of the match. */
@@ -327,11 +382,15 @@ export class GameClient {
   /** The soldier, drawn as the layered rig rather than one flat sprite. */
   drawSoldier(player: Player, pos: Vec2, aim: Vec2, jetting: boolean) {
     const overlay = bonusOverlay(player.bonus?.active ?? undefined, player.id === this.localId)
+    const stain = this.blood.get(player.id) ?? 0
+    const appearance = stain > 0
+      ? { ...this.appearance, shirt: bloodStain(this.appearance.shirt, stain), pants: bloodStain(this.appearance.pants, stain) }
+      : this.appearance
     const rig = buildRig({
       pos,
       aim,
       pose: readPose(player.state?.pose, player.grounded, player.hp),
-      appearance: this.appearance,
+      appearance,
       team: playerTint(player.team, player.id === this.localId),
       tick: this.world?.tick ?? 0,
       jetting,
@@ -348,7 +407,7 @@ export class GameClient {
 
   /** The minimap, the blips on it, and nothing the screen is not already showing. */
   drawMinimap(panel: PlacedElement) {
-    if (!this.world) return
+    if (!this.world || !this.input.ui.minimap) return
     const bounds = boundsOf(this.world.map_polygons ?? [])
     this.screenRect(panel.x, panel.y, panel.width, panel.height, [.04,.07,.09,.7])
     for (const polygon of this.world.map_polygons ?? []) {
@@ -362,12 +421,84 @@ export class GameClient {
   }
 
   rect(x: number, y: number, w: number, h: number, c: number[]) { const gl = this.gl; gl.uniform4f(this.color, c[0], c[1], c[2], c[3] ?? 1); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([x,y,x+w,y,x,y+h,x,y+h,x+w,y,x+w,y+h]), gl.STREAM_DRAW); gl.drawArrays(gl.TRIANGLES, 0, 6) }
+  /**
+   * A grain of rock, built here from a seeded pattern.
+   *
+   * Generating it means the terrain has a surface without shipping an image for it, and it is the
+   * same surface on every machine, which is what lets a screenshot comparison mean anything.
+   */
+  makeTerrainTexture(size = 64): WebGLTexture | null {
+    const gl = this.gl
+    const texture = gl.createTexture()
+    if (!texture) return null
+    const pixels = new Uint8Array(size * size * 4)
+    let state = 0x9e3779b9
+    for (let i = 0; i < size * size; i += 1) {
+      state = (Math.imul(state ^ (state >>> 15), state | 1) + 0x6d2b79f5) >>> 0
+      const grain = 200 + ((state >>> 24) % 56)
+      pixels[i * 4] = grain; pixels[i * 4 + 1] = grain; pixels[i * 4 + 2] = grain; pixels[i * 4 + 3] = 255
+    }
+    gl.bindTexture(gl.TEXTURE_2D, texture)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, size, size, 0, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
+    const parameters = textureParameters(this.quality, true)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl[parameters.minFilter])
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl[parameters.magFilter])
+    if (parameters.generateMipmap) gl.generateMipmap(gl.TEXTURE_2D)
+    return texture
+  }
+
+  /**
+   * One polygon, textured and lit.
+   *
+   * The texture is projected from world coordinates rather than stretched to the triangle, so two
+   * polygons that meet show one continuous surface instead of a seam down the join.
+   */
   polygon(polygon: MapPolygon) {
-    const colors: Record<string, number[]> = { Ice: [.38,.72,.86,1], Bouncy: [.82,.54,.28,1], Deadly: [.78,.18,.16,1], OneWay: [.55,.57,.50,1] }
-    const color = colors[polygon.kind] ?? [.30,.34,.35,1]
-    this.gl.uniform4f(this.color,color[0],color[1],color[2],color[3])
-    this.gl.bufferData(this.gl.ARRAY_BUFFER,polygonVertexBuffer([polygon]),this.gl.STREAM_DRAW)
-    this.gl.drawArrays(this.gl.TRIANGLES,0,3)
+    const gl = this.gl
+    const color = polygonColor(polygon.kind)
+    if (this.terrainTexture && !this.quality.compatibility) {
+      const uvs = textureCoords(polygon)
+      const vertices = polygon.vertices
+      const data = new Float32Array(3 * 4)
+      for (let i = 0; i < 3; i += 1) {
+        data[i * 4] = vertices[i].x; data[i * 4 + 1] = vertices[i].y
+        data[i * 4 + 2] = uvs[i].u; data[i * 4 + 3] = uvs[i].v
+      }
+      gl.useProgram(this.spriteProgram)
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.spriteBuffer)
+      gl.bufferData(gl.ARRAY_BUFFER, data, gl.STREAM_DRAW)
+      gl.enableVertexAttribArray(this.spritePosition); gl.vertexAttribPointer(this.spritePosition,2,gl.FLOAT,false,16,0)
+      gl.enableVertexAttribArray(this.spriteUv); gl.vertexAttribPointer(this.spriteUv,2,gl.FLOAT,false,16,8)
+      gl.uniform2f(this.spriteResolution,this.view.width,this.view.height); gl.uniform2f(this.spriteCamera,this.view.x,this.view.y)
+      gl.uniform4f(this.spriteTint,color[0],color[1],color[2],color[3])
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,this.terrainTexture)
+      gl.drawArrays(gl.TRIANGLES,0,3)
+      this.useWorldProgram()
+    } else {
+      gl.uniform4f(this.color,color[0],color[1],color[2],color[3])
+      gl.bufferData(gl.ARRAY_BUFFER,polygonVertexBuffer([polygon]),gl.STREAM_DRAW)
+      gl.drawArrays(gl.TRIANGLES,0,3)
+    }
+    // Only the edges facing the light are drawn, so a platform reads as ground with a top rather
+    // than as an outlined shape.
+    for (const edge of edgesOf(polygon)) {
+      const dx = edge.to.x - edge.from.x
+      const dy = edge.to.y - edge.from.y
+      const length = Math.hypot(dx, dy) || 1
+      const steps = Math.min(64, Math.max(2, Math.round(length / 6)))
+      for (let i = 0; i < steps; i += 1) {
+        const at = i / steps
+        this.rect(edge.from.x + dx * at - 1, edge.from.y + dy * at - 1, edge.width, edge.width, edge.color)
+      }
+    }
+  }
+
+  /** Puts the plain-triangle program back, after something borrowed the sprite one. */
+  useWorldProgram() {
+    const gl = this.gl
+    gl.useProgram(this.program); gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer)
+    gl.enableVertexAttribArray(this.position); gl.vertexAttribPointer(this.position,2,gl.FLOAT,false,0,0)
+    gl.uniform2f(this.resolution,this.view.width,this.view.height); gl.uniform2f(this.camera,this.view.x,this.view.y)
   }
   sprite(x: number, y: number, w: number, h: number, tint: number[], flip: boolean) {
     const gl = this.gl
@@ -432,7 +563,7 @@ export class GameClient {
     for (const p of Object.values(this.world.players)) {
       if (p.hp <= 0) continue
       const previous = this.previousWorld?.players[p.id]
-      const pos = p.id === this.localId && this.predicted ? this.predicted.pos : previous ? {x:previous.pos.x+(p.pos.x-previous.pos.x)*blend,y:previous.pos.y+(p.pos.y-previous.pos.y)*blend} : p.pos
+      const pos = p.id === this.localId && this.predicted ? this.predicted.pos : previous ? interpolate(previous.pos, p.pos, blend) : p.pos
       const cap = this.world.movement?.fuel_capacity ?? 1
       const jetting = p.id === this.localId ? this.input.state.held('jet') : !p.grounded && p.fuel < cap - 0.001
       if (jetting && p.hp > 0) {
@@ -454,7 +585,7 @@ export class GameClient {
       const cursor = crosshair(me.accuracy ?? 0, (me as { bink?: number }).bink ?? 0, (me.cooldown ?? 0) > 0)
       this.rect(this.aim.x - cursor.spread, this.aim.y + cursor.offsetY - 1, cursor.spread * 2, 2, cursor.color)
       this.rect(this.aim.x - 1, this.aim.y + cursor.offsetY - cursor.spread, 2, cursor.spread * 2, cursor.color)
-      const scoped = SCOPED_WEAPONS.has(weaponNames[this.input.weapon] ?? '')
+      const scoped = this.input.ui.sniperLine && SCOPED_WEAPONS.has(weaponNames[this.input.weapon] ?? '')
       const line = sniperLine(muzzleOrigin(me.pos, this.aim, me.state?.pose), this.aim, { enabled: scoped })
       if (line) {
         const length = Math.hypot(line.to.x - line.from.x, line.to.y - line.from.y)
@@ -491,16 +622,19 @@ export class GameClient {
     const viewport = { width: rect.width || this.view.width, height: rect.height || this.view.height, scale: this.hudScale }
     const me = this.predicted ?? this.world.players[this.localId]
     const placed = placeLayout(this.hudLayout, viewport)
+    const magazine = Math.max(me?.ammo ?? 0, 1)
     const gauges = me
       ? {
           health: healthGauge(me.hp),
           jet: jetGauge(me.fuel, this.world.movement?.fuel_capacity ?? 1),
-          ammo: ammoGauge({ ammo: me.ammo, magazine: Math.max(me.ammo, 1), reloadTimer: me.reload_timer, reloadTicks: 108 }),
+          ammo: ammoGauge({ ammo: me.ammo, magazine, reloadTimer: me.reload_timer, reloadTicks: 108 }),
+          'fire-interval': fireIntervalGauge(me.cooldown ?? 0, 10),
+          armor: armorGauge(me.armor ?? 0),
         }
       : null
     for (const element of placed) {
       if (element.id === 'minimap') { this.drawMinimap(element); continue }
-      const gauge = gauges?.[element.id as 'health' | 'jet' | 'ammo']
+      const gauge = gauges?.[element.id as keyof NonNullable<typeof gauges>]
       if (!gauge) continue
       this.screenRect(element.x, element.y, element.width, element.height, gauge.track)
       const fill = gaugeFillRect(gauge, element)
@@ -526,6 +660,24 @@ export class GameClient {
     const overlay = bonusOverlay(me.bonus?.active ?? undefined, true)
     if (overlay.tint[3] > 0) this.screenRect(0, 0, viewport.width, viewport.height, overlay.tint)
   }
+  flushDemo() {
+    if (!this.recorder || this.recorder.chunks.length === 0) {
+      this.recorder = null
+      return
+    }
+    const file = this.recorder.toFile({
+      format: 1,
+      protocol: 15,
+      map: this.world?.mode ?? 'demo',
+      mode: this.world?.mode ?? 'deathmatch',
+      weapon_hash: this.world?.weapons?.hash ?? 0,
+      seed: 0,
+      source_revision: 'client',
+    })
+    downloadBlob(new Blob([JSON.stringify(file)], { type: 'application/json' }), `demo-${file.header.mode}.json`)
+    this.recorder = null
+  }
+
   observe() {
     return {
       frame: this.input.lastFrame,
@@ -549,6 +701,7 @@ export class GameClient {
       gl.deleteProgram(this.program); gl.deleteProgram(this.spriteProgram)
       gl.deleteBuffer(this.buffer); gl.deleteBuffer(this.spriteBuffer)
       if (this.soldierTexture) { gl.deleteTexture(this.soldierTexture); this.soldierTexture = null }
+      if (this.terrainTexture) { gl.deleteTexture(this.terrainTexture); this.terrainTexture = null }
     }
     window.removeEventListener('keydown',this.keydown); window.removeEventListener('keyup',this.keyup); window.removeEventListener('blur',this.blur); this.canvas.removeEventListener('pointermove',this.pointer); this.canvas.removeEventListener('pointerdown',this.pointerDown); window.removeEventListener('pointerup',this.pointerUp); this.canvas.removeEventListener('wheel',this.wheel)
   }

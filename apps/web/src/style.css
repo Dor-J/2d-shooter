@@ -414,6 +414,31 @@ header{height:72px;padding:0 clamp(20px,4vw,64px);display:flex;justify-content:s
   padding: 6px 10px;
 }
 .hud-top .network .dot { border-radius: 50%; display: inline-block; }
+.chat-overlay {
+  position: absolute;
+  left: calc(16px + env(safe-area-inset-left, 0px));
+  bottom: calc(220px + env(safe-area-inset-bottom, 0px));
+  width: min(420px, 70vw);
+  pointer-events: none;
+  display: grid;
+  gap: 2px;
+  font-size: 13px;
+  text-shadow: 0 1px 6px #000c;
+}
+.chat-overlay .team { color: #9ad8a0; }
+.chat-overlay .server { color: #f0c64f; }
+.weapon-stats-overlay {
+  position: absolute;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  top: calc(80px + env(safe-area-inset-top, 0px));
+  min-width: 220px;
+  background: rgba(6, 10, 14, 0.82);
+  border-radius: 8px;
+  padding: 10px 12px;
+  pointer-events: none;
+}
+.weapon-stats-overlay h2 { margin: 0 0 8px; font-size: 16px; }
+.weapon-stats-overlay div { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
 
 /* The weapon corner, beside the weapon buttons. */
 .weapon-corner {
