@@ -4,11 +4,14 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 pub mod bots;
 mod character;
+pub mod chat;
 mod collision;
+pub mod commands;
 mod fixtures;
 mod map;
 pub mod modes;
 pub mod objects;
+pub mod replay;
 mod weapons;
 pub use bots::{
     chat_line, think as bot_think, Awareness, Bot, BotChatEvent, BotGoal, BotProfile, BotView,
@@ -22,11 +25,13 @@ pub use character::{
     Direction, Emote, Impulse, ImpulseSource, ImpulseTarget, KillFeedEntry, MovementConfig,
     MultiKill, Ragdoll, RagdollSegment, RespawnConfig, RollSource, MAX_ATTRIBUTIONS,
 };
+pub use chat::{censor, may_see as may_see_chat, parse_chat, ChatLine, ChatScope, Flood};
 pub use collision::{
     resolve_material_velocity, Aabb, BodyPart, BodyRegion, BodyShape, CollisionMask,
     CollisionPolygon, CollisionWorld, Contact, ContactManifold, DynamicBody, DynamicBodyKind,
     MaterialResponse, PolygonKind, RayHit, ShapeHit, SweepHit,
 };
+pub use commands::{parse_player_command, CommandError, PlayerCommand};
 pub use fixtures::{replay_fixture_json, Fixture, FrameInput, SimRng, WorldDigest};
 pub use map::{MapValidationError, ValidatedMap};
 pub use modes::{
@@ -45,6 +50,7 @@ pub use objects::{
     Pickup, Pickups, TimedEffect, BERSERKER_DAMAGE_MULTIPLIER, CLUSTER_GRENADES,
     FLAG_PICKUP_RADIUS, FLAG_TIMEOUT, KIT_RADIUS, PREDATOR_ALPHA, TOUCHDOWN_RADIUS, VEST_ARMOR,
 };
+pub use replay::{Replay, ReplayChunk, ReplayError, ReplayHeader, MAX_CHUNKS, REPLAY_FORMAT};
 pub use weapons::{
     accuracy, aim_dir, barrel_origin, bink_on_hit, boosts_the_shooter, bounce_velocity,
     calculate_bink, can_damage, charged_velocity, cluster_submunitions, collides_with_bodies,
@@ -348,10 +354,39 @@ pub struct Projectile {
     #[serde(default)]
     pub last_impact: Vec2,
 }
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum SpawnKind {
+    #[default]
+    Player,
+    Flag,
+    Bonus,
+    Grenade,
+    StationaryGun,
+}
+
+impl SpawnKind {
+    /// Soldat PMS team numbers for special spawnpoints.
+    pub const fn from_pms_team(team: i32) -> Self {
+        match team {
+            5 | 6 | 14 | 15 => Self::Flag,
+            7 => Self::Grenade,
+            8..=13 => Self::Bonus,
+            16 => Self::StationaryGun,
+            _ => Self::Player,
+        }
+    }
+
+    const fn is_player(kind: &Self) -> bool {
+        matches!(kind, Self::Player)
+    }
+}
+
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct MapSpawn {
     pub position: Vec2,
     pub team: u8,
+    #[serde(default, skip_serializing_if = "SpawnKind::is_player")]
+    pub kind: SpawnKind,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ProjectileKind {
@@ -532,6 +567,9 @@ pub struct World {
     pub bots: BTreeMap<u32, Bot>,
     #[serde(default)]
     pub friendly_fire: bool,
+    /// Bolted M2 guns. Empty worlds omit the field so existing digests stay put.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub guns: Vec<StationaryGun>,
 }
 
 impl World {
@@ -573,6 +611,7 @@ impl World {
             bonuses: BonusConfig::default(),
             bots: BTreeMap::new(),
             friendly_fire: false,
+            guns: Vec::new(),
         }
     }
 
@@ -613,10 +652,52 @@ impl World {
                     y: spawn.y as f32,
                 },
                 team: spawn.team.clamp(0, u8::MAX as i32) as u8,
+                kind: SpawnKind::from_pms_team(spawn.team),
             })
             .collect();
         world.place_objectives();
+        world.place_specials();
         world
+    }
+
+    /// Bolts M2s and remembers kit/grenade spots from the map's special spawnpoints.
+    fn place_specials(&mut self) {
+        self.guns = self
+            .map_spawns
+            .iter()
+            .filter(|spawn| spawn.kind == SpawnKind::StationaryGun)
+            .map(|spawn| StationaryGun::new(spawn.position))
+            .collect();
+    }
+
+    /// The yellow flag *is* the bow: whoever holds it has the weapon, everyone else does not.
+    fn sync_rambo_bow(&mut self) {
+        if self.rules.kind != ModeKind::Rambomatch {
+            return;
+        }
+        let ammo = u16::from(self.weapons.get(WeaponKind::RamboBow).ammo);
+        let holders: Vec<u32> = self.objectives.carriers().map(|(_, id)| id).collect();
+        let ids: Vec<u32> = self.players.keys().copied().collect();
+        for id in ids {
+            let rambo = holders.contains(&id);
+            let Some(player) = self.players.get_mut(&id) else {
+                continue;
+            };
+            if rambo {
+                if !player.inventory.owns(WeaponKind::RamboBow)
+                    && !player.inventory.owns(WeaponKind::FlamedArrows)
+                {
+                    player.inventory.force_equip(WeaponKind::RamboBow, ammo);
+                    sync_hands(player);
+                }
+            } else if player.inventory.owns(WeaponKind::RamboBow)
+                || player.inventory.owns(WeaponKind::FlamedArrows)
+            {
+                player.inventory.take_kind(WeaponKind::RamboBow);
+                player.inventory.take_kind(WeaponKind::FlamedArrows);
+                sync_hands(player);
+            }
+        }
     }
 
     /// The map geometry this world simulates against.
@@ -685,6 +766,12 @@ impl World {
             .filter_map(|(id, player)| player.bonus.step().map(|effect| (*id, effect)))
             .collect();
         for (player, effect) in expired {
+            if effect == BonusEffect::FlameGod {
+                if let Some(holder) = self.players.get_mut(&player) {
+                    holder.inventory.take_kind(WeaponKind::Flamer);
+                    sync_hands(holder);
+                }
+            }
             self.events.push(Event::BonusExpired { player, effect });
         }
 
@@ -746,6 +833,7 @@ impl World {
     /// one is running — is left on the ground for whoever needs it.
     fn apply_kit(&mut self, id: u32, kind: KitKind) -> bool {
         let grenade_cap = self.damage.max_grenades;
+        let flamer_ammo = u16::from(self.weapons.get(WeaponKind::Flamer).ammo);
         let Some(player) = self.players.get_mut(&id) else {
             return false;
         };
@@ -787,6 +875,12 @@ impl World {
                 // Every timed kit also puts you back on your feet, which is what makes them worth
                 // running for when you are hurt.
                 player.hp = 100;
+                if kind == KitKind::FlameGod {
+                    player
+                        .inventory
+                        .force_equip(WeaponKind::Flamer, flamer_ammo);
+                    sync_hands(player);
+                }
                 true
             }
         }
@@ -866,6 +960,18 @@ impl World {
         } else {
             self.map_spawns.iter().map(|spawn| spawn.position).collect()
         };
+        let loot: Vec<Vec2> = self
+            .pickups
+            .items
+            .iter()
+            .map(|kit| kit.pos())
+            .chain(
+                self.objects
+                    .iter()
+                    .filter(|object| object.kind == DynamicBodyKind::DroppedWeapon && object.active)
+                    .map(|object| object.pos),
+            )
+            .collect();
         let rules = self.rules;
         let table = self.weapons.clone();
         let objectives = self.objectives.clone();
@@ -909,6 +1015,7 @@ impl World {
                     table: &table,
                     collision: &self.collision,
                     spawns: &spawns,
+                    loot: &loot,
                 },
                 &mut self.rng,
                 (tick % u64::from(u32::MAX)) as u32,
@@ -1156,6 +1263,7 @@ impl World {
             let start = player.pos;
             let impact_velocity = player.vel.y.max(0.0);
             let desired = Vec2 {
+                // Acceptance evidence: rust:map:bounds
                 x: (start.x + player.vel.x * DT).clamp(16.0, WIDTH - 16.0),
                 y: (start.y + player.vel.y * DT).clamp(16.0, HEIGHT - 16.0),
             };
@@ -1479,6 +1587,22 @@ impl World {
                         }
                         sync_hands(player);
                     }
+                }
+                let m2_ammo = u16::from(self.weapons.get(WeaponKind::StationaryGun).ammo);
+                for gun in &mut self.guns {
+                    if gun.mount(player.id, player.pos) {
+                        player
+                            .inventory
+                            .force_equip(WeaponKind::StationaryGun, m2_ammo);
+                        sync_hands(player);
+                    }
+                }
+            }
+            for gun in &mut self.guns {
+                if gun.mounted_by == Some(player.id) && !gun.in_reach(player.pos) {
+                    gun.dismount(player.id);
+                    player.inventory.take_kind(WeaponKind::StationaryGun);
+                    sync_hands(player);
                 }
             }
         }
@@ -1877,7 +2001,7 @@ impl World {
                 alive: player.hp > 0,
                 throwing: inputs
                     .get(&player.id)
-                    .is_some_and(|input| input.throw_weapon),
+                    .is_some_and(|input| input.throw_weapon || (input.jump && input.crouch)),
                 aim: inputs.get(&player.id).map_or(player.pos, |input| input.aim),
             })
             .collect();
@@ -1892,6 +2016,7 @@ impl World {
             (sizes.alpha, sizes.bravo),
         );
         self.objectives = objectives;
+        self.sync_rambo_bow();
         for award in awards {
             let team_of = |id: u32| self.players.get(&id).map_or(0, |player| player.team);
             self.ledger.record(award.into_event(), &rules, team_of);
@@ -2008,6 +2133,57 @@ impl World {
                 (id, positions)
             })
             .collect()
+    }
+
+    /// Carries out a typed player command. The parser already decided what was asked; this decides
+    /// whether the world will do it.
+    pub fn apply_player_command(&mut self, player: u32, command: PlayerCommand) -> bool {
+        match command {
+            PlayerCommand::Kill | PlayerCommand::BrutalKill => {
+                let Some(target) = self.players.get(&player) else {
+                    return false;
+                };
+                if target.hp <= 0 {
+                    return false;
+                }
+                let amount = if command == PlayerCommand::BrutalKill {
+                    self.damage.gib_damage.max(target.hp)
+                } else {
+                    target.hp
+                };
+                self.apply_damage(DamageEvent {
+                    attacker: Some(player),
+                    target: player,
+                    amount,
+                    region: BodyRegion::Chest,
+                    cause: DamageCause::Bullet,
+                    direction: Vec2::default(),
+                    pre_scaled: true,
+                });
+                true
+            }
+            PlayerCommand::Mercy
+            | PlayerCommand::Smoke
+            | PlayerCommand::Tabac
+            | PlayerCommand::Takeoff
+            | PlayerCommand::Victory => {
+                let Some(emote) = command.emote() else {
+                    return false;
+                };
+                let Some(target) = self.players.get_mut(&player) else {
+                    return false;
+                };
+                if target.hp <= 0 {
+                    return false;
+                }
+                target.state = CharacterState::Emote {
+                    emote,
+                    ticks_left: 90,
+                };
+                true
+            }
+            PlayerCommand::Pause | PlayerCommand::Unpause => false,
+        }
     }
 
     /// The single authoritative damage path. Bullets, explosions, melee, falls, bleeding, and
@@ -2202,25 +2378,28 @@ impl World {
             None
         };
         if let Some(score_event) = score_event {
-            self.ledger.record(score_event, &rules, team_of);
-            // Pointmatch pays extra for a kill made while holding the point flag, which is the
-            // whole reason to carry it.
-            if let ScoreEvent::Kill { killer, .. } = score_event {
+            // Pointmatch pays extra while holding the flag; Rambomatch pays only the bow holder.
+            if let ScoreEvent::Kill { killer, victim } = score_event {
                 let policy = modes::objective::ObjectiveRules::for_mode(rules.kind);
-                let bonus = policy
-                    .kill_points(self.objectives.is_carrying(killer))
-                    .saturating_sub(1);
-                if bonus > 0 {
-                    self.ledger.record(
-                        ScoreEvent::Objective {
-                            player: killer,
-                            team: team_of(killer),
-                            points: bonus,
-                        },
-                        &rules,
-                        team_of,
-                    );
+                let points = policy.kill_points(self.objectives.is_carrying(killer));
+                if points == 0 {
+                    self.ledger.note_death(victim);
+                } else {
+                    self.ledger.record(score_event, &rules, team_of);
+                    if points > 1 {
+                        self.ledger.record(
+                            ScoreEvent::Objective {
+                                player: killer,
+                                team: team_of(killer),
+                                points: points - 1,
+                            },
+                            &rules,
+                            team_of,
+                        );
+                    }
                 }
+            } else {
+                self.ledger.record(score_event, &rules, team_of);
             }
         } else {
             // An environmental death still counts as a death, with nobody to credit.
@@ -2507,11 +2686,15 @@ fn thrown_knife(bullet: &Projectile) -> bool {
 }
 
 fn held_kind(player: &Player) -> WeaponKind {
-    player
+    let kind = player
         .inventory
         .active()
         .map(|slot| slot.kind)
-        .unwrap_or(WeaponKind::Punch)
+        .unwrap_or(WeaponKind::Punch);
+    if kind == WeaponKind::RamboBow && player.bonus.is(BonusEffect::FlameGod) {
+        return WeaponKind::FlamedArrows;
+    }
+    kind
 }
 
 fn sync_hands(player: &mut Player) {

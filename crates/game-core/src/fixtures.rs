@@ -34,6 +34,10 @@ impl WorldDigest {
     pub fn as_str(&self) -> &str {
         &self.0
     }
+
+    pub fn from_encoded(value: impl Into<String>) -> Self {
+        Self(value.into())
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
