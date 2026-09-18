@@ -19,6 +19,11 @@ impl SimRng {
             .wrapping_add(1_442_695_040_888_963_407);
         self.state
     }
+
+    /// A deterministic unit interval used for spread. Not cryptographic.
+    pub fn next_unit(&mut self) -> f32 {
+        (self.next_u64() % 10_000) as f32 / 10_000.0
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

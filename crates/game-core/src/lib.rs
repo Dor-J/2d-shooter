@@ -2,11 +2,19 @@
 
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+pub mod bots;
 mod character;
 mod collision;
 mod fixtures;
 mod map;
+pub mod modes;
+pub mod objects;
 mod weapons;
+pub use bots::{
+    chat_line, think as bot_think, Awareness, Bot, BotChatEvent, BotGoal, BotProfile, BotView,
+    Contact as BotContact, Difficulty, Movement, Navigation, Objective as BotObjective,
+    ProfileError, Trigger, Waypoint,
+};
 pub use character::{
     absorb, advance_character, apply_impulse, assists, fallback_spawn, multi_kill_label,
     record_attribution, region_multiplier, resolve_player_contact, select_spawn, Absorbed,
@@ -21,7 +29,40 @@ pub use collision::{
 };
 pub use fixtures::{replay_fixture_json, Fixture, FrameInput, SimRng, WorldDigest};
 pub use map::{MapValidationError, ValidatedMap};
-pub use weapons::{Weapon, WeaponStyle, WEAPONS};
+pub use modes::{
+    assign_team, has_line_of_sight, infiltration_award, leader, limit_reached, policy_for,
+    scoreboard, survival_standing, validate_spawns, visibility_between, AdvanceConfig, Award,
+    Bearer, FlagAction, FlagLayout, MatchEvent, MatchHistory, MatchLimits, MatchPhase, MatchState,
+    MatchStats, MatchSummary, ModeKind, ModeRules, ModifierSet, ObjectivePolicy, ObjectiveRules,
+    ObjectiveStat, Objectives, Outcome, PlayerScore, PlayerStats, Rotation, RoundStanding,
+    ScoreEvent, ScoreLedger, ScoreboardRow, ScoringPolicy, ScriptedError, ScriptedRules,
+    SpawnProblem, SpectateCommand, Spectator, SpectatorView, StatEvent, SurvivalConfig, Survivor,
+    TeamChoice, TeamSizes, TimedAward, Unlocked, Viewer, Visibility, WeaponStats, ALPHA, BRAVO,
+    CTF_CAPTURE_AWARD, INFILTRATION_CAPTURE_AWARD, NEUTRAL, POINTMATCH_FLAG_MULTIPLIER, SPECTATOR,
+};
+pub use objects::{
+    predator_alpha, BonusConfig, BonusEffect, Flag, FlagEvent, FlagKind, FlagState, KitKind,
+    Pickup, Pickups, TimedEffect, BERSERKER_DAMAGE_MULTIPLIER, CLUSTER_GRENADES,
+    FLAG_PICKUP_RADIUS, FLAG_TIMEOUT, KIT_RADIUS, PREDATOR_ALPHA, TOUCHDOWN_RADIUS, VEST_ARMOR,
+};
+pub use weapons::{
+    accuracy, aim_dir, barrel_origin, bink_on_hit, boosts_the_shooter, bounce_velocity,
+    calculate_bink, can_damage, charged_velocity, cluster_submunitions, collides_with_bodies,
+    damage as weapon_damage, degraded_hit_multiply, direct_damage, dropped_weapon,
+    explosion_damage, explosion_impulse, explosive, firing, flame, gravity_multiplier,
+    grenade_is_armed, impact_response, inaccuracy, is_continuous_contact, max_deviation, melee,
+    melee_reach, movement_accuracy, muzzle_origin, muzzle_velocity, nearest_index,
+    per_pellet_spread, projectile as projectile_rules, propagated_hit_multiply,
+    propagated_velocity, propagates, push_impulse, pushes_objects, recoil_radians, refusal,
+    ricochet_velocity, self_bink_on_fire, self_boost, should_bink, stance_spread,
+    startup_resets_on_release, stationary, surface_response, swing_segment, throw_arc, throw_frame,
+    throw_velocity, BulletStyle, FireRefusal, ImpactResponse, Inventory, NoCollision, ShooterPose,
+    StationaryGun, SurfaceResponse, WeaponConfigError, WeaponDef, WeaponKind, WeaponLimits,
+    WeaponSlot, WeaponTable, ALL_WEAPONS, ARROW_RESIST_TICKS, CLUSTER_SUBMUNITIONS,
+    CONFIGURED_WEAPONS, FIRST_DEGRADE_DISTANCE, GRENADE_SURFACE_COEF, MAX_INACCURACY,
+    MAX_THROW_CHARGE, MELEE_RADIUS, OBJECT_PUSH_MULTIPLIER, PICKUP_RADIUS, RICOCHET_MIN_TRAVEL,
+    SECOND_DEGRADE_DISTANCE, SELECTABLE_WEAPONS, SWITCH_DELAY_TICKS, THROW_LAST_FRAME,
+};
 
 pub const TICK_RATE: u32 = 60;
 pub const DT: f32 = 1.0 / TICK_RATE as f32;
@@ -79,6 +120,9 @@ impl Vec2 {
             y: self.y * s,
         }
     }
+    pub fn length(self) -> f32 {
+        (self.x * self.x + self.y * self.y).sqrt()
+    }
 }
 
 #[derive(Clone, Copy, Default, Debug, Serialize, Deserialize)]
@@ -102,6 +146,14 @@ pub struct Input {
     pub throw_grenade: bool,
     pub aim: Vec2,
     pub weapon: u8,
+    #[serde(default)]
+    pub drop: bool,
+    #[serde(default)]
+    pub throw_weapon: bool,
+    #[serde(default)]
+    pub throw_knife: bool,
+    #[serde(default)]
+    pub pickup: bool,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -137,10 +189,29 @@ pub struct Player {
     pub ammo: u16,
     pub reload_timer: u16,
     pub startup: u16,
-    pub magazines: [u16; 14],
+    #[serde(default)]
+    pub inventory: Inventory,
+    #[serde(default)]
+    pub switch_timer: u16,
+    #[serde(default)]
+    pub throw_charge: u16,
+    #[serde(default)]
+    pub pending_switch: Option<u8>,
     pub grenades: u8,
     pub grenade_cooldown: u16,
     pub grenade_held: bool,
+    /// Ticks the throw key has been held. A cooked grenade is thrown harder.
+    #[serde(default)]
+    pub grenade_charge: u16,
+    /// Cluster grenades in hand, which are thrown in place of frags while any are left.
+    #[serde(default)]
+    pub cluster_grenades: u8,
+    /// Which primaries this player has earned, which only Advance mode ever restricts.
+    #[serde(default = "Unlocked::everything")]
+    pub unlocked: Unlocked,
+    /// The bonus effect this player is under, if any.
+    #[serde(default)]
+    pub bonus: TimedEffect,
     #[serde(default)]
     pub armor: i32,
     #[serde(default)]
@@ -163,9 +234,18 @@ pub struct Player {
     pub last_death: Option<DeathCause>,
     #[serde(default)]
     pub last_damage_direction: Vec2,
+    #[serde(default)]
+    pub bink: u16,
+    #[serde(default)]
+    pub accuracy: f32,
+    #[serde(default)]
+    pub recoil_aim: f32,
+    #[serde(default)]
+    pub burst: u16,
 }
 impl Player {
     pub fn new(id: u32, name: String, team: u8) -> Self {
+        let table = WeaponTable::normal();
         Self {
             id,
             name,
@@ -188,13 +268,20 @@ impl Player {
             respawn: 0,
             last_seq: 0,
             weapon: 0,
-            ammo: WEAPONS[0].ammo,
+            ammo: u16::from(table.for_slot(0).ammo),
             reload_timer: 0,
             startup: 0,
-            magazines: WEAPONS.map(|weapon| weapon.ammo),
+            inventory: Inventory::spawn(0, &table),
+            switch_timer: 0,
+            throw_charge: 0,
+            pending_switch: None,
             grenades: 2,
             grenade_cooldown: 0,
             grenade_held: false,
+            grenade_charge: 0,
+            cluster_grenades: 0,
+            unlocked: Unlocked::everything(),
+            bonus: TimedEffect::default(),
             armor: 0,
             bleed: None,
             attackers: Vec::new(),
@@ -206,6 +293,10 @@ impl Player {
             multi_kill: MultiKill::default(),
             last_death: None,
             last_damage_direction: Vec2::default(),
+            bink: 0,
+            accuracy: 0.0,
+            recoil_aim: 0.0,
+            burst: 0,
         }
     }
 }
@@ -248,6 +339,14 @@ pub struct Projectile {
     pub explosive: bool,
     pub kind: ProjectileKind,
     pub splash_radius: f32,
+    #[serde(default)]
+    pub weapon: Option<WeaponKind>,
+    #[serde(default)]
+    pub origin: Vec2,
+    /// Where this projectile last struck something. A rocket only skips off a surface it reached
+    /// from far enough away, so it has to remember its last impact rather than only its origin.
+    #[serde(default)]
+    pub last_impact: Vec2,
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct MapSpawn {
@@ -262,6 +361,7 @@ pub enum ProjectileKind {
     FragGrenade,
     Melee,
     LawRocket,
+    ThrownKnife,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Event {
@@ -301,6 +401,52 @@ pub enum Event {
         position: Vec2,
         velocity: Vec2,
     },
+    Reload {
+        player: u32,
+    },
+    Empty {
+        player: u32,
+    },
+    /// A kit appeared on the map, for the client to draw and play a sound for.
+    KitSpawned {
+        kind: KitKind,
+    },
+    /// Somebody picked a kit up.
+    KitTaken {
+        player: u32,
+        kind: KitKind,
+    },
+    /// A timed effect ran out.
+    BonusExpired {
+        player: u32,
+        effect: BonusEffect,
+    },
+    /// The weapon would not fire from the pose it was fired in, so the client can say why rather
+    /// than leaving the player wondering whether the shot was lost to the network.
+    FireRefused {
+        player: u32,
+        reason: FireRefusal,
+    },
+    MuzzleFlash {
+        player: u32,
+        pos: Vec2,
+    },
+    Casing {
+        player: u32,
+        pos: Vec2,
+    },
+    /// Something went off. Presentation only: the damage it did was already reported as `Damage`,
+    /// and the client draws the fireball, the smoke, and the shake from this.
+    Explosion {
+        pos: Vec2,
+        radius: f32,
+    },
+    /// A round struck terrain rather than a person, with the surface it struck. The client throws
+    /// sparks along the normal; nothing reads it back.
+    Impact {
+        pos: Vec2,
+        normal: Vec2,
+    },
 }
 
 #[derive(Clone, Copy)]
@@ -311,6 +457,8 @@ struct PendingHit {
     impulse: Impulse,
     region: BodyRegion,
     cause: DamageCause,
+    pre_scaled: bool,
+    bink_weapon: Option<WeaponKind>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct World {
@@ -340,6 +488,50 @@ pub struct World {
     next_projectile: u32,
     #[serde(skip, default = "default_collision_world")]
     collision: CollisionWorld,
+    #[serde(default)]
+    pub weapons: WeaponTable,
+    /// What kind of match this is and what ends it.
+    #[serde(default)]
+    pub rules: ModeRules,
+    /// Where the match is in its life.
+    #[serde(default)]
+    pub match_state: MatchState,
+    /// The single ledger every point passes through. `scores` and the per-player counters are
+    /// projections of it, never a second tally.
+    #[serde(default)]
+    pub ledger: ScoreLedger,
+    /// What the lifecycle decided this tick, for the server to act on.
+    #[serde(default)]
+    pub match_events: Vec<MatchEvent>,
+    /// The flags this mode puts on the map, and what is happening to them.
+    #[serde(default)]
+    pub objectives: Objectives,
+    /// How Survival is configured, when it is switched on.
+    #[serde(default)]
+    pub survival: SurvivalConfig,
+    /// How Advance is configured, when it is switched on.
+    #[serde(default)]
+    pub advance: AdvanceConfig,
+    /// How the current Survival round stands.
+    #[serde(default = "RoundStanding::ongoing")]
+    pub round_standing: RoundStanding,
+    /// What has happened in this match, beside the score: shots, hits, and what killed whom.
+    #[serde(default)]
+    pub stats: MatchStats,
+    /// Who is watching rather than playing, and what each of them is looking at.
+    #[serde(default)]
+    pub spectators: BTreeMap<u32, Spectator>,
+    /// The kits lying on the map.
+    #[serde(default)]
+    pub pickups: Pickups,
+    /// How this server hands kits out.
+    #[serde(default)]
+    pub bonuses: BonusConfig,
+    /// The bots in this match, by the player id each one drives.
+    #[serde(default)]
+    pub bots: BTreeMap<u32, Bot>,
+    #[serde(default)]
+    pub friendly_fire: bool,
 }
 
 impl World {
@@ -366,7 +558,45 @@ impl World {
             rng: SimRng::default(),
             next_projectile: 1,
             collision,
+            weapons: WeaponTable::normal(),
+            rules: ModeRules::from_mode_id(mode),
+            match_state: MatchState::default(),
+            ledger: ScoreLedger::default(),
+            match_events: Vec::new(),
+            objectives: Objectives::default(),
+            survival: SurvivalConfig::default(),
+            advance: AdvanceConfig::default(),
+            round_standing: RoundStanding::Ongoing,
+            stats: MatchStats::default(),
+            spectators: BTreeMap::new(),
+            pickups: Pickups::default(),
+            bonuses: BonusConfig::default(),
+            bots: BTreeMap::new(),
+            friendly_fire: false,
         }
+    }
+
+    /// Puts this mode's flags on the map.
+    ///
+    /// A team's flag goes to that team's spawn; the neutral flag goes to the middle of the
+    /// arena. A mode that wants no flags gets none.
+    pub fn place_objectives(&mut self) {
+        let spawns = self.map_spawns.clone();
+        let rules = self.rules;
+        self.objectives = Objectives::for_mode(&rules, |kind| match kind {
+            FlagKind::Yellow => Some(Vec2 {
+                x: WIDTH / 2.0,
+                y: HEIGHT / 2.0,
+            }),
+            team_flag => {
+                let team = team_flag.owning_team();
+                spawns
+                    .iter()
+                    .find(|spawn| spawn.team == team)
+                    .map(|spawn| spawn.position)
+                    .or_else(|| Some(fallback_spawn(u32::from(team), team)))
+            }
+        });
     }
 
     pub fn with_map(mode: &str, map: &ValidatedMap) -> Self {
@@ -385,32 +615,397 @@ impl World {
                 team: spawn.team.clamp(0, u8::MAX as i32) as u8,
             })
             .collect();
+        world.place_objectives();
         world
+    }
+
+    /// The map geometry this world simulates against.
+    ///
+    /// Flags, corpses, and kits all collide with the same terrain the players do, so anything that
+    /// steps a loose body needs to be handed this rather than building its own.
+    pub fn collision(&self) -> &CollisionWorld {
+        &self.collision
     }
 
     pub fn digest(&self) -> WorldDigest {
         fixtures::digest(&serde_json::to_vec(self).unwrap_or_default())
     }
     pub fn add_player(&mut self, id: u32, name: String) {
-        let team = if self.mode == "team" {
-            if self.players.len() % 2 == 0 {
-                1
-            } else {
-                2
-            }
-        } else {
-            0
-        };
+        self.add_player_as(id, name, TeamChoice::Auto);
+    }
+
+    /// Adds a player who asked for a particular side, or to spectate.
+    ///
+    /// A choice that would stack one side is overridden, and a player who was here before keeps
+    /// the score they left with rather than starting again at zero.
+    pub fn add_player_as(&mut self, id: u32, name: String, choice: TeamChoice) {
+        let sizes = TeamSizes::count(self.players.values().map(|player| player.team));
+        let team = assign_team(&self.rules, choice, sizes);
         let mut player = Player::new(id, name, team);
         player.pos = map_spawn(&self.map_spawns, id, team);
         player.fuel = self.movement.fuel_capacity;
+        let advance = self.rules.modifiers.advance;
+        let unlocked = player.unlocked;
+        player.inventory = Inventory::spawn_limited(player.weapon, &self.weapons, |kind| {
+            !advance || unlocked.has(kind)
+        });
+        sync_hands(&mut player);
         self.players.insert(id, player);
+        self.ledger.ensure(id);
+        self.project_scores();
+    }
+
+    /// Moves a player to another side mid-match, which is how team switching and spectating work.
+    pub fn set_team(&mut self, id: u32, choice: TeamChoice) -> Option<u8> {
+        let sizes = TeamSizes::count(
+            self.players
+                .iter()
+                .filter(|(other, _)| **other != id)
+                .map(|(_, player)| player.team),
+        );
+        let team = assign_team(&self.rules, choice, sizes);
+        let player = self.players.get_mut(&id)?;
+        player.team = team;
+        // Changing sides puts a player back on a spawn rather than teleporting them behind enemy
+        // lines from wherever they happened to be standing.
+        player.pos = map_spawn(&self.map_spawns, id, team);
+        player.vel = Vec2::default();
+        Some(team)
+    }
+
+    /// Advances the kits on the map, hands out new ones, and applies the ones players walk over.
+    ///
+    /// Every effect a kit grants is applied here and nowhere else, so a player can never end up
+    /// under two at once or under one that nothing is counting down.
+    fn step_bonuses(&mut self) {
+        // Timed effects run down first, so a kit picked up this tick gets its full duration.
+        let expired: Vec<(u32, BonusEffect)> = self
+            .players
+            .iter_mut()
+            .filter_map(|(id, player)| player.bonus.step().map(|effect| (*id, effect)))
+            .collect();
+        for (player, effect) in expired {
+            self.events.push(Event::BonusExpired { player, effect });
+        }
+
+        let config = self.bonuses;
+        let spawns = self.map_spawns.clone();
+        let mut pickups = std::mem::take(&mut self.pickups);
+        let spawned = pickups.step(&config, &self.collision, DT, &mut self.rng, |rng| {
+            // A kit drops somewhere a player could stand, which is what the spawns already mark.
+            if spawns.is_empty() {
+                return Some(Vec2 {
+                    x: WIDTH / 2.0,
+                    y: HEIGHT / 3.0,
+                });
+            }
+            let index = (rng.next_u64() as usize) % spawns.len();
+            Some(spawns[index].position)
+        });
+        self.pickups = pickups;
+        if let Some(kind) = spawned {
+            self.events.push(Event::KitSpawned { kind });
+        }
+
+        // Anybody standing on a kit takes it, if it has anything to give them.
+        let standing: Vec<(u32, usize)> = self
+            .players
+            .values()
+            .filter(|player| player.hp > 0 && !modes::team::is_spectator(player.team))
+            .filter_map(|player| {
+                self.pickups
+                    .nearest(player.pos)
+                    .map(|index| (player.id, index))
+            })
+            .collect();
+        // Two players on the same kit: the lower id gets it, and the other finds it gone.
+        let mut taken: Vec<usize> = Vec::new();
+        for (id, index) in standing {
+            if taken.contains(&index) {
+                continue;
+            }
+            let Some(kind) = self.pickups.items.get(index).map(|item| item.kind) else {
+                continue;
+            };
+            if !self.apply_kit(id, kind) {
+                continue;
+            }
+            taken.push(index);
+            self.events.push(Event::KitTaken { player: id, kind });
+        }
+        // Remove from the back so the earlier indices stay valid.
+        taken.sort_unstable();
+        for index in taken.into_iter().rev() {
+            self.pickups.take(index);
+        }
+    }
+
+    /// Gives one kit to one player, and says whether it was any use to them.
+    ///
+    /// A kit that would do nothing — a medkit for somebody on full health, a second effect while
+    /// one is running — is left on the ground for whoever needs it.
+    fn apply_kit(&mut self, id: u32, kind: KitKind) -> bool {
+        let grenade_cap = self.damage.max_grenades;
+        let Some(player) = self.players.get_mut(&id) else {
+            return false;
+        };
+        match kind {
+            KitKind::Medic => {
+                if player.hp >= 100 {
+                    return false;
+                }
+                player.hp = 100;
+                true
+            }
+            KitKind::Grenades => {
+                if player.grenades >= grenade_cap && player.cluster_grenades == 0 {
+                    return false;
+                }
+                player.grenades = grenade_cap;
+                player.cluster_grenades = 0;
+                true
+            }
+            KitKind::ClusterGrenades => {
+                player.cluster_grenades = CLUSTER_GRENADES;
+                player.grenades = player.grenades.max(CLUSTER_GRENADES);
+                true
+            }
+            KitKind::Vest => {
+                if player.armor >= VEST_ARMOR {
+                    return false;
+                }
+                player.armor = VEST_ARMOR;
+                true
+            }
+            KitKind::FlameGod | KitKind::Berserker | KitKind::Predator => {
+                let Some(effect) = kind.effect() else {
+                    return false;
+                };
+                if !player.bonus.activate(effect) {
+                    return false;
+                }
+                // Every timed kit also puts you back on your feet, which is what makes them worth
+                // running for when you are hurt.
+                player.hp = 100;
+                true
+            }
+        }
+    }
+
+    /// Adds a bot, which joins as an ordinary player driven by the server.
+    ///
+    /// Returns the id it was given. Bots go through exactly the same joining path as humans, which
+    /// is what keeps team assignment, spawning, and the loadout honest for both.
+    pub fn add_bot(&mut self, id: u32, profile: BotProfile, choice: TeamChoice) -> u32 {
+        let name = profile.name.clone();
+        self.add_player_as(id, name, choice);
+        self.bots.insert(id, Bot::new(profile));
+        id
+    }
+
+    /// Removes one bot and the player it was driving.
+    pub fn remove_bot(&mut self, id: u32) -> bool {
+        if self.bots.remove(&id).is_none() {
+            return false;
+        }
+        self.players.remove(&id);
+        true
+    }
+
+    /// Removes bots until only `keep` are left, newest first.
+    pub fn trim_bots(&mut self, keep: usize) -> usize {
+        let mut ids: Vec<u32> = self.bots.keys().copied().collect();
+        ids.sort_unstable();
+        let mut removed = 0;
+        while self.bots.len() > keep {
+            let Some(id) = ids.pop() else { break };
+            if self.remove_bot(id) {
+                removed += 1;
+            }
+        }
+        removed
+    }
+
+    /// Whether this player is driven by the server.
+    pub fn is_bot(&self, id: u32) -> bool {
+        self.bots.contains_key(&id)
+    }
+
+    /// Works out what every bot would press this tick.
+    ///
+    /// The result is merged into the same input map a human's client fills, so from the
+    /// simulation's point of view there is no difference between the two.
+    pub fn bot_inputs(&mut self) -> BTreeMap<u32, Input> {
+        if self.bots.is_empty() {
+            return BTreeMap::new();
+        }
+
+        let contacts: Vec<BotContact> = self
+            .players
+            .values()
+            .filter(|player| !modes::team::is_spectator(player.team))
+            .map(|player| BotContact {
+                id: player.id,
+                team: player.team,
+                pos: player.pos,
+                velocity: player.vel,
+                alive: player.hp > 0,
+            })
+            .collect();
+        // Somewhere to send a bot that has nothing else to do. A map with no spawn points would
+        // otherwise leave every bot standing exactly where it appeared.
+        let spawns: Vec<Vec2> = if self.map_spawns.is_empty() {
+            vec![
+                fallback_spawn(0, 1),
+                fallback_spawn(1, 2),
+                Vec2 {
+                    x: WIDTH / 2.0,
+                    y: HEIGHT / 2.0,
+                },
+            ]
+        } else {
+            self.map_spawns.iter().map(|spawn| spawn.position).collect()
+        };
+        let rules = self.rules;
+        let table = self.weapons.clone();
+        let objectives = self.objectives.clone();
+        let tick = self.tick;
+
+        let ids: Vec<u32> = self.bots.keys().copied().collect();
+        let mut inputs = BTreeMap::new();
+        for id in ids {
+            let Some(player) = self.players.get(&id) else {
+                continue;
+            };
+            let Some(me) = contacts.iter().find(|contact| contact.id == id).copied() else {
+                continue;
+            };
+            let holding = WeaponKind::from_slot(player.weapon);
+            let team_size = contacts
+                .iter()
+                .filter(|contact| contact.team == player.team)
+                .count();
+            let view = BotView {
+                me,
+                fuel: player.fuel,
+                ammo: player.ammo,
+                magazine: u16::from(table.get(holding).ammo),
+                reloading: player.reload_timer > 0,
+                grenades: player.grenades,
+                holding,
+                unlocked: player.unlocked,
+                team_size,
+            };
+            let Some(mut bot) = self.bots.remove(&id) else {
+                continue;
+            };
+            let input = bots::think(
+                &mut bot,
+                view,
+                bots::BotWorld {
+                    others: &contacts,
+                    rules: &rules,
+                    objectives: &objectives,
+                    table: &table,
+                    collision: &self.collision,
+                    spawns: &spawns,
+                },
+                &mut self.rng,
+                (tick % u64::from(u32::MAX)) as u32,
+            );
+            self.bots.insert(id, bot);
+            inputs.insert(id, input);
+        }
+        inputs
+    }
+
+    /// Steps the world, driving the bots itself.
+    ///
+    /// A server calls this instead of `step` so bots and humans move on the same tick from the
+    /// same code path.
+    pub fn step_with_bots(&mut self, inputs: &BTreeMap<u32, Input>) {
+        let mut all = self.bot_inputs();
+        // A human's input always wins: a player who takes over a bot's slot is not fighting it.
+        for (id, input) in inputs {
+            all.insert(*id, *input);
+        }
+        self.step(&all);
+    }
+
+    /// The players a spectator may follow right now, lowest id first.
+    pub fn followable(&self) -> Vec<u32> {
+        modes::spectator::followable(self.players.values().map(|player| (player.id, player.team)))
+    }
+
+    /// Points a spectator at somebody, or lets them fly the camera.
+    ///
+    /// A command from somebody who is not spectating is ignored rather than quietly turning them
+    /// into one; joining the spectators is a team change, which has its own path.
+    pub fn spectate(&mut self, id: u32, command: SpectateCommand) {
+        if !self
+            .players
+            .get(&id)
+            .is_some_and(|player| modes::team::is_spectator(player.team))
+        {
+            return;
+        }
+        let followable = self.followable();
+        let spectator = self
+            .spectators
+            .entry(id)
+            .or_insert_with(|| Spectator::new(followable.first().copied()));
+        modes::spectator::apply(spectator, command, &followable);
+    }
+
+    /// Keeps every spectator watching somebody who is still in the match.
+    fn retarget_spectators(&mut self) {
+        let followable = self.followable();
+        // Anybody who has joined the spectators since last tick gets a camera.
+        let watching: Vec<u32> = self
+            .players
+            .values()
+            .filter(|player| modes::team::is_spectator(player.team))
+            .map(|player| player.id)
+            .collect();
+        for id in &watching {
+            self.spectators
+                .entry(*id)
+                .or_insert_with(|| Spectator::new(followable.first().copied()));
+        }
+        // And anybody who has stopped spectating gives theirs up.
+        self.spectators.retain(|id, _| watching.contains(id));
+        for spectator in self.spectators.values_mut() {
+            modes::spectator::retarget_if_gone(spectator, &followable);
+        }
+    }
+
+    /// Whether the sides are lopsided enough that somebody should be moved.
+    pub fn needs_balancing(&self) -> bool {
+        self.rules.is_team_mode()
+            && modes::team::needs_balancing(TeamSizes::count(
+                self.players.values().map(|player| player.team),
+            ))
+    }
+
+    /// Test helper: put `kind` in the matching slot and select it immediately.
+    pub fn equip(&mut self, id: u32, kind: WeaponKind) {
+        let ammo = u16::from(self.weapons.get(kind).ammo);
+        if let Some(player) = self.players.get_mut(&id) {
+            player.inventory.equip(kind, ammo);
+            player.switch_timer = 0;
+            player.pending_switch = None;
+            player.reload_timer = 0;
+            player.startup = 0;
+            sync_hands(player);
+        }
     }
     pub fn step(&mut self, inputs: &BTreeMap<u32, Input>) {
         self.tick += 1;
         self.events.clear();
+        self.match_events.clear();
         let map_spawns = self.map_spawns.clone();
         let mode = self.mode.clone();
+        let rules_snapshot = self.rules;
         let respawn_config = self.respawn;
         let damage_config = self.damage;
         let opponents = self.opponent_positions();
@@ -419,12 +1014,17 @@ impl World {
         let mut pending: Vec<DamageEvent> = Vec::new();
         self.ragdolls
             .retain_mut(|ragdoll| ragdoll.step(&self.collision));
+        let lived_projectiles = self.projectiles.len();
         for player in self.players.values_mut() {
             if player.hp <= 0 {
                 // A dead player still picks the weapon they will carry back in.
                 if let Some(input) = inputs.get(&player.id) {
                     player.last_seq = input.seq;
-                    player.weapon = input.weapon.min((WEAPONS.len() - 1) as u8);
+                    player.weapon = input.weapon.min((SELECTABLE_WEAPONS.len() - 1) as u8);
+                }
+                if !modes::modifiers::survival::may_respawn(rules_snapshot.modifiers.survival) {
+                    // In Survival there is nothing to count down to: they are out for the round.
+                    continue;
                 }
                 if player.respawn > 0 {
                     player.respawn -= 1;
@@ -439,10 +1039,17 @@ impl World {
                     player.pos = select_spawn(&map_spawns, &mode, player.team, player.id, &enemies);
                     player.vel = Vec2::default();
                     player.fuel = 1.0;
-                    player.magazines = WEAPONS.map(|weapon| weapon.ammo);
-                    player.ammo = WEAPONS[player.weapon as usize].ammo;
+                    let unlocked = player.unlocked;
+                    player.inventory =
+                        Inventory::spawn_limited(player.weapon, &self.weapons, |kind| {
+                            !rules_snapshot.modifiers.advance || unlocked.has(kind)
+                        });
+                    sync_hands(player);
                     player.reload_timer = 0;
                     player.startup = 0;
+                    player.switch_timer = 0;
+                    player.throw_charge = 0;
+                    player.pending_switch = None;
                     player.grenades = 2;
                     player.grenade_cooldown = 0;
                     player.grenade_held = false;
@@ -466,6 +1073,7 @@ impl World {
                         region: BodyRegion::Chest,
                         cause: DamageCause::Bleeding,
                         direction: Vec2::default(),
+                        pre_scaled: false,
                     });
                 }
                 if bleed.finished() {
@@ -474,39 +1082,72 @@ impl World {
             }
             let input = inputs.get(&player.id).copied().unwrap_or_default();
             player.last_seq = input.seq;
-            let selected = input.weapon.min((WEAPONS.len() - 1) as u8);
-            if selected != player.weapon {
-                player.magazines[player.weapon as usize] = player.ammo;
-                player.weapon = selected;
-                player.ammo = player.magazines[selected as usize];
-                player.startup = 0;
-                player.reload_timer = if player.ammo == 0 {
-                    WEAPONS[selected as usize].reload_ticks
-                } else {
-                    0
-                };
+            let selected = input.weapon.min((SELECTABLE_WEAPONS.len() - 1) as u8);
+            let selected = if rules_snapshot.modifiers.advance {
+                // A locked weapon falls back to one they have rather than being refused outright.
+                modes::modifiers::advance::resolve_choice(
+                    true,
+                    player.unlocked,
+                    WeaponKind::from_slot(selected),
+                )
+                .slot()
+                .unwrap_or(selected)
+            } else {
+                selected
+            };
+            let selected_kind = WeaponKind::from_slot(selected);
+            if let Some(slot) = player.inventory.slot_of(selected_kind) {
+                if slot == player.inventory.active && player.pending_switch.is_some() {
+                    player.pending_switch = None;
+                    player.switch_timer = 0;
+                } else if slot != player.inventory.active && player.pending_switch != Some(slot) {
+                    weapons::reload::interrupt(&mut player.reload_timer);
+                    player.pending_switch = Some(slot);
+                    player.switch_timer = SWITCH_DELAY_TICKS;
+                    player.startup = 0;
+                    player.throw_charge = 0;
+                }
             }
-            let weapon = WEAPONS[player.weapon as usize];
+            if player.switch_timer > 0 {
+                player.switch_timer -= 1;
+                if player.switch_timer == 0 {
+                    if let Some(slot) = player.pending_switch.take() {
+                        player.inventory.active = slot;
+                        sync_hands(player);
+                        player.startup = 0;
+                    }
+                }
+            }
+            let held = held_kind(player);
+            let weapon = *self.weapons.get(held);
+            if !input.fire {
+                player.burst = 0;
+                player.recoil_aim *= 0.8;
+                player.bink = player.bink.saturating_sub(1);
+            }
+            player.accuracy = inaccuracy(&weapon, &shooter_pose(player, &input));
             if player.cooldown > 0 {
                 player.cooldown -= 1;
             }
             if player.grenade_cooldown > 0 {
                 player.grenade_cooldown -= 1;
             }
-            if player.reload_timer > 0 {
-                player.reload_timer -= 1;
-                if player.reload_timer == 0 {
-                    player.ammo = weapon.ammo;
-                    player.magazines[player.weapon as usize] = player.ammo;
+            if weapons::reload::tick(&mut player.reload_timer) {
+                player.ammo = u16::from(weapon.ammo);
+                writeback_ammo(player);
+            }
+            if input.reload && !player.previous_input.reload && player.switch_timer == 0 {
+                if let Some(time) = weapons::reload::start(
+                    player.ammo,
+                    u16::from(weapon.ammo),
+                    player.reload_timer,
+                    weapon.reload_time,
+                ) {
+                    player.reload_timer = time;
+                    self.events.push(Event::Reload { player: player.id });
                 }
             }
-            if input.reload
-                && !player.previous_input.reload
-                && player.reload_timer == 0
-                && player.ammo < weapon.ammo
-            {
-                player.reload_timer = weapon.reload_ticks;
-            }
+            let previous = player.previous_input;
             let has_standing_clearance = !player.state.is_low()
                 || self
                     .collision
@@ -544,6 +1185,7 @@ impl World {
                         region: BodyRegion::Chest,
                         cause: DamageCause::Deadly,
                         direction: Vec2 { x: 0.0, y: -1.0 },
+                        pre_scaled: false,
                     });
                 }
             } else {
@@ -577,127 +1219,268 @@ impl World {
                     region: BodyRegion::Legs,
                     cause: DamageCause::Fall,
                     direction: Vec2 { x: 0.0, y: 1.0 },
+                    pre_scaled: false,
                 });
             }
-            if input.fire {
+            if input.fire && player.switch_timer == 0 {
                 player.startup = player.startup.saturating_add(1);
-            } else {
+            } else if !input.fire {
                 player.startup = 0;
             }
+            let unarmed = player.inventory.active().is_none();
             if input.fire
+                && player.switch_timer == 0
                 && player.cooldown == 0
                 && player.reload_timer == 0
-                && player.ammo > 0
-                && player.startup > weapon.startup_ticks
+                && player.ammo == 0
+                && !unarmed
+                && !previous.fire
+            {
+                self.events.push(Event::Empty { player: player.id });
+            }
+            if input.fire
+                && player.switch_timer == 0
+                && player.cooldown == 0
+                && player.reload_timer == 0
+                && (unarmed || player.ammo > 0)
+                && player.startup > weapon.start_up_time
             {
                 let dx = input.aim.x - player.pos.x;
                 let dy = input.aim.y - player.pos.y;
                 let len = (dx * dx + dy * dy).sqrt();
-                if len > 1.0 && len.is_finite() {
-                    let speed = weapon.speed * 40.0;
-                    let damage = match weapon.style {
-                        WeaponStyle::Explosive => 100,
-                        WeaponStyle::Shotgun => {
-                            ((weapon.speed * weapon.hit_multiply) / 3.0).round() as i32
-                        }
-                        WeaponStyle::Bullet => (weapon.speed * weapon.hit_multiply)
-                            .round()
-                            .clamp(1.0, 100.0)
-                            as i32,
-                        WeaponStyle::Melee => 100,
-                    };
-                    for pellet in 0..weapon.pellets {
-                        let spread = if weapon.style == WeaponStyle::Shotgun {
-                            (pellet as f32 - 2.5) * 0.055
-                        } else {
-                            0.0
+                let pose = shooter_pose(player, &input);
+                if len > 1.0 && len.is_finite() && !firing::may_fire(&weapon, &pose) {
+                    // Say so once per wind-up, on the tick the shot would otherwise have gone,
+                    // rather than every tick the trigger stays down.
+                    if player.startup == weapon.start_up_time.saturating_add(1) {
+                        self.events.push(Event::FireRefused {
+                            player: player.id,
+                            reason: refusal(&weapon, &pose).unwrap_or(FireRefusal::NeedsBracing),
+                        });
+                    }
+                } else if len > 1.0 && len.is_finite() {
+                    player.bink = self_bink_on_fire(&weapon, player.bink, &pose);
+                    player.accuracy = inaccuracy(&weapon, &pose);
+                    let recoil = player.recoil_aim;
+                    let base_angle = dy.atan2(dx) + recoil;
+                    for pellet in 0..weapon.pellets() {
+                        let fan = per_pellet_spread(&weapon, pellet, self.rng.next_unit());
+                        let jitter =
+                            (self.rng.next_unit() * 2.0 - 1.0) * max_deviation(player.accuracy);
+                        let angle = base_angle + fan + jitter;
+                        let dir = Vec2 {
+                            x: angle.cos(),
+                            y: angle.sin(),
                         };
-                        let angle = dy.atan2(dx) + spread;
+                        let muzzle = muzzle_velocity(&weapon, dir, player.vel.scale(DT));
+                        let world_vel = muzzle.scale(1.0 / DT);
+                        let barrel = barrel_origin(
+                            &weapon,
+                            muzzle_origin(player.pos, input.aim, player.state, player.facing),
+                            dir,
+                            pellet,
+                        );
                         self.projectiles.push(Projectile {
                             id: self.next_projectile,
                             owner: player.id,
-                            pos: player.pos,
-                            vel: Vec2 {
-                                x: angle.cos() * speed,
-                                y: angle.sin() * speed,
-                            },
-                            ttl: if weapon.style == WeaponStyle::Melee {
-                                3
-                            } else {
-                                90
-                            },
-                            damage,
-                            explosive: weapon.style == WeaponStyle::Explosive,
-                            kind: match (player.weapon, weapon.style) {
-                                (6, _) => ProjectileKind::M79Grenade,
-                                (13, _) => ProjectileKind::LawRocket,
-                                (_, WeaponStyle::Shotgun) => ProjectileKind::ShotgunPellet,
-                                (_, WeaponStyle::Melee) => ProjectileKind::Melee,
-                                _ => ProjectileKind::Bullet,
-                            },
-                            splash_radius: if player.weapon == 6 {
-                                64.0
-                            } else if player.weapon == 13 {
-                                85.0
-                            } else {
-                                0.0
-                            },
+                            pos: barrel,
+                            vel: world_vel,
+                            ttl: weapon.timeout(),
+                            damage: 0,
+                            explosive: weapon.bullet_style.is_explosive(),
+                            kind: projectile_kind(&weapon),
+                            splash_radius: weapon.explosion_radius(),
+                            weapon: Some(weapon.kind),
+                            origin: barrel,
+                            last_impact: barrel,
                         });
                         self.next_projectile = self.next_projectile.wrapping_add(1);
                     }
-                    player.ammo -= 1;
-                    player.magazines[player.weapon as usize] = player.ammo;
-                    player.cooldown = weapon.fire_interval;
-                    if player.ammo == 0 {
-                        player.reload_timer = weapon.reload_ticks;
+                    if !unarmed {
+                        player.ammo = player.ammo.saturating_sub(1);
+                        writeback_ammo(player);
                     }
-                    let (source, strength) = match player.weapon {
-                        4 => (ImpulseSource::SpasBoost, 34.0),
-                        9 => (ImpulseSource::MinigunBoost, 4.0),
-                        _ => (ImpulseSource::Recoil, 1.5),
+                    player.cooldown = weapon.fire_interval;
+                    if !unarmed && player.ammo == 0 {
+                        player.reload_timer = weapon.reload_time;
+                    }
+                    let barrel = muzzle_origin(player.pos, input.aim, player.state, player.facing);
+                    self.events.push(Event::MuzzleFlash {
+                        player: player.id,
+                        pos: barrel,
+                    });
+                    self.events.push(Event::Casing {
+                        player: player.id,
+                        pos: Vec2 {
+                            x: player.pos.x - (barrel.x - player.pos.x) * 0.3,
+                            y: player.pos.y + 4.0,
+                        },
+                    });
+                    player.recoil_aim += recoil_radians(&weapon, player.burst, &pose);
+                    player.burst = player.burst.saturating_add(1);
+                    let aim_unit = Vec2 {
+                        x: dx / len,
+                        y: dy / len,
+                    };
+                    let source = match weapon.kind {
+                        WeaponKind::Spas12 => ImpulseSource::SpasBoost,
+                        WeaponKind::Minigun => ImpulseSource::MinigunBoost,
+                        _ => ImpulseSource::Recoil,
+                    };
+                    let boost = if boosts_the_shooter(&weapon) {
+                        // A SPAS or minigun blast moves the firer, and players ride it deliberately.
+                        self_boost(&weapon, aim_unit, &pose).scale(1.0 / DT)
+                    } else {
+                        Vec2 {
+                            x: -aim_unit.x * 1.5,
+                            y: -aim_unit.y * 1.5,
+                        }
                     };
                     apply_impulse(
                         player,
                         Impulse {
-                            velocity: Vec2 {
-                                x: -dx / len * strength,
-                                y: -dy / len * strength,
-                            },
+                            velocity: boost,
                             source,
                         },
                     );
                     self.events.push(Event::Shot { player: player.id });
+                    self.stats.record(StatEvent::Shot {
+                        player: player.id,
+                        weapon: weapon.kind,
+                    });
                 }
             }
-            if input.throw_grenade
-                && !player.grenade_held
-                && player.grenades > 0
-                && player.grenade_cooldown == 0
-            {
+            // Holding the throw key cooks the grenade: the longer it is held the harder it goes,
+            // and it only leaves the hand once the key is released or the wind-up is complete.
+            if input.throw_grenade && player.grenades > 0 && player.grenade_cooldown == 0 {
+                player.grenade_charge = player.grenade_charge.saturating_add(1);
+            }
+            let wound_up = throw_frame(player.grenade_charge) >= THROW_LAST_FRAME;
+            let releasing = player.grenade_held && !input.throw_grenade;
+            if (releasing || wound_up) && player.grenades > 0 && player.grenade_cooldown == 0 {
                 let dx = input.aim.x - player.pos.x;
                 let dy = input.aim.y - player.pos.y;
                 let len = (dx * dx + dy * dy).sqrt();
                 if len > 1.0 && len.is_finite() {
+                    let kind = if player.cluster_grenades > 0 {
+                        WeaponKind::ClusterGrenade
+                    } else {
+                        WeaponKind::FragGrenade
+                    };
+                    let grenade = *self.weapons.get(kind);
+                    let dir = Vec2 {
+                        x: dx / len,
+                        y: dy / len,
+                    };
+                    let thrown = throw_velocity(
+                        &grenade,
+                        dir,
+                        player.grenade_charge.saturating_sub(1),
+                        player.vel.scale(DT),
+                    );
                     self.projectiles.push(Projectile {
                         id: self.next_projectile,
                         owner: player.id,
                         pos: player.pos,
-                        vel: Vec2 {
-                            x: dx / len * 200.0 + player.vel.x,
-                            y: dy / len * 200.0 + player.vel.y,
-                        },
-                        ttl: 150,
-                        damage: 100,
+                        vel: thrown.scale(1.0 / DT),
+                        ttl: grenade.timeout(),
+                        damage: 0,
                         explosive: true,
                         kind: ProjectileKind::FragGrenade,
-                        splash_radius: 85.0,
+                        splash_radius: grenade.explosion_radius(),
+                        weapon: Some(kind),
+                        origin: player.pos,
+                        last_impact: player.pos,
                     });
                     self.next_projectile = self.next_projectile.wrapping_add(1);
+                    if player.cluster_grenades > 0 {
+                        player.cluster_grenades -= 1;
+                    }
                     player.grenades -= 1;
                     player.grenade_cooldown = 80;
+                    player.grenade_charge = 0;
                 }
             }
+            if !input.throw_grenade {
+                player.grenade_charge = 0;
+            }
             player.grenade_held = input.throw_grenade;
+            if player.switch_timer == 0 && input.drop && !previous.drop {
+                if let Some(slot) = player.inventory.drop_active() {
+                    weapons::reload::interrupt(&mut player.reload_timer);
+                    player.throw_charge = 0;
+                    self.objects
+                        .push(dropped_weapon(slot.kind, slot.ammo, player.pos, player.vel));
+                    sync_hands(player);
+                }
+            }
+            if player.switch_timer == 0 && input.throw_weapon && player.inventory.active().is_some()
+            {
+                player.throw_charge = player.throw_charge.saturating_add(1).min(MAX_THROW_CHARGE);
+            } else if player.throw_charge > 0 && !input.throw_weapon {
+                if let Some(slot) = player.inventory.drop_active() {
+                    weapons::reload::interrupt(&mut player.reload_timer);
+                    let facing = player.facing.sign();
+                    let dir = aim_dir(player.pos, input.aim, facing)
+                        .unwrap_or(Vec2 { x: facing, y: 0.0 });
+                    let vel = charged_velocity(dir, player.throw_charge, player.vel);
+                    self.objects
+                        .push(dropped_weapon(slot.kind, slot.ammo, player.pos, vel));
+                    sync_hands(player);
+                }
+                player.throw_charge = 0;
+            }
+            if player.switch_timer == 0 && input.throw_knife && !previous.throw_knife {
+                if let Some(_slot) = player
+                    .inventory
+                    .take_kind(WeaponKind::CombatKnife)
+                    .or_else(|| player.inventory.take_kind(WeaponKind::ThrownKnife))
+                {
+                    weapons::reload::interrupt(&mut player.reload_timer);
+                    if let Some(dir) = aim_dir(player.pos, input.aim, player.facing.sign()) {
+                        let knife = *self.weapons.get(WeaponKind::ThrownKnife);
+                        let barrel =
+                            muzzle_origin(player.pos, input.aim, player.state, player.facing);
+                        let muzzle = muzzle_velocity(&knife, dir, player.vel.scale(DT));
+                        self.projectiles.push(Projectile {
+                            id: self.next_projectile,
+                            owner: player.id,
+                            pos: barrel,
+                            vel: muzzle.scale(1.0 / DT),
+                            ttl: knife.timeout(),
+                            damage: 0,
+                            explosive: false,
+                            kind: ProjectileKind::ThrownKnife,
+                            splash_radius: 0.0,
+                            weapon: Some(WeaponKind::ThrownKnife),
+                            origin: barrel,
+                            last_impact: barrel,
+                        });
+                        self.next_projectile = self.next_projectile.wrapping_add(1);
+                    }
+                    sync_hands(player);
+                }
+            }
+            if player.switch_timer == 0 && input.pickup {
+                if let Some(index) = nearest_index(player.pos, &self.objects) {
+                    let object = self.objects.remove(index);
+                    if let Some(kind) = object.weapon_slot.map(WeaponKind::from_slot) {
+                        weapons::reload::interrupt(&mut player.reload_timer);
+                        if let Some(displaced) = player.inventory.pickup(WeaponSlot {
+                            kind,
+                            ammo: object.ammo,
+                        }) {
+                            self.objects.push(dropped_weapon(
+                                displaced.kind,
+                                displaced.ammo,
+                                player.pos,
+                                Vec2::default(),
+                            ));
+                        }
+                        sync_hands(player);
+                    }
+                }
+            }
         }
         let player_ids = self.players.keys().copied().collect::<Vec<_>>();
         for (index, left_id) in player_ids.iter().copied().enumerate() {
@@ -714,14 +1497,24 @@ impl World {
             object.step(&self.collision, DT);
         }
         let teams: BTreeMap<u32, u8> = self.players.iter().map(|(&id, p)| (id, p.team)).collect();
+        let weapons = self.weapons.clone();
+        let friendly_fire = self.friendly_fire;
         let mut hits = Vec::new();
+        let mut knife_recoveries = Vec::new();
+        // Where a cluster grenade went off, so its pieces can be scattered once the loop is done.
+        let mut cluster_pieces: Vec<(u32, Vec2, Vec2)> = Vec::new();
+        // Where a blast went off, so loose flags can be shoved once the loop releases them.
+        let mut blast_pushes: Vec<(Vec2, f32)> = Vec::new();
+        let mut terrain_impacts: Vec<(Vec2, Vec2)> = Vec::new();
+        let mut newborns = self.projectiles.split_off(lived_projectiles);
         self.projectiles.retain_mut(|bullet| {
             let previous_pos = bullet.pos;
-            if matches!(
-                bullet.kind,
-                ProjectileKind::M79Grenade | ProjectileKind::FragGrenade
-            ) {
-                bullet.vel.y += 0.12 * 950.0 * DT;
+            let style = bullet
+                .weapon
+                .map_or(BulletStyle::Plain, |kind| weapons.get(kind).bullet_style);
+            let pull = gravity_multiplier(style);
+            if pull > 0.0 {
+                bullet.vel.y += PROJECTILE_GRAVITY * pull * DT;
             }
             bullet.pos = bullet.pos.add(bullet.vel.scale(DT));
             bullet.ttl = bullet.ttl.saturating_sub(1);
@@ -732,26 +1525,97 @@ impl World {
                 || bullet.pos.y > HEIGHT
             {
                 if bullet.explosive {
-                    splash_hits(bullet, &self.players, &teams, &mut hits);
+                    splash_hits(
+                        bullet,
+                        &self.players,
+                        &teams,
+                        &weapons,
+                        friendly_fire,
+                        &mut hits,
+                    );
+                    blast_pushes.push((bullet.pos, bullet.splash_radius));
+                    if matches!(style, BulletStyle::ClusterGrenade) {
+                        cluster_pieces.push((bullet.owner, bullet.pos, bullet.vel));
+                    }
+                }
+                if thrown_knife(bullet) {
+                    knife_recoveries.push(bullet.pos);
                 }
                 return false;
             }
             let Some(owner_team) = teams.get(&bullet.owner) else {
                 return false;
             };
-            let platform_hit = self
+            let terrain = self
                 .collision
                 .raycast(previous_pos, bullet.pos, CollisionMask::BULLET)
-                .map(|hit| hit.time);
+                .filter(|_| grenade_is_armed(&armed_def(&weapons, bullet), bullet.ttl));
+            let platform_hit = terrain.map(|hit| hit.time);
             let mut player_hit: Option<(f32, u32)> = None;
             for target in self.players.values() {
-                if target.id != bullet.owner
-                    && target.hp > 0
-                    && (*owner_team == 0 || *owner_team != target.team)
-                {
-                    if let Some(t) = segment_circle_t(previous_pos, bullet.pos, target.pos, 18.0) {
-                        if player_hit.is_none_or(|(best, _)| t < best) {
-                            player_hit = Some((t, target.id));
+                if target.hp <= 0 || target.id == bullet.owner {
+                    continue;
+                }
+                if !collides_with_bodies(style, bullet.ttl) {
+                    continue;
+                }
+                let same_team = *owner_team != 0 && *owner_team == target.team;
+                let allowed = if let Some(kind) = bullet.weapon {
+                    can_damage(
+                        weapons.get(kind),
+                        bullet.owner,
+                        target.id,
+                        same_team,
+                        friendly_fire,
+                        false,
+                    )
+                } else {
+                    target.id != bullet.owner && (*owner_team == 0 || *owner_team != target.team)
+                };
+                if !allowed {
+                    continue;
+                }
+                if let Some(t) = segment_circle_t(previous_pos, bullet.pos, target.pos, 18.0) {
+                    if player_hit.is_none_or(|(best, _)| t < best) {
+                        player_hit = Some((t, target.id));
+                    }
+                }
+            }
+            // Flags, kits, and dropped guns are knocked about by solid rounds passing through
+            // them. The shove does not stop the round; it only moves the object.
+            if pushes_objects(style) {
+                if let Some(def) = bullet.weapon.map(|kind| *weapons.get(kind)) {
+                    let shove =
+                        push_impulse(&def, bullet.vel.scale(DT)).scale(OBJECT_PUSH_MULTIPLIER / DT);
+                    for object in self.objects.iter_mut().filter(|object| object.active) {
+                        if segment_circle_t(previous_pos, bullet.pos, object.pos, object.radius)
+                            .is_some()
+                        {
+                            object.vel = object.vel.add(shove);
+                            object.grounded = false;
+                        }
+                    }
+                    // Kits are shoved by the same round.
+                    for kit in &mut self.pickups.items {
+                        if segment_circle_t(previous_pos, bullet.pos, kit.body.pos, kit.body.radius)
+                            .is_some()
+                        {
+                            kit.push(shove);
+                        }
+                    }
+                    // Flags are shoved by the same round, which is what lets a team blast a
+                    // dropped flag away from the enemy standing over it.
+                    for flag in &mut self.objectives.flags {
+                        if flag.state.carrier().is_none()
+                            && segment_circle_t(
+                                previous_pos,
+                                bullet.pos,
+                                flag.body.pos,
+                                flag.body.radius,
+                            )
+                            .is_some()
+                        {
+                            flag.push(shove);
                         }
                     }
                 }
@@ -768,15 +1632,66 @@ impl World {
                     x: previous_pos.x + (bullet.pos.x - previous_pos.x) * t,
                     y: previous_pos.y + (bullet.pos.y - previous_pos.y) * t,
                 };
+                // Terrain does not end every shot. A grenade bounces off it, a rocket reached
+                // from far enough away skips along it, an arrow buries itself in it, and a flame
+                // gutters out against it. Only once terrain is done with the projectile does it
+                // get to wound anybody or go off.
+                let struck_terrain =
+                    platform_hit.is_some_and(|wall_t| wall_t <= player_t.unwrap_or(f32::INFINITY));
+                if struck_terrain {
+                    if let Some(hit) = terrain {
+                        // Every meeting of round and wall is worth a spark, whatever the round then
+                        // does about it — bounce, stick, ricochet, or stop.
+                        terrain_impacts.push((bullet.pos, hit.normal));
+                        match surface_response(style) {
+                            SurfaceResponse::Bounce { restitution } => {
+                                bullet.vel = bounce_velocity(bullet.vel, hit.normal, restitution);
+                                bullet.pos = nudge(bullet.pos, hit.normal);
+                                bullet.last_impact = bullet.pos;
+                                return true;
+                            }
+                            SurfaceResponse::Stick { resist_ticks } => {
+                                bullet.vel = Vec2::default();
+                                bullet.ttl = bullet.ttl.min(resist_ticks);
+                                bullet.pos = nudge(bullet.pos, hit.normal);
+                                bullet.last_impact = bullet.pos;
+                                return bullet.ttl > 0;
+                            }
+                            SurfaceResponse::Smother { ticks } => {
+                                bullet.ttl = bullet.ttl.min(ticks);
+                                return bullet.ttl > 0;
+                            }
+                            SurfaceResponse::Ricochet { min_travel }
+                                if bullet.pos.add(bullet.last_impact.scale(-1.0)).length()
+                                    > min_travel =>
+                            {
+                                bullet.vel = ricochet_velocity(bullet.vel, hit.normal);
+                                bullet.pos = nudge(bullet.pos, hit.normal);
+                                bullet.last_impact = bullet.pos;
+                                return true;
+                            }
+                            SurfaceResponse::Stop
+                            | SurfaceResponse::Explode
+                            | SurfaceResponse::Ricochet { .. } => {}
+                        }
+                    }
+                }
                 if bullet.explosive {
-                    splash_hits(bullet, &self.players, &teams, &mut hits);
+                    splash_hits(
+                        bullet,
+                        &self.players,
+                        &teams,
+                        &weapons,
+                        friendly_fire,
+                        &mut hits,
+                    );
+                    blast_pushes.push((bullet.pos, bullet.splash_radius));
+                    if matches!(style, BulletStyle::ClusterGrenade) {
+                        cluster_pieces.push((bullet.owner, bullet.pos, bullet.vel));
+                    }
                 } else if player_t
                     .is_some_and(|hit_t| hit_t <= platform_hit.unwrap_or(f32::INFINITY))
                 {
-                    let direction_length = (bullet.vel.x * bullet.vel.x
-                        + bullet.vel.y * bullet.vel.y)
-                        .sqrt()
-                        .max(1.0);
                     let target_id = player_hit.unwrap().1;
                     let region = self
                         .players
@@ -785,35 +1700,154 @@ impl World {
                             character::body::shape_for(target.state)
                                 .region_at(target.pos, bullet.pos)
                         });
+                    let (damage, impulse, pre_scaled) = if let Some(kind) = bullet.weapon {
+                        let def = weapons.get(kind);
+                        let soldat_speed = bullet.vel.length() * DT;
+                        let distance = (bullet.pos.add(bullet.origin.scale(-1.0))).length();
+                        let amount = direct_damage(
+                            def,
+                            degraded_hit_multiply(def, distance),
+                            soldat_speed,
+                            region,
+                        )
+                        .round() as i32;
+                        (
+                            amount,
+                            Impulse {
+                                velocity: push_impulse(def, bullet.vel.scale(DT)),
+                                source: ImpulseSource::Bullet,
+                            },
+                            true,
+                        )
+                    } else {
+                        let direction_length = bullet.vel.length().max(1.0);
+                        (
+                            bullet.damage,
+                            Impulse {
+                                velocity: Vec2 {
+                                    x: bullet.vel.x / direction_length * 8.0,
+                                    y: bullet.vel.y / direction_length * 8.0,
+                                },
+                                source: ImpulseSource::Bullet,
+                            },
+                            false,
+                        )
+                    };
                     hits.push(PendingHit {
                         killer: bullet.owner,
                         target: target_id,
-                        damage: bullet.damage,
-                        impulse: Impulse {
-                            velocity: Vec2 {
-                                x: bullet.vel.x / direction_length * 8.0,
-                                y: bullet.vel.y / direction_length * 8.0,
-                            },
-                            source: ImpulseSource::Bullet,
-                        },
+                        damage,
+                        impulse,
                         region,
                         cause: match bullet.kind {
                             ProjectileKind::Melee => DamageCause::Melee,
                             ProjectileKind::ShotgunPellet => DamageCause::Pellet,
                             _ => DamageCause::Bullet,
                         },
+                        pre_scaled,
+                        bink_weapon: bullet.weapon,
                     });
+                } else if thrown_knife(bullet) {
+                    knife_recoveries.push(bullet.pos);
                 }
                 return false;
             }
             true
         });
+        self.projectiles.append(&mut newborns);
+        for (pos, normal) in terrain_impacts {
+            self.events.push(Event::Impact { pos, normal });
+        }
+        for &(at, radius) in &blast_pushes {
+            self.events.push(Event::Explosion {
+                pos: at,
+                radius: radius.max(1.0),
+            });
+        }
+        for (at, radius) in blast_pushes {
+            self.pickups.push_near(
+                at,
+                radius,
+                Vec2 {
+                    x: 0.0,
+                    y: -EXPLOSION_FLAG_PUSH * 0.5,
+                },
+            );
+            // A blast throws a loose flag away from itself, hardest at the centre.
+            for flag in &mut self.objectives.flags {
+                if flag.state.carrier().is_some() {
+                    continue;
+                }
+                let away = Vec2 {
+                    x: flag.body.pos.x - at.x,
+                    y: flag.body.pos.y - at.y,
+                };
+                let distance = away.length();
+                if distance >= radius || radius <= 0.0 {
+                    continue;
+                }
+                let scale = (1.0 - distance / radius) * EXPLOSION_FLAG_PUSH;
+                let direction = if distance > f32::EPSILON {
+                    Vec2 {
+                        x: away.x / distance,
+                        y: away.y / distance,
+                    }
+                } else {
+                    Vec2 { x: 0.0, y: -1.0 }
+                };
+                flag.push(direction.scale(scale));
+            }
+        }
+        for (owner, pos, velocity) in cluster_pieces {
+            let piece = *self.weapons.get(WeaponKind::Cluster);
+            for scatter in cluster_submunitions(velocity.scale(DT), &mut self.rng) {
+                self.projectiles.push(Projectile {
+                    id: self.next_projectile,
+                    owner,
+                    pos,
+                    vel: scatter.scale(1.0 / DT),
+                    ttl: piece.timeout(),
+                    damage: 0,
+                    explosive: true,
+                    kind: ProjectileKind::FragGrenade,
+                    splash_radius: piece.explosion_radius(),
+                    weapon: Some(WeaponKind::Cluster),
+                    origin: pos,
+                    last_impact: pos,
+                });
+                self.next_projectile = self.next_projectile.wrapping_add(1);
+            }
+        }
+        for pos in knife_recoveries {
+            self.objects.push(dropped_weapon(
+                WeaponKind::CombatKnife,
+                1,
+                pos,
+                Vec2::default(),
+            ));
+        }
         for hit in hits {
             if let Some(target) = self.players.get_mut(&hit.target) {
                 if target.hp <= 0 || target.spawn_protection > 0 {
                     continue;
                 }
                 apply_impulse(target, hit.impulse);
+                if let Some(kind) = hit.bink_weapon {
+                    let victim_id = target.id;
+                    let same_team = {
+                        let attacker_team = teams.get(&hit.killer).copied().unwrap_or(0);
+                        attacker_team != 0 && attacker_team == target.team
+                    };
+                    if should_bink(
+                        self.weapons.get(kind),
+                        hit.killer,
+                        victim_id,
+                        same_team,
+                        self.friendly_fire,
+                    ) {
+                        target.bink = bink_on_hit(self.weapons.get(kind), target.bink);
+                    }
+                }
             }
             let direction = hit.impulse.velocity;
             self.apply_damage(DamageEvent {
@@ -823,11 +1857,137 @@ impl World {
                 region: hit.region,
                 cause: hit.cause,
                 direction,
+                pre_scaled: hit.pre_scaled,
             });
         }
         for event in pending {
             self.apply_damage(event);
         }
+
+        // The flags move and change hands before the lifecycle looks at the score, so a capture on
+        // the last tick of a match still counts towards deciding it.
+        let bearers: Vec<Bearer> = self
+            .players
+            .values()
+            .map(|player| Bearer {
+                id: player.id,
+                team: player.team,
+                pos: player.pos,
+                velocity: player.vel,
+                alive: player.hp > 0,
+                throwing: inputs
+                    .get(&player.id)
+                    .is_some_and(|input| input.throw_weapon),
+                aim: inputs.get(&player.id).map_or(player.pos, |input| input.aim),
+            })
+            .collect();
+        let sizes = TeamSizes::count(self.players.values().map(|player| player.team));
+        let rules = self.rules;
+        let mut objectives = std::mem::take(&mut self.objectives);
+        let awards = objectives.step(
+            &rules,
+            &self.collision,
+            DT,
+            &bearers,
+            (sizes.alpha, sizes.bravo),
+        );
+        self.objectives = objectives;
+        for award in awards {
+            let team_of = |id: u32| self.players.get(&id).map_or(0, |player| player.team);
+            self.ledger.record(award.into_event(), &rules, team_of);
+        }
+        for event in &self.objectives.events {
+            match event {
+                FlagEvent::Captured { by, .. } => self.stats.record(StatEvent::Objective {
+                    player: *by,
+                    kind: ObjectiveStat::Capture,
+                }),
+                FlagEvent::Returned { by: Some(by), .. } => {
+                    self.stats.record(StatEvent::Objective {
+                        player: *by,
+                        kind: ObjectiveStat::Return,
+                    })
+                }
+                _ => {}
+            }
+        }
+
+        // Survival decides its own round: the clock and the score limits are beside the point when
+        // the question is who is still breathing.
+        if rules.modifiers.survival {
+            let survivors: Vec<Survivor> = self
+                .players
+                .values()
+                .map(|player| Survivor {
+                    id: player.id,
+                    team: player.team,
+                    alive: player.hp > 0,
+                    spectator: modes::team::is_spectator(player.team),
+                })
+                .collect();
+            self.round_standing = survival_standing(&rules, &survivors);
+        } else {
+            self.round_standing = RoundStanding::Ongoing;
+        }
+
+        self.step_bonuses();
+        self.retarget_spectators();
+
+        // The lifecycle runs last, so it sees this tick's scores before deciding the match is over.
+        self.project_scores();
+        let playing = self
+            .players
+            .values()
+            .filter(|player| !modes::team::is_spectator(player.team))
+            .count();
+        let rules = self.rules;
+        if let Some(event) = self.match_state.step(&rules, &self.ledger, playing) {
+            // A round that just ended shows its scoreboard in the same breath.
+            if matches!(event, MatchEvent::RoundEnded { .. }) {
+                let scoreboard = self.match_state.scoreboard_event();
+                self.match_events.push(event);
+                self.match_events.push(scoreboard);
+            } else {
+                self.match_events.push(event);
+            }
+        }
+    }
+
+    /// Restarts the match: a fresh countdown, an empty ledger, and everybody back on a spawn.
+    ///
+    /// Players keep their place in the room; only the score and the clock are wiped, which is what
+    /// makes this a restart rather than a new room.
+    pub fn restart_match(&mut self) {
+        let rules = self.rules;
+        let event = self.match_state.restart(&rules);
+        self.objectives.reset();
+        self.pickups.clear();
+        for player in self.players.values_mut() {
+            player.bonus.clear();
+        }
+        self.ledger = ScoreLedger::default();
+        self.stats.clear();
+        for id in self.players.keys().copied().collect::<Vec<_>>() {
+            self.ledger.ensure(id);
+        }
+        self.project_scores();
+        self.match_events.push(event);
+    }
+
+    /// Copies the ledger onto the per-player counters and the team scores.
+    ///
+    /// Those are what the HUD, the scoreboard, and the wire format read. Writing them from the
+    /// ledger rather than alongside it is what keeps one authority for every point in the match.
+    fn project_scores(&mut self) {
+        for (id, player) in self.players.iter_mut() {
+            let score = self.ledger.player(*id);
+            player.kills = score.kills;
+            player.deaths = score.deaths;
+            player.teamkills = score.teamkills;
+            player.suicides = score.suicides;
+        }
+        let teams = self.ledger.teams();
+        self.scores = [teams[1].max(0) as u32, teams[2].max(0) as u32];
     }
 
     /// Living players this one would rather not spawn next to: the other team in team modes and
@@ -853,7 +2013,26 @@ impl World {
     /// The single authoritative damage path. Bullets, explosions, melee, falls, bleeding, and
     /// deadly polygons all arrive here, so armor, attribution, death, and the kill feed can never
     /// disagree about what happened.
-    pub fn apply_damage(&mut self, event: DamageEvent) {
+    pub fn apply_damage(&mut self, mut event: DamageEvent) {
+        // Flame God is exactly what it says: nothing touches them while it lasts.
+        if self
+            .players
+            .get(&event.target)
+            .is_some_and(|player| player.bonus.is_invulnerable())
+        {
+            return;
+        }
+        // A Berserker hits four times as hard, which is applied once, here, rather than at every
+        // place a weapon works out its damage.
+        if let Some(attacker) = event.attacker.filter(|id| *id != event.target) {
+            let multiplier = self
+                .players
+                .get(&attacker)
+                .map_or(1.0, |player| player.bonus.damage_multiplier());
+            if multiplier != 1.0 {
+                event.amount = ((event.amount as f32) * multiplier).round() as i32;
+            }
+        }
         let tick = self.tick;
         let config = self.damage;
         let respawn_config = self.respawn;
@@ -874,8 +2053,11 @@ impl World {
         if target.spawn_protection > 0 && !self_inflicted {
             return;
         }
-        let scaled = ((event.amount.max(0) as f32) * region_multiplier(&config, event.region))
-            .round() as i32;
+        let scaled = if event.pre_scaled {
+            event.amount.max(0)
+        } else {
+            ((event.amount.max(0) as f32) * region_multiplier(&config, event.region)).round() as i32
+        };
         if scaled <= 0 {
             return;
         }
@@ -896,10 +2078,30 @@ impl World {
         let attackers = target.attackers.clone();
         let died = hp == 0;
         let gibbed = died && split.health >= config.gib_damage;
+        let death_drops = if died {
+            Some((target.inventory.take_all(), position, velocity))
+        } else {
+            None
+        };
+        // A grenade that was being cooked when its thrower was killed falls out of the dead hand
+        // and goes off where it lands, which is what makes trading with a cooked grenade work.
+        let dropped_grenade = if died && target.grenade_charge > 0 && target.grenades > 0 {
+            target.grenades -= 1;
+            target.grenade_charge = 0;
+            let kind = if target.cluster_grenades > 0 {
+                target.cluster_grenades -= 1;
+                WeaponKind::ClusterGrenade
+            } else {
+                WeaponKind::FragGrenade
+            };
+            Some((kind, position, velocity))
+        } else {
+            None
+        };
         if died {
-            target.deaths += 1;
             target.respawn = respawn_config.delay_ticks;
             target.bleed = None;
+            target.bonus.clear();
             target.state = CharacterState::Dead;
         }
 
@@ -923,6 +2125,42 @@ impl World {
                 amount: split.health,
             });
         }
+        if let Some((slots, pos, vel)) = death_drops {
+            for (index, slot) in slots.into_iter().enumerate() {
+                let kick = Vec2 {
+                    x: if index == 0 { -60.0 } else { 60.0 },
+                    y: -120.0,
+                };
+                self.objects.push(dropped_weapon(
+                    slot.kind,
+                    slot.ammo,
+                    pos,
+                    Vec2 {
+                        x: vel.x + kick.x,
+                        y: vel.y + kick.y,
+                    },
+                ));
+            }
+        }
+        if let Some((kind, pos, vel)) = dropped_grenade {
+            let grenade = *self.weapons.get(kind);
+            self.projectiles.push(Projectile {
+                id: self.next_projectile,
+                owner: event.target,
+                pos,
+                // It is dropped, not thrown: it keeps the body's momentum and nothing more.
+                vel,
+                ttl: grenade.timeout(),
+                damage: 0,
+                explosive: true,
+                kind: ProjectileKind::FragGrenade,
+                splash_radius: grenade.explosion_radius(),
+                weapon: Some(kind),
+                origin: pos,
+                last_impact: pos,
+            });
+            self.next_projectile = self.next_projectile.wrapping_add(1);
+        }
         if !died {
             return;
         }
@@ -941,24 +2179,61 @@ impl World {
         );
         let headshot = !teamkill && killer.is_some() && event.region == BodyRegion::Head;
 
+        // Every point in the match is booked here and nowhere else.
+        let rules = self.rules;
+        let team_of = |id: u32| teams.get(&id).copied().unwrap_or(0);
+        let score_event = if let Some(id) = killer {
+            Some(if teamkill {
+                ScoreEvent::TeamKill {
+                    killer: id,
+                    victim: event.target,
+                }
+            } else {
+                ScoreEvent::Kill {
+                    killer: id,
+                    victim: event.target,
+                }
+            })
+        } else if suicide {
+            Some(ScoreEvent::Suicide {
+                player: event.target,
+            })
+        } else {
+            None
+        };
+        if let Some(score_event) = score_event {
+            self.ledger.record(score_event, &rules, team_of);
+            // Pointmatch pays extra for a kill made while holding the point flag, which is the
+            // whole reason to carry it.
+            if let ScoreEvent::Kill { killer, .. } = score_event {
+                let policy = modes::objective::ObjectiveRules::for_mode(rules.kind);
+                let bonus = policy
+                    .kill_points(self.objectives.is_carrying(killer))
+                    .saturating_sub(1);
+                if bonus > 0 {
+                    self.ledger.record(
+                        ScoreEvent::Objective {
+                            player: killer,
+                            team: team_of(killer),
+                            points: bonus,
+                        },
+                        &rules,
+                        team_of,
+                    );
+                }
+            }
+        } else {
+            // An environmental death still counts as a death, with nobody to credit.
+            self.ledger.ensure(event.target);
+        }
+
         let mut multi = 0;
         if let Some(id) = killer.filter(|_| !teamkill) {
             if let Some(attacker) = self.players.get_mut(&id) {
-                attacker.kills += 1;
                 if headshot {
                     attacker.headshots += 1;
                 }
                 multi = attacker.multi_kill.record(tick, config.multi_kill_ticks);
-            }
-            if team_mode {
-                if let Some(team) = teams.get(&id).filter(|team| **team > 0) {
-                    self.scores[(*team - 1) as usize] += 1;
-                }
-            }
-        }
-        if let Some(id) = killer.filter(|_| teamkill) {
-            if let Some(attacker) = self.players.get_mut(&id) {
-                attacker.teamkills += 1;
             }
         }
         for assist in &assisting {
@@ -984,9 +2259,6 @@ impl World {
         };
         if let Some(target) = self.players.get_mut(&event.target) {
             target.last_death = Some(cause);
-            if suicide {
-                target.suicides += 1;
-            }
         }
 
         self.ragdolls.push(Ragdoll::spawn(
@@ -1020,6 +2292,71 @@ impl World {
             multi,
             assists: assisting,
         }));
+        // Statistics are fed by the same events as the score, so the two can never disagree about
+        // what happened.
+        if let Some(attacker) = event.attacker.filter(|id| *id != event.target) {
+            if let Some(weapon) = weapon_of(event.cause, self.players.get(&attacker)) {
+                self.stats.record(StatEvent::Hit {
+                    player: attacker,
+                    weapon,
+                    headshot: event.region == BodyRegion::Head,
+                });
+                if died {
+                    self.stats.record(StatEvent::KilledWith {
+                        killer: attacker,
+                        victim: event.target,
+                        weapon,
+                    });
+                }
+            }
+        }
+        if died {
+            self.stats.record(StatEvent::DiedTo {
+                victim: event.target,
+                cause: event.cause,
+            });
+        }
+
+        // apply_damage is an authoritative entry point in its own right, so the counters the HUD
+        // reads are brought back in line here and not only at the end of a tick.
+        self.project_scores();
+        if rules.modifiers.advance {
+            self.advance_progress(killer, event.target);
+        }
+    }
+
+    /// Moves a player up or down the Advance ladder after a kill.
+    ///
+    /// Earning a weapon and losing one are the same rule seen from either end: every configured
+    /// number of kills grants one, and every configured number of deaths takes one back.
+    fn advance_progress(&mut self, killer: Option<u32>, victim: u32) {
+        let config = self.advance;
+        if let Some(id) = killer.filter(|id| *id != victim) {
+            let kills = self.ledger.player(id).kills;
+            if modes::modifiers::advance::kill_earns_unlock(&config, kills) {
+                let mut unlocked = self
+                    .players
+                    .get(&id)
+                    .map_or(Unlocked::starting(), |p| p.unlocked);
+                if modes::modifiers::advance::unlock_one(&mut unlocked, &mut self.rng).is_some() {
+                    if let Some(player) = self.players.get_mut(&id) {
+                        player.unlocked = unlocked;
+                    }
+                }
+            }
+        }
+        let deaths = self.ledger.player(victim).deaths;
+        if modes::modifiers::advance::death_costs_unlock(&config, deaths) {
+            let mut unlocked = self
+                .players
+                .get(&victim)
+                .map_or(Unlocked::starting(), |p| p.unlocked);
+            if modes::modifiers::advance::revoke_one(&mut unlocked, &mut self.rng).is_some() {
+                if let Some(player) = self.players.get_mut(&victim) {
+                    player.unlocked = unlocked;
+                }
+            }
+        }
     }
 }
 
@@ -1062,47 +2399,135 @@ fn splash_hits(
     bullet: &Projectile,
     players: &BTreeMap<u32, Player>,
     teams: &BTreeMap<u32, u8>,
+    weapons: &WeaponTable,
+    friendly_fire: bool,
     hits: &mut Vec<PendingHit>,
 ) {
     for target in players.values() {
         if target.hp <= 0 {
             continue;
         }
-        if target.id != bullet.owner
-            && teams.get(&bullet.owner) == Some(&target.team)
-            && target.team != 0
-        {
+        let owner_team = teams.get(&bullet.owner).copied().unwrap_or(0);
+        let same_team = owner_team != 0 && owner_team == target.team;
+        let allowed = if let Some(kind) = bullet.weapon {
+            can_damage(
+                weapons.get(kind),
+                bullet.owner,
+                target.id,
+                same_team,
+                friendly_fire,
+                true,
+            )
+        } else {
+            target.id == bullet.owner || owner_team == 0 || owner_team != target.team
+        };
+        if !allowed {
             continue;
         }
         let dx = target.pos.x - bullet.pos.x;
         let dy = target.pos.y - bullet.pos.y;
         let distance = (dx * dx + dy * dy).sqrt();
-        if distance < bullet.splash_radius {
-            let scale = 1.0 - distance / bullet.splash_radius;
-            let normal = if distance > f32::EPSILON {
-                Vec2 {
-                    x: dx / distance,
-                    y: dy / distance,
-                }
-            } else {
-                Vec2 { x: 0.0, y: -1.0 }
-            };
-            hits.push(PendingHit {
-                killer: bullet.owner,
-                target: target.id,
-                damage: (scale * bullet.damage as f32).ceil() as i32,
-                impulse: Impulse {
+        if distance >= bullet.splash_radius {
+            continue;
+        }
+        let scale = 1.0 - distance / bullet.splash_radius;
+        let normal = if distance > f32::EPSILON {
+            Vec2 {
+                x: dx / distance,
+                y: dy / distance,
+            }
+        } else {
+            Vec2 { x: 0.0, y: -1.0 }
+        };
+        let region = BodyRegion::Chest;
+        let (damage, impulse, pre_scaled) = if let Some(kind) = bullet.weapon {
+            let def = weapons.get(kind);
+            (
+                explosion_damage(def, distance, region).round() as i32,
+                Impulse {
+                    velocity: explosion_impulse(def, normal, distance),
+                    source: ImpulseSource::Explosion,
+                },
+                true,
+            )
+        } else {
+            (
+                (scale * bullet.damage as f32).ceil() as i32,
+                Impulse {
                     velocity: Vec2 {
                         x: normal.x * 90.0 * scale,
                         y: normal.y * 90.0 * scale,
                     },
                     source: ImpulseSource::Explosion,
                 },
-                // A blast wraps the whole body, so it is never a headshot.
-                region: BodyRegion::Chest,
-                cause: DamageCause::Explosion,
-            });
+                false,
+            )
+        };
+        hits.push(PendingHit {
+            killer: bullet.owner,
+            target: target.id,
+            damage,
+            impulse,
+            region,
+            cause: DamageCause::Explosion,
+            pre_scaled,
+            bink_weapon: bullet.weapon,
+        });
+    }
+}
+
+fn shooter_pose(player: &Player, input: &Input) -> ShooterPose {
+    ShooterPose {
+        state: player.state,
+        grounded: player.grounded,
+        moving: input.left || input.right || player.vel.x.abs() > 20.0,
+        jetting: input.jet && player.fuel > 0.01,
+        bink: player.bink,
+    }
+}
+
+fn projectile_kind(def: &WeaponDef) -> ProjectileKind {
+    if def.kind == WeaponKind::ThrownKnife {
+        return ProjectileKind::ThrownKnife;
+    }
+    match def.bullet_style {
+        BulletStyle::Shotgun => ProjectileKind::ShotgunPellet,
+        BulletStyle::M79Grenade => ProjectileKind::M79Grenade,
+        BulletStyle::Law => ProjectileKind::LawRocket,
+        BulletStyle::FragGrenade | BulletStyle::ClusterGrenade | BulletStyle::Cluster => {
+            ProjectileKind::FragGrenade
         }
+        style if style.is_melee() => ProjectileKind::Melee,
+        _ => ProjectileKind::Bullet,
+    }
+}
+
+fn thrown_knife(bullet: &Projectile) -> bool {
+    bullet.kind == ProjectileKind::ThrownKnife || bullet.weapon == Some(WeaponKind::ThrownKnife)
+}
+
+fn held_kind(player: &Player) -> WeaponKind {
+    player
+        .inventory
+        .active()
+        .map(|slot| slot.kind)
+        .unwrap_or(WeaponKind::Punch)
+}
+
+fn sync_hands(player: &mut Player) {
+    if let Some(slot) = player.inventory.active() {
+        if let Some(index) = slot.kind.slot() {
+            player.weapon = index;
+        }
+        player.ammo = slot.ammo;
+    } else {
+        player.ammo = 0;
+    }
+}
+
+fn writeback_ammo(player: &mut Player) {
+    if let Some(slot) = player.inventory.active_mut() {
+        slot.ammo = player.ammo;
     }
 }
 
@@ -1131,60 +2556,117 @@ mod wasm {
     }
 }
 
+/// How hard a blast throws a loose flag, in world units per second at the centre of the blast.
+const EXPLOSION_FLAG_PUSH: f32 = 260.0;
+
+/// How hard gravity pulls a projectile that is subject to it, in world units per second squared.
+///
+/// Matched to the character gravity the movement config uses, so a grenade and a body fall at the
+/// same rate and a thrown arc lands where a player expects it to.
+const PROJECTILE_GRAVITY: f32 = 0.12 * 950.0;
+
+/// Lifts a projectile clear of the surface it just struck so the next tick does not re-hit it.
+fn nudge(pos: Vec2, normal: Vec2) -> Vec2 {
+    Vec2 {
+        x: pos.x + normal.x * 0.5,
+        y: pos.y + normal.y * 0.5,
+    }
+}
+
+/// The definition a projectile was fired from, falling back to a plain bullet for older snapshots
+/// that predate weapon-tagged projectiles.
+fn armed_def(weapons: &WeaponTable, bullet: &Projectile) -> WeaponDef {
+    *weapons.get(bullet.weapon.unwrap_or(WeaponKind::Ak74))
+}
+
+/// The weapon a damage event should be credited to, for the statistics.
+///
+/// Only a wound from something a player was holding counts: a fall or a deadly polygon has no
+/// weapon behind it, and crediting one would make a scoreboard lie.
+fn weapon_of(cause: DamageCause, attacker: Option<&Player>) -> Option<WeaponKind> {
+    match cause {
+        DamageCause::Bullet | DamageCause::Pellet | DamageCause::Melee | DamageCause::Explosion => {
+            attacker.map(|player| WeaponKind::from_slot(player.weapon))
+        }
+        _ => None,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn soldat_primary_weapon_stats_match_normal_mode() {
-        assert_eq!(WEAPONS[..10].len(), 10);
-        assert_eq!(WEAPONS[0].name, "Desert Eagles");
+        let table = WeaponTable::normal();
+        assert_eq!(SELECTABLE_WEAPONS[..10].len(), 10);
+        assert_eq!(table.for_slot(0).kind.display_name(), "Desert Eagles");
         assert_eq!(
             (
-                WEAPONS[0].fire_interval,
-                WEAPONS[0].ammo,
-                WEAPONS[0].reload_ticks
+                table.for_slot(0).fire_interval,
+                table.for_slot(0).ammo,
+                table.for_slot(0).reload_time
             ),
             (24, 7, 87)
         );
         assert_eq!(
             (
-                WEAPONS[1].fire_interval,
-                WEAPONS[1].ammo,
-                WEAPONS[1].reload_ticks
+                table.for_slot(1).fire_interval,
+                table.for_slot(1).ammo,
+                table.for_slot(1).reload_time
             ),
             (6, 30, 105)
         );
         assert_eq!(
-            (WEAPONS[4].style, WEAPONS[4].pellets),
-            (WeaponStyle::Shotgun, 6)
+            (table.for_slot(4).bullet_style, table.for_slot(4).pellets()),
+            (BulletStyle::Shotgun, 6)
         );
         assert_eq!(
-            (WEAPONS[6].style, WEAPONS[6].ammo),
-            (WeaponStyle::Explosive, 1)
+            (
+                table.for_slot(6).bullet_style.is_explosive(),
+                table.for_slot(6).ammo
+            ),
+            (true, 1)
         );
         assert_eq!(
-            (WEAPONS[7].startup_ticks, WEAPONS[7].fire_interval),
+            (
+                table.for_slot(7).start_up_time,
+                table.for_slot(7).fire_interval
+            ),
             (19, 225)
         );
     }
     #[test]
     fn soldat_secondary_weapon_stats_match_normal_mode() {
-        assert_eq!(WEAPONS.len(), 14);
+        let table = WeaponTable::normal();
+        assert_eq!(SELECTABLE_WEAPONS.len(), 14);
         assert_eq!(
-            (WEAPONS[10].name, WEAPONS[10].ammo, WEAPONS[10].reload_ticks),
+            (
+                table.for_slot(10).kind.display_name(),
+                table.for_slot(10).ammo,
+                table.for_slot(10).reload_time
+            ),
             ("USSOCOM", 14, 60)
         );
         assert_eq!(
-            (WEAPONS[11].name, WEAPONS[11].style),
-            ("Combat Knife", WeaponStyle::Melee)
+            (
+                table.for_slot(11).kind.display_name(),
+                table.for_slot(11).bullet_style.is_melee()
+            ),
+            ("Combat Knife", true)
         );
         assert_eq!(
-            (WEAPONS[12].name, WEAPONS[12].fire_interval),
+            (
+                table.for_slot(12).kind.display_name(),
+                table.for_slot(12).fire_interval
+            ),
             ("Chainsaw", 2)
         );
         assert_eq!(
-            (WEAPONS[13].name, WEAPONS[13].startup_ticks),
-            ("M72 LAW", 13)
+            (
+                table.for_slot(13).kind.display_name(),
+                table.for_slot(13).start_up_time
+            ),
+            ("LAW", 13)
         );
     }
     #[test]
@@ -1192,14 +2674,27 @@ mod tests {
         let mut w = World::new("deathmatch");
         w.add_player(1, "Thrower".into());
         let grenades = w.players[&1].grenades;
-        w.step(&BTreeMap::from([(
+        let aim = Vec2 { x: 500.0, y: 430.0 };
+        let cooking = BTreeMap::from([(
             1,
             Input {
                 throw_grenade: true,
-                aim: Vec2 { x: 500.0, y: 430.0 },
+                aim,
                 ..Default::default()
             },
-        )]));
+        )]);
+        let released = BTreeMap::from([(
+            1,
+            Input {
+                aim,
+                ..Default::default()
+            },
+        )]);
+
+        // A grenade is cooked while the key is held and leaves the hand when it is let go.
+        w.step(&cooking);
+        assert_eq!(w.players[&1].grenades, grenades, "still in hand");
+        w.step(&released);
         assert_eq!(w.players[&1].grenades, grenades - 1);
         let grenade = w
             .projectiles
@@ -1224,6 +2719,9 @@ mod tests {
             explosive: false,
             kind: ProjectileKind::Bullet,
             splash_radius: 0.0,
+            weapon: None,
+            origin: Vec2::default(),
+            last_impact: Vec2::default(),
         });
         w.step(&BTreeMap::new());
         assert_eq!(w.players[&2].hp, 80);
@@ -1244,6 +2742,9 @@ mod tests {
             explosive: false,
             kind: ProjectileKind::Bullet,
             splash_radius: 0.0,
+            weapon: None,
+            origin: Vec2::default(),
+            last_impact: Vec2::default(),
         });
         w.step(&BTreeMap::new());
         assert_eq!(w.players[&2].hp, 100);
@@ -1261,6 +2762,8 @@ mod tests {
                 ..Default::default()
             },
         )]);
+        // Holding the key cooks one grenade and lets it go at full strength. It must not keep
+        // throwing the rest of the pouch for as long as the key stays down.
         for _ in 0..100 {
             w.step(&input);
         }
@@ -1270,6 +2773,7 @@ mod tests {
     fn melee_projectile_has_short_range() {
         let mut w = World::new("deathmatch");
         w.add_player(1, "Knife".into());
+        w.equip(1, WeaponKind::CombatKnife);
         w.step(&BTreeMap::from([(
             1,
             Input {
@@ -1310,10 +2814,11 @@ mod tests {
         let before = w.projectiles.len();
         w.step(&BTreeMap::from([(1, fire)]));
         assert_eq!(w.projectiles.len(), before);
-        for _ in 0..WEAPONS[0].reload_ticks {
+        let eagles = *WeaponTable::normal().for_slot(0);
+        for _ in 0..eagles.reload_time {
             w.step(&BTreeMap::new());
         }
-        assert_eq!(w.players[&1].ammo, WEAPONS[0].ammo);
+        assert_eq!(w.players[&1].ammo, u16::from(eagles.ammo));
     }
     #[test]
     fn explicit_reload_input_refills_a_partial_magazine_and_ignores_a_full_one() {
@@ -1332,7 +2837,8 @@ mod tests {
                 ..Default::default()
             },
         )]));
-        assert_eq!(w.players[&1].ammo, WEAPONS[0].ammo - 1);
+        let eagles = *WeaponTable::normal().for_slot(0);
+        assert_eq!(w.players[&1].ammo, u16::from(eagles.ammo) - 1);
 
         let reload = Input {
             reload: true,
@@ -1340,11 +2846,11 @@ mod tests {
             ..Default::default()
         };
         w.step(&BTreeMap::from([(1, reload)]));
-        assert_eq!(w.players[&1].reload_timer, WEAPONS[0].reload_ticks);
-        for _ in 0..WEAPONS[0].reload_ticks {
+        assert_eq!(w.players[&1].reload_timer, eagles.reload_time);
+        for _ in 0..eagles.reload_time {
             w.step(&BTreeMap::new());
         }
-        assert_eq!(w.players[&1].ammo, WEAPONS[0].ammo);
+        assert_eq!(w.players[&1].ammo, u16::from(eagles.ammo));
 
         w.step(&BTreeMap::from([(1, reload)]));
         assert_eq!(w.players[&1].reload_timer, 0);
@@ -1380,6 +2886,7 @@ mod tests {
     fn spas_fires_multiple_pellets_for_one_shell() {
         let mut w = World::new("deathmatch");
         w.add_player(1, "A".into());
+        w.equip(1, WeaponKind::Spas12);
         w.step(&BTreeMap::from([(
             1,
             Input {
@@ -1392,8 +2899,9 @@ mod tests {
                 ..Default::default()
             },
         )]));
-        assert_eq!(w.projectiles.len(), WEAPONS[4].pellets as usize);
-        assert_eq!(w.players[&1].ammo, WEAPONS[4].ammo - 1);
+        let spas = *WeaponTable::normal().for_slot(4);
+        assert_eq!(w.projectiles.len(), spas.pellets() as usize);
+        assert_eq!(w.players[&1].ammo, u16::from(spas.ammo) - 1);
     }
     #[test]
     fn m79_explosion_damages_nearby_enemy_not_distant_enemy() {
@@ -1413,6 +2921,9 @@ mod tests {
             explosive: true,
             kind: ProjectileKind::M79Grenade,
             splash_radius: 64.0,
+            weapon: None,
+            origin: Vec2::default(),
+            last_impact: Vec2::default(),
         });
         w.step(&BTreeMap::new());
         assert!(w.players[&2].hp < 100);
@@ -1436,7 +2947,7 @@ mod tests {
         w.step(&BTreeMap::from([(
             1,
             Input {
-                weapon: 1,
+                weapon: 10,
                 ..Default::default()
             },
         )]));
@@ -1448,7 +2959,7 @@ mod tests {
             },
         )]));
         assert_eq!(w.players[&1].ammo, 0);
-        assert!(w.players[&1].reload_timer > 0);
+        assert_eq!(w.players[&1].reload_timer, 0);
     }
     #[test]
     fn self_explosion_is_not_credited_as_a_kill() {
@@ -1464,6 +2975,9 @@ mod tests {
             explosive: true,
             kind: ProjectileKind::M79Grenade,
             splash_radius: 64.0,
+            weapon: None,
+            origin: Vec2::default(),
+            last_impact: Vec2::default(),
         });
         w.step(&BTreeMap::new());
         assert_eq!(w.players[&1].hp, 0);
@@ -1531,7 +3045,7 @@ mod tests {
         w.step(&input);
         let first = w.projectiles.len();
         w.step(&input);
-        assert_eq!(first, 1);
-        assert_eq!(w.projectiles.len(), 1);
+        assert_eq!(first, WeaponTable::normal().for_slot(0).pellets() as usize);
+        assert_eq!(w.projectiles.len(), first);
     }
 }
