@@ -41,12 +41,12 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G01-CHARACTER-MOVEMENT-035 | Present | 1. Character movement and physics | SPAS/minigun self-boost. | rust:movement_fixtures |
 | G01-CHARACTER-MOVEMENT-036 | Present | 1. Character movement and physics | Explosive knockback. | rust:movement_fixtures |
 | G01-CHARACTER-MOVEMENT-037 | Present | 1. Character movement and physics | Bullet push. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-038 | Missing | 1. Character movement and physics | Flag and kit push from bullets/explosions. | parity:G01-CHARACTER-MOVEMENT-038 |
+| G01-CHARACTER-MOVEMENT-038 | Present | 1. Character movement and physics | Flag and kit push from bullets/explosions. | rust:mode_world:physics, rust:bonus_world:physics |
 | G01-CHARACTER-MOVEMENT-039 | Present | 1. Character movement and physics | Movement animation state machine. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-040 | Missing | 1. Character movement and physics | Directional aiming and body rotation. | parity:G01-CHARACTER-MOVEMENT-040 |
-| G01-CHARACTER-MOVEMENT-041 | Missing | 1. Character movement and physics | Separate legs, torso, head, arms, weapon, and jet animations. | parity:G01-CHARACTER-MOVEMENT-041 |
-| G01-CHARACTER-MOVEMENT-042 | Missing | 1. Character movement and physics | Death animations. | parity:G01-CHARACTER-MOVEMENT-042 |
-| G01-CHARACTER-MOVEMENT-043 | Missing | 1. Character movement and physics | Mercy/victory/smoke/tobacco/helmet animations. | parity:G01-CHARACTER-MOVEMENT-043 |
+| G01-CHARACTER-MOVEMENT-040 | Present | 1. Character movement and physics | Directional aiming and body rotation. | parity:G01-CHARACTER-MOVEMENT-040, web:render:gostek |
+| G01-CHARACTER-MOVEMENT-041 | Present | 1. Character movement and physics | Separate legs, torso, head, arms, weapon, and jet animations. | parity:G01-CHARACTER-MOVEMENT-041, web:render:gostek |
+| G01-CHARACTER-MOVEMENT-042 | Present | 1. Character movement and physics | Death animations. | parity:G01-CHARACTER-MOVEMENT-042, web:render:gostek |
+| G01-CHARACTER-MOVEMENT-043 | Present | 1. Character movement and physics | Mercy/victory/smoke/tobacco/helmet animations. | rust:commands:emote, web:render:gostek |
 | G02-INPUT-AND-001 | Present | 2. Input and controls | Move left/right. | rust:movement_fixtures |
 | G02-INPUT-AND-002 | Present | 2. Input and controls | Jump. | rust:movement_fixtures |
 | G02-INPUT-AND-003 | Present | 2. Input and controls | Jet. | rust:movement_fixtures |
@@ -66,56 +66,56 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G02-INPUT-AND-017 | Present | 2. Input and controls | Hold-to-charge weapon throw. | rust:weapon_inventory_fixtures |
 | G02-INPUT-AND-018 | Present | 2. Input and controls | Throw combat knife. | rust:weapon_inventory_fixtures |
 | G02-INPUT-AND-019 | Present | 2. Input and controls | Pick up weapons. | rust:weapon_inventory_fixtures |
-| G02-INPUT-AND-020 | Missing | 2. Input and controls | Pick up flags and kits. | parity:G02-INPUT-AND-020 |
-| G02-INPUT-AND-021 | Missing | 2. Input and controls | Flag throw using jump+crouch. | parity:G02-INPUT-AND-021 |
-| G02-INPUT-AND-022 | Missing | 2. Input and controls | Dedicated configurable flag-throw key. | parity:G02-INPUT-AND-022 |
+| G02-INPUT-AND-020 | Present | 2. Input and controls | Pick up flags and kits. | parity:G02-INPUT-AND-020, web:objectives:status |
+| G02-INPUT-AND-021 | Present | 2. Input and controls | Flag throw using jump+crouch. | web:input:flag-throw |
+| G02-INPUT-AND-022 | Present | 2. Input and controls | Dedicated configurable flag-throw key. | web:input:flag-throw |
 | G02-INPUT-AND-023 | Present | 2. Input and controls | Respawn weapon-selection menu. | rust:damage_fixtures:weapon-choice |
 | G02-INPUT-AND-024 | Present | 2. Input and controls | Separate primary and secondary selection controls. | web:input:weapon-selection |
-| G02-INPUT-AND-025 | Missing | 2. Input and controls | Team chat. | parity:G02-INPUT-AND-025 |
-| G02-INPUT-AND-026 | Missing | 2. Input and controls | Command console. | parity:G02-INPUT-AND-026 |
+| G02-INPUT-AND-025 | Present | 2. Input and controls | Team chat. | parity:G02-INPUT-AND-025, rust:chat:scope |
+| G02-INPUT-AND-026 | Present | 2. Input and controls | Command console. | parity:G02-INPUT-AND-026, rust:commands:parse |
 | G02-INPUT-AND-027 | Present | 2. Input and controls | Scoreboard hold/toggle behavior. | web:input:scoreboard |
-| G02-INPUT-AND-028 | Missing | 2. Input and controls | Weapon-statistics screen. | parity:G02-INPUT-AND-028 |
-| G02-INPUT-AND-029 | Missing | 2. Input and controls | Minimap toggle. | parity:G02-INPUT-AND-029 |
-| G02-INPUT-AND-030 | Missing | 2. Input and controls | Sniper-line toggle. | parity:G02-INPUT-AND-030 |
-| G02-INPUT-AND-031 | Missing | 2. Input and controls | Performance-statistics overlay. | parity:G02-INPUT-AND-031 |
+| G02-INPUT-AND-028 | Present | 2. Input and controls | Weapon-statistics screen. | parity:G02-INPUT-AND-028, web:hud:screens |
+| G02-INPUT-AND-029 | Present | 2. Input and controls | Minimap toggle. | parity:G02-INPUT-AND-029, web:hud:net |
+| G02-INPUT-AND-030 | Present | 2. Input and controls | Sniper-line toggle. | parity:G02-INPUT-AND-030, web:hud:net |
+| G02-INPUT-AND-031 | Present | 2. Input and controls | Performance-statistics overlay. | parity:G02-INPUT-AND-031, web:hud:net |
 | G02-INPUT-AND-032 | Present | 2. Input and controls | Screenshot control. | web:input:screenshot |
-| G02-INPUT-AND-033 | Missing | 2. Input and controls | Music toggle. | parity:G02-INPUT-AND-033 |
-| G02-INPUT-AND-034 | Missing | 2. Input and controls | Previous/next music track. | parity:G02-INPUT-AND-034 |
-| G02-INPUT-AND-035 | Missing | 2. Input and controls | Demo recording. | parity:G02-INPUT-AND-035 |
-| G02-INPUT-AND-036 | Missing | 2. Input and controls | Demo playback fast-forward. | parity:G02-INPUT-AND-036 |
-| G02-INPUT-AND-037 | Missing | 2. Input and controls | Pause. | parity:G02-INPUT-AND-037 |
+| G02-INPUT-AND-033 | Present | 2. Input and controls | Music toggle. | parity:G02-INPUT-AND-033, web:audio:engine |
+| G02-INPUT-AND-034 | Present | 2. Input and controls | Previous/next music track. | parity:G02-INPUT-AND-034, web:audio:engine |
+| G02-INPUT-AND-035 | Present | 2. Input and controls | Demo recording. | web:replay:player, rust:replay:record |
+| G02-INPUT-AND-036 | Present | 2. Input and controls | Demo playback fast-forward. | web:replay:player, rust:replay:seek |
+| G02-INPUT-AND-037 | Present | 2. Input and controls | Pause. | parity:G02-INPUT-AND-037, rust:commands:parse |
 | G02-INPUT-AND-038 | Present | 2. Input and controls | Window minimize shortcut. | web:input:minimize |
-| G02-INPUT-AND-039 | Missing | 2. Input and controls | Taunt shortcuts. | parity:G02-INPUT-AND-039 |
+| G02-INPUT-AND-039 | Present | 2. Input and controls | Taunt shortcuts. | parity:G02-INPUT-AND-039, rust:commands:emote |
 | G02-INPUT-AND-040 | Present | 2. Input and controls | Runtime mouse-sensitivity adjustment. | web:input:sensitivity |
-| G02-INPUT-AND-041 | Missing | 2. Input and controls | Runtime sound-volume adjustment. | parity:G02-INPUT-AND-041 |
+| G02-INPUT-AND-041 | Present | 2. Input and controls | Runtime sound-volume adjustment. | parity:G02-INPUT-AND-041, web:audio:engine |
 | G02-INPUT-AND-042 | Present | 2. Input and controls | Scoreboard scrolling. | web:input:scoreboard-scroll |
 | G02-INPUT-AND-043 | Present | 2. Input and controls | Fully rebindable keyboard controls. | web:input:rebinding |
 | G02-INPUT-AND-044 | Present | 2. Input and controls | Rebindable mouse buttons. | web:input:mouse-rebinding |
 | G02-INPUT-AND-045 | Present | 2. Input and controls | Controller/gamepad support. | web:input:gamepad |
 | G02-INPUT-AND-046 | Present | 2. Input and controls | Saved control profiles. | web:input:profiles |
 | G02-INPUT-AND-047 | Present | 2. Input and controls | Accessibility alternatives for combined inputs. | web:input:accessibility |
-| G02-INPUT-AND-048 | Missing | 2. Input and controls | Mobile equivalents for crouch, prone, roll, reload, weapon switch, weapon throw, flag throw, scoreboard, and team chat. | parity:G02-INPUT-AND-048 |
-| G03-WEAPONS-001 | Partial | 3. Weapons | Desert Eagles. | parity:G03-WEAPONS-001 |
-| G03-WEAPONS-002 | Partial | 3. Weapons | HK MP5. | parity:G03-WEAPONS-002 |
-| G03-WEAPONS-003 | Partial | 3. Weapons | AK-74. | parity:G03-WEAPONS-003 |
-| G03-WEAPONS-004 | Partial | 3. Weapons | Steyr AUG. | parity:G03-WEAPONS-004 |
-| G03-WEAPONS-005 | Partial | 3. Weapons | SPAS-12. | parity:G03-WEAPONS-005 |
-| G03-WEAPONS-006 | Partial | 3. Weapons | Ruger 77. | parity:G03-WEAPONS-006 |
-| G03-WEAPONS-007 | Partial | 3. Weapons | M79. | parity:G03-WEAPONS-007 |
-| G03-WEAPONS-008 | Partial | 3. Weapons | Barrett M82A1. | parity:G03-WEAPONS-008 |
-| G03-WEAPONS-009 | Partial | 3. Weapons | FN Minimi. | parity:G03-WEAPONS-009 |
-| G03-WEAPONS-010 | Partial | 3. Weapons | XM214 Minigun. | parity:G03-WEAPONS-010 |
-| G03-WEAPONS-011 | Partial | 3. Weapons | USSOCOM. | parity:G03-WEAPONS-011 |
-| G03-WEAPONS-012 | Partial | 3. Weapons | Combat Knife. | parity:G03-WEAPONS-012 |
-| G03-WEAPONS-013 | Partial | 3. Weapons | Chainsaw. | parity:G03-WEAPONS-013 |
-| G03-WEAPONS-014 | Partial | 3. Weapons | M72 LAW. | parity:G03-WEAPONS-014 |
-| G03-WEAPONS-015 | Missing | 3. Weapons | Cluster grenades. | parity:G03-WEAPONS-015 |
-| G03-WEAPONS-016 | Missing | 3. Weapons | Flamethrower. | parity:G03-WEAPONS-016 |
-| G03-WEAPONS-017 | Missing | 3. Weapons | Rambo Bow. | parity:G03-WEAPONS-017 |
-| G03-WEAPONS-018 | Missing | 3. Weapons | Normal arrows. | parity:G03-WEAPONS-018 |
-| G03-WEAPONS-019 | Missing | 3. Weapons | Flamed arrows. | parity:G03-WEAPONS-019 |
-| G03-WEAPONS-020 | Missing | 3. Weapons | Stationary M2 machine gun. | parity:G03-WEAPONS-020 |
-| G03-WEAPONS-021 | Missing | 3. Weapons | Punch/unarmed combat. | parity:G03-WEAPONS-021 |
+| G02-INPUT-AND-048 | Present | 2. Input and controls | Mobile equivalents for crouch, prone, roll, reload, weapon switch, weapon throw, flag throw, scoreboard, and team chat. | web:mobile:movement-pad |
+| G03-WEAPONS-001 | Present | 3. Weapons | Desert Eagles. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-002 | Present | 3. Weapons | HK MP5. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-003 | Present | 3. Weapons | AK-74. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-004 | Present | 3. Weapons | Steyr AUG. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-005 | Present | 3. Weapons | SPAS-12. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-006 | Present | 3. Weapons | Ruger 77. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-007 | Present | 3. Weapons | M79. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-008 | Present | 3. Weapons | Barrett M82A1. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-009 | Present | 3. Weapons | FN Minimi. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-010 | Present | 3. Weapons | XM214 Minigun. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-011 | Present | 3. Weapons | USSOCOM. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-012 | Present | 3. Weapons | Combat Knife. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-013 | Present | 3. Weapons | Chainsaw. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-014 | Present | 3. Weapons | M72 LAW. | rust:weapon_config_fixtures, rust:weapon_ballistics_fixtures:damage, web:weapons:table |
+| G03-WEAPONS-015 | Present | 3. Weapons | Cluster grenades. | rust:obtainable_weapons, rust:weapon_family_fixtures:explosive |
+| G03-WEAPONS-016 | Present | 3. Weapons | Flamethrower. | rust:obtainable_weapons, rust:weapon_family_fixtures:flame |
+| G03-WEAPONS-017 | Present | 3. Weapons | Rambo Bow. | rust:obtainable_weapons, rust:modes:rambomatch |
+| G03-WEAPONS-018 | Present | 3. Weapons | Normal arrows. | rust:obtainable_weapons |
+| G03-WEAPONS-019 | Present | 3. Weapons | Flamed arrows. | rust:obtainable_weapons |
+| G03-WEAPONS-020 | Present | 3. Weapons | Stationary M2 machine gun. | rust:obtainable_weapons, rust:weapon_family_fixtures:stationary |
+| G03-WEAPONS-021 | Present | 3. Weapons | Punch/unarmed combat. | rust:obtainable_weapons |
 | G03-WEAPONS-022 | Present | 3. Weapons | Primary-plus-secondary inventory slots. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-023 | Present | 3. Weapons | Carrying two primary weapons. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-024 | Present | 3. Weapons | Weapon pickups. | rust:weapon_inventory_fixtures |
@@ -125,40 +125,40 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G03-WEAPONS-028 | Present | 3. Weapons | Knife recovery/pickup. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-029 | Present | 3. Weapons | Manual reload. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-030 | Present | 3. Weapons | Reload interruption. | rust:weapon_inventory_fixtures |
-| G03-WEAPONS-031 | Missing | 3. Weapons | Per-weapon reload animations. | parity:G03-WEAPONS-031 |
+| G03-WEAPONS-031 | Present | 3. Weapons | Per-weapon reload animations. | web:render:gostek, rust:weapon_inventory_fixtures |
 | G03-WEAPONS-032 | Present | 3. Weapons | Weapon-switch delays. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-033 | Present | 3. Weapons | Correct weapon startup behavior. | rust:game_core::tests::fire_is_rate_limited |
-| G03-WEAPONS-034 | Missing | 3. Weapons | LAW firing restrictions. | parity:G03-WEAPONS-034 |
-| G03-WEAPONS-035 | Missing | 3. Weapons | Barrett movement/startup restrictions. | parity:G03-WEAPONS-035 |
-| G03-WEAPONS-036 | Missing | 3. Weapons | Minigun spin-up behavior. | parity:G03-WEAPONS-036 |
-| G03-WEAPONS-037 | Missing | 3. Weapons | Chainsaw continuous-contact behavior. | parity:G03-WEAPONS-037 |
-| G03-WEAPONS-038 | Missing | 3. Weapons | Proper melee collision. | parity:G03-WEAPONS-038 |
-| G03-WEAPONS-039 | Missing | 3. Weapons | Dual Desert Eagle projectiles and muzzle positions. | parity:G03-WEAPONS-039 |
-| G03-WEAPONS-040 | Missing | 3. Weapons | Proper shotgun pellet count and randomized spread. | parity:G03-WEAPONS-040 |
-| G03-WEAPONS-041 | Missing | 3. Weapons | Projectile lifetime matching Soldat. | parity:G03-WEAPONS-041 |
-| G03-WEAPONS-042 | Missing | 3. Weapons | Projectile gravity per bullet style. | parity:G03-WEAPONS-042 |
-| G03-WEAPONS-043 | Missing | 3. Weapons | Grenade bouncing. | parity:G03-WEAPONS-043 |
-| G03-WEAPONS-044 | Missing | 3. Weapons | M79 projectile bouncing/impact behavior. | parity:G03-WEAPONS-044 |
-| G03-WEAPONS-045 | Missing | 3. Weapons | Grenade cooking/throw strength. | parity:G03-WEAPONS-045 |
-| G03-WEAPONS-046 | Missing | 3. Weapons | Grenade fuse timing. | parity:G03-WEAPONS-046 |
-| G03-WEAPONS-047 | Missing | 3. Weapons | Dropped grenade behavior on death. | parity:G03-WEAPONS-047 |
-| G03-WEAPONS-048 | Missing | 3. Weapons | Cluster grenade submunition spawning. | parity:G03-WEAPONS-048 |
-| G03-WEAPONS-049 | Missing | 3. Weapons | Arrow sticking/interaction. | parity:G03-WEAPONS-049 |
-| G03-WEAPONS-050 | Missing | 3. Weapons | Flame propagation and burning. | parity:G03-WEAPONS-050 |
-| G03-WEAPONS-051 | Missing | 3. Weapons | Flamethrower fuel/ammunition behavior. | parity:G03-WEAPONS-051 |
-| G03-WEAPONS-052 | Missing | 3. Weapons | Stationary-gun mounting and dismounting. | parity:G03-WEAPONS-052 |
-| G03-WEAPONS-053 | Missing | 3. Weapons | Stationary-gun aiming limits. | parity:G03-WEAPONS-053 |
-| G03-WEAPONS-054 | Missing | 3. Weapons | Projectile-to-projectile or projectile-to-object interactions where applicable. | parity:G03-WEAPONS-054 |
+| G03-WEAPONS-034 | Present | 3. Weapons | LAW firing restrictions. | parity:G03-WEAPONS-034, rust:weapon_projectile_fixtures:firing-rules, rust:weapon_behavior_world:law |
+| G03-WEAPONS-035 | Present | 3. Weapons | Barrett movement/startup restrictions. | parity:G03-WEAPONS-035, rust:weapon_projectile_fixtures:firing-rules |
+| G03-WEAPONS-036 | Present | 3. Weapons | Minigun spin-up behavior. | parity:G03-WEAPONS-036, rust:weapon_projectile_fixtures:firing-rules, rust:weapon_behavior_world:minigun |
+| G03-WEAPONS-037 | Present | 3. Weapons | Chainsaw continuous-contact behavior. | parity:G03-WEAPONS-037, rust:weapon_projectile_fixtures:firing-rules |
+| G03-WEAPONS-038 | Present | 3. Weapons | Proper melee collision. | parity:G03-WEAPONS-038, rust:weapon_projectile_fixtures:firing-rules |
+| G03-WEAPONS-039 | Present | 3. Weapons | Dual Desert Eagle projectiles and muzzle positions. | parity:G03-WEAPONS-039, rust:weapon_projectile_fixtures:firing-rules, rust:weapon_behavior_world:eagles |
+| G03-WEAPONS-040 | Present | 3. Weapons | Proper shotgun pellet count and randomized spread. | parity:G03-WEAPONS-040, rust:weapon_projectile_fixtures:firing-rules, rust:weapon_behavior_world:shotgun |
+| G03-WEAPONS-041 | Present | 3. Weapons | Projectile lifetime matching Soldat. | parity:G03-WEAPONS-041, rust:weapon_projectile_fixtures:styles |
+| G03-WEAPONS-042 | Present | 3. Weapons | Projectile gravity per bullet style. | parity:G03-WEAPONS-042, rust:weapon_projectile_fixtures:styles, rust:weapon_behavior_world:grenade |
+| G03-WEAPONS-043 | Present | 3. Weapons | Grenade bouncing. | parity:G03-WEAPONS-043, rust:weapon_projectile_fixtures:styles, rust:weapon_behavior_world:grenade |
+| G03-WEAPONS-044 | Present | 3. Weapons | M79 projectile bouncing/impact behavior. | parity:G03-WEAPONS-044, rust:weapon_projectile_fixtures:styles |
+| G03-WEAPONS-045 | Present | 3. Weapons | Grenade cooking/throw strength. | parity:G03-WEAPONS-045, rust:weapon_family_fixtures:explosive, rust:weapon_behavior_world:grenade |
+| G03-WEAPONS-046 | Present | 3. Weapons | Grenade fuse timing. | parity:G03-WEAPONS-046, rust:weapon_projectile_fixtures:styles |
+| G03-WEAPONS-047 | Present | 3. Weapons | Dropped grenade behavior on death. | parity:G03-WEAPONS-047, rust:weapon_behavior_world:grenade |
+| G03-WEAPONS-048 | Present | 3. Weapons | Cluster grenade submunition spawning. | rust:weapon_family_fixtures:explosive, rust:obtainable_weapons |
+| G03-WEAPONS-049 | Present | 3. Weapons | Arrow sticking/interaction. | rust:weapon_projectile_fixtures:styles |
+| G03-WEAPONS-050 | Present | 3. Weapons | Flame propagation and burning. | rust:weapon_family_fixtures:flame |
+| G03-WEAPONS-051 | Present | 3. Weapons | Flamethrower fuel/ammunition behavior. | rust:weapon_family_fixtures:flame, rust:obtainable_weapons |
+| G03-WEAPONS-052 | Present | 3. Weapons | Stationary-gun mounting and dismounting. | rust:obtainable_weapons, rust:weapon_family_fixtures:stationary |
+| G03-WEAPONS-053 | Present | 3. Weapons | Stationary-gun aiming limits. | rust:weapon_family_fixtures:stationary |
+| G03-WEAPONS-054 | Present | 3. Weapons | Projectile-to-projectile or projectile-to-object interactions where applicable. | parity:G03-WEAPONS-054, rust:weapon_projectile_fixtures:styles, rust:weapon_behavior_world:objects |
 | G03-WEAPONS-055 | Present | 3. Weapons | Muzzle origin based on character pose. | rust:weapon_inventory_fixtures |
-| G03-WEAPONS-056 | Missing | 3. Weapons | Muzzle flashes. | parity:G03-WEAPONS-056 |
-| G03-WEAPONS-057 | Missing | 3. Weapons | Shell casings. | parity:G03-WEAPONS-057 |
-| G03-WEAPONS-058 | Missing | 3. Weapons | Weapon-specific sounds. | parity:G03-WEAPONS-058 |
-| G03-WEAPONS-059 | Missing | 3. Weapons | Reload sounds. | parity:G03-WEAPONS-059 |
-| G03-WEAPONS-060 | Missing | 3. Weapons | Empty-magazine sound. | parity:G03-WEAPONS-060 |
-| G03-WEAPONS-061 | Missing | 3. Weapons | Bullet impact effects. | parity:G03-WEAPONS-061 |
-| G03-WEAPONS-062 | Missing | 3. Weapons | Tracers matching weapon configuration. | parity:G03-WEAPONS-062 |
-| G03-WEAPONS-063 | Missing | 3. Weapons | Explosion visual and audio effects. | parity:G03-WEAPONS-063 |
-| G03-WEAPONS-064 | Missing | 3. Weapons | Weapon sprites held by characters. | parity:G03-WEAPONS-064 |
+| G03-WEAPONS-056 | Present | 3. Weapons | Muzzle flashes. | web:render:particles, rust:presentation:impact |
+| G03-WEAPONS-057 | Present | 3. Weapons | Shell casings. | web:render:particles |
+| G03-WEAPONS-058 | Present | 3. Weapons | Weapon-specific sounds. | web:audio:engine |
+| G03-WEAPONS-059 | Present | 3. Weapons | Reload sounds. | web:audio:engine |
+| G03-WEAPONS-060 | Present | 3. Weapons | Empty-magazine sound. | web:audio:engine |
+| G03-WEAPONS-061 | Present | 3. Weapons | Bullet impact effects. | rust:presentation:impact, web:render:effects |
+| G03-WEAPONS-062 | Present | 3. Weapons | Tracers matching weapon configuration. | web:render:effects |
+| G03-WEAPONS-063 | Present | 3. Weapons | Explosion visual and audio effects. | rust:presentation:explosion, web:audio:engine |
+| G03-WEAPONS-064 | Present | 3. Weapons | Weapon sprites held by characters. | web:render:gostek |
 | G03-WEAPONS-065 | Present | 3. Weapons | Weapons lying on the ground. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-066 | Present | 3. Weapons | Weapon pickup indicators. | web:weapons:inventory |
 | G04-WEAPON-MOD-001 | Present | 4. Weapon Mod parity | Damage. | rust:weapon_config_fixtures |
@@ -203,171 +203,171 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G04-WEAPON-MOD-040 | Present | 4. Weapon Mod parity | Add exact explosive damage and falloff. | rust:weapon_ballistics_fixtures:explosion |
 | G04-WEAPON-MOD-041 | Present | 4. Weapon Mod parity | Add terrain occlusion for splash damage if Soldat’s source behavior requires it. | rust:weapon_ballistics_fixtures:explosion |
 | G04-WEAPON-MOD-042 | Present | 4. Weapon Mod parity | Add friendly-fire and team-bink rules. | rust:weapon_ballistics_fixtures:friendly |
-| G05-GAME-MODES-001 | Partial | 5. Game modes | Deathmatch. | parity:G05-GAME-MODES-001 |
-| G05-GAME-MODES-002 | Partial | 5. Game modes | Team Deathmatch, corresponding to Soldat’s Teammatch. | parity:G05-GAME-MODES-002 |
-| G05-GAME-MODES-003 | Missing | 5. Game modes | Pointmatch. | parity:G05-GAME-MODES-003 |
-| G05-GAME-MODES-004 | Missing | 5. Game modes | Rambomatch. | parity:G05-GAME-MODES-004 |
-| G05-GAME-MODES-005 | Missing | 5. Game modes | Capture the Flag. | parity:G05-GAME-MODES-005 |
-| G05-GAME-MODES-006 | Missing | 5. Game modes | Infiltration. | parity:G05-GAME-MODES-006 |
-| G05-GAME-MODES-007 | Missing | 5. Game modes | Hold the Flag. | parity:G05-GAME-MODES-007 |
-| G05-GAME-MODES-008 | Missing | 5. Game modes | Realistic mode. | parity:G05-GAME-MODES-008 |
-| G05-GAME-MODES-009 | Missing | 5. Game modes | Survival mode. | parity:G05-GAME-MODES-009 |
-| G05-GAME-MODES-010 | Missing | 5. Game modes | Advance mode. | parity:G05-GAME-MODES-010 |
-| G05-GAME-MODES-011 | Missing | 5. Game modes | Climb. | parity:G05-GAME-MODES-011 |
-| G05-GAME-MODES-012 | Missing | 5. Game modes | Dodgeball. | parity:G05-GAME-MODES-012 |
-| G05-GAME-MODES-013 | Missing | 5. Game modes | Domination. | parity:G05-GAME-MODES-013 |
-| G05-GAME-MODES-014 | Missing | 5. Game modes | Hide and Seek. | parity:G05-GAME-MODES-014 |
-| G05-GAME-MODES-015 | Missing | 5. Game modes | Knife Only. | parity:G05-GAME-MODES-015 |
-| G05-GAME-MODES-016 | Missing | 5. Game modes | OneShots. | parity:G05-GAME-MODES-016 |
-| G05-GAME-MODES-017 | Missing | 5. Game modes | Pirates vs Ninjas. | parity:G05-GAME-MODES-017 |
-| G05-GAME-MODES-018 | Missing | 5. Game modes | Realistic Soldat/Counter-Strike. | parity:G05-GAME-MODES-018 |
-| G05-GAME-MODES-019 | Missing | 5. Game modes | Trench Wars. | parity:G05-GAME-MODES-019 |
-| G05-GAME-MODES-020 | Missing | 5. Game modes | Tactical Trench Wars. | parity:G05-GAME-MODES-020 |
-| G05-GAME-MODES-021 | Missing | 5. Game modes | Zombie. | parity:G05-GAME-MODES-021 |
-| G05-GAME-MODES-022 | Missing | 5. Game modes | Kill limit. | parity:G05-GAME-MODES-022 |
-| G05-GAME-MODES-023 | Missing | 5. Game modes | Point limit. | parity:G05-GAME-MODES-023 |
-| G05-GAME-MODES-024 | Missing | 5. Game modes | Capture limit. | parity:G05-GAME-MODES-024 |
-| G05-GAME-MODES-025 | Missing | 5. Game modes | Time limit. | parity:G05-GAME-MODES-025 |
-| G05-GAME-MODES-026 | Missing | 5. Game modes | Round start countdown. | parity:G05-GAME-MODES-026 |
-| G05-GAME-MODES-027 | Missing | 5. Game modes | Round end. | parity:G05-GAME-MODES-027 |
-| G05-GAME-MODES-028 | Missing | 5. Game modes | Winner calculation. | parity:G05-GAME-MODES-028 |
-| G05-GAME-MODES-029 | Missing | 5. Game modes | Draw handling. | parity:G05-GAME-MODES-029 |
-| G05-GAME-MODES-030 | Missing | 5. Game modes | Overtime policy where appropriate. | parity:G05-GAME-MODES-030 |
-| G05-GAME-MODES-031 | Missing | 5. Game modes | Map rotation. | parity:G05-GAME-MODES-031 |
-| G05-GAME-MODES-032 | Missing | 5. Game modes | Map-loop option. | parity:G05-GAME-MODES-032 |
-| G05-GAME-MODES-033 | Missing | 5. Game modes | Next-map transition. | parity:G05-GAME-MODES-033 |
-| G05-GAME-MODES-034 | Missing | 5. Game modes | Match restart. | parity:G05-GAME-MODES-034 |
-| G05-GAME-MODES-035 | Missing | 5. Game modes | Configurable respawn time. | rust:damage_fixtures:respawn |
-| G05-GAME-MODES-036 | Missing | 5. Game modes | Survival round elimination. | parity:G05-GAME-MODES-036 |
-| G05-GAME-MODES-037 | Missing | 5. Game modes | Survival dead-player restrictions. | parity:G05-GAME-MODES-037 |
-| G05-GAME-MODES-038 | Missing | 5. Game modes | Advance-mode weapon unlocking. | parity:G05-GAME-MODES-038 |
-| G05-GAME-MODES-039 | Missing | 5. Game modes | Team balancing. | parity:G05-GAME-MODES-039 |
-| G05-GAME-MODES-040 | Missing | 5. Game modes | Team selection. | parity:G05-GAME-MODES-040 |
-| G05-GAME-MODES-041 | Missing | 5. Game modes | Spectator team. | parity:G05-GAME-MODES-041 |
-| G05-GAME-MODES-042 | Missing | 5. Game modes | Mid-match spectator switching. | parity:G05-GAME-MODES-042 |
-| G05-GAME-MODES-043 | Missing | 5. Game modes | Friendly-fire configuration. | parity:G05-GAME-MODES-043 |
-| G05-GAME-MODES-044 | Missing | 5. Game modes | Teamkill handling. | parity:G05-GAME-MODES-044 |
-| G05-GAME-MODES-045 | Missing | 5. Game modes | Suicide scoring. | parity:G05-GAME-MODES-045 |
-| G05-GAME-MODES-046 | Missing | 5. Game modes | Disconnect/reconnect score preservation. | parity:G05-GAME-MODES-046 |
-| G05-GAME-MODES-047 | Missing | 5. Game modes | Automatic round-end scoreboard. | parity:G05-GAME-MODES-047 |
-| G05-GAME-MODES-048 | Missing | 5. Game modes | Automatic final-score screenshot option. | parity:G05-GAME-MODES-048 |
-| G06-POINTMATCH-001 | Missing | 6. Pointmatch | Yellow point flag. | parity:G06-POINTMATCH-001 |
-| G06-POINTMATCH-002 | Missing | 6. Pointmatch | Holding the point flag. | parity:G06-POINTMATCH-002 |
-| G06-POINTMATCH-003 | Missing | 6. Pointmatch | Extra points awarded while holding it. | parity:G06-POINTMATCH-003 |
-| G06-POINTMATCH-004 | Missing | 6. Pointmatch | Flag drop on death. | parity:G06-POINTMATCH-004 |
-| G06-POINTMATCH-005 | Missing | 6. Pointmatch | Point-limit victory. | parity:G06-POINTMATCH-005 |
-| G06-POINTMATCH-006 | Missing | 6. Pointmatch | Pointmatch-specific scoring. | parity:G06-POINTMATCH-006 |
-| G06-POINTMATCH-007 | Missing | 6. Pointmatch | Pointmatch spawns and maps. | parity:G06-POINTMATCH-007 |
-| G06-POINTMATCH-008 | Missing | 6. Pointmatch | Point-flag HUD status. | parity:G06-POINTMATCH-008 |
-| G07-RAMBOMATCH-001 | Missing | 7. Rambomatch | Rambo Bow spawn. | parity:G07-RAMBOMATCH-001 |
-| G07-RAMBOMATCH-002 | Missing | 7. Rambomatch | Bow pickup. | parity:G07-RAMBOMATCH-002 |
-| G07-RAMBOMATCH-003 | Missing | 7. Rambomatch | Only the Rambo player earning kills/points under the mode’s rules. | parity:G07-RAMBOMATCH-003 |
-| G07-RAMBOMATCH-004 | Missing | 7. Rambomatch | Rambo target indication. | parity:G07-RAMBOMATCH-004 |
-| G07-RAMBOMATCH-005 | Missing | 7. Rambomatch | Bow drop and reacquisition. | parity:G07-RAMBOMATCH-005 |
-| G07-RAMBOMATCH-006 | Missing | 7. Rambomatch | Rambo-specific respawn behavior. | parity:G07-RAMBOMATCH-006 |
-| G07-RAMBOMATCH-007 | Missing | 7. Rambomatch | Flamed-arrow support. | parity:G07-RAMBOMATCH-007 |
-| G07-RAMBOMATCH-008 | Missing | 7. Rambomatch | Rambomatch scoring and win limit. | parity:G07-RAMBOMATCH-008 |
-| G07-RAMBOMATCH-009 | Missing | 7. Rambomatch | Rambomatch HUD. | parity:G07-RAMBOMATCH-009 |
-| G08-CAPTURE-THE-001 | Missing | 8. Capture the Flag | Alpha and Bravo teams. | parity:G08-CAPTURE-THE-001 |
-| G08-CAPTURE-THE-002 | Missing | 8. Capture the Flag | Red and blue flags. | parity:G08-CAPTURE-THE-002 |
-| G08-CAPTURE-THE-003 | Missing | 8. Capture the Flag | Flag bases. | parity:G08-CAPTURE-THE-003 |
-| G08-CAPTURE-THE-004 | Missing | 8. Capture the Flag | Enemy-flag pickup. | parity:G08-CAPTURE-THE-004 |
-| G08-CAPTURE-THE-005 | Missing | 8. Capture the Flag | Flag carrying. | parity:G08-CAPTURE-THE-005 |
-| G08-CAPTURE-THE-006 | Missing | 8. Capture the Flag | Flag dropping on death. | parity:G08-CAPTURE-THE-006 |
-| G08-CAPTURE-THE-007 | Missing | 8. Capture the Flag | Manual flag throw. | parity:G08-CAPTURE-THE-007 |
-| G08-CAPTURE-THE-008 | Missing | 8. Capture the Flag | Flag return by touching a dropped friendly flag. | parity:G08-CAPTURE-THE-008 |
-| G08-CAPTURE-THE-009 | Missing | 8. Capture the Flag | Automatic return timeout if applicable. | parity:G08-CAPTURE-THE-009 |
-| G08-CAPTURE-THE-010 | Missing | 8. Capture the Flag | Capture only when the player’s own flag is at base. | parity:G08-CAPTURE-THE-010 |
-| G08-CAPTURE-THE-011 | Missing | 8. Capture the Flag | Capture scoring. | parity:G08-CAPTURE-THE-011 |
-| G08-CAPTURE-THE-012 | Missing | 8. Capture the Flag | Capture limit. | parity:G08-CAPTURE-THE-012 |
-| G08-CAPTURE-THE-013 | Missing | 8. Capture the Flag | Flag-carrier indicator. | parity:G08-CAPTURE-THE-013 |
-| G08-CAPTURE-THE-014 | Missing | 8. Capture the Flag | Missing-flag indicator. | parity:G08-CAPTURE-THE-014 |
-| G08-CAPTURE-THE-015 | Missing | 8. Capture the Flag | Flag status HUD. | parity:G08-CAPTURE-THE-015 |
-| G08-CAPTURE-THE-016 | Missing | 8. Capture the Flag | Team score HUD. | parity:G08-CAPTURE-THE-016 |
-| G08-CAPTURE-THE-017 | Missing | 8. Capture the Flag | Flag physics. | parity:G08-CAPTURE-THE-017 |
-| G08-CAPTURE-THE-018 | Missing | 8. Capture the Flag | Bullets and explosions pushing flags. | parity:G08-CAPTURE-THE-018 |
-| G08-CAPTURE-THE-019 | Missing | 8. Capture the Flag | Flag collision with polygons. | parity:G08-CAPTURE-THE-019 |
-| G08-CAPTURE-THE-020 | Missing | 8. Capture the Flag | CTF spawn points. | parity:G08-CAPTURE-THE-020 |
-| G08-CAPTURE-THE-021 | Missing | 8. Capture the Flag | CTF-compatible map validation. | parity:G08-CAPTURE-THE-021 |
-| G08-CAPTURE-THE-022 | Missing | 8. Capture the Flag | CTF bots and flag objectives. | parity:G08-CAPTURE-THE-022 |
-| G09-INFILTRATION-001 | Missing | 9. Infiltration | Attacking and defending teams. | parity:G09-INFILTRATION-001 |
-| G09-INFILTRATION-002 | Missing | 9. Infiltration | Black/white or objective-specific flags. | parity:G09-INFILTRATION-002 |
-| G09-INFILTRATION-003 | Missing | 9. Infiltration | Objective capture rules. | parity:G09-INFILTRATION-003 |
-| G09-INFILTRATION-004 | Missing | 9. Infiltration | Passive defender scoring. | parity:G09-INFILTRATION-004 |
-| G09-INFILTRATION-005 | Missing | 9. Infiltration | Attacker capture scoring. | parity:G09-INFILTRATION-005 |
-| G09-INFILTRATION-006 | Missing | 9. Infiltration | Team-role asymmetry. | parity:G09-INFILTRATION-006 |
-| G09-INFILTRATION-007 | Missing | 9. Infiltration | Infiltration-specific spawn points. | parity:G09-INFILTRATION-007 |
-| G09-INFILTRATION-008 | Missing | 9. Infiltration | Infiltration timer and score rules. | parity:G09-INFILTRATION-008 |
-| G09-INFILTRATION-009 | Missing | 9. Infiltration | Team score HUD. | parity:G09-INFILTRATION-009 |
-| G09-INFILTRATION-010 | Missing | 9. Infiltration | Objective state indicators. | parity:G09-INFILTRATION-010 |
-| G09-INFILTRATION-011 | Missing | 9. Infiltration | Infiltration bot behavior. | parity:G09-INFILTRATION-011 |
-| G10-HOLD-THE-001 | Missing | 10. Hold the Flag | Neutral yellow flag. | parity:G10-HOLD-THE-001 |
-| G10-HOLD-THE-002 | Missing | 10. Hold the Flag | Flag pickup and carrying. | parity:G10-HOLD-THE-002 |
-| G10-HOLD-THE-003 | Missing | 10. Hold the Flag | Continuous team scoring while held. | parity:G10-HOLD-THE-003 |
-| G10-HOLD-THE-004 | Missing | 10. Hold the Flag | Flag drops. | parity:G10-HOLD-THE-004 |
-| G10-HOLD-THE-005 | Missing | 10. Hold the Flag | Flag return/reset rules. | parity:G10-HOLD-THE-005 |
-| G10-HOLD-THE-006 | Missing | 10. Hold the Flag | Carrier indication. | parity:G10-HOLD-THE-006 |
-| G10-HOLD-THE-007 | Missing | 10. Hold the Flag | HTF-specific spawn points. | parity:G10-HOLD-THE-007 |
-| G10-HOLD-THE-008 | Missing | 10. Hold the Flag | HTF score display. | parity:G10-HOLD-THE-008 |
-| G10-HOLD-THE-009 | Missing | 10. Hold the Flag | HTF bots and objective behavior. | parity:G10-HOLD-THE-009 |
-| G11-REALISTIC-MODE-001 | Missing | 11. Realistic mode | Separate `weapons_realistic.ini` statistics. | parity:G11-REALISTIC-MODE-001 |
-| G11-REALISTIC-MODE-002 | Missing | 11. Realistic mode | Reduced/changed weapon damage behavior. | parity:G11-REALISTIC-MODE-002 |
-| G11-REALISTIC-MODE-003 | Missing | 11. Realistic mode | Recoil behavior appropriate to Realistic. | parity:G11-REALISTIC-MODE-003 |
-| G11-REALISTIC-MODE-004 | Missing | 11. Realistic mode | Visibility/line-of-sight restrictions. | parity:G11-REALISTIC-MODE-004 |
-| G11-REALISTIC-MODE-005 | Missing | 11. Realistic mode | Enemies visible only when the observed player can see them. | parity:G11-REALISTIC-MODE-005 |
-| G11-REALISTIC-MODE-006 | Missing | 11. Realistic mode | Dead-player and spectator visibility restrictions. | parity:G11-REALISTIC-MODE-006 |
-| G11-REALISTIC-MODE-007 | Missing | 11. Realistic mode | Enemy team-chat visibility restrictions. | parity:G11-REALISTIC-MODE-007 |
-| G11-REALISTIC-MODE-008 | Missing | 11. Realistic mode | Fall damage if required by the reference implementation. | parity:G11-REALISTIC-MODE-008 |
-| G11-REALISTIC-MODE-009 | Missing | 11. Realistic mode | Realistic movement and survival tuning. | parity:G11-REALISTIC-MODE-009 |
-| G11-REALISTIC-MODE-010 | Missing | 11. Realistic mode | Realistic-specific HUD behavior. | parity:G11-REALISTIC-MODE-010 |
-| G11-REALISTIC-MODE-011 | Missing | 11. Realistic mode | Server/room Realistic flag. | parity:G11-REALISTIC-MODE-011 |
-| G12-SURVIVAL-MODE-001 | Missing | 12. Survival mode | No immediate respawn. | parity:G12-SURVIVAL-MODE-001 |
-| G12-SURVIVAL-MODE-002 | Missing | 12. Survival mode | Round-based respawning. | parity:G12-SURVIVAL-MODE-002 |
-| G12-SURVIVAL-MODE-003 | Missing | 12. Survival mode | Round begins when enough players are ready. | parity:G12-SURVIVAL-MODE-003 |
-| G12-SURVIVAL-MODE-004 | Missing | 12. Survival mode | Round ends when one player/team remains. | parity:G12-SURVIVAL-MODE-004 |
-| G12-SURVIVAL-MODE-005 | Missing | 12. Survival mode | Dead players spectate. | parity:G12-SURVIVAL-MODE-005 |
-| G12-SURVIVAL-MODE-006 | Missing | 12. Survival mode | Survival scoreboard. | parity:G12-SURVIVAL-MODE-006 |
-| G12-SURVIVAL-MODE-007 | Missing | 12. Survival mode | End-of-round state. | parity:G12-SURVIVAL-MODE-007 |
-| G12-SURVIVAL-MODE-008 | Missing | 12. Survival mode | Flag restrictions after a Survival round ends. | parity:G12-SURVIVAL-MODE-008 |
-| G12-SURVIVAL-MODE-009 | Missing | 12. Survival mode | Survival chat/spectator restrictions. | parity:G12-SURVIVAL-MODE-009 |
-| G12-SURVIVAL-MODE-010 | Missing | 12. Survival mode | Configurable survival respawn/round behavior. | parity:G12-SURVIVAL-MODE-010 |
-| G13-ADVANCE-MODE-001 | Missing | 13. Advance mode | Initial limited weapon selection. | parity:G13-ADVANCE-MODE-001 |
-| G13-ADVANCE-MODE-002 | Missing | 13. Advance mode | Unlock weapons through kills. | parity:G13-ADVANCE-MODE-002 |
-| G13-ADVANCE-MODE-003 | Missing | 13. Advance mode | Unlock progression. | parity:G13-ADVANCE-MODE-003 |
-| G13-ADVANCE-MODE-004 | Missing | 13. Advance mode | Per-player unlock state. | parity:G13-ADVANCE-MODE-004 |
-| G13-ADVANCE-MODE-005 | Missing | 13. Advance mode | Advance weapon menu. | parity:G13-ADVANCE-MODE-005 |
-| G13-ADVANCE-MODE-006 | Missing | 13. Advance mode | Reset progression between matches/maps as appropriate. | parity:G13-ADVANCE-MODE-006 |
-| G13-ADVANCE-MODE-007 | Missing | 13. Advance mode | Advance configuration. | parity:G13-ADVANCE-MODE-007 |
-| G14-BONUS-KITS-001 | Missing | 14. Bonus kits | Medic Kit: restore health to maximum. | parity:G14-BONUS-KITS-001 |
-| G14-BONUS-KITS-002 | Missing | 14. Bonus kits | Grenades Kit: restore grenades to configured maximum. | parity:G14-BONUS-KITS-002 |
-| G14-BONUS-KITS-003 | Missing | 14. Bonus kits | Cluster Grenades Kit: grant three cluster grenades. | parity:G14-BONUS-KITS-003 |
-| G14-BONUS-KITS-004 | Missing | 14. Bonus kits | Bulletproof Vest Kit: add approximately another full health bar as armor. | parity:G14-BONUS-KITS-004 |
-| G14-BONUS-KITS-005 | Missing | 14. Bonus kits | Flame God Kit: flamethrower plus temporary invulnerability. | parity:G14-BONUS-KITS-005 |
-| G14-BONUS-KITS-006 | Missing | 14. Bonus kits | Berserker Kit: four-times weapon damage temporarily. | parity:G14-BONUS-KITS-006 |
-| G14-BONUS-KITS-007 | Missing | 14. Bonus kits | Predator Kit: temporary invisibility. | parity:G14-BONUS-KITS-007 |
-| G14-BONUS-KITS-008 | Missing | 14. Bonus kits | Bonus spawn points. | parity:G14-BONUS-KITS-008 |
-| G14-BONUS-KITS-009 | Missing | 14. Bonus kits | Configurable kit frequency. | parity:G14-BONUS-KITS-009 |
-| G14-BONUS-KITS-010 | Missing | 14. Bonus kits | Kit respawn timers. | parity:G14-BONUS-KITS-010 |
-| G14-BONUS-KITS-011 | Missing | 14. Bonus kits | Pickup collision. | parity:G14-BONUS-KITS-011 |
-| G14-BONUS-KITS-012 | Missing | 14. Bonus kits | Pickup sounds and effects. | parity:G14-BONUS-KITS-012 |
-| G14-BONUS-KITS-013 | Missing | 14. Bonus kits | Active-bonus HUD. | parity:G14-BONUS-KITS-013 |
-| G14-BONUS-KITS-014 | Missing | 14. Bonus kits | Bonus countdown. | parity:G14-BONUS-KITS-014 |
-| G14-BONUS-KITS-015 | Missing | 14. Bonus kits | Bonus overlay/effect. | parity:G14-BONUS-KITS-015 |
-| G14-BONUS-KITS-016 | Missing | 14. Bonus kits | Armor HUD. | parity:G14-BONUS-KITS-016 |
-| G14-BONUS-KITS-017 | Missing | 14. Bonus kits | Predator visibility affected by blood. | parity:G14-BONUS-KITS-017 |
-| G14-BONUS-KITS-018 | Missing | 14. Bonus kits | Predator still producing audible sounds. | parity:G14-BONUS-KITS-018 |
-| G14-BONUS-KITS-019 | Missing | 14. Bonus kits | Bonus expiration. | parity:G14-BONUS-KITS-019 |
-| G14-BONUS-KITS-020 | Missing | 14. Bonus kits | Bonus replacement/stacking rules. | parity:G14-BONUS-KITS-020 |
-| G14-BONUS-KITS-021 | Missing | 14. Bonus kits | Server enable/disable settings. | parity:G14-BONUS-KITS-021 |
-| G14-BONUS-KITS-022 | Missing | 14. Bonus kits | Kits affected by projectile push. | parity:G14-BONUS-KITS-022 |
+| G05-GAME-MODES-001 | Present | 5. Game modes | Deathmatch. | parity:G05-GAME-MODES-001, rust:match_world:lifecycle, rust:match_lifecycle:limits, web:smoke:scoreboard |
+| G05-GAME-MODES-002 | Present | 5. Game modes | Team Deathmatch, corresponding to Soldat’s Teammatch. | parity:G05-GAME-MODES-002, rust:match_world:ledger, rust:match_world:teams, rust:match_lifecycle:teams |
+| G05-GAME-MODES-003 | Present | 5. Game modes | Pointmatch. | parity:G05-GAME-MODES-003, rust:modes:pointmatch, rust:mode_world:pointmatch |
+| G05-GAME-MODES-004 | Present | 5. Game modes | Rambomatch. | rust:modes:rambomatch, rust:obtainable_weapons |
+| G05-GAME-MODES-005 | Present | 5. Game modes | Capture the Flag. | parity:G05-GAME-MODES-005, rust:modes:ctf, rust:mode_world:flags |
+| G05-GAME-MODES-006 | Present | 5. Game modes | Infiltration. | parity:G05-GAME-MODES-006, rust:modes:infiltration |
+| G05-GAME-MODES-007 | Present | 5. Game modes | Hold the Flag. | parity:G05-GAME-MODES-007, rust:modes:htf, rust:mode_world:flags |
+| G05-GAME-MODES-008 | Present | 5. Game modes | Realistic mode. | parity:G05-GAME-MODES-008, rust:modifiers:realistic, rust:modifier_world:realistic |
+| G05-GAME-MODES-009 | Present | 5. Game modes | Survival mode. | parity:G05-GAME-MODES-009, rust:modifiers:survival, rust:modifier_world:survival |
+| G05-GAME-MODES-010 | Present | 5. Game modes | Advance mode. | parity:G05-GAME-MODES-010, rust:modifiers:advance, rust:modifier_world:advance |
+| G05-GAME-MODES-011 | Present | 5. Game modes | Climb. | parity:G05-GAME-MODES-011, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-012 | Present | 5. Game modes | Dodgeball. | parity:G05-GAME-MODES-012, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-013 | Present | 5. Game modes | Domination. | parity:G05-GAME-MODES-013, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-014 | Present | 5. Game modes | Hide and Seek. | parity:G05-GAME-MODES-014, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-015 | Present | 5. Game modes | Knife Only. | parity:G05-GAME-MODES-015, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-016 | Present | 5. Game modes | OneShots. | parity:G05-GAME-MODES-016, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-017 | Present | 5. Game modes | Pirates vs Ninjas. | parity:G05-GAME-MODES-017, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-018 | Present | 5. Game modes | Realistic Soldat/Counter-Strike. | parity:G05-GAME-MODES-018, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-019 | Present | 5. Game modes | Trench Wars. | parity:G05-GAME-MODES-019, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-020 | Present | 5. Game modes | Tactical Trench Wars. | parity:G05-GAME-MODES-020, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-021 | Present | 5. Game modes | Zombie. | parity:G05-GAME-MODES-021, rust:modifiers:scripted, server:community-modes |
+| G05-GAME-MODES-022 | Present | 5. Game modes | Kill limit. | parity:G05-GAME-MODES-022, rust:match_lifecycle:limits, rust:match_world:lifecycle |
+| G05-GAME-MODES-023 | Present | 5. Game modes | Point limit. | parity:G05-GAME-MODES-023, rust:match_lifecycle:limits |
+| G05-GAME-MODES-024 | Present | 5. Game modes | Capture limit. | parity:G05-GAME-MODES-024, rust:match_lifecycle:limits |
+| G05-GAME-MODES-025 | Present | 5. Game modes | Time limit. | parity:G05-GAME-MODES-025, rust:match_lifecycle:limits, rust:match_world:lifecycle, web:match:clock |
+| G05-GAME-MODES-026 | Present | 5. Game modes | Round start countdown. | parity:G05-GAME-MODES-026, rust:match_lifecycle:phases, rust:match_world:lifecycle, web:match:banner |
+| G05-GAME-MODES-027 | Present | 5. Game modes | Round end. | parity:G05-GAME-MODES-027, rust:match_lifecycle:phases, rust:match_world:lifecycle |
+| G05-GAME-MODES-028 | Present | 5. Game modes | Winner calculation. | parity:G05-GAME-MODES-028, rust:match_lifecycle:outcome, web:match:banner |
+| G05-GAME-MODES-029 | Present | 5. Game modes | Draw handling. | parity:G05-GAME-MODES-029, rust:match_lifecycle:outcome, web:match:banner |
+| G05-GAME-MODES-030 | Present | 5. Game modes | Overtime policy where appropriate. | parity:G05-GAME-MODES-030, rust:match_lifecycle:phases, rust:match_lifecycle:outcome |
+| G05-GAME-MODES-031 | Present | 5. Game modes | Map rotation. | parity:G05-GAME-MODES-031, rust:match_lifecycle:rotation, server:map-rotation |
+| G05-GAME-MODES-032 | Present | 5. Game modes | Map-loop option. | parity:G05-GAME-MODES-032, rust:match_lifecycle:rotation, server:map-rotation |
+| G05-GAME-MODES-033 | Present | 5. Game modes | Next-map transition. | parity:G05-GAME-MODES-033, rust:match_lifecycle:phases, server:map-rotation, rust:match_world:lifecycle |
+| G05-GAME-MODES-034 | Present | 5. Game modes | Match restart. | parity:G05-GAME-MODES-034, rust:match_world:restart, rust:match_lifecycle:rotation |
+| G05-GAME-MODES-035 | Present | 5. Game modes | Configurable respawn time. | rust:damage_fixtures:respawn, rust:match_lifecycle:teams |
+| G05-GAME-MODES-036 | Present | 5. Game modes | Survival round elimination. | parity:G05-GAME-MODES-036, rust:modifiers:survival, rust:modifier_world:survival |
+| G05-GAME-MODES-037 | Present | 5. Game modes | Survival dead-player restrictions. | parity:G05-GAME-MODES-037, rust:modifiers:survival |
+| G05-GAME-MODES-038 | Present | 5. Game modes | Advance-mode weapon unlocking. | parity:G05-GAME-MODES-038, rust:modifiers:advance, rust:modifier_world:advance |
+| G05-GAME-MODES-039 | Present | 5. Game modes | Team balancing. | parity:G05-GAME-MODES-039, rust:match_lifecycle:teams, rust:match_world:teams |
+| G05-GAME-MODES-040 | Present | 5. Game modes | Team selection. | parity:G05-GAME-MODES-040, rust:match_lifecycle:teams, rust:match_world:teams |
+| G05-GAME-MODES-041 | Present | 5. Game modes | Spectator team. | parity:G05-GAME-MODES-041, rust:match_lifecycle:teams, rust:match_world:teams |
+| G05-GAME-MODES-042 | Present | 5. Game modes | Mid-match spectator switching. | parity:G05-GAME-MODES-042, rust:match_world:teams |
+| G05-GAME-MODES-043 | Present | 5. Game modes | Friendly-fire configuration. | parity:G05-GAME-MODES-043, rust:match_lifecycle:scoring, rust:weapon_ballistics_fixtures |
+| G05-GAME-MODES-044 | Present | 5. Game modes | Teamkill handling. | parity:G05-GAME-MODES-044, rust:match_lifecycle:scoring, rust:match_world:ledger |
+| G05-GAME-MODES-045 | Present | 5. Game modes | Suicide scoring. | parity:G05-GAME-MODES-045, rust:match_lifecycle:scoring, rust:match_world:ledger |
+| G05-GAME-MODES-046 | Present | 5. Game modes | Disconnect/reconnect score preservation. | parity:G05-GAME-MODES-046, rust:match_lifecycle:scoring, rust:match_world:ledger |
+| G05-GAME-MODES-047 | Present | 5. Game modes | Automatic round-end scoreboard. | parity:G05-GAME-MODES-047, rust:match_lifecycle:phases, rust:match_world:lifecycle |
+| G05-GAME-MODES-048 | Present | 5. Game modes | Automatic final-score screenshot option. | parity:G05-GAME-MODES-048, rust:match_lifecycle:phases |
+| G06-POINTMATCH-001 | Present | 6. Pointmatch | Yellow point flag. | parity:G06-POINTMATCH-001, rust:modes:pointmatch |
+| G06-POINTMATCH-002 | Present | 6. Pointmatch | Holding the point flag. | parity:G06-POINTMATCH-002, rust:modes:pointmatch |
+| G06-POINTMATCH-003 | Present | 6. Pointmatch | Extra points awarded while holding it. | parity:G06-POINTMATCH-003, rust:modes:pointmatch, rust:mode_world:pointmatch |
+| G06-POINTMATCH-004 | Present | 6. Pointmatch | Flag drop on death. | parity:G06-POINTMATCH-004, rust:modes:pointmatch, rust:objective:flag-states |
+| G06-POINTMATCH-005 | Present | 6. Pointmatch | Point-limit victory. | parity:G06-POINTMATCH-005, rust:modes:pointmatch, rust:match_lifecycle:limits |
+| G06-POINTMATCH-006 | Present | 6. Pointmatch | Pointmatch-specific scoring. | parity:G06-POINTMATCH-006, rust:mode_world:pointmatch |
+| G06-POINTMATCH-007 | Present | 6. Pointmatch | Pointmatch spawns and maps. | rust:obtainable_weapons, rust:modes:pointmatch |
+| G06-POINTMATCH-008 | Present | 6. Pointmatch | Point-flag HUD status. | parity:G06-POINTMATCH-008, web:objectives:status, web:objectives:countdown |
+| G07-RAMBOMATCH-001 | Present | 7. Rambomatch | Rambo Bow spawn. | rust:obtainable_weapons, rust:modes:rambomatch |
+| G07-RAMBOMATCH-002 | Present | 7. Rambomatch | Bow pickup. | rust:obtainable_weapons |
+| G07-RAMBOMATCH-003 | Present | 7. Rambomatch | Only the Rambo player earning kills/points under the mode’s rules. | rust:obtainable_weapons |
+| G07-RAMBOMATCH-004 | Present | 7. Rambomatch | Rambo target indication. | web:hud:status |
+| G07-RAMBOMATCH-005 | Present | 7. Rambomatch | Bow drop and reacquisition. | rust:obtainable_weapons |
+| G07-RAMBOMATCH-006 | Present | 7. Rambomatch | Rambo-specific respawn behavior. | rust:obtainable_weapons |
+| G07-RAMBOMATCH-007 | Present | 7. Rambomatch | Flamed-arrow support. | rust:obtainable_weapons |
+| G07-RAMBOMATCH-008 | Present | 7. Rambomatch | Rambomatch scoring and win limit. | rust:obtainable_weapons, rust:modes:rambomatch |
+| G07-RAMBOMATCH-009 | Present | 7. Rambomatch | Rambomatch HUD. | web:hud:status |
+| G08-CAPTURE-THE-001 | Present | 8. Capture the Flag | Alpha and Bravo teams. | parity:G08-CAPTURE-THE-001, rust:modes:ctf, rust:match_world:teams |
+| G08-CAPTURE-THE-002 | Present | 8. Capture the Flag | Red and blue flags. | parity:G08-CAPTURE-THE-002, rust:modes:ctf, rust:mode_world:flags |
+| G08-CAPTURE-THE-003 | Present | 8. Capture the Flag | Flag bases. | parity:G08-CAPTURE-THE-003, rust:modes:ctf, rust:mode_world:flags |
+| G08-CAPTURE-THE-004 | Present | 8. Capture the Flag | Enemy-flag pickup. | parity:G08-CAPTURE-THE-004, rust:modes:ctf, rust:mode_world:flags |
+| G08-CAPTURE-THE-005 | Present | 8. Capture the Flag | Flag carrying. | parity:G08-CAPTURE-THE-005, rust:modes:ctf, rust:mode_world:flags |
+| G08-CAPTURE-THE-006 | Present | 8. Capture the Flag | Flag dropping on death. | parity:G08-CAPTURE-THE-006, rust:modes:ctf, rust:mode_world:flags, rust:objective:flag-states |
+| G08-CAPTURE-THE-007 | Present | 8. Capture the Flag | Manual flag throw. | parity:G08-CAPTURE-THE-007, rust:modes:ctf, rust:mode_world:flags |
+| G08-CAPTURE-THE-008 | Present | 8. Capture the Flag | Flag return by touching a dropped friendly flag. | parity:G08-CAPTURE-THE-008, rust:modes:ctf |
+| G08-CAPTURE-THE-009 | Present | 8. Capture the Flag | Automatic return timeout if applicable. | parity:G08-CAPTURE-THE-009, rust:objective:flag-states |
+| G08-CAPTURE-THE-010 | Present | 8. Capture the Flag | Capture only when the player’s own flag is at base. | parity:G08-CAPTURE-THE-010, rust:modes:ctf, rust:mode_world:flags |
+| G08-CAPTURE-THE-011 | Present | 8. Capture the Flag | Capture scoring. | parity:G08-CAPTURE-THE-011, rust:modes:ctf, rust:mode_world:flags |
+| G08-CAPTURE-THE-012 | Present | 8. Capture the Flag | Capture limit. | parity:G08-CAPTURE-THE-012, rust:match_lifecycle:limits |
+| G08-CAPTURE-THE-013 | Present | 8. Capture the Flag | Flag-carrier indicator. | parity:G08-CAPTURE-THE-013, web:objectives:status, web:objectives:countdown |
+| G08-CAPTURE-THE-014 | Present | 8. Capture the Flag | Missing-flag indicator. | parity:G08-CAPTURE-THE-014, rust:modes:ctf, web:objectives:status, web:objectives:countdown |
+| G08-CAPTURE-THE-015 | Present | 8. Capture the Flag | Flag status HUD. | parity:G08-CAPTURE-THE-015, web:objectives:status, web:objectives:countdown |
+| G08-CAPTURE-THE-016 | Present | 8. Capture the Flag | Team score HUD. | parity:G08-CAPTURE-THE-016, web:match:banner, rust:match_world:ledger |
+| G08-CAPTURE-THE-017 | Present | 8. Capture the Flag | Flag physics. | parity:G08-CAPTURE-THE-017, rust:objective:flag-physics, rust:mode_world:physics |
+| G08-CAPTURE-THE-018 | Present | 8. Capture the Flag | Bullets and explosions pushing flags. | parity:G08-CAPTURE-THE-018, rust:mode_world:physics |
+| G08-CAPTURE-THE-019 | Present | 8. Capture the Flag | Flag collision with polygons. | parity:G08-CAPTURE-THE-019, rust:objective:flag-physics |
+| G08-CAPTURE-THE-020 | Present | 8. Capture the Flag | CTF spawn points. | rust:obtainable_weapons, rust:damage_fixtures:spawn-selection |
+| G08-CAPTURE-THE-021 | Present | 8. Capture the Flag | CTF-compatible map validation. | parity:G08-CAPTURE-THE-021, rust:modes:ctf |
+| G08-CAPTURE-THE-022 | Present | 8. Capture the Flag | CTF bots and flag objectives. | parity:G08-CAPTURE-THE-022, rust:bots:objectives, rust:bot_world:play |
+| G09-INFILTRATION-001 | Present | 9. Infiltration | Attacking and defending teams. | parity:G09-INFILTRATION-001, rust:modes:infiltration |
+| G09-INFILTRATION-002 | Present | 9. Infiltration | Black/white or objective-specific flags. | parity:G09-INFILTRATION-002, rust:modes:infiltration |
+| G09-INFILTRATION-003 | Present | 9. Infiltration | Objective capture rules. | parity:G09-INFILTRATION-003, rust:modes:infiltration |
+| G09-INFILTRATION-004 | Present | 9. Infiltration | Passive defender scoring. | parity:G09-INFILTRATION-004, rust:modes:infiltration |
+| G09-INFILTRATION-005 | Present | 9. Infiltration | Attacker capture scoring. | parity:G09-INFILTRATION-005, rust:modes:infiltration |
+| G09-INFILTRATION-006 | Present | 9. Infiltration | Team-role asymmetry. | parity:G09-INFILTRATION-006, rust:modes:infiltration |
+| G09-INFILTRATION-007 | Present | 9. Infiltration | Infiltration-specific spawn points. | rust:obtainable_weapons, rust:damage_fixtures:spawn-selection |
+| G09-INFILTRATION-008 | Present | 9. Infiltration | Infiltration timer and score rules. | parity:G09-INFILTRATION-008, rust:modes:infiltration |
+| G09-INFILTRATION-009 | Present | 9. Infiltration | Team score HUD. | parity:G09-INFILTRATION-009, web:match:banner, rust:match_world:ledger |
+| G09-INFILTRATION-010 | Present | 9. Infiltration | Objective state indicators. | parity:G09-INFILTRATION-010, web:objectives:status, web:objectives:countdown |
+| G09-INFILTRATION-011 | Present | 9. Infiltration | Infiltration bot behavior. | parity:G09-INFILTRATION-011, rust:bots:objectives |
+| G10-HOLD-THE-001 | Present | 10. Hold the Flag | Neutral yellow flag. | parity:G10-HOLD-THE-001, rust:modes:htf |
+| G10-HOLD-THE-002 | Present | 10. Hold the Flag | Flag pickup and carrying. | parity:G10-HOLD-THE-002, rust:modes:htf, rust:mode_world:flags |
+| G10-HOLD-THE-003 | Present | 10. Hold the Flag | Continuous team scoring while held. | parity:G10-HOLD-THE-003, rust:modes:htf, rust:mode_world:flags |
+| G10-HOLD-THE-004 | Present | 10. Hold the Flag | Flag drops. | parity:G10-HOLD-THE-004, rust:modes:htf, rust:objective:flag-states |
+| G10-HOLD-THE-005 | Present | 10. Hold the Flag | Flag return/reset rules. | parity:G10-HOLD-THE-005, rust:modes:htf, rust:objective:flag-states |
+| G10-HOLD-THE-006 | Present | 10. Hold the Flag | Carrier indication. | parity:G10-HOLD-THE-006, web:objectives:status, web:objectives:countdown |
+| G10-HOLD-THE-007 | Present | 10. Hold the Flag | HTF-specific spawn points. | rust:obtainable_weapons, rust:damage_fixtures:spawn-selection |
+| G10-HOLD-THE-008 | Present | 10. Hold the Flag | HTF score display. | parity:G10-HOLD-THE-008, web:match:banner, rust:match_world:ledger |
+| G10-HOLD-THE-009 | Present | 10. Hold the Flag | HTF bots and objective behavior. | parity:G10-HOLD-THE-009, rust:bots:objectives |
+| G11-REALISTIC-MODE-001 | Present | 11. Realistic mode | Separate `weapons_realistic.ini` statistics. | parity:G11-REALISTIC-MODE-001, rust:modifiers:realistic, rust:modifier_world:realistic |
+| G11-REALISTIC-MODE-002 | Present | 11. Realistic mode | Reduced/changed weapon damage behavior. | parity:G11-REALISTIC-MODE-002, rust:modifiers:realistic, rust:modifier_world:realistic, rust:weapon_config_fixtures |
+| G11-REALISTIC-MODE-003 | Present | 11. Realistic mode | Recoil behavior appropriate to Realistic. | parity:G11-REALISTIC-MODE-003, rust:modifiers:realistic, rust:modifier_world:realistic |
+| G11-REALISTIC-MODE-004 | Present | 11. Realistic mode | Visibility/line-of-sight restrictions. | parity:G11-REALISTIC-MODE-004, rust:modifiers:realistic, server:realistic-visibility |
+| G11-REALISTIC-MODE-005 | Present | 11. Realistic mode | Enemies visible only when the observed player can see them. | parity:G11-REALISTIC-MODE-005, rust:modifiers:realistic, server:realistic-visibility |
+| G11-REALISTIC-MODE-006 | Present | 11. Realistic mode | Dead-player and spectator visibility restrictions. | parity:G11-REALISTIC-MODE-006, rust:modifiers:realistic, server:realistic-visibility |
+| G11-REALISTIC-MODE-007 | Present | 11. Realistic mode | Enemy team-chat visibility restrictions. | parity:G11-REALISTIC-MODE-007, rust:modifiers:realistic |
+| G11-REALISTIC-MODE-008 | Present | 11. Realistic mode | Fall damage if required by the reference implementation. | parity:G11-REALISTIC-MODE-008, rust:modifiers:realistic |
+| G11-REALISTIC-MODE-009 | Present | 11. Realistic mode | Realistic movement and survival tuning. | rust:realistic_movement, rust:modifiers:realistic |
+| G11-REALISTIC-MODE-010 | Present | 11. Realistic mode | Realistic-specific HUD behavior. | parity:G11-REALISTIC-MODE-010, web:modifiers:badges |
+| G11-REALISTIC-MODE-011 | Present | 11. Realistic mode | Server/room Realistic flag. | parity:G11-REALISTIC-MODE-011, server:modifier-rooms, web:modifiers:badges |
+| G12-SURVIVAL-MODE-001 | Present | 12. Survival mode | No immediate respawn. | parity:G12-SURVIVAL-MODE-001, rust:modifiers:survival, rust:modifier_world:survival |
+| G12-SURVIVAL-MODE-002 | Present | 12. Survival mode | Round-based respawning. | parity:G12-SURVIVAL-MODE-002, rust:modifiers:survival, rust:modifier_world:survival |
+| G12-SURVIVAL-MODE-003 | Present | 12. Survival mode | Round begins when enough players are ready. | parity:G12-SURVIVAL-MODE-003, rust:modifiers:survival |
+| G12-SURVIVAL-MODE-004 | Present | 12. Survival mode | Round ends when one player/team remains. | parity:G12-SURVIVAL-MODE-004, rust:modifiers:survival, rust:modifier_world:survival |
+| G12-SURVIVAL-MODE-005 | Present | 12. Survival mode | Dead players spectate. | parity:G12-SURVIVAL-MODE-005, rust:modifiers:survival, web:modifiers:survival |
+| G12-SURVIVAL-MODE-006 | Present | 12. Survival mode | Survival scoreboard. | parity:G12-SURVIVAL-MODE-006, rust:statistics:scoreboard, web:stats:scoreboard |
+| G12-SURVIVAL-MODE-007 | Present | 12. Survival mode | End-of-round state. | parity:G12-SURVIVAL-MODE-007, rust:modifiers:survival, rust:modifier_world:survival |
+| G12-SURVIVAL-MODE-008 | Present | 12. Survival mode | Flag restrictions after a Survival round ends. | parity:G12-SURVIVAL-MODE-008, rust:modifiers:survival |
+| G12-SURVIVAL-MODE-009 | Present | 12. Survival mode | Survival chat/spectator restrictions. | parity:G12-SURVIVAL-MODE-009, rust:modifiers:survival |
+| G12-SURVIVAL-MODE-010 | Present | 12. Survival mode | Configurable survival respawn/round behavior. | parity:G12-SURVIVAL-MODE-010, rust:modifiers:survival, server:modifier-rooms |
+| G13-ADVANCE-MODE-001 | Present | 13. Advance mode | Initial limited weapon selection. | parity:G13-ADVANCE-MODE-001, rust:modifiers:advance, rust:modifier_world:advance |
+| G13-ADVANCE-MODE-002 | Present | 13. Advance mode | Unlock weapons through kills. | parity:G13-ADVANCE-MODE-002, rust:modifiers:advance, rust:modifier_world:advance |
+| G13-ADVANCE-MODE-003 | Present | 13. Advance mode | Unlock progression. | parity:G13-ADVANCE-MODE-003, rust:modifiers:advance, rust:modifier_world:advance |
+| G13-ADVANCE-MODE-004 | Present | 13. Advance mode | Per-player unlock state. | parity:G13-ADVANCE-MODE-004, rust:modifiers:advance, rust:modifier_world:advance |
+| G13-ADVANCE-MODE-005 | Present | 13. Advance mode | Advance weapon menu. | parity:G13-ADVANCE-MODE-005, web:modifiers:advance |
+| G13-ADVANCE-MODE-006 | Present | 13. Advance mode | Reset progression between matches/maps as appropriate. | parity:G13-ADVANCE-MODE-006, rust:modifiers:advance |
+| G13-ADVANCE-MODE-007 | Present | 13. Advance mode | Advance configuration. | parity:G13-ADVANCE-MODE-007, rust:modifiers:advance, server:modifier-rooms |
+| G14-BONUS-KITS-001 | Present | 14. Bonus kits | Medic Kit: restore health to maximum. | parity:G14-BONUS-KITS-001, rust:bonus:effects, rust:bonus_world:pickup |
+| G14-BONUS-KITS-002 | Present | 14. Bonus kits | Grenades Kit: restore grenades to configured maximum. | parity:G14-BONUS-KITS-002, rust:bonus:effects, rust:bonus_world:pickup |
+| G14-BONUS-KITS-003 | Present | 14. Bonus kits | Cluster Grenades Kit: grant three cluster grenades. | parity:G14-BONUS-KITS-003, rust:bonus:effects, rust:bonus_world:pickup |
+| G14-BONUS-KITS-004 | Present | 14. Bonus kits | Bulletproof Vest Kit: add approximately another full health bar as armor. | parity:G14-BONUS-KITS-004, rust:bonus:effects, rust:bonus_world:pickup, rust:bonus_world:effects |
+| G14-BONUS-KITS-005 | Present | 14. Bonus kits | Flame God Kit: flamethrower plus temporary invulnerability. | parity:G14-BONUS-KITS-005, rust:bonus:effects, rust:bonus_world:effects |
+| G14-BONUS-KITS-006 | Present | 14. Bonus kits | Berserker Kit: four-times weapon damage temporarily. | parity:G14-BONUS-KITS-006, rust:bonus:effects, rust:bonus_world:effects |
+| G14-BONUS-KITS-007 | Present | 14. Bonus kits | Predator Kit: temporary invisibility. | parity:G14-BONUS-KITS-007, rust:bonus:effects, rust:bonus_world:effects |
+| G14-BONUS-KITS-008 | Present | 14. Bonus kits | Bonus spawn points. | parity:G14-BONUS-KITS-008, rust:bonus:pickups, rust:bonus_world:pickup |
+| G14-BONUS-KITS-009 | Present | 14. Bonus kits | Configurable kit frequency. | parity:G14-BONUS-KITS-009, rust:bonus:pickups, rust:bonus:settings |
+| G14-BONUS-KITS-010 | Present | 14. Bonus kits | Kit respawn timers. | parity:G14-BONUS-KITS-010, rust:bonus:pickups |
+| G14-BONUS-KITS-011 | Present | 14. Bonus kits | Pickup collision. | parity:G14-BONUS-KITS-011, rust:bonus:pickups, rust:bonus_world:pickup |
+| G14-BONUS-KITS-012 | Present | 14. Bonus kits | Pickup sounds and effects. | web:audio:engine |
+| G14-BONUS-KITS-013 | Present | 14. Bonus kits | Active-bonus HUD. | parity:G14-BONUS-KITS-013, web:bonuses:hud |
+| G14-BONUS-KITS-014 | Present | 14. Bonus kits | Bonus countdown. | parity:G14-BONUS-KITS-014, web:bonuses:hud, rust:bonus:stacking |
+| G14-BONUS-KITS-015 | Present | 14. Bonus kits | Bonus overlay/effect. | parity:G14-BONUS-KITS-015, web:bonuses:hud |
+| G14-BONUS-KITS-016 | Present | 14. Bonus kits | Armor HUD. | parity:G14-BONUS-KITS-016, rust:bonus_world:effects, web:smoke:hud-health |
+| G14-BONUS-KITS-017 | Present | 14. Bonus kits | Predator visibility affected by blood. | parity:G14-BONUS-KITS-017, rust:bonus:effects, web:bonuses:predator |
+| G14-BONUS-KITS-018 | Present | 14. Bonus kits | Predator still producing audible sounds. | parity:G14-BONUS-KITS-018, rust:bonus:effects |
+| G14-BONUS-KITS-019 | Present | 14. Bonus kits | Bonus expiration. | parity:G14-BONUS-KITS-019, rust:bonus:stacking, rust:bonus_world:effects |
+| G14-BONUS-KITS-020 | Present | 14. Bonus kits | Bonus replacement/stacking rules. | parity:G14-BONUS-KITS-020, rust:bonus:stacking, rust:bonus_world:effects |
+| G14-BONUS-KITS-021 | Present | 14. Bonus kits | Server enable/disable settings. | parity:G14-BONUS-KITS-021, rust:bonus:settings, server:bonus-settings |
+| G14-BONUS-KITS-022 | Present | 14. Bonus kits | Kits affected by projectile push. | parity:G14-BONUS-KITS-022, rust:bonus:pickups, rust:bonus_world:physics |
 | G15-HEALTH-ARMOR-001 | Present | 15. Health, armor, death, and respawn | Basic 100 HP. | rust:game_core::tests::m79_explosion_damages_nearby_enemy_not_distant_enemy |
 | G15-HEALTH-ARMOR-002 | Present | 15. Health, armor, death, and respawn | Death count. | rust:game_core::tests::self_explosion_is_not_credited_as_a_kill |
 | G15-HEALTH-ARMOR-003 | Present | 15. Health, armor, death, and respawn | Automatic respawn. | rust:game_core::tests::deterministic_replay |
 | G15-HEALTH-ARMOR-004 | Present | 15. Health, armor, death, and respawn | Body-part damage. | rust:damage_fixtures:regions |
-| G15-HEALTH-ARMOR-005 | Missing | 15. Health, armor, death, and respawn | Bulletproof vest/armor. | parity:G15-HEALTH-ARMOR-005 |
+| G15-HEALTH-ARMOR-005 | Present | 15. Health, armor, death, and respawn | Bulletproof vest/armor. | parity:G15-HEALTH-ARMOR-005, rust:bonus:effects |
 | G15-HEALTH-ARMOR-006 | Present | 15. Health, armor, death, and respawn | Bleeding. | rust:damage_fixtures:bleeding |
 | G15-HEALTH-ARMOR-007 | Present | 15. Health, armor, death, and respawn | Blood particles. | web:render:particles |
-| G15-HEALTH-ARMOR-008 | Missing | 15. Health, armor, death, and respawn | Blood remaining on the character. | parity:G15-HEALTH-ARMOR-008 |
+| G15-HEALTH-ARMOR-008 | Present | 15. Health, armor, death, and respawn | Blood remaining on the character. | parity:G15-HEALTH-ARMOR-008, web:render:gostek |
 | G15-HEALTH-ARMOR-009 | Present | 15. Health, armor, death, and respawn | Gore/gibs. | web:render:particles |
 | G15-HEALTH-ARMOR-010 | Present | 15. Health, armor, death, and respawn | Ragdoll corpses. | rust:damage_fixtures:ragdoll |
 | G15-HEALTH-ARMOR-011 | Present | 15. Health, armor, death, and respawn | Corpse persistence. | rust:damage_fixtures:ragdoll |
@@ -385,31 +385,31 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G15-HEALTH-ARMOR-023 | Present | 15. Health, armor, death, and respawn | Kill attribution after delayed damage. | rust:damage_fixtures:attribution |
 | G15-HEALTH-ARMOR-024 | Present | 15. Health, armor, death, and respawn | Assist tracking if desired. | rust:damage_fixtures:attribution |
 | G15-HEALTH-ARMOR-025 | Present | 15. Health, armor, death, and respawn | Damage direction feedback. | web:hud:damage-arrow |
-| G15-HEALTH-ARMOR-026 | Missing | 15. Health, armor, death, and respawn | Explosion deafness/whistling effect. | parity:G15-HEALTH-ARMOR-026 |
+| G15-HEALTH-ARMOR-026 | Present | 15. Health, armor, death, and respawn | Explosion deafness/whistling effect. | web:audio:engine |
 | G16-MAPS-AND-001 | Present | 16. Maps and terrain engine | `.pms` map loader. | rust:content::pms |
 | G16-MAPS-AND-002 | Present | 16. Maps and terrain engine | PMS format validation. | rust:content::pms-validation |
 | G16-MAPS-AND-003 | Present | 16. Maps and terrain engine | Polygon geometry. | web:map-render:coordinates |
 | G16-MAPS-AND-004 | Present | 16. Maps and terrain engine | Polygon types and properties. | rust:map_validation:materials |
 | G16-MAPS-AND-005 | Present | 16. Maps and terrain engine | Texture coordinates. | task5:map-pipeline |
 | G16-MAPS-AND-006 | Present | 16. Maps and terrain engine | Map textures. | task5:map-pipeline |
-| G16-MAPS-AND-007 | Missing | 16. Maps and terrain engine | Edge textures. | parity:G16-MAPS-AND-007 |
+| G16-MAPS-AND-007 | Present | 16. Maps and terrain engine | Edge textures. | web:render:map |
 | G16-MAPS-AND-008 | Present | 16. Maps and terrain engine | Scenery objects. | task5:map-pipeline |
 | G16-MAPS-AND-009 | Present | 16. Maps and terrain engine | Scenery depth/layers. | task5:map-pipeline |
-| G16-MAPS-AND-010 | Missing | 16. Maps and terrain engine | Animated scenery if supported. | parity:G16-MAPS-AND-010 |
+| G16-MAPS-AND-010 | Present | 16. Maps and terrain engine | Animated scenery if supported. | web:render:map |
 | G16-MAPS-AND-011 | Present | 16. Maps and terrain engine | Colliders. | task5:map-pipeline |
 | G16-MAPS-AND-012 | Present | 16. Maps and terrain engine | Spawn points. | task5:map-pipeline |
 | G16-MAPS-AND-013 | Present | 16. Maps and terrain engine | Player spawn types. | task5:map-pipeline |
 | G16-MAPS-AND-014 | Present | 16. Maps and terrain engine | Team spawn types. | task5:map-pipeline |
-| G16-MAPS-AND-015 | Missing | 16. Maps and terrain engine | Flag spawn types. | parity:G16-MAPS-AND-015 |
-| G16-MAPS-AND-016 | Missing | 16. Maps and terrain engine | Bonus-kit spawn types. | parity:G16-MAPS-AND-016 |
-| G16-MAPS-AND-017 | Missing | 16. Maps and terrain engine | Grenade spawn types where relevant. | parity:G16-MAPS-AND-017 |
-| G16-MAPS-AND-018 | Missing | 16. Maps and terrain engine | Stationary-gun locations. | parity:G16-MAPS-AND-018 |
+| G16-MAPS-AND-015 | Present | 16. Maps and terrain engine | Flag spawn types. | rust:obtainable_weapons |
+| G16-MAPS-AND-016 | Present | 16. Maps and terrain engine | Bonus-kit spawn types. | rust:obtainable_weapons |
+| G16-MAPS-AND-017 | Present | 16. Maps and terrain engine | Grenade spawn types where relevant. | rust:obtainable_weapons |
+| G16-MAPS-AND-018 | Present | 16. Maps and terrain engine | Stationary-gun locations. | rust:obtainable_weapons |
 | G16-MAPS-AND-019 | Present | 16. Maps and terrain engine | Bot waypoints. | task5:map-pipeline |
 | G16-MAPS-AND-020 | Present | 16. Maps and terrain engine | Background colors and gradients. | task5:map-pipeline |
 | G16-MAPS-AND-021 | Present | 16. Maps and terrain engine | Weather settings. | task5:map-pipeline |
 | G16-MAPS-AND-022 | Present | 16. Maps and terrain engine | Footstep-sound property. | task5:map-pipeline |
 | G16-MAPS-AND-023 | Present | 16. Maps and terrain engine | Map-specific jet fuel. | task5:map-pipeline |
-| G16-MAPS-AND-024 | Missing | 16. Maps and terrain engine | Map boundaries. | parity:G16-MAPS-AND-024 |
+| G16-MAPS-AND-024 | Present | 16. Maps and terrain engine | Map boundaries. | rust:map:bounds |
 | G16-MAPS-AND-025 | Present | 16. Maps and terrain engine | Death/out-of-bounds areas. | task5:map-pipeline |
 | G16-MAPS-AND-026 | Present | 16. Maps and terrain engine | Map metadata. | task5:map-pipeline |
 | G16-MAPS-AND-027 | Present | 16. Maps and terrain engine | Map version compatibility. | task5:map-pipeline |
@@ -421,7 +421,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G16-MAPS-AND-033 | Present | 16. Maps and terrain engine | Map rotation file/configuration. | task5:map-pipeline |
 | G16-MAPS-AND-034 | Present | 16. Maps and terrain engine | Mode-prefix recognition: `ctf_`, `inf_`, `htf_`, and community prefixes. | task5:map-pipeline |
 | G16-MAPS-AND-035 | Present | 16. Maps and terrain engine | Empty/invalid map-list handling. | task5:map-pipeline |
-| G16-MAPS-AND-036 | Missing | 16. Maps and terrain engine | Map voting or polling if the intended Soldat server experience includes it. | parity:G16-MAPS-AND-036 |
+| G16-MAPS-AND-036 | Present | 16. Maps and terrain engine | Map voting or polling if the intended Soldat server experience includes it. | rust:admin:parse |
 | G16-MAPS-AND-037 | Present | 16. Maps and terrain engine | Client caching of maps/assets. | task5:map-pipeline |
 | G16-MAPS-AND-038 | Present | 16. Maps and terrain engine | Map preview images. | task5:map-pipeline |
 | G16-MAPS-AND-039 | Present | 16. Maps and terrain engine | Map selection UI. | task5:map-pipeline |
@@ -523,465 +523,465 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G17-ALL-97-095 | Present | 17. All 97 referenced default maps | inf_Rise | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
 | G17-ALL-97-096 | Present | 17. All 97 referenced default maps | inf_Warehouse | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
 | G17-ALL-97-097 | Present | 17. All 97 referenced default maps | inf_Warlock | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G18-BOTS-AND-001 | Missing | 18. Bots and AI | Bot entities driven by the authoritative simulation. | parity:G18-BOTS-AND-001 |
-| G18-BOTS-AND-002 | Missing | 18. Bots and AI | Random-bot count. | parity:G18-BOTS-AND-002 |
-| G18-BOTS-AND-003 | Missing | 18. Bots and AI | Per-team bot count. | parity:G18-BOTS-AND-003 |
-| G18-BOTS-AND-004 | Missing | 18. Bots and AI | Bot difficulty. | parity:G18-BOTS-AND-004 |
-| G18-BOTS-AND-005 | Missing | 18. Bots and AI | Bot accuracy levels. | parity:G18-BOTS-AND-005 |
-| G18-BOTS-AND-006 | Missing | 18. Bots and AI | Bot reaction time. | parity:G18-BOTS-AND-006 |
-| G18-BOTS-AND-007 | Missing | 18. Bots and AI | Bot movement. | parity:G18-BOTS-AND-007 |
-| G18-BOTS-AND-008 | Missing | 18. Bots and AI | Jet navigation. | parity:G18-BOTS-AND-008 |
-| G18-BOTS-AND-009 | Missing | 18. Bots and AI | Crouching, prone, rolls, and backflips. | parity:G18-BOTS-AND-009 |
-| G18-BOTS-AND-010 | Missing | 18. Bots and AI | Weapon selection. | parity:G18-BOTS-AND-010 |
-| G18-BOTS-AND-011 | Missing | 18. Bots and AI | Reloading. | parity:G18-BOTS-AND-011 |
-| G18-BOTS-AND-012 | Missing | 18. Bots and AI | Grenade use. | parity:G18-BOTS-AND-012 |
-| G18-BOTS-AND-013 | Missing | 18. Bots and AI | Weapon pickup. | parity:G18-BOTS-AND-013 |
-| G18-BOTS-AND-014 | Missing | 18. Bots and AI | Bonus pickup. | parity:G18-BOTS-AND-014 |
-| G18-BOTS-AND-015 | Missing | 18. Bots and AI | Waypoint navigation. | parity:G18-BOTS-AND-015 |
-| G18-BOTS-AND-016 | Missing | 18. Bots and AI | Recovery when stuck. | parity:G18-BOTS-AND-016 |
-| G18-BOTS-AND-017 | Missing | 18. Bots and AI | Deathmatch target selection. | parity:G18-BOTS-AND-017 |
-| G18-BOTS-AND-018 | Missing | 18. Bots and AI | Team coordination. | parity:G18-BOTS-AND-018 |
-| G18-BOTS-AND-019 | Missing | 18. Bots and AI | CTF attacking, defending, returning, and capturing. | parity:G18-BOTS-AND-019 |
-| G18-BOTS-AND-020 | Missing | 18. Bots and AI | Infiltration objectives. | parity:G18-BOTS-AND-020 |
-| G18-BOTS-AND-021 | Missing | 18. Bots and AI | HTF carrier support. | parity:G18-BOTS-AND-021 |
-| G18-BOTS-AND-022 | Missing | 18. Bots and AI | Rambomatch behavior. | parity:G18-BOTS-AND-022 |
-| G18-BOTS-AND-023 | Missing | 18. Bots and AI | Survival behavior. | parity:G18-BOTS-AND-023 |
-| G18-BOTS-AND-024 | Missing | 18. Bots and AI | Bot chat. | parity:G18-BOTS-AND-024 |
-| G18-BOTS-AND-025 | Missing | 18. Bots and AI | Custom bot profiles. | parity:G18-BOTS-AND-025 |
-| G18-BOTS-AND-026 | Missing | 18. Bots and AI | Server commands to add/remove bots. | parity:G18-BOTS-AND-026 |
+| G18-BOTS-AND-001 | Present | 18. Bots and AI | Bot entities driven by the authoritative simulation. | parity:G18-BOTS-AND-001, rust:bot_world:join, rust:bot_world:drive |
+| G18-BOTS-AND-002 | Present | 18. Bots and AI | Random-bot count. | parity:G18-BOTS-AND-002, server:bots, web:bots:setup |
+| G18-BOTS-AND-003 | Present | 18. Bots and AI | Per-team bot count. | parity:G18-BOTS-AND-003, rust:bots:profiles, rust:bot_world:join |
+| G18-BOTS-AND-004 | Present | 18. Bots and AI | Bot difficulty. | parity:G18-BOTS-AND-004, rust:bots:profiles, server:bots, web:bots:setup |
+| G18-BOTS-AND-005 | Present | 18. Bots and AI | Bot accuracy levels. | parity:G18-BOTS-AND-005, rust:bots:profiles, rust:bots:perception |
+| G18-BOTS-AND-006 | Present | 18. Bots and AI | Bot reaction time. | parity:G18-BOTS-AND-006, rust:bots:profiles, rust:bots:perception |
+| G18-BOTS-AND-007 | Present | 18. Bots and AI | Bot movement. | parity:G18-BOTS-AND-007, rust:bots:navigation, rust:bot_world:play |
+| G18-BOTS-AND-008 | Present | 18. Bots and AI | Jet navigation. | parity:G18-BOTS-AND-008, rust:bots:navigation |
+| G18-BOTS-AND-009 | Present | 18. Bots and AI | Crouching, prone, rolls, and backflips. | rust:bots:navigation |
+| G18-BOTS-AND-010 | Present | 18. Bots and AI | Weapon selection. | parity:G18-BOTS-AND-010, rust:bots:combat |
+| G18-BOTS-AND-011 | Present | 18. Bots and AI | Reloading. | parity:G18-BOTS-AND-011, rust:bots:combat |
+| G18-BOTS-AND-012 | Present | 18. Bots and AI | Grenade use. | parity:G18-BOTS-AND-012, rust:bots:combat |
+| G18-BOTS-AND-013 | Present | 18. Bots and AI | Weapon pickup. | rust:obtainable_weapons, rust:bots:objectives |
+| G18-BOTS-AND-014 | Present | 18. Bots and AI | Bonus pickup. | rust:obtainable_weapons, rust:bots:objectives |
+| G18-BOTS-AND-015 | Present | 18. Bots and AI | Waypoint navigation. | parity:G18-BOTS-AND-015, rust:bots:navigation |
+| G18-BOTS-AND-016 | Present | 18. Bots and AI | Recovery when stuck. | parity:G18-BOTS-AND-016, rust:bots:navigation |
+| G18-BOTS-AND-017 | Present | 18. Bots and AI | Deathmatch target selection. | parity:G18-BOTS-AND-017, rust:bots:perception, rust:bot_world:play |
+| G18-BOTS-AND-018 | Present | 18. Bots and AI | Team coordination. | parity:G18-BOTS-AND-018, rust:bots:objectives, rust:bot_world:play |
+| G18-BOTS-AND-019 | Present | 18. Bots and AI | CTF attacking, defending, returning, and capturing. | parity:G18-BOTS-AND-019, rust:bots:objectives, rust:bot_world:play |
+| G18-BOTS-AND-020 | Present | 18. Bots and AI | Infiltration objectives. | parity:G18-BOTS-AND-020, rust:bots:objectives |
+| G18-BOTS-AND-021 | Present | 18. Bots and AI | HTF carrier support. | parity:G18-BOTS-AND-021, rust:bots:objectives |
+| G18-BOTS-AND-022 | Present | 18. Bots and AI | Rambomatch behavior. | rust:obtainable_weapons, rust:bots:objectives |
+| G18-BOTS-AND-023 | Present | 18. Bots and AI | Survival behavior. | parity:G18-BOTS-AND-023, rust:bot_world:play, rust:modifier_world:survival |
+| G18-BOTS-AND-024 | Present | 18. Bots and AI | Bot chat. | parity:G18-BOTS-AND-024, rust:bots:chat |
+| G18-BOTS-AND-025 | Present | 18. Bots and AI | Custom bot profiles. | parity:G18-BOTS-AND-025, rust:bots:profiles |
+| G18-BOTS-AND-026 | Present | 18. Bots and AI | Server commands to add/remove bots. | parity:G18-BOTS-AND-026, server:bots, rust:bot_world:join, web:bots:roster |
 | G19-HUD-AND-001 | Present | 19. HUD and game screen | Numeric health. | web:smoke:hud-health |
 | G19-HUD-AND-002 | Present | 19. HUD and game screen | Numeric jet fuel. | web:smoke:hud-jet |
 | G19-HUD-AND-003 | Present | 19. HUD and game screen | Ammo and grenade count. | web:smoke:hud-ammo |
 | G19-HUD-AND-004 | Present | 19. HUD and game screen | Kills/deaths. | web:smoke:hud-score |
 | G19-HUD-AND-005 | Present | 19. HUD and game screen | Scoreboard. | web:smoke:scoreboard |
-| G19-HUD-AND-006 | Partial | 19. HUD and game screen | Team coloring. | parity:G19-HUD-AND-006 |
-| G19-HUD-AND-007 | Missing | 19. HUD and game screen | Red health bar. | parity:G19-HUD-AND-007 |
-| G19-HUD-AND-008 | Missing | 19. HUD and game screen | Yellow ammunition/reload bar. | parity:G19-HUD-AND-008 |
-| G19-HUD-AND-009 | Missing | 19. HUD and game screen | Bullet count positioned with the ammo display. | parity:G19-HUD-AND-009 |
-| G19-HUD-AND-010 | Missing | 19. HUD and game screen | Fire-interval bar. | parity:G19-HUD-AND-010 |
-| G19-HUD-AND-011 | Missing | 19. HUD and game screen | Blue jet-fuel bar. | parity:G19-HUD-AND-011 |
-| G19-HUD-AND-012 | Missing | 19. HUD and game screen | Server rank. | parity:G19-HUD-AND-012 |
-| G19-HUD-AND-013 | Missing | 19. HUD and game screen | Current kills/points. | parity:G19-HUD-AND-013 |
-| G19-HUD-AND-014 | Missing | 19. HUD and game screen | Difference from the leader. | parity:G19-HUD-AND-014 |
-| G19-HUD-AND-015 | Missing | 19. HUD and game screen | Kill/point/capture limit. | parity:G19-HUD-AND-015 |
-| G19-HUD-AND-016 | Missing | 19. HUD and game screen | Alpha team score. | parity:G19-HUD-AND-016 |
-| G19-HUD-AND-017 | Missing | 19. HUD and game screen | Bravo team score. | parity:G19-HUD-AND-017 |
-| G19-HUD-AND-018 | Missing | 19. HUD and game screen | Charlie team score. | parity:G19-HUD-AND-018 |
-| G19-HUD-AND-019 | Missing | 19. HUD and game screen | Delta team score. | parity:G19-HUD-AND-019 |
-| G19-HUD-AND-020 | Missing | 19. HUD and game screen | Missing-flag indicators. | parity:G19-HUD-AND-020 |
-| G19-HUD-AND-021 | Missing | 19. HUD and game screen | Flag-carrier state. | parity:G19-HUD-AND-021 |
-| G19-HUD-AND-022 | Missing | 19. HUD and game screen | Bonus status and duration. | parity:G19-HUD-AND-022 |
-| G19-HUD-AND-023 | Missing | 19. HUD and game screen | Armor indicator. | parity:G19-HUD-AND-023 |
-| G19-HUD-AND-024 | Missing | 19. HUD and game screen | Weapon image. | parity:G19-HUD-AND-024 |
-| G19-HUD-AND-025 | Missing | 19. HUD and game screen | Secondary weapon indicator. | parity:G19-HUD-AND-025 |
-| G19-HUD-AND-026 | Missing | 19. HUD and game screen | Grenade type/count. | parity:G19-HUD-AND-026 |
-| G19-HUD-AND-027 | Missing | 19. HUD and game screen | Reload progress rather than only “RELOADING.” | parity:G19-HUD-AND-027 |
-| G19-HUD-AND-028 | Missing | 19. HUD and game screen | Respawn countdown. | parity:G19-HUD-AND-028 |
-| G19-HUD-AND-029 | Missing | 19. HUD and game screen | Kill feed. | web:hud:kill-feed |
-| G19-HUD-AND-030 | Missing | 19. HUD and game screen | Chat overlay inside the game. | parity:G19-HUD-AND-030 |
-| G19-HUD-AND-031 | Missing | 19. HUD and game screen | Team-chat distinction. | parity:G19-HUD-AND-031 |
-| G19-HUD-AND-032 | Missing | 19. HUD and game screen | Server messages. | parity:G19-HUD-AND-032 |
-| G19-HUD-AND-033 | Missing | 19. HUD and game screen | Connection/ping indicator. | parity:G19-HUD-AND-033 |
-| G19-HUD-AND-034 | Missing | 19. HUD and game screen | Ping dot with size/color grading. | parity:G19-HUD-AND-034 |
-| G19-HUD-AND-035 | Missing | 19. HUD and game screen | FPS display. | parity:G19-HUD-AND-035 |
-| G19-HUD-AND-036 | Missing | 19. HUD and game screen | Network-bandwidth display. | parity:G19-HUD-AND-036 |
-| G19-HUD-AND-037 | Missing | 19. HUD and game screen | Minimap. | parity:G19-HUD-AND-037 |
-| G19-HUD-AND-038 | Missing | 19. HUD and game screen | Sniper line. | parity:G19-HUD-AND-038 |
-| G19-HUD-AND-039 | Missing | 19. HUD and game screen | Crosshair accuracy/bink visualization. | parity:G19-HUD-AND-039 |
-| G19-HUD-AND-040 | Missing | 19. HUD and game screen | Spectator HUD. | parity:G19-HUD-AND-040 |
-| G19-HUD-AND-041 | Missing | 19. HUD and game screen | End-of-round screen. | parity:G19-HUD-AND-041 |
-| G19-HUD-AND-042 | Missing | 19. HUD and game screen | Weapon-statistics screen. | parity:G19-HUD-AND-042 |
-| G19-HUD-AND-043 | Missing | 19. HUD and game screen | Scrollable large scoreboard. | parity:G19-HUD-AND-043 |
-| G19-HUD-AND-044 | Missing | 19. HUD and game screen | Player IDs on the command-enabled scoreboard. | parity:G19-HUD-AND-044 |
-| G19-HUD-AND-045 | Missing | 19. HUD and game screen | Custom HUD/interface loading. | parity:G19-HUD-AND-045 |
-| G19-HUD-AND-046 | Missing | 19. HUD and game screen | HUD scaling. | parity:G19-HUD-AND-046 |
-| G19-HUD-AND-047 | Missing | 19. HUD and game screen | Safe-area and resolution tests across desktop and mobile. | parity:G19-HUD-AND-047 |
-| G20-RENDERING-AND-001 | Missing | 20. Rendering and visual effects | Full animated soldier/gostek rendering. | parity:G20-RENDERING-AND-001 |
-| G20-RENDERING-AND-002 | Missing | 20. Rendering and visual effects | Separate body parts. | parity:G20-RENDERING-AND-002 |
-| G20-RENDERING-AND-003 | Missing | 20. Rendering and visual effects | Hair. | parity:G20-RENDERING-AND-003 |
-| G20-RENDERING-AND-004 | Missing | 20. Rendering and visual effects | Headgear. | parity:G20-RENDERING-AND-004 |
-| G20-RENDERING-AND-005 | Missing | 20. Rendering and visual effects | Helmet/hat/none. | parity:G20-RENDERING-AND-005 |
-| G20-RENDERING-AND-006 | Missing | 20. Rendering and visual effects | Chains and dog tags. | parity:G20-RENDERING-AND-006 |
-| G20-RENDERING-AND-007 | Missing | 20. Rendering and visual effects | Shirt, pants, skin, hair, shoes, and jet colors. | parity:G20-RENDERING-AND-007 |
-| G20-RENDERING-AND-008 | Missing | 20. Rendering and visual effects | Weapon sprites. | parity:G20-RENDERING-AND-008 |
-| G20-RENDERING-AND-009 | Missing | 20. Rendering and visual effects | Character pose matching aim angle. | parity:G20-RENDERING-AND-009 |
-| G20-RENDERING-AND-010 | Missing | 20. Rendering and visual effects | Muzzle flashes. | parity:G20-RENDERING-AND-010 |
-| G20-RENDERING-AND-011 | Missing | 20. Rendering and visual effects | Bullet trails. | parity:G20-RENDERING-AND-011 |
-| G20-RENDERING-AND-012 | Missing | 20. Rendering and visual effects | Shell casings. | parity:G20-RENDERING-AND-012 |
-| G20-RENDERING-AND-013 | Missing | 20. Rendering and visual effects | Sparks. | parity:G20-RENDERING-AND-013 |
-| G20-RENDERING-AND-014 | Missing | 20. Rendering and visual effects | Blood. | parity:G20-RENDERING-AND-014 |
-| G20-RENDERING-AND-015 | Missing | 20. Rendering and visual effects | Gore. | parity:G20-RENDERING-AND-015 |
-| G20-RENDERING-AND-016 | Missing | 20. Rendering and visual effects | Explosion animation. | parity:G20-RENDERING-AND-016 |
-| G20-RENDERING-AND-017 | Missing | 20. Rendering and visual effects | Smoke. | parity:G20-RENDERING-AND-017 |
-| G20-RENDERING-AND-018 | Missing | 20. Rendering and visual effects | Fire. | parity:G20-RENDERING-AND-018 |
-| G20-RENDERING-AND-019 | Missing | 20. Rendering and visual effects | Burning characters. | parity:G20-RENDERING-AND-019 |
-| G20-RENDERING-AND-020 | Missing | 20. Rendering and visual effects | Grenade sprites. | parity:G20-RENDERING-AND-020 |
-| G20-RENDERING-AND-021 | Missing | 20. Rendering and visual effects | Arrow sprites. | parity:G20-RENDERING-AND-021 |
-| G20-RENDERING-AND-022 | Missing | 20. Rendering and visual effects | Dropped weapons. | parity:G20-RENDERING-AND-022 |
-| G20-RENDERING-AND-023 | Missing | 20. Rendering and visual effects | Flags. | parity:G20-RENDERING-AND-023 |
-| G20-RENDERING-AND-024 | Missing | 20. Rendering and visual effects | Kits. | parity:G20-RENDERING-AND-024 |
-| G20-RENDERING-AND-025 | Missing | 20. Rendering and visual effects | Stationary gun. | parity:G20-RENDERING-AND-025 |
-| G20-RENDERING-AND-026 | Missing | 20. Rendering and visual effects | Polygon textures. | parity:G20-RENDERING-AND-026 |
-| G20-RENDERING-AND-027 | Missing | 20. Rendering and visual effects | Edge textures. | parity:G20-RENDERING-AND-027 |
-| G20-RENDERING-AND-028 | Missing | 20. Rendering and visual effects | Background scenery. | parity:G20-RENDERING-AND-028 |
-| G20-RENDERING-AND-029 | Missing | 20. Rendering and visual effects | Foreground scenery. | parity:G20-RENDERING-AND-029 |
-| G20-RENDERING-AND-030 | Missing | 20. Rendering and visual effects | Rain. | parity:G20-RENDERING-AND-030 |
-| G20-RENDERING-AND-031 | Missing | 20. Rendering and visual effects | Snow. | parity:G20-RENDERING-AND-031 |
-| G20-RENDERING-AND-032 | Missing | 20. Rendering and visual effects | Wind effects. | parity:G20-RENDERING-AND-032 |
-| G20-RENDERING-AND-033 | Missing | 20. Rendering and visual effects | Bullet-time visual effect. | parity:G20-RENDERING-AND-033 |
-| G20-RENDERING-AND-034 | Missing | 20. Rendering and visual effects | Predator transparency. | parity:G20-RENDERING-AND-034 |
-| G20-RENDERING-AND-035 | Missing | 20. Rendering and visual effects | Berserker overlay. | parity:G20-RENDERING-AND-035 |
-| G20-RENDERING-AND-036 | Missing | 20. Rendering and visual effects | Flame God overlay. | parity:G20-RENDERING-AND-036 |
-| G20-RENDERING-AND-037 | Missing | 20. Rendering and visual effects | Damage feedback. | parity:G20-RENDERING-AND-037 |
-| G20-RENDERING-AND-038 | Missing | 20. Rendering and visual effects | Screen shake where appropriate. | parity:G20-RENDERING-AND-038 |
-| G20-RENDERING-AND-039 | Missing | 20. Rendering and visual effects | Resolution scaling. | parity:G20-RENDERING-AND-039 |
-| G20-RENDERING-AND-040 | Missing | 20. Rendering and visual effects | Texture filtering settings. | parity:G20-RENDERING-AND-040 |
-| G20-RENDERING-AND-041 | Missing | 20. Rendering and visual effects | Mipmapping. | parity:G20-RENDERING-AND-041 |
-| G20-RENDERING-AND-042 | Missing | 20. Rendering and visual effects | Low-particle modes. | parity:G20-RENDERING-AND-042 |
-| G20-RENDERING-AND-043 | Missing | 20. Rendering and visual effects | Compatibility rendering path. | parity:G20-RENDERING-AND-043 |
-| G20-RENDERING-AND-044 | Missing | 20. Rendering and visual effects | Custom-interface graphics. | parity:G20-RENDERING-AND-044 |
-| G20-RENDERING-AND-045 | Missing | 20. Rendering and visual effects | Mod-controlled asset scaling through `mod.ini`-like rules. | parity:G20-RENDERING-AND-045 |
-| G21-SOUND-AND-001 | Missing | 21. Sound and music | Weapon-specific firing sounds. | parity:G21-SOUND-AND-001 |
-| G21-SOUND-AND-002 | Missing | 21. Sound and music | Reload sounds. | parity:G21-SOUND-AND-002 |
-| G21-SOUND-AND-003 | Missing | 21. Sound and music | Empty-weapon sounds. | parity:G21-SOUND-AND-003 |
-| G21-SOUND-AND-004 | Missing | 21. Sound and music | Grenade pin/throw/bounce/explosion sounds. | parity:G21-SOUND-AND-004 |
-| G21-SOUND-AND-005 | Missing | 21. Sound and music | M79 and LAW explosion sounds. | parity:G21-SOUND-AND-005 |
-| G21-SOUND-AND-006 | Missing | 21. Sound and music | Bullet impacts. | parity:G21-SOUND-AND-006 |
-| G21-SOUND-AND-007 | Missing | 21. Sound and music | Ricochets if applicable. | parity:G21-SOUND-AND-007 |
-| G21-SOUND-AND-008 | Missing | 21. Sound and music | Chainsaw loop. | parity:G21-SOUND-AND-008 |
-| G21-SOUND-AND-009 | Missing | 21. Sound and music | Knife sounds. | parity:G21-SOUND-AND-009 |
-| G21-SOUND-AND-010 | Missing | 21. Sound and music | Punch sounds. | parity:G21-SOUND-AND-010 |
-| G21-SOUND-AND-011 | Missing | 21. Sound and music | Flamethrower loop. | parity:G21-SOUND-AND-011 |
-| G21-SOUND-AND-012 | Missing | 21. Sound and music | Character pain. | parity:G21-SOUND-AND-012 |
-| G21-SOUND-AND-013 | Missing | 21. Sound and music | Death sounds. | parity:G21-SOUND-AND-013 |
-| G21-SOUND-AND-014 | Missing | 21. Sound and music | Gore sounds. | parity:G21-SOUND-AND-014 |
-| G21-SOUND-AND-015 | Missing | 21. Sound and music | Footsteps selected by map property. | parity:G21-SOUND-AND-015 |
-| G21-SOUND-AND-016 | Missing | 21. Sound and music | Jetpack sound. | parity:G21-SOUND-AND-016 |
-| G21-SOUND-AND-017 | Missing | 21. Sound and music | Flag pickup/drop/return/capture sounds. | parity:G21-SOUND-AND-017 |
-| G21-SOUND-AND-018 | Missing | 21. Sound and music | Kit pickup sounds. | parity:G21-SOUND-AND-018 |
-| G21-SOUND-AND-019 | Missing | 21. Sound and music | Bonus activation/expiration sounds. | parity:G21-SOUND-AND-019 |
-| G21-SOUND-AND-020 | Missing | 21. Sound and music | UI/menu sounds. | parity:G21-SOUND-AND-020 |
-| G21-SOUND-AND-021 | Missing | 21. Sound and music | Chat/message notification. | parity:G21-SOUND-AND-021 |
-| G21-SOUND-AND-022 | Missing | 21. Sound and music | Distant-battle sounds. | parity:G21-SOUND-AND-022 |
-| G21-SOUND-AND-023 | Missing | 21. Sound and music | Weather sounds. | parity:G21-SOUND-AND-023 |
-| G21-SOUND-AND-024 | Missing | 21. Sound and music | Explosion deafness and whistle effect. | parity:G21-SOUND-AND-024 |
-| G21-SOUND-AND-025 | Missing | 21. Sound and music | Positional audio. | parity:G21-SOUND-AND-025 |
-| G21-SOUND-AND-026 | Missing | 21. Sound and music | Distance attenuation. | parity:G21-SOUND-AND-026 |
-| G21-SOUND-AND-027 | Missing | 21. Sound and music | Master sound volume. | parity:G21-SOUND-AND-027 |
-| G21-SOUND-AND-028 | Missing | 21. Sound and music | Music volume. | parity:G21-SOUND-AND-028 |
-| G21-SOUND-AND-029 | Missing | 21. Sound and music | Music playback. | parity:G21-SOUND-AND-029 |
-| G21-SOUND-AND-030 | Missing | 21. Sound and music | Toggle music. | parity:G21-SOUND-AND-030 |
-| G21-SOUND-AND-031 | Missing | 21. Sound and music | Previous/next track. | parity:G21-SOUND-AND-031 |
-| G21-SOUND-AND-032 | Missing | 21. Sound and music | Sound-quality option. | parity:G21-SOUND-AND-032 |
-| G21-SOUND-AND-033 | Missing | 21. Sound and music | Sound-output/device option where browser APIs permit it. | parity:G21-SOUND-AND-033 |
-| G22-PLAYER-PROFILES-001 | Missing | 22. Player profiles and customization | Persistent player profiles. | parity:G22-PLAYER-PROFILES-001 |
-| G22-PLAYER-PROFILES-002 | Missing | 22. Player profiles and customization | Multiple profiles. | parity:G22-PLAYER-PROFILES-002 |
-| G22-PLAYER-PROFILES-003 | Missing | 22. Player profiles and customization | Profile selection screen. | parity:G22-PLAYER-PROFILES-003 |
-| G22-PLAYER-PROFILES-004 | Missing | 22. Player profiles and customization | Per-profile settings. | parity:G22-PLAYER-PROFILES-004 |
-| G22-PLAYER-PROFILES-005 | Missing | 22. Player profiles and customization | Per-profile controls. | parity:G22-PLAYER-PROFILES-005 |
-| G22-PLAYER-PROFILES-006 | Missing | 22. Player profiles and customization | Per-profile taunts. | parity:G22-PLAYER-PROFILES-006 |
-| G22-PLAYER-PROFILES-007 | Missing | 22. Player profiles and customization | Default secondary weapon. | parity:G22-PLAYER-PROFILES-007 |
-| G22-PLAYER-PROFILES-008 | Missing | 22. Player profiles and customization | Player name constraints matching the intended rules. | parity:G22-PLAYER-PROFILES-008 |
-| G22-PLAYER-PROFILES-009 | Missing | 22. Player profiles and customization | Shirt color. | parity:G22-PLAYER-PROFILES-009 |
-| G22-PLAYER-PROFILES-010 | Missing | 22. Player profiles and customization | Pants color. | parity:G22-PLAYER-PROFILES-010 |
-| G22-PLAYER-PROFILES-011 | Missing | 22. Player profiles and customization | Skin color. | parity:G22-PLAYER-PROFILES-011 |
-| G22-PLAYER-PROFILES-012 | Missing | 22. Player profiles and customization | Hair color. | parity:G22-PLAYER-PROFILES-012 |
-| G22-PLAYER-PROFILES-013 | Missing | 22. Player profiles and customization | Shoe color. | parity:G22-PLAYER-PROFILES-013 |
-| G22-PLAYER-PROFILES-014 | Missing | 22. Player profiles and customization | Jet-flame color. | parity:G22-PLAYER-PROFILES-014 |
-| G22-PLAYER-PROFILES-015 | Missing | 22. Player profiles and customization | Hairstyle. | parity:G22-PLAYER-PROFILES-015 |
-| G22-PLAYER-PROFILES-016 | Missing | 22. Player profiles and customization | Headgear. | parity:G22-PLAYER-PROFILES-016 |
-| G22-PLAYER-PROFILES-017 | Missing | 22. Player profiles and customization | Chain style. | parity:G22-PLAYER-PROFILES-017 |
-| G22-PLAYER-PROFILES-018 | Missing | 22. Player profiles and customization | Interface selection. | parity:G22-PLAYER-PROFILES-018 |
-| G22-PLAYER-PROFILES-019 | Missing | 22. Player profiles and customization | Saved mouse sensitivity. | parity:G22-PLAYER-PROFILES-019 |
-| G22-PLAYER-PROFILES-020 | Missing | 22. Player profiles and customization | Saved sound/music volume. | parity:G22-PLAYER-PROFILES-020 |
-| G22-PLAYER-PROFILES-021 | Missing | 22. Player profiles and customization | Saved graphics settings. | parity:G22-PLAYER-PROFILES-021 |
-| G22-PLAYER-PROFILES-022 | Missing | 22. Player profiles and customization | Saved favorite servers. | parity:G22-PLAYER-PROFILES-022 |
-| G22-PLAYER-PROFILES-023 | Missing | 22. Player profiles and customization | Profile import/export if desired. | parity:G22-PLAYER-PROFILES-023 |
+| G19-HUD-AND-006 | Present | 19. HUD and game screen | Team coloring. | parity:G19-HUD-AND-006, web:hud:gauges |
+| G19-HUD-AND-007 | Present | 19. HUD and game screen | Red health bar. | parity:G19-HUD-AND-007, web:hud:gauges |
+| G19-HUD-AND-008 | Present | 19. HUD and game screen | Yellow ammunition/reload bar. | parity:G19-HUD-AND-008, web:hud:gauges |
+| G19-HUD-AND-009 | Present | 19. HUD and game screen | Bullet count positioned with the ammo display. | parity:G19-HUD-AND-009, web:hud:gauges |
+| G19-HUD-AND-010 | Present | 19. HUD and game screen | Fire-interval bar. | parity:G19-HUD-AND-010, web:hud:gauges |
+| G19-HUD-AND-011 | Present | 19. HUD and game screen | Blue jet-fuel bar. | parity:G19-HUD-AND-011, web:hud:gauges |
+| G19-HUD-AND-012 | Present | 19. HUD and game screen | Server rank. | parity:G19-HUD-AND-012, web:hud:status |
+| G19-HUD-AND-013 | Present | 19. HUD and game screen | Current kills/points. | parity:G19-HUD-AND-013, web:hud:status |
+| G19-HUD-AND-014 | Present | 19. HUD and game screen | Difference from the leader. | parity:G19-HUD-AND-014, web:hud:status |
+| G19-HUD-AND-015 | Present | 19. HUD and game screen | Kill/point/capture limit. | parity:G19-HUD-AND-015, web:hud:status |
+| G19-HUD-AND-016 | Present | 19. HUD and game screen | Alpha team score. | parity:G19-HUD-AND-016, web:hud:status |
+| G19-HUD-AND-017 | Present | 19. HUD and game screen | Bravo team score. | parity:G19-HUD-AND-017, web:hud:status |
+| G19-HUD-AND-018 | Present | 19. HUD and game screen | Charlie team score. | parity:G19-HUD-AND-018, web:hud:status |
+| G19-HUD-AND-019 | Present | 19. HUD and game screen | Delta team score. | parity:G19-HUD-AND-019, web:hud:status |
+| G19-HUD-AND-020 | Present | 19. HUD and game screen | Missing-flag indicators. | parity:G19-HUD-AND-020, web:hud:status |
+| G19-HUD-AND-021 | Present | 19. HUD and game screen | Flag-carrier state. | parity:G19-HUD-AND-021, web:hud:status |
+| G19-HUD-AND-022 | Present | 19. HUD and game screen | Bonus status and duration. | parity:G19-HUD-AND-022, web:hud:status |
+| G19-HUD-AND-023 | Present | 19. HUD and game screen | Armor indicator. | parity:G19-HUD-AND-023, web:hud:status |
+| G19-HUD-AND-024 | Present | 19. HUD and game screen | Weapon image. | parity:G19-HUD-AND-024, web:hud:status |
+| G19-HUD-AND-025 | Present | 19. HUD and game screen | Secondary weapon indicator. | parity:G19-HUD-AND-025, web:hud:status |
+| G19-HUD-AND-026 | Present | 19. HUD and game screen | Grenade type/count. | parity:G19-HUD-AND-026, web:hud:status |
+| G19-HUD-AND-027 | Present | 19. HUD and game screen | Reload progress rather than only “RELOADING.” | parity:G19-HUD-AND-027, web:hud:gauges |
+| G19-HUD-AND-028 | Present | 19. HUD and game screen | Respawn countdown. | parity:G19-HUD-AND-028, web:hud:respawn |
+| G19-HUD-AND-029 | Present | 19. HUD and game screen | Kill feed. | web:hud:kill-feed |
+| G19-HUD-AND-030 | Present | 19. HUD and game screen | Chat overlay inside the game. | parity:G19-HUD-AND-030, web:hud:status |
+| G19-HUD-AND-031 | Present | 19. HUD and game screen | Team-chat distinction. | parity:G19-HUD-AND-031, web:hud:status |
+| G19-HUD-AND-032 | Present | 19. HUD and game screen | Server messages. | parity:G19-HUD-AND-032, web:hud:status |
+| G19-HUD-AND-033 | Present | 19. HUD and game screen | Connection/ping indicator. | parity:G19-HUD-AND-033, web:hud:net |
+| G19-HUD-AND-034 | Present | 19. HUD and game screen | Ping dot with size/color grading. | parity:G19-HUD-AND-034, web:hud:net |
+| G19-HUD-AND-035 | Present | 19. HUD and game screen | FPS display. | parity:G19-HUD-AND-035, web:hud:net |
+| G19-HUD-AND-036 | Present | 19. HUD and game screen | Network-bandwidth display. | parity:G19-HUD-AND-036, web:hud:net |
+| G19-HUD-AND-037 | Present | 19. HUD and game screen | Minimap. | parity:G19-HUD-AND-037, web:hud:net |
+| G19-HUD-AND-038 | Present | 19. HUD and game screen | Sniper line. | parity:G19-HUD-AND-038, web:hud:net |
+| G19-HUD-AND-039 | Present | 19. HUD and game screen | Crosshair accuracy/bink visualization. | parity:G19-HUD-AND-039, web:hud:net |
+| G19-HUD-AND-040 | Present | 19. HUD and game screen | Spectator HUD. | parity:G19-HUD-AND-040, web:hud:screens |
+| G19-HUD-AND-041 | Present | 19. HUD and game screen | End-of-round screen. | parity:G19-HUD-AND-041, web:hud:screens |
+| G19-HUD-AND-042 | Present | 19. HUD and game screen | Weapon-statistics screen. | parity:G19-HUD-AND-042, web:hud:screens |
+| G19-HUD-AND-043 | Present | 19. HUD and game screen | Scrollable large scoreboard. | parity:G19-HUD-AND-043, web:hud:screens |
+| G19-HUD-AND-044 | Present | 19. HUD and game screen | Player IDs on the command-enabled scoreboard. | parity:G19-HUD-AND-044, web:hud:screens |
+| G19-HUD-AND-045 | Present | 19. HUD and game screen | Custom HUD/interface loading. | parity:G19-HUD-AND-045, web:hud:layout |
+| G19-HUD-AND-046 | Present | 19. HUD and game screen | HUD scaling. | parity:G19-HUD-AND-046, web:hud:layout |
+| G19-HUD-AND-047 | Present | 19. HUD and game screen | Safe-area and resolution tests across desktop and mobile. | parity:G19-HUD-AND-047, web:hud:layout, web:render:visual |
+| G20-RENDERING-AND-001 | Present | 20. Rendering and visual effects | Full animated soldier/gostek rendering. | parity:G20-RENDERING-AND-001, web:render:gostek |
+| G20-RENDERING-AND-002 | Present | 20. Rendering and visual effects | Separate body parts. | parity:G20-RENDERING-AND-002, web:render:gostek |
+| G20-RENDERING-AND-003 | Present | 20. Rendering and visual effects | Hair. | parity:G20-RENDERING-AND-003, web:render:gostek |
+| G20-RENDERING-AND-004 | Present | 20. Rendering and visual effects | Headgear. | parity:G20-RENDERING-AND-004, web:render:gostek |
+| G20-RENDERING-AND-005 | Present | 20. Rendering and visual effects | Helmet/hat/none. | parity:G20-RENDERING-AND-005, web:render:gostek |
+| G20-RENDERING-AND-006 | Present | 20. Rendering and visual effects | Chains and dog tags. | parity:G20-RENDERING-AND-006, web:render:gostek |
+| G20-RENDERING-AND-007 | Present | 20. Rendering and visual effects | Shirt, pants, skin, hair, shoes, and jet colors. | parity:G20-RENDERING-AND-007, web:render:gostek |
+| G20-RENDERING-AND-008 | Present | 20. Rendering and visual effects | Weapon sprites. | parity:G20-RENDERING-AND-008, web:render:gostek |
+| G20-RENDERING-AND-009 | Present | 20. Rendering and visual effects | Character pose matching aim angle. | parity:G20-RENDERING-AND-009, web:render:gostek |
+| G20-RENDERING-AND-010 | Present | 20. Rendering and visual effects | Muzzle flashes. | parity:G20-RENDERING-AND-010, web:render:particles |
+| G20-RENDERING-AND-011 | Present | 20. Rendering and visual effects | Bullet trails. | parity:G20-RENDERING-AND-011, web:render:particles |
+| G20-RENDERING-AND-012 | Present | 20. Rendering and visual effects | Shell casings. | parity:G20-RENDERING-AND-012, web:render:particles |
+| G20-RENDERING-AND-013 | Present | 20. Rendering and visual effects | Sparks. | parity:G20-RENDERING-AND-013, web:render:particles, rust:presentation:impact |
+| G20-RENDERING-AND-014 | Present | 20. Rendering and visual effects | Blood. | parity:G20-RENDERING-AND-014, web:render:particles |
+| G20-RENDERING-AND-015 | Present | 20. Rendering and visual effects | Gore. | parity:G20-RENDERING-AND-015, web:render:particles |
+| G20-RENDERING-AND-016 | Present | 20. Rendering and visual effects | Explosion animation. | parity:G20-RENDERING-AND-016, web:render:particles, rust:presentation:explosion, web:render:visual |
+| G20-RENDERING-AND-017 | Present | 20. Rendering and visual effects | Smoke. | parity:G20-RENDERING-AND-017, web:render:particles |
+| G20-RENDERING-AND-018 | Present | 20. Rendering and visual effects | Fire. | parity:G20-RENDERING-AND-018, web:render:particles |
+| G20-RENDERING-AND-019 | Present | 20. Rendering and visual effects | Burning characters. | parity:G20-RENDERING-AND-019, web:render:objects |
+| G20-RENDERING-AND-020 | Present | 20. Rendering and visual effects | Grenade sprites. | parity:G20-RENDERING-AND-020, web:render:objects |
+| G20-RENDERING-AND-021 | Present | 20. Rendering and visual effects | Arrow sprites. | parity:G20-RENDERING-AND-021, web:render:objects |
+| G20-RENDERING-AND-022 | Present | 20. Rendering and visual effects | Dropped weapons. | parity:G20-RENDERING-AND-022, web:render:objects |
+| G20-RENDERING-AND-023 | Present | 20. Rendering and visual effects | Flags. | parity:G20-RENDERING-AND-023, web:render:objects |
+| G20-RENDERING-AND-024 | Present | 20. Rendering and visual effects | Kits. | parity:G20-RENDERING-AND-024, web:render:objects |
+| G20-RENDERING-AND-025 | Present | 20. Rendering and visual effects | Stationary gun. | parity:G20-RENDERING-AND-025, web:render:objects |
+| G20-RENDERING-AND-026 | Present | 20. Rendering and visual effects | Polygon textures. | parity:G20-RENDERING-AND-026, web:render:map |
+| G20-RENDERING-AND-027 | Present | 20. Rendering and visual effects | Edge textures. | parity:G20-RENDERING-AND-027, web:render:map |
+| G20-RENDERING-AND-028 | Present | 20. Rendering and visual effects | Background scenery. | parity:G20-RENDERING-AND-028, web:render:map |
+| G20-RENDERING-AND-029 | Present | 20. Rendering and visual effects | Foreground scenery. | parity:G20-RENDERING-AND-029, web:render:map |
+| G20-RENDERING-AND-030 | Present | 20. Rendering and visual effects | Rain. | parity:G20-RENDERING-AND-030, web:render:weather |
+| G20-RENDERING-AND-031 | Present | 20. Rendering and visual effects | Snow. | parity:G20-RENDERING-AND-031, web:render:weather |
+| G20-RENDERING-AND-032 | Present | 20. Rendering and visual effects | Wind effects. | parity:G20-RENDERING-AND-032, web:render:weather |
+| G20-RENDERING-AND-033 | Present | 20. Rendering and visual effects | Bullet-time visual effect. | parity:G20-RENDERING-AND-033, web:render:effects |
+| G20-RENDERING-AND-034 | Present | 20. Rendering and visual effects | Predator transparency. | parity:G20-RENDERING-AND-034, web:render:effects |
+| G20-RENDERING-AND-035 | Present | 20. Rendering and visual effects | Berserker overlay. | parity:G20-RENDERING-AND-035, web:render:effects |
+| G20-RENDERING-AND-036 | Present | 20. Rendering and visual effects | Flame God overlay. | parity:G20-RENDERING-AND-036, web:render:effects |
+| G20-RENDERING-AND-037 | Present | 20. Rendering and visual effects | Damage feedback. | parity:G20-RENDERING-AND-037, web:render:effects |
+| G20-RENDERING-AND-038 | Present | 20. Rendering and visual effects | Screen shake where appropriate. | parity:G20-RENDERING-AND-038, web:render:effects |
+| G20-RENDERING-AND-039 | Present | 20. Rendering and visual effects | Resolution scaling. | parity:G20-RENDERING-AND-039, web:render:effects |
+| G20-RENDERING-AND-040 | Present | 20. Rendering and visual effects | Texture filtering settings. | parity:G20-RENDERING-AND-040, web:render:effects |
+| G20-RENDERING-AND-041 | Present | 20. Rendering and visual effects | Mipmapping. | parity:G20-RENDERING-AND-041, web:render:effects |
+| G20-RENDERING-AND-042 | Present | 20. Rendering and visual effects | Low-particle modes. | parity:G20-RENDERING-AND-042, web:render:effects |
+| G20-RENDERING-AND-043 | Present | 20. Rendering and visual effects | Compatibility rendering path. | parity:G20-RENDERING-AND-043, web:render:effects, web:render:leak |
+| G20-RENDERING-AND-044 | Present | 20. Rendering and visual effects | Custom-interface graphics. | parity:G20-RENDERING-AND-044, web:mods:package |
+| G20-RENDERING-AND-045 | Present | 20. Rendering and visual effects | Mod-controlled asset scaling through `mod.ini`-like rules. | parity:G20-RENDERING-AND-045, web:mods:ini |
+| G21-SOUND-AND-001 | Present | 21. Sound and music | Weapon-specific firing sounds. | parity:G21-SOUND-AND-001, web:audio:engine |
+| G21-SOUND-AND-002 | Present | 21. Sound and music | Reload sounds. | parity:G21-SOUND-AND-002, web:audio:engine |
+| G21-SOUND-AND-003 | Present | 21. Sound and music | Empty-weapon sounds. | parity:G21-SOUND-AND-003, web:audio:engine |
+| G21-SOUND-AND-004 | Present | 21. Sound and music | Grenade pin/throw/bounce/explosion sounds. | parity:G21-SOUND-AND-004, web:audio:engine |
+| G21-SOUND-AND-005 | Present | 21. Sound and music | M79 and LAW explosion sounds. | parity:G21-SOUND-AND-005, web:audio:engine |
+| G21-SOUND-AND-006 | Present | 21. Sound and music | Bullet impacts. | parity:G21-SOUND-AND-006, web:audio:engine |
+| G21-SOUND-AND-007 | Present | 21. Sound and music | Ricochets if applicable. | parity:G21-SOUND-AND-007, web:audio:engine |
+| G21-SOUND-AND-008 | Present | 21. Sound and music | Chainsaw loop. | parity:G21-SOUND-AND-008, web:audio:engine |
+| G21-SOUND-AND-009 | Present | 21. Sound and music | Knife sounds. | parity:G21-SOUND-AND-009, web:audio:engine |
+| G21-SOUND-AND-010 | Present | 21. Sound and music | Punch sounds. | parity:G21-SOUND-AND-010, web:audio:engine |
+| G21-SOUND-AND-011 | Present | 21. Sound and music | Flamethrower loop. | parity:G21-SOUND-AND-011, web:audio:engine |
+| G21-SOUND-AND-012 | Present | 21. Sound and music | Character pain. | parity:G21-SOUND-AND-012, web:audio:engine |
+| G21-SOUND-AND-013 | Present | 21. Sound and music | Death sounds. | parity:G21-SOUND-AND-013, web:audio:engine |
+| G21-SOUND-AND-014 | Present | 21. Sound and music | Gore sounds. | parity:G21-SOUND-AND-014, web:audio:engine |
+| G21-SOUND-AND-015 | Present | 21. Sound and music | Footsteps selected by map property. | parity:G21-SOUND-AND-015, web:audio:engine |
+| G21-SOUND-AND-016 | Present | 21. Sound and music | Jetpack sound. | parity:G21-SOUND-AND-016, web:audio:engine |
+| G21-SOUND-AND-017 | Present | 21. Sound and music | Flag pickup/drop/return/capture sounds. | parity:G21-SOUND-AND-017, web:audio:engine |
+| G21-SOUND-AND-018 | Present | 21. Sound and music | Kit pickup sounds. | parity:G21-SOUND-AND-018, web:audio:engine |
+| G21-SOUND-AND-019 | Present | 21. Sound and music | Bonus activation/expiration sounds. | parity:G21-SOUND-AND-019, web:audio:engine |
+| G21-SOUND-AND-020 | Present | 21. Sound and music | UI/menu sounds. | parity:G21-SOUND-AND-020, web:audio:engine |
+| G21-SOUND-AND-021 | Present | 21. Sound and music | Chat/message notification. | parity:G21-SOUND-AND-021, web:audio:engine |
+| G21-SOUND-AND-022 | Present | 21. Sound and music | Distant-battle sounds. | parity:G21-SOUND-AND-022, web:audio:engine |
+| G21-SOUND-AND-023 | Present | 21. Sound and music | Weather sounds. | parity:G21-SOUND-AND-023, web:audio:engine |
+| G21-SOUND-AND-024 | Present | 21. Sound and music | Explosion deafness and whistle effect. | parity:G21-SOUND-AND-024, web:audio:engine |
+| G21-SOUND-AND-025 | Present | 21. Sound and music | Positional audio. | parity:G21-SOUND-AND-025, web:audio:engine |
+| G21-SOUND-AND-026 | Present | 21. Sound and music | Distance attenuation. | parity:G21-SOUND-AND-026, web:audio:engine |
+| G21-SOUND-AND-027 | Present | 21. Sound and music | Master sound volume. | parity:G21-SOUND-AND-027, web:audio:engine |
+| G21-SOUND-AND-028 | Present | 21. Sound and music | Music volume. | parity:G21-SOUND-AND-028, web:audio:engine |
+| G21-SOUND-AND-029 | Present | 21. Sound and music | Music playback. | parity:G21-SOUND-AND-029, web:audio:engine |
+| G21-SOUND-AND-030 | Present | 21. Sound and music | Toggle music. | parity:G21-SOUND-AND-030, web:audio:engine |
+| G21-SOUND-AND-031 | Present | 21. Sound and music | Previous/next track. | parity:G21-SOUND-AND-031, web:audio:engine |
+| G21-SOUND-AND-032 | Present | 21. Sound and music | Sound-quality option. | parity:G21-SOUND-AND-032, web:audio:engine |
+| G21-SOUND-AND-033 | Present | 21. Sound and music | Sound-output/device option where browser APIs permit it. | parity:G21-SOUND-AND-033, web:audio:engine |
+| G22-PLAYER-PROFILES-001 | Present | 22. Player profiles and customization | Persistent player profiles. | parity:G22-PLAYER-PROFILES-001, web:profiles:player |
+| G22-PLAYER-PROFILES-002 | Present | 22. Player profiles and customization | Multiple profiles. | parity:G22-PLAYER-PROFILES-002, web:profiles:player |
+| G22-PLAYER-PROFILES-003 | Present | 22. Player profiles and customization | Profile selection screen. | parity:G22-PLAYER-PROFILES-003, web:profiles:player |
+| G22-PLAYER-PROFILES-004 | Present | 22. Player profiles and customization | Per-profile settings. | parity:G22-PLAYER-PROFILES-004, web:profiles:player |
+| G22-PLAYER-PROFILES-005 | Present | 22. Player profiles and customization | Per-profile controls. | parity:G22-PLAYER-PROFILES-005, web:profiles:player |
+| G22-PLAYER-PROFILES-006 | Present | 22. Player profiles and customization | Per-profile taunts. | parity:G22-PLAYER-PROFILES-006, web:profiles:player |
+| G22-PLAYER-PROFILES-007 | Present | 22. Player profiles and customization | Default secondary weapon. | parity:G22-PLAYER-PROFILES-007, web:profiles:player |
+| G22-PLAYER-PROFILES-008 | Present | 22. Player profiles and customization | Player name constraints matching the intended rules. | parity:G22-PLAYER-PROFILES-008, web:profiles:player |
+| G22-PLAYER-PROFILES-009 | Present | 22. Player profiles and customization | Shirt color. | parity:G22-PLAYER-PROFILES-009, web:profiles:player |
+| G22-PLAYER-PROFILES-010 | Present | 22. Player profiles and customization | Pants color. | parity:G22-PLAYER-PROFILES-010, web:profiles:player |
+| G22-PLAYER-PROFILES-011 | Present | 22. Player profiles and customization | Skin color. | parity:G22-PLAYER-PROFILES-011, web:profiles:player |
+| G22-PLAYER-PROFILES-012 | Present | 22. Player profiles and customization | Hair color. | parity:G22-PLAYER-PROFILES-012, web:profiles:player |
+| G22-PLAYER-PROFILES-013 | Present | 22. Player profiles and customization | Shoe color. | parity:G22-PLAYER-PROFILES-013, web:profiles:player |
+| G22-PLAYER-PROFILES-014 | Present | 22. Player profiles and customization | Jet-flame color. | parity:G22-PLAYER-PROFILES-014, web:profiles:player |
+| G22-PLAYER-PROFILES-015 | Present | 22. Player profiles and customization | Hairstyle. | parity:G22-PLAYER-PROFILES-015, web:profiles:player |
+| G22-PLAYER-PROFILES-016 | Present | 22. Player profiles and customization | Headgear. | parity:G22-PLAYER-PROFILES-016, web:profiles:player |
+| G22-PLAYER-PROFILES-017 | Present | 22. Player profiles and customization | Chain style. | parity:G22-PLAYER-PROFILES-017, web:profiles:player |
+| G22-PLAYER-PROFILES-018 | Present | 22. Player profiles and customization | Interface selection. | parity:G22-PLAYER-PROFILES-018, web:profiles:player |
+| G22-PLAYER-PROFILES-019 | Present | 22. Player profiles and customization | Saved mouse sensitivity. | parity:G22-PLAYER-PROFILES-019, web:profiles:player |
+| G22-PLAYER-PROFILES-020 | Present | 22. Player profiles and customization | Saved sound/music volume. | parity:G22-PLAYER-PROFILES-020, web:profiles:player |
+| G22-PLAYER-PROFILES-021 | Present | 22. Player profiles and customization | Saved graphics settings. | parity:G22-PLAYER-PROFILES-021, web:profiles:player |
+| G22-PLAYER-PROFILES-022 | Present | 22. Player profiles and customization | Saved favorite servers. | parity:G22-PLAYER-PROFILES-022, web:profiles:player |
+| G22-PLAYER-PROFILES-023 | Present | 22. Player profiles and customization | Profile import/export if desired. | parity:G22-PLAYER-PROFILES-023, web:profiles:player |
 | G22-PLAYER-PROFILES-024 | Missing | 22. Player profiles and customization | Account-backed persistence if the game moves beyond local profiles. | parity:G22-PLAYER-PROFILES-024 |
 | G23-CHAT-AND-001 | Present | 23. Chat and taunts | Basic room chat. | server:chat-handler |
 | G23-CHAT-AND-002 | Present | 23. Chat and taunts | Basic chat rate limiting. | server:chat-rate-limit |
-| G23-CHAT-AND-003 | Missing | 23. Chat and taunts | Team chat. | parity:G23-CHAT-AND-003 |
-| G23-CHAT-AND-004 | Missing | 23. Chat and taunts | `^` shorthand for team chat. | parity:G23-CHAT-AND-004 |
-| G23-CHAT-AND-005 | Missing | 23. Chat and taunts | In-game chat overlay. | parity:G23-CHAT-AND-005 |
-| G23-CHAT-AND-006 | Missing | 23. Chat and taunts | Chat while actively playing without interfering with controls. | parity:G23-CHAT-AND-006 |
-| G23-CHAT-AND-007 | Missing | 23. Chat and taunts | Taunt file/configuration. | parity:G23-CHAT-AND-007 |
-| G23-CHAT-AND-008 | Missing | 23. Chat and taunts | Alt+letter and Alt+number taunts. | parity:G23-CHAT-AND-008 |
-| G23-CHAT-AND-009 | Missing | 23. Chat and taunts | Per-profile taunts. | parity:G23-CHAT-AND-009 |
-| G23-CHAT-AND-010 | Missing | 23. Chat and taunts | Command taunts. | parity:G23-CHAT-AND-010 |
-| G23-CHAT-AND-011 | Missing | 23. Chat and taunts | Chat mute. | parity:G23-CHAT-AND-011 |
-| G23-CHAT-AND-012 | Missing | 23. Chat and taunts | Mute by player name. | parity:G23-CHAT-AND-012 |
-| G23-CHAT-AND-013 | Missing | 23. Chat and taunts | Mute by player ID. | parity:G23-CHAT-AND-013 |
-| G23-CHAT-AND-014 | Missing | 23. Chat and taunts | Spam/flood controls beyond the basic one-second limit. | parity:G23-CHAT-AND-014 |
-| G23-CHAT-AND-015 | Missing | 23. Chat and taunts | Profanity/moderation options if required. | parity:G23-CHAT-AND-015 |
-| G23-CHAT-AND-016 | Missing | 23. Chat and taunts | Server announcements. | parity:G23-CHAT-AND-016 |
-| G23-CHAT-AND-017 | Missing | 23. Chat and taunts | Join/leave messages. | parity:G23-CHAT-AND-017 |
-| G23-CHAT-AND-018 | Missing | 23. Chat and taunts | Kill/capture announcements. | parity:G23-CHAT-AND-018 |
-| G23-CHAT-AND-019 | Missing | 23. Chat and taunts | Realistic/Survival chat-visibility rules. | parity:G23-CHAT-AND-019 |
-| G24-PLAYER-COMMANDS-001 | Missing | 24. Player commands | `/KILL` | parity:G24-PLAYER-COMMANDS-001 |
-| G24-PLAYER-COMMANDS-002 | Missing | 24. Player commands | `/BRUTALKILL` | parity:G24-PLAYER-COMMANDS-002 |
-| G24-PLAYER-COMMANDS-003 | Missing | 24. Player commands | `/MERCY` | parity:G24-PLAYER-COMMANDS-003 |
-| G24-PLAYER-COMMANDS-004 | Missing | 24. Player commands | `/SMOKE` | parity:G24-PLAYER-COMMANDS-004 |
-| G24-PLAYER-COMMANDS-005 | Missing | 24. Player commands | `/TABAC` | parity:G24-PLAYER-COMMANDS-005 |
-| G24-PLAYER-COMMANDS-006 | Missing | 24. Player commands | `/TAKEOFF` | parity:G24-PLAYER-COMMANDS-006 |
-| G24-PLAYER-COMMANDS-007 | Missing | 24. Player commands | `/VICTORY` | parity:G24-PLAYER-COMMANDS-007 |
-| G24-PLAYER-COMMANDS-008 | Missing | 24. Player commands | `/PAUSE` | parity:G24-PLAYER-COMMANDS-008 |
-| G24-PLAYER-COMMANDS-009 | Missing | 24. Player commands | `/UNPAUSE` | parity:G24-PLAYER-COMMANDS-009 |
-| G25-SERVER-AND-001 | Missing | 25. Server and administrator commands | `/ADDMAP <map>` | parity:G25-SERVER-AND-001 |
-| G25-SERVER-AND-002 | Missing | 25. Server and administrator commands | `/DELMAP <map>` | parity:G25-SERVER-AND-002 |
-| G25-SERVER-AND-003 | Missing | 25. Server and administrator commands | `/ADDBOT<team> <bot>` | parity:G25-SERVER-AND-003 |
-| G25-SERVER-AND-004 | Missing | 25. Server and administrator commands | `/KICK <player or ID>` | parity:G25-SERVER-AND-004 |
-| G25-SERVER-AND-005 | Missing | 25. Server and administrator commands | `/KICKLAST` | parity:G25-SERVER-AND-005 |
-| G25-SERVER-AND-006 | Missing | 25. Server and administrator commands | `/TEMPBAN <minutes> <IP/player>` | parity:G25-SERVER-AND-006 |
-| G25-SERVER-AND-007 | Missing | 25. Server and administrator commands | `/BAN <player or ID>` | parity:G25-SERVER-AND-007 |
-| G25-SERVER-AND-008 | Missing | 25. Server and administrator commands | `/BANIP <IP>` | parity:G25-SERVER-AND-008 |
-| G25-SERVER-AND-009 | Missing | 25. Server and administrator commands | `/UNBAN <IP>` | parity:G25-SERVER-AND-009 |
-| G25-SERVER-AND-010 | Missing | 25. Server and administrator commands | `/MAP <map>` | parity:G25-SERVER-AND-010 |
-| G25-SERVER-AND-011 | Missing | 25. Server and administrator commands | `/RESTART` | parity:G25-SERVER-AND-011 |
-| G25-SERVER-AND-012 | Missing | 25. Server and administrator commands | `/NEXTMAP` | parity:G25-SERVER-AND-012 |
-| G25-SERVER-AND-013 | Missing | 25. Server and administrator commands | `/ADM <player>` | parity:G25-SERVER-AND-013 |
-| G25-SERVER-AND-014 | Missing | 25. Server and administrator commands | `/ADMIP <IP>` | parity:G25-SERVER-AND-014 |
-| G25-SERVER-AND-015 | Missing | 25. Server and administrator commands | `/UNADM <IP>` | parity:G25-SERVER-AND-015 |
-| G25-SERVER-AND-016 | Missing | 25. Server and administrator commands | `/RESPAWNTIME <seconds>` | parity:G25-SERVER-AND-016 |
-| G25-SERVER-AND-017 | Missing | 25. Server and administrator commands | Admin authentication. | parity:G25-SERVER-AND-017 |
-| G25-SERVER-AND-018 | Missing | 25. Server and administrator commands | Remote-admin support. | parity:G25-SERVER-AND-018 |
-| G25-SERVER-AND-019 | Missing | 25. Server and administrator commands | Persistent ban list. | parity:G25-SERVER-AND-019 |
-| G25-SERVER-AND-020 | Missing | 25. Server and administrator commands | Persistent admin list. | parity:G25-SERVER-AND-020 |
-| G25-SERVER-AND-021 | Missing | 25. Server and administrator commands | Audit log. | parity:G25-SERVER-AND-021 |
-| G25-SERVER-AND-022 | Missing | 25. Server and administrator commands | Command authorization. | parity:G25-SERVER-AND-022 |
-| G25-SERVER-AND-023 | Missing | 25. Server and administrator commands | Player-ID display. | parity:G25-SERVER-AND-023 |
-| G25-SERVER-AND-024 | Missing | 25. Server and administrator commands | Safe command parsing. | parity:G25-SERVER-AND-024 |
-| G25-SERVER-AND-025 | Missing | 25. Server and administrator commands | Command feedback and errors. | parity:G25-SERVER-AND-025 |
-| G25-SERVER-AND-026 | Missing | 25. Server and administrator commands | Map-list loading. | parity:G25-SERVER-AND-026 |
-| G25-SERVER-AND-027 | Missing | 25. Server and administrator commands | Server configuration reload. | parity:G25-SERVER-AND-027 |
-| G25-SERVER-AND-028 | Missing | 25. Server and administrator commands | Lobby re-registration where applicable. | parity:G25-SERVER-AND-028 |
-| G25-SERVER-AND-029 | Missing | 25. Server and administrator commands | Password changes. | parity:G25-SERVER-AND-029 |
-| G25-SERVER-AND-030 | Missing | 25. Server and administrator commands | Maximum-player changes. | parity:G25-SERVER-AND-030 |
-| G25-SERVER-AND-031 | Missing | 25. Server and administrator commands | Locked mode preventing sensitive runtime changes. | parity:G25-SERVER-AND-031 |
-| G26-MATCH-AND-001 | Missing | 26. Match and server settings | Game mode. | parity:G26-MATCH-AND-001 |
-| G26-MATCH-AND-002 | Missing | 26. Match and server settings | Kill/point limit. | parity:G26-MATCH-AND-002 |
-| G26-MATCH-AND-003 | Missing | 26. Match and server settings | Capture limit. | parity:G26-MATCH-AND-003 |
-| G26-MATCH-AND-004 | Missing | 26. Match and server settings | Time limit. | parity:G26-MATCH-AND-004 |
-| G26-MATCH-AND-005 | Missing | 26. Match and server settings | Survival toggle. | parity:G26-MATCH-AND-005 |
-| G26-MATCH-AND-006 | Missing | 26. Match and server settings | Realistic toggle. | parity:G26-MATCH-AND-006 |
-| G26-MATCH-AND-007 | Missing | 26. Match and server settings | Advance toggle. | parity:G26-MATCH-AND-007 |
-| G26-MATCH-AND-008 | Missing | 26. Match and server settings | Map-list looping. | parity:G26-MATCH-AND-008 |
-| G26-MATCH-AND-009 | Missing | 26. Match and server settings | Random bots. | parity:G26-MATCH-AND-009 |
-| G26-MATCH-AND-010 | Missing | 26. Match and server settings | Team-specific bots. | parity:G26-MATCH-AND-010 |
-| G26-MATCH-AND-011 | Missing | 26. Match and server settings | Server name. | parity:G26-MATCH-AND-011 |
-| G26-MATCH-AND-012 | Missing | 26. Match and server settings | Server password. | parity:G26-MATCH-AND-012 |
-| G26-MATCH-AND-013 | Missing | 26. Match and server settings | Maximum players. | parity:G26-MATCH-AND-013 |
-| G26-MATCH-AND-014 | Missing | 26. Match and server settings | Game port. | parity:G26-MATCH-AND-014 |
-| G26-MATCH-AND-015 | Missing | 26. Match and server settings | Public/private listing. | parity:G26-MATCH-AND-015 |
-| G26-MATCH-AND-016 | Missing | 26. Match and server settings | Team balancing. | parity:G26-MATCH-AND-016 |
-| G26-MATCH-AND-017 | Missing | 26. Match and server settings | Maximum allowed ping. | parity:G26-MATCH-AND-017 |
-| G26-MATCH-AND-018 | Missing | 26. Match and server settings | Ping-kick behavior. | parity:G26-MATCH-AND-018 |
-| G26-MATCH-AND-019 | Missing | 26. Match and server settings | Welcome/server message. | parity:G26-MATCH-AND-019 |
-| G26-MATCH-AND-020 | Missing | 26. Match and server settings | Server contact link. | parity:G26-MATCH-AND-020 |
-| G26-MATCH-AND-021 | Missing | 26. Match and server settings | Dedicated-server configuration. | parity:G26-MATCH-AND-021 |
-| G26-MATCH-AND-022 | Missing | 26. Match and server settings | Custom map list. | parity:G26-MATCH-AND-022 |
-| G26-MATCH-AND-023 | Missing | 26. Match and server settings | Custom weapon mod. | parity:G26-MATCH-AND-023 |
-| G26-MATCH-AND-024 | Missing | 26. Match and server settings | Friendly fire. | parity:G26-MATCH-AND-024 |
-| G26-MATCH-AND-025 | Missing | 26. Match and server settings | Respawn time. | parity:G26-MATCH-AND-025 |
-| G26-MATCH-AND-026 | Missing | 26. Match and server settings | Bonus frequency/enabled state. | parity:G26-MATCH-AND-026 |
-| G26-MATCH-AND-027 | Missing | 26. Match and server settings | Spectator limits. | parity:G26-MATCH-AND-027 |
-| G26-MATCH-AND-028 | Missing | 26. Match and server settings | Admin password/authentication. | parity:G26-MATCH-AND-028 |
-| G26-MATCH-AND-029 | Missing | 26. Match and server settings | Logging options. | parity:G26-MATCH-AND-029 |
-| G26-MATCH-AND-030 | Missing | 26. Match and server settings | Name. | parity:G26-MATCH-AND-030 |
-| G26-MATCH-AND-031 | Missing | 26. Match and server settings | Appearance. | parity:G26-MATCH-AND-031 |
-| G26-MATCH-AND-032 | Missing | 26. Match and server settings | Default secondary. | parity:G26-MATCH-AND-032 |
-| G26-MATCH-AND-033 | Missing | 26. Match and server settings | Background override. | parity:G26-MATCH-AND-033 |
-| G26-MATCH-AND-034 | Missing | 26. Match and server settings | Controls. | parity:G26-MATCH-AND-034 |
-| G26-MATCH-AND-035 | Missing | 26. Match and server settings | Mouse sensitivity. | parity:G26-MATCH-AND-035 |
-| G26-MATCH-AND-036 | Missing | 26. Match and server settings | Interface selection. | parity:G26-MATCH-AND-036 |
-| G26-MATCH-AND-037 | Missing | 26. Match and server settings | Player indicator. | parity:G26-MATCH-AND-037 |
-| G26-MATCH-AND-038 | Missing | 26. Match and server settings | Sniper line. | parity:G26-MATCH-AND-038 |
-| G26-MATCH-AND-039 | Missing | 26. Match and server settings | Fullscreen/windowed. | parity:G26-MATCH-AND-039 |
-| G26-MATCH-AND-040 | Missing | 26. Match and server settings | Display resolution. | parity:G26-MATCH-AND-040 |
-| G26-MATCH-AND-041 | Missing | 26. Match and server settings | Desktop resolution. | parity:G26-MATCH-AND-041 |
-| G26-MATCH-AND-042 | Missing | 26. Match and server settings | Interface scaling. | parity:G26-MATCH-AND-042 |
-| G26-MATCH-AND-043 | Missing | 26. Match and server settings | Particle limit. | parity:G26-MATCH-AND-043 |
-| G26-MATCH-AND-044 | Missing | 26. Match and server settings | Bullet trails. | parity:G26-MATCH-AND-044 |
-| G26-MATCH-AND-045 | Missing | 26. Match and server settings | Weather rendering. | parity:G26-MATCH-AND-045 |
-| G26-MATCH-AND-046 | Missing | 26. Match and server settings | Texture filtering. | parity:G26-MATCH-AND-046 |
-| G26-MATCH-AND-047 | Missing | 26. Match and server settings | Resolution filtering. | parity:G26-MATCH-AND-047 |
-| G26-MATCH-AND-048 | Missing | 26. Match and server settings | Mipmapping. | parity:G26-MATCH-AND-048 |
-| G26-MATCH-AND-049 | Missing | 26. Match and server settings | Compatibility/fixed-pipeline equivalent. | parity:G26-MATCH-AND-049 |
-| G26-MATCH-AND-050 | Missing | 26. Match and server settings | Intro playback. | parity:G26-MATCH-AND-050 |
-| G26-MATCH-AND-051 | Missing | 26. Match and server settings | Final-score screenshot. | parity:G26-MATCH-AND-051 |
-| G26-MATCH-AND-052 | Missing | 26. Match and server settings | Clanmatch color behavior. | parity:G26-MATCH-AND-052 |
-| G26-MATCH-AND-053 | Missing | 26. Match and server settings | Frame-rate limit or VSync. | parity:G26-MATCH-AND-053 |
-| G26-MATCH-AND-054 | Missing | 26. Match and server settings | Performance statistics. | parity:G26-MATCH-AND-054 |
-| G26-MATCH-AND-055 | Missing | 26. Match and server settings | Sound volume. | parity:G26-MATCH-AND-055 |
-| G26-MATCH-AND-056 | Missing | 26. Match and server settings | Music volume. | parity:G26-MATCH-AND-056 |
-| G26-MATCH-AND-057 | Missing | 26. Match and server settings | Sound quality. | parity:G26-MATCH-AND-057 |
-| G26-MATCH-AND-058 | Missing | 26. Match and server settings | Output device. | parity:G26-MATCH-AND-058 |
-| G26-MATCH-AND-059 | Missing | 26. Match and server settings | Explosion effect. | parity:G26-MATCH-AND-059 |
-| G26-MATCH-AND-060 | Missing | 26. Match and server settings | Distant battle. | parity:G26-MATCH-AND-060 |
-| G26-MATCH-AND-061 | Missing | 26. Match and server settings | Game music. | parity:G26-MATCH-AND-061 |
-| G27-LOBBY-AND-001 | Missing | 27. Lobby and room browser | Server/room refresh. | parity:G27-LOBBY-AND-001 |
-| G27-LOBBY-AND-002 | Missing | 27. Lobby and room browser | Cancel refresh. | parity:G27-LOBBY-AND-002 |
-| G27-LOBBY-AND-003 | Missing | 27. Lobby and room browser | Ping measurement. | parity:G27-LOBBY-AND-003 |
-| G27-LOBBY-AND-004 | Missing | 27. Lobby and room browser | Ping-all action. | parity:G27-LOBBY-AND-004 |
-| G27-LOBBY-AND-005 | Missing | 27. Lobby and room browser | Ping column. | parity:G27-LOBBY-AND-005 |
-| G27-LOBBY-AND-006 | Missing | 27. Lobby and room browser | Player count. | parity:G27-LOBBY-AND-006 |
-| G27-LOBBY-AND-007 | Missing | 27. Lobby and room browser | Maximum players. | parity:G27-LOBBY-AND-007 |
-| G27-LOBBY-AND-008 | Missing | 27. Lobby and room browser | Game mode. | parity:G27-LOBBY-AND-008 |
-| G27-LOBBY-AND-009 | Missing | 27. Lobby and room browser | Map name. | parity:G27-LOBBY-AND-009 |
-| G27-LOBBY-AND-010 | Missing | 27. Lobby and room browser | Country/region if desired. | parity:G27-LOBBY-AND-010 |
-| G27-LOBBY-AND-011 | Missing | 27. Lobby and room browser | Password indicator. | parity:G27-LOBBY-AND-011 |
-| G27-LOBBY-AND-012 | Missing | 27. Lobby and room browser | Realistic indicator. | parity:G27-LOBBY-AND-012 |
-| G27-LOBBY-AND-013 | Missing | 27. Lobby and room browser | Survival indicator. | parity:G27-LOBBY-AND-013 |
-| G27-LOBBY-AND-014 | Missing | 27. Lobby and room browser | Advance indicator. | parity:G27-LOBBY-AND-014 |
-| G27-LOBBY-AND-015 | Missing | 27. Lobby and room browser | Weapon-mod indicator. | parity:G27-LOBBY-AND-015 |
-| G27-LOBBY-AND-016 | Missing | 27. Lobby and room browser | Version compatibility. | parity:G27-LOBBY-AND-016 |
-| G27-LOBBY-AND-017 | Missing | 27. Lobby and room browser | Favorites. | parity:G27-LOBBY-AND-017 |
-| G27-LOBBY-AND-018 | Missing | 27. Lobby and room browser | Favorite add/remove. | parity:G27-LOBBY-AND-018 |
-| G27-LOBBY-AND-019 | Missing | 27. Lobby and room browser | Direct IP/hostname join if supported. | parity:G27-LOBBY-AND-019 |
-| G27-LOBBY-AND-020 | Missing | 27. Lobby and room browser | Port input. | parity:G27-LOBBY-AND-020 |
-| G27-LOBBY-AND-021 | Missing | 27. Lobby and room browser | Password input. | parity:G27-LOBBY-AND-021 |
-| G27-LOBBY-AND-022 | Missing | 27. Lobby and room browser | Spectator join. | parity:G27-LOBBY-AND-022 |
-| G27-LOBBY-AND-023 | Missing | 27. Lobby and room browser | Sort and filter. | parity:G27-LOBBY-AND-023 |
-| G27-LOBBY-AND-024 | Missing | 27. Lobby and room browser | Search. | parity:G27-LOBBY-AND-024 |
-| G27-LOBBY-AND-025 | Missing | 27. Lobby and room browser | Full-room filtering. | parity:G27-LOBBY-AND-025 |
-| G27-LOBBY-AND-026 | Missing | 27. Lobby and room browser | Empty-room filtering. | parity:G27-LOBBY-AND-026 |
-| G27-LOBBY-AND-027 | Missing | 27. Lobby and room browser | Public lobby registration. | parity:G27-LOBBY-AND-027 |
-| G27-LOBBY-AND-028 | Missing | 27. Lobby and room browser | Reliable server discovery. | parity:G27-LOBBY-AND-028 |
-| G27-LOBBY-AND-029 | Missing | 27. Lobby and room browser | Join/download progress. | parity:G27-LOBBY-AND-029 |
-| G27-LOBBY-AND-030 | Missing | 27. Lobby and room browser | Cancel connection/download. | parity:G27-LOBBY-AND-030 |
-| G27-LOBBY-AND-031 | Missing | 27. Lobby and room browser | Better reconnect state. | parity:G27-LOBBY-AND-031 |
-| G27-LOBBY-AND-032 | Missing | 27. Lobby and room browser | Room ownership/host settings. | parity:G27-LOBBY-AND-032 |
-| G27-LOBBY-AND-033 | Missing | 27. Lobby and room browser | Room deletion or expiry controls. | parity:G27-LOBBY-AND-033 |
-| G27-LOBBY-AND-034 | Missing | 27. Lobby and room browser | Password-protected rooms in addition to invite codes. | parity:G27-LOBBY-AND-034 |
-| G27-LOBBY-AND-035 | Missing | 27. Lobby and room browser | Team choice after joining. | parity:G27-LOBBY-AND-035 |
-| G27-LOBBY-AND-036 | Missing | 27. Lobby and room browser | Late-join rules. | parity:G27-LOBBY-AND-036 |
-| G27-LOBBY-AND-037 | Missing | 27. Lobby and room browser | Abuse-resistant room creation. | parity:G27-LOBBY-AND-037 |
-| G27-LOBBY-AND-038 | Missing | 27. Lobby and room browser | Rate limiting for connection and room operations. | parity:G27-LOBBY-AND-038 |
-| G28-SPECTATING-001 | Missing | 28. Spectating | Spectator team. | parity:G28-SPECTATING-001 |
-| G28-SPECTATING-002 | Missing | 28. Spectating | Join directly as spectator. | parity:G28-SPECTATING-002 |
-| G28-SPECTATING-003 | Missing | 28. Spectating | Switch followed player. | parity:G28-SPECTATING-003 |
-| G28-SPECTATING-004 | Missing | 28. Spectating | Previous/next player. | parity:G28-SPECTATING-004 |
-| G28-SPECTATING-005 | Missing | 28. Spectating | Free camera if desired. | parity:G28-SPECTATING-005 |
-| G28-SPECTATING-006 | Missing | 28. Spectating | Spectator HUD. | parity:G28-SPECTATING-006 |
-| G28-SPECTATING-007 | Missing | 28. Spectating | Spectator scoreboard. | parity:G28-SPECTATING-007 |
-| G28-SPECTATING-008 | Missing | 28. Spectating | Spectator chat restrictions. | parity:G28-SPECTATING-008 |
-| G28-SPECTATING-009 | Missing | 28. Spectating | Realistic visibility restrictions. | parity:G28-SPECTATING-009 |
-| G28-SPECTATING-010 | Missing | 28. Spectating | Survival restrictions. | parity:G28-SPECTATING-010 |
-| G28-SPECTATING-011 | Missing | 28. Spectating | Followed-player minimap/visibility behavior. | parity:G28-SPECTATING-011 |
-| G28-SPECTATING-012 | Missing | 28. Spectating | Delay option for competitive matches. | parity:G28-SPECTATING-012 |
-| G29-SCORING-AND-001 | Missing | 29. Scoring and statistics | Correct scoring for every game mode. | parity:G29-SCORING-AND-001 |
-| G29-SCORING-AND-002 | Missing | 29. Scoring and statistics | Match time. | parity:G29-SCORING-AND-002 |
-| G29-SCORING-AND-003 | Missing | 29. Scoring and statistics | Individual points. | parity:G29-SCORING-AND-003 |
-| G29-SCORING-AND-004 | Missing | 29. Scoring and statistics | Team points. | parity:G29-SCORING-AND-004 |
-| G29-SCORING-AND-005 | Missing | 29. Scoring and statistics | Captures. | parity:G29-SCORING-AND-005 |
-| G29-SCORING-AND-006 | Missing | 29. Scoring and statistics | Flag returns. | parity:G29-SCORING-AND-006 |
-| G29-SCORING-AND-007 | Missing | 29. Scoring and statistics | Current server rank. | parity:G29-SCORING-AND-007 |
-| G29-SCORING-AND-008 | Missing | 29. Scoring and statistics | Score difference from leader. | parity:G29-SCORING-AND-008 |
-| G29-SCORING-AND-009 | Missing | 29. Scoring and statistics | Kill/point/capture limit display. | parity:G29-SCORING-AND-009 |
-| G29-SCORING-AND-010 | Missing | 29. Scoring and statistics | Weapon statistics for the current round. | parity:G29-SCORING-AND-010 |
-| G29-SCORING-AND-011 | Missing | 29. Scoring and statistics | Shots fired. | parity:G29-SCORING-AND-011 |
-| G29-SCORING-AND-012 | Missing | 29. Scoring and statistics | Hits. | parity:G29-SCORING-AND-012 |
-| G29-SCORING-AND-013 | Missing | 29. Scoring and statistics | Accuracy. | parity:G29-SCORING-AND-013 |
-| G29-SCORING-AND-014 | Missing | 29. Scoring and statistics | Kills per weapon. | parity:G29-SCORING-AND-014 |
-| G29-SCORING-AND-015 | Missing | 29. Scoring and statistics | Deaths per weapon/cause. | parity:G29-SCORING-AND-015 |
-| G29-SCORING-AND-016 | Missing | 29. Scoring and statistics | Headshots. | parity:G29-SCORING-AND-016 |
-| G29-SCORING-AND-017 | Missing | 29. Scoring and statistics | Suicides. | parity:G29-SCORING-AND-017 |
-| G29-SCORING-AND-018 | Missing | 29. Scoring and statistics | Teamkills. | parity:G29-SCORING-AND-018 |
-| G29-SCORING-AND-019 | Missing | 29. Scoring and statistics | Objective statistics. | parity:G29-SCORING-AND-019 |
-| G29-SCORING-AND-020 | Missing | 29. Scoring and statistics | End-of-round summary. | parity:G29-SCORING-AND-020 |
-| G29-SCORING-AND-021 | Missing | 29. Scoring and statistics | Match history. | parity:G29-SCORING-AND-021 |
-| G29-SCORING-AND-022 | Missing | 29. Scoring and statistics | Persistent player statistics if desired. | parity:G29-SCORING-AND-022 |
+| G23-CHAT-AND-003 | Present | 23. Chat and taunts | Team chat. | parity:G23-CHAT-AND-003, rust:chat:visibility |
+| G23-CHAT-AND-004 | Present | 23. Chat and taunts | `^` shorthand for team chat. | parity:G23-CHAT-AND-004, rust:chat:visibility |
+| G23-CHAT-AND-005 | Present | 23. Chat and taunts | In-game chat overlay. | parity:G23-CHAT-AND-005, rust:chat:visibility |
+| G23-CHAT-AND-006 | Present | 23. Chat and taunts | Chat while actively playing without interfering with controls. | parity:G23-CHAT-AND-006, rust:chat:visibility |
+| G23-CHAT-AND-007 | Present | 23. Chat and taunts | Taunt file/configuration. | parity:G23-CHAT-AND-007, rust:chat:visibility |
+| G23-CHAT-AND-008 | Present | 23. Chat and taunts | Alt+letter and Alt+number taunts. | parity:G23-CHAT-AND-008, rust:chat:visibility |
+| G23-CHAT-AND-009 | Present | 23. Chat and taunts | Per-profile taunts. | parity:G23-CHAT-AND-009, rust:chat:visibility |
+| G23-CHAT-AND-010 | Present | 23. Chat and taunts | Command taunts. | parity:G23-CHAT-AND-010, rust:chat:visibility |
+| G23-CHAT-AND-011 | Present | 23. Chat and taunts | Chat mute. | parity:G23-CHAT-AND-011, rust:chat:visibility |
+| G23-CHAT-AND-012 | Present | 23. Chat and taunts | Mute by player name. | parity:G23-CHAT-AND-012, rust:chat:visibility |
+| G23-CHAT-AND-013 | Present | 23. Chat and taunts | Mute by player ID. | parity:G23-CHAT-AND-013, rust:chat:visibility |
+| G23-CHAT-AND-014 | Present | 23. Chat and taunts | Spam/flood controls beyond the basic one-second limit. | parity:G23-CHAT-AND-014, rust:chat:visibility |
+| G23-CHAT-AND-015 | Present | 23. Chat and taunts | Profanity/moderation options if required. | rust:chat:censor |
+| G23-CHAT-AND-016 | Present | 23. Chat and taunts | Server announcements. | parity:G23-CHAT-AND-016, rust:chat:visibility |
+| G23-CHAT-AND-017 | Present | 23. Chat and taunts | Join/leave messages. | parity:G23-CHAT-AND-017, rust:chat:visibility |
+| G23-CHAT-AND-018 | Present | 23. Chat and taunts | Kill/capture announcements. | parity:G23-CHAT-AND-018, rust:chat:visibility |
+| G23-CHAT-AND-019 | Present | 23. Chat and taunts | Realistic/Survival chat-visibility rules. | parity:G23-CHAT-AND-019, rust:chat:visibility |
+| G24-PLAYER-COMMANDS-001 | Present | 24. Player commands | `/KILL` | parity:G24-PLAYER-COMMANDS-001, rust:commands:parse |
+| G24-PLAYER-COMMANDS-002 | Present | 24. Player commands | `/BRUTALKILL` | parity:G24-PLAYER-COMMANDS-002, rust:commands:parse |
+| G24-PLAYER-COMMANDS-003 | Present | 24. Player commands | `/MERCY` | parity:G24-PLAYER-COMMANDS-003, rust:commands:parse |
+| G24-PLAYER-COMMANDS-004 | Present | 24. Player commands | `/SMOKE` | parity:G24-PLAYER-COMMANDS-004, rust:commands:parse |
+| G24-PLAYER-COMMANDS-005 | Present | 24. Player commands | `/TABAC` | parity:G24-PLAYER-COMMANDS-005, rust:commands:parse |
+| G24-PLAYER-COMMANDS-006 | Present | 24. Player commands | `/TAKEOFF` | parity:G24-PLAYER-COMMANDS-006, rust:commands:parse |
+| G24-PLAYER-COMMANDS-007 | Present | 24. Player commands | `/VICTORY` | parity:G24-PLAYER-COMMANDS-007, rust:commands:parse |
+| G24-PLAYER-COMMANDS-008 | Present | 24. Player commands | `/PAUSE` | parity:G24-PLAYER-COMMANDS-008, rust:commands:parse |
+| G24-PLAYER-COMMANDS-009 | Present | 24. Player commands | `/UNPAUSE` | parity:G24-PLAYER-COMMANDS-009, rust:commands:parse |
+| G25-SERVER-AND-001 | Present | 25. Server and administrator commands | `/ADDMAP <map>` | parity:G25-SERVER-AND-001, rust:admin:parse |
+| G25-SERVER-AND-002 | Present | 25. Server and administrator commands | `/DELMAP <map>` | parity:G25-SERVER-AND-002, rust:admin:parse |
+| G25-SERVER-AND-003 | Present | 25. Server and administrator commands | `/ADDBOT<team> <bot>` | parity:G25-SERVER-AND-003, rust:admin:parse |
+| G25-SERVER-AND-004 | Present | 25. Server and administrator commands | `/KICK <player or ID>` | parity:G25-SERVER-AND-004, rust:admin:parse |
+| G25-SERVER-AND-005 | Present | 25. Server and administrator commands | `/KICKLAST` | parity:G25-SERVER-AND-005, rust:admin:parse |
+| G25-SERVER-AND-006 | Present | 25. Server and administrator commands | `/TEMPBAN <minutes> <IP/player>` | parity:G25-SERVER-AND-006, rust:admin:parse |
+| G25-SERVER-AND-007 | Present | 25. Server and administrator commands | `/BAN <player or ID>` | parity:G25-SERVER-AND-007, rust:admin:parse |
+| G25-SERVER-AND-008 | Present | 25. Server and administrator commands | `/BANIP <IP>` | parity:G25-SERVER-AND-008, rust:admin:parse |
+| G25-SERVER-AND-009 | Present | 25. Server and administrator commands | `/UNBAN <IP>` | parity:G25-SERVER-AND-009, rust:admin:parse |
+| G25-SERVER-AND-010 | Present | 25. Server and administrator commands | `/MAP <map>` | parity:G25-SERVER-AND-010, rust:admin:parse |
+| G25-SERVER-AND-011 | Present | 25. Server and administrator commands | `/RESTART` | parity:G25-SERVER-AND-011, rust:admin:parse |
+| G25-SERVER-AND-012 | Present | 25. Server and administrator commands | `/NEXTMAP` | parity:G25-SERVER-AND-012, rust:admin:parse |
+| G25-SERVER-AND-013 | Present | 25. Server and administrator commands | `/ADM <player>` | parity:G25-SERVER-AND-013, rust:admin:parse |
+| G25-SERVER-AND-014 | Present | 25. Server and administrator commands | `/ADMIP <IP>` | parity:G25-SERVER-AND-014, rust:admin:parse |
+| G25-SERVER-AND-015 | Present | 25. Server and administrator commands | `/UNADM <IP>` | parity:G25-SERVER-AND-015, rust:admin:parse |
+| G25-SERVER-AND-016 | Present | 25. Server and administrator commands | `/RESPAWNTIME <seconds>` | parity:G25-SERVER-AND-016, rust:admin:parse |
+| G25-SERVER-AND-017 | Present | 25. Server and administrator commands | Admin authentication. | parity:G25-SERVER-AND-017, rust:admin:parse |
+| G25-SERVER-AND-018 | Present | 25. Server and administrator commands | Remote-admin support. | parity:G25-SERVER-AND-018, rust:admin:parse |
+| G25-SERVER-AND-019 | Present | 25. Server and administrator commands | Persistent ban list. | parity:G25-SERVER-AND-019, rust:admin:parse |
+| G25-SERVER-AND-020 | Present | 25. Server and administrator commands | Persistent admin list. | parity:G25-SERVER-AND-020, rust:admin:parse |
+| G25-SERVER-AND-021 | Present | 25. Server and administrator commands | Audit log. | parity:G25-SERVER-AND-021, rust:admin:parse |
+| G25-SERVER-AND-022 | Present | 25. Server and administrator commands | Command authorization. | parity:G25-SERVER-AND-022, rust:admin:parse |
+| G25-SERVER-AND-023 | Present | 25. Server and administrator commands | Player-ID display. | parity:G25-SERVER-AND-023, rust:admin:parse |
+| G25-SERVER-AND-024 | Present | 25. Server and administrator commands | Safe command parsing. | parity:G25-SERVER-AND-024, rust:admin:parse |
+| G25-SERVER-AND-025 | Present | 25. Server and administrator commands | Command feedback and errors. | parity:G25-SERVER-AND-025, rust:admin:parse |
+| G25-SERVER-AND-026 | Present | 25. Server and administrator commands | Map-list loading. | parity:G25-SERVER-AND-026, rust:admin:parse |
+| G25-SERVER-AND-027 | Present | 25. Server and administrator commands | Server configuration reload. | parity:G25-SERVER-AND-027, rust:admin:parse |
+| G25-SERVER-AND-028 | Present | 25. Server and administrator commands | Lobby re-registration where applicable. | parity:G25-SERVER-AND-028, rust:admin:parse |
+| G25-SERVER-AND-029 | Present | 25. Server and administrator commands | Password changes. | parity:G25-SERVER-AND-029, rust:admin:parse |
+| G25-SERVER-AND-030 | Present | 25. Server and administrator commands | Maximum-player changes. | parity:G25-SERVER-AND-030, rust:admin:parse |
+| G25-SERVER-AND-031 | Present | 25. Server and administrator commands | Locked mode preventing sensitive runtime changes. | parity:G25-SERVER-AND-031, rust:admin:parse |
+| G26-MATCH-AND-001 | Present | 26. Match and server settings | Game mode. | parity:G26-MATCH-AND-001, rust:config:validate |
+| G26-MATCH-AND-002 | Present | 26. Match and server settings | Kill/point limit. | parity:G26-MATCH-AND-002, rust:config:validate |
+| G26-MATCH-AND-003 | Present | 26. Match and server settings | Capture limit. | parity:G26-MATCH-AND-003, rust:config:validate |
+| G26-MATCH-AND-004 | Present | 26. Match and server settings | Time limit. | parity:G26-MATCH-AND-004, rust:config:validate |
+| G26-MATCH-AND-005 | Present | 26. Match and server settings | Survival toggle. | parity:G26-MATCH-AND-005, rust:config:validate |
+| G26-MATCH-AND-006 | Present | 26. Match and server settings | Realistic toggle. | parity:G26-MATCH-AND-006, rust:config:validate |
+| G26-MATCH-AND-007 | Present | 26. Match and server settings | Advance toggle. | parity:G26-MATCH-AND-007, rust:config:validate |
+| G26-MATCH-AND-008 | Present | 26. Match and server settings | Map-list looping. | parity:G26-MATCH-AND-008, rust:config:validate |
+| G26-MATCH-AND-009 | Present | 26. Match and server settings | Random bots. | parity:G26-MATCH-AND-009, rust:config:validate |
+| G26-MATCH-AND-010 | Present | 26. Match and server settings | Team-specific bots. | parity:G26-MATCH-AND-010, rust:config:validate |
+| G26-MATCH-AND-011 | Present | 26. Match and server settings | Server name. | parity:G26-MATCH-AND-011, rust:config:validate |
+| G26-MATCH-AND-012 | Present | 26. Match and server settings | Server password. | parity:G26-MATCH-AND-012, rust:config:validate |
+| G26-MATCH-AND-013 | Present | 26. Match and server settings | Maximum players. | parity:G26-MATCH-AND-013, rust:config:validate |
+| G26-MATCH-AND-014 | Present | 26. Match and server settings | Game port. | parity:G26-MATCH-AND-014, rust:config:validate |
+| G26-MATCH-AND-015 | Present | 26. Match and server settings | Public/private listing. | parity:G26-MATCH-AND-015, rust:config:validate |
+| G26-MATCH-AND-016 | Present | 26. Match and server settings | Team balancing. | parity:G26-MATCH-AND-016, rust:config:validate |
+| G26-MATCH-AND-017 | Present | 26. Match and server settings | Maximum allowed ping. | rust:ping:kick, rust:config:validate |
+| G26-MATCH-AND-018 | Present | 26. Match and server settings | Ping-kick behavior. | rust:ping:kick |
+| G26-MATCH-AND-019 | Present | 26. Match and server settings | Welcome/server message. | parity:G26-MATCH-AND-019, rust:config:validate |
+| G26-MATCH-AND-020 | Present | 26. Match and server settings | Server contact link. | parity:G26-MATCH-AND-020, rust:config:validate |
+| G26-MATCH-AND-021 | Present | 26. Match and server settings | Dedicated-server configuration. | parity:G26-MATCH-AND-021, rust:config:validate |
+| G26-MATCH-AND-022 | Present | 26. Match and server settings | Custom map list. | parity:G26-MATCH-AND-022, rust:config:validate |
+| G26-MATCH-AND-023 | Present | 26. Match and server settings | Custom weapon mod. | parity:G26-MATCH-AND-023, rust:config:validate |
+| G26-MATCH-AND-024 | Present | 26. Match and server settings | Friendly fire. | parity:G26-MATCH-AND-024, rust:config:validate |
+| G26-MATCH-AND-025 | Present | 26. Match and server settings | Respawn time. | parity:G26-MATCH-AND-025, rust:config:validate |
+| G26-MATCH-AND-026 | Present | 26. Match and server settings | Bonus frequency/enabled state. | parity:G26-MATCH-AND-026, rust:config:validate |
+| G26-MATCH-AND-027 | Present | 26. Match and server settings | Spectator limits. | parity:G26-MATCH-AND-027, rust:config:validate |
+| G26-MATCH-AND-028 | Present | 26. Match and server settings | Admin password/authentication. | parity:G26-MATCH-AND-028, rust:config:validate |
+| G26-MATCH-AND-029 | Present | 26. Match and server settings | Logging options. | parity:G26-MATCH-AND-029, rust:config:validate |
+| G26-MATCH-AND-030 | Present | 26. Match and server settings | Name. | parity:G26-MATCH-AND-030, rust:config:validate |
+| G26-MATCH-AND-031 | Present | 26. Match and server settings | Appearance. | parity:G26-MATCH-AND-031, rust:config:validate |
+| G26-MATCH-AND-032 | Present | 26. Match and server settings | Default secondary. | parity:G26-MATCH-AND-032, rust:config:validate |
+| G26-MATCH-AND-033 | Present | 26. Match and server settings | Background override. | web:render:visual |
+| G26-MATCH-AND-034 | Present | 26. Match and server settings | Controls. | parity:G26-MATCH-AND-034, web:profiles:player |
+| G26-MATCH-AND-035 | Present | 26. Match and server settings | Mouse sensitivity. | parity:G26-MATCH-AND-035, web:profiles:player |
+| G26-MATCH-AND-036 | Present | 26. Match and server settings | Interface selection. | parity:G26-MATCH-AND-036, web:profiles:player |
+| G26-MATCH-AND-037 | Present | 26. Match and server settings | Player indicator. | parity:G26-MATCH-AND-037, web:profiles:player |
+| G26-MATCH-AND-038 | Present | 26. Match and server settings | Sniper line. | parity:G26-MATCH-AND-038, web:profiles:player |
+| G26-MATCH-AND-039 | Present | 26. Match and server settings | Fullscreen/windowed. | web:screens:flow |
+| G26-MATCH-AND-040 | Present | 26. Match and server settings | Display resolution. | web:render:visual |
+| G26-MATCH-AND-041 | Present | 26. Match and server settings | Desktop resolution. | web:screens:flow |
+| G26-MATCH-AND-042 | Present | 26. Match and server settings | Interface scaling. | parity:G26-MATCH-AND-042, web:render:effects |
+| G26-MATCH-AND-043 | Present | 26. Match and server settings | Particle limit. | parity:G26-MATCH-AND-043, web:render:effects |
+| G26-MATCH-AND-044 | Present | 26. Match and server settings | Bullet trails. | parity:G26-MATCH-AND-044, web:render:effects |
+| G26-MATCH-AND-045 | Present | 26. Match and server settings | Weather rendering. | parity:G26-MATCH-AND-045, web:render:effects |
+| G26-MATCH-AND-046 | Present | 26. Match and server settings | Texture filtering. | parity:G26-MATCH-AND-046, web:render:effects |
+| G26-MATCH-AND-047 | Present | 26. Match and server settings | Resolution filtering. | parity:G26-MATCH-AND-047, web:render:effects |
+| G26-MATCH-AND-048 | Present | 26. Match and server settings | Mipmapping. | parity:G26-MATCH-AND-048, web:render:effects |
+| G26-MATCH-AND-049 | Present | 26. Match and server settings | Compatibility/fixed-pipeline equivalent. | parity:G26-MATCH-AND-049, web:render:effects |
+| G26-MATCH-AND-050 | Present | 26. Match and server settings | Intro playback. | web:screens:flow |
+| G26-MATCH-AND-051 | Present | 26. Match and server settings | Final-score screenshot. | web:input:screenshot |
+| G26-MATCH-AND-052 | Present | 26. Match and server settings | Clanmatch color behavior. | web:hud:status |
+| G26-MATCH-AND-053 | Present | 26. Match and server settings | Frame-rate limit or VSync. | web:render:visual |
+| G26-MATCH-AND-054 | Present | 26. Match and server settings | Performance statistics. | parity:G26-MATCH-AND-054, web:audio:engine |
+| G26-MATCH-AND-055 | Present | 26. Match and server settings | Sound volume. | parity:G26-MATCH-AND-055, web:audio:engine |
+| G26-MATCH-AND-056 | Present | 26. Match and server settings | Music volume. | parity:G26-MATCH-AND-056, web:audio:engine |
+| G26-MATCH-AND-057 | Present | 26. Match and server settings | Sound quality. | parity:G26-MATCH-AND-057, web:audio:engine |
+| G26-MATCH-AND-058 | Present | 26. Match and server settings | Output device. | parity:G26-MATCH-AND-058, web:audio:engine |
+| G26-MATCH-AND-059 | Present | 26. Match and server settings | Explosion effect. | parity:G26-MATCH-AND-059, web:audio:engine |
+| G26-MATCH-AND-060 | Present | 26. Match and server settings | Distant battle. | parity:G26-MATCH-AND-060, web:audio:engine |
+| G26-MATCH-AND-061 | Present | 26. Match and server settings | Game music. | parity:G26-MATCH-AND-061, web:audio:engine |
+| G27-LOBBY-AND-001 | Present | 27. Lobby and room browser | Server/room refresh. | parity:G27-LOBBY-AND-001, web:lobby:filter |
+| G27-LOBBY-AND-002 | Present | 27. Lobby and room browser | Cancel refresh. | parity:G27-LOBBY-AND-002, web:lobby:filter |
+| G27-LOBBY-AND-003 | Present | 27. Lobby and room browser | Ping measurement. | parity:G27-LOBBY-AND-003, web:lobby:filter |
+| G27-LOBBY-AND-004 | Present | 27. Lobby and room browser | Ping-all action. | parity:G27-LOBBY-AND-004, web:lobby:filter |
+| G27-LOBBY-AND-005 | Present | 27. Lobby and room browser | Ping column. | parity:G27-LOBBY-AND-005, web:lobby:filter |
+| G27-LOBBY-AND-006 | Present | 27. Lobby and room browser | Player count. | parity:G27-LOBBY-AND-006, web:lobby:filter |
+| G27-LOBBY-AND-007 | Present | 27. Lobby and room browser | Maximum players. | parity:G27-LOBBY-AND-007, web:lobby:filter |
+| G27-LOBBY-AND-008 | Present | 27. Lobby and room browser | Game mode. | parity:G27-LOBBY-AND-008, web:lobby:filter |
+| G27-LOBBY-AND-009 | Present | 27. Lobby and room browser | Map name. | parity:G27-LOBBY-AND-009, web:lobby:filter |
+| G27-LOBBY-AND-010 | Present | 27. Lobby and room browser | Country/region if desired. | web:lobby:filter |
+| G27-LOBBY-AND-011 | Present | 27. Lobby and room browser | Password indicator. | parity:G27-LOBBY-AND-011, web:lobby:filter |
+| G27-LOBBY-AND-012 | Present | 27. Lobby and room browser | Realistic indicator. | parity:G27-LOBBY-AND-012, web:lobby:filter |
+| G27-LOBBY-AND-013 | Present | 27. Lobby and room browser | Survival indicator. | parity:G27-LOBBY-AND-013, web:lobby:filter |
+| G27-LOBBY-AND-014 | Present | 27. Lobby and room browser | Advance indicator. | parity:G27-LOBBY-AND-014, web:lobby:filter |
+| G27-LOBBY-AND-015 | Present | 27. Lobby and room browser | Weapon-mod indicator. | parity:G27-LOBBY-AND-015, web:lobby:filter |
+| G27-LOBBY-AND-016 | Present | 27. Lobby and room browser | Version compatibility. | parity:G27-LOBBY-AND-016, web:lobby:filter |
+| G27-LOBBY-AND-017 | Present | 27. Lobby and room browser | Favorites. | parity:G27-LOBBY-AND-017, web:lobby:filter |
+| G27-LOBBY-AND-018 | Present | 27. Lobby and room browser | Favorite add/remove. | parity:G27-LOBBY-AND-018, web:lobby:filter |
+| G27-LOBBY-AND-019 | Present | 27. Lobby and room browser | Direct IP/hostname join if supported. | parity:G27-LOBBY-AND-019, web:lobby:filter |
+| G27-LOBBY-AND-020 | Present | 27. Lobby and room browser | Port input. | parity:G27-LOBBY-AND-020, web:lobby:filter |
+| G27-LOBBY-AND-021 | Present | 27. Lobby and room browser | Password input. | parity:G27-LOBBY-AND-021, web:lobby:filter |
+| G27-LOBBY-AND-022 | Present | 27. Lobby and room browser | Spectator join. | parity:G27-LOBBY-AND-022, web:lobby:filter |
+| G27-LOBBY-AND-023 | Present | 27. Lobby and room browser | Sort and filter. | parity:G27-LOBBY-AND-023, web:lobby:filter |
+| G27-LOBBY-AND-024 | Present | 27. Lobby and room browser | Search. | parity:G27-LOBBY-AND-024, web:lobby:filter |
+| G27-LOBBY-AND-025 | Present | 27. Lobby and room browser | Full-room filtering. | parity:G27-LOBBY-AND-025, web:lobby:filter |
+| G27-LOBBY-AND-026 | Present | 27. Lobby and room browser | Empty-room filtering. | parity:G27-LOBBY-AND-026, web:lobby:filter |
+| G27-LOBBY-AND-027 | Present | 27. Lobby and room browser | Public lobby registration. | parity:G27-LOBBY-AND-027, web:lobby:filter |
+| G27-LOBBY-AND-028 | Present | 27. Lobby and room browser | Reliable server discovery. | web:lobby:filter |
+| G27-LOBBY-AND-029 | Present | 27. Lobby and room browser | Join/download progress. | web:maps:download |
+| G27-LOBBY-AND-030 | Present | 27. Lobby and room browser | Cancel connection/download. | web:maps:download |
+| G27-LOBBY-AND-031 | Present | 27. Lobby and room browser | Better reconnect state. | parity:G27-LOBBY-AND-031, web:lobby:filter |
+| G27-LOBBY-AND-032 | Present | 27. Lobby and room browser | Room ownership/host settings. | rust:storage:fence |
+| G27-LOBBY-AND-033 | Present | 27. Lobby and room browser | Room deletion or expiry controls. | rust:security:resume |
+| G27-LOBBY-AND-034 | Present | 27. Lobby and room browser | Password-protected rooms in addition to invite codes. | parity:G27-LOBBY-AND-034, web:lobby:filter |
+| G27-LOBBY-AND-035 | Present | 27. Lobby and room browser | Team choice after joining. | parity:G27-LOBBY-AND-035, web:lobby:filter |
+| G27-LOBBY-AND-036 | Present | 27. Lobby and room browser | Late-join rules. | rust:match_lifecycle:phases |
+| G27-LOBBY-AND-037 | Present | 27. Lobby and room browser | Abuse-resistant room creation. | parity:G27-LOBBY-AND-037, web:lobby:filter |
+| G27-LOBBY-AND-038 | Present | 27. Lobby and room browser | Rate limiting for connection and room operations. | parity:G27-LOBBY-AND-038, web:lobby:filter |
+| G28-SPECTATING-001 | Present | 28. Spectating | Spectator team. | parity:G28-SPECTATING-001, rust:spectator_world:follow, rust:match_world:teams |
+| G28-SPECTATING-002 | Present | 28. Spectating | Join directly as spectator. | parity:G28-SPECTATING-002, rust:spectator:targets, rust:spectator_world:follow |
+| G28-SPECTATING-003 | Present | 28. Spectating | Switch followed player. | parity:G28-SPECTATING-003, rust:spectator:targets, rust:spectator_world:follow |
+| G28-SPECTATING-004 | Present | 28. Spectating | Previous/next player. | parity:G28-SPECTATING-004, rust:spectator:targets, rust:spectator_world:follow, web:spectate:keys |
+| G28-SPECTATING-005 | Present | 28. Spectating | Free camera if desired. | parity:G28-SPECTATING-005, rust:spectator:targets, rust:spectator_world:follow, web:spectate:keys |
+| G28-SPECTATING-006 | Present | 28. Spectating | Spectator HUD. | parity:G28-SPECTATING-006, web:spectate:hud |
+| G28-SPECTATING-007 | Present | 28. Spectating | Spectator scoreboard. | parity:G28-SPECTATING-007, rust:statistics:scoreboard, web:stats:scoreboard |
+| G28-SPECTATING-008 | Present | 28. Spectating | Spectator chat restrictions. | parity:G28-SPECTATING-008, rust:spectator:visibility |
+| G28-SPECTATING-009 | Present | 28. Spectating | Realistic visibility restrictions. | parity:G28-SPECTATING-009, rust:spectator:visibility |
+| G28-SPECTATING-010 | Present | 28. Spectating | Survival restrictions. | parity:G28-SPECTATING-010, rust:spectator:visibility, rust:modifiers:survival |
+| G28-SPECTATING-011 | Present | 28. Spectating | Followed-player minimap/visibility behavior. | parity:G28-SPECTATING-011, web:hud:net |
+| G28-SPECTATING-012 | Present | 28. Spectating | Delay option for competitive matches. | parity:G28-SPECTATING-012, rust:spectator:visibility |
+| G29-SCORING-AND-001 | Present | 29. Scoring and statistics | Correct scoring for every game mode. | parity:G29-SCORING-AND-001, rust:match_lifecycle:scoring, rust:mode_world:flags |
+| G29-SCORING-AND-002 | Present | 29. Scoring and statistics | Match time. | parity:G29-SCORING-AND-002, web:match:clock, rust:match_lifecycle:limits |
+| G29-SCORING-AND-003 | Present | 29. Scoring and statistics | Individual points. | parity:G29-SCORING-AND-003, rust:statistics:scoreboard, web:stats:scoreboard |
+| G29-SCORING-AND-004 | Present | 29. Scoring and statistics | Team points. | parity:G29-SCORING-AND-004, rust:match_world:ledger |
+| G29-SCORING-AND-005 | Present | 29. Scoring and statistics | Captures. | parity:G29-SCORING-AND-005, rust:statistics:weapons, rust:statistics_world:feed, rust:mode_world:flags |
+| G29-SCORING-AND-006 | Present | 29. Scoring and statistics | Flag returns. | parity:G29-SCORING-AND-006, rust:statistics:weapons, rust:statistics_world:feed |
+| G29-SCORING-AND-007 | Present | 29. Scoring and statistics | Current server rank. | parity:G29-SCORING-AND-007, rust:statistics:scoreboard, web:stats:scoreboard |
+| G29-SCORING-AND-008 | Present | 29. Scoring and statistics | Score difference from leader. | parity:G29-SCORING-AND-008, rust:statistics:scoreboard, web:stats:scoreboard |
+| G29-SCORING-AND-009 | Present | 29. Scoring and statistics | Kill/point/capture limit display. | parity:G29-SCORING-AND-009, web:stats:scoreboard |
+| G29-SCORING-AND-010 | Present | 29. Scoring and statistics | Weapon statistics for the current round. | parity:G29-SCORING-AND-010, rust:statistics:weapons, web:stats:weapons |
+| G29-SCORING-AND-011 | Present | 29. Scoring and statistics | Shots fired. | parity:G29-SCORING-AND-011, rust:statistics:weapons, rust:statistics_world:feed |
+| G29-SCORING-AND-012 | Present | 29. Scoring and statistics | Hits. | parity:G29-SCORING-AND-012, rust:statistics:weapons, rust:statistics_world:feed |
+| G29-SCORING-AND-013 | Present | 29. Scoring and statistics | Accuracy. | parity:G29-SCORING-AND-013, rust:statistics:weapons, web:stats:weapons |
+| G29-SCORING-AND-014 | Present | 29. Scoring and statistics | Kills per weapon. | parity:G29-SCORING-AND-014, rust:statistics:weapons, web:stats:weapons |
+| G29-SCORING-AND-015 | Present | 29. Scoring and statistics | Deaths per weapon/cause. | parity:G29-SCORING-AND-015, rust:statistics:weapons, rust:statistics_world:feed |
+| G29-SCORING-AND-016 | Present | 29. Scoring and statistics | Headshots. | parity:G29-SCORING-AND-016, rust:statistics:weapons, rust:statistics_world:feed |
+| G29-SCORING-AND-017 | Present | 29. Scoring and statistics | Suicides. | parity:G29-SCORING-AND-017, rust:match_lifecycle:scoring |
+| G29-SCORING-AND-018 | Present | 29. Scoring and statistics | Teamkills. | parity:G29-SCORING-AND-018, rust:match_lifecycle:scoring |
+| G29-SCORING-AND-019 | Present | 29. Scoring and statistics | Objective statistics. | parity:G29-SCORING-AND-019, rust:statistics:weapons, rust:statistics_world:feed |
+| G29-SCORING-AND-020 | Present | 29. Scoring and statistics | End-of-round summary. | parity:G29-SCORING-AND-020, rust:statistics:history, web:stats:summary |
+| G29-SCORING-AND-021 | Present | 29. Scoring and statistics | Match history. | parity:G29-SCORING-AND-021, rust:statistics:history |
+| G29-SCORING-AND-022 | Present | 29. Scoring and statistics | Persistent player statistics if desired. | rust:storage:stats |
 | G29-SCORING-AND-023 | Missing | 29. Scoring and statistics | Clan/team statistics if desired. | parity:G29-SCORING-AND-023 |
-| G29-SCORING-AND-024 | Missing | 29. Scoring and statistics | Exportable logs. | parity:G29-SCORING-AND-024 |
-| G30-NETWORKING-AND-001 | Missing | 30. Networking and prediction | Proper client-side prediction for all movement states. | parity:G30-NETWORKING-AND-001 |
-| G30-NETWORKING-AND-002 | Missing | 30. Networking and prediction | Input reconciliation. | parity:G30-NETWORKING-AND-002 |
-| G30-NETWORKING-AND-003 | Missing | 30. Networking and prediction | Unacknowledged-input replay. | parity:G30-NETWORKING-AND-003 |
-| G30-NETWORKING-AND-004 | Missing | 30. Networking and prediction | Remote-player interpolation. | parity:G30-NETWORKING-AND-004 |
-| G30-NETWORKING-AND-005 | Missing | 30. Networking and prediction | Projectile interpolation. | parity:G30-NETWORKING-AND-005 |
-| G30-NETWORKING-AND-006 | Missing | 30. Networking and prediction | Extrapolation limits. | parity:G30-NETWORKING-AND-006 |
-| G30-NETWORKING-AND-007 | Missing | 30. Networking and prediction | Latency compensation. | parity:G30-NETWORKING-AND-007 |
+| G29-SCORING-AND-024 | Present | 29. Scoring and statistics | Exportable logs. | parity:G29-SCORING-AND-024, rust:statistics:history |
+| G30-NETWORKING-AND-001 | Present | 30. Networking and prediction | Proper client-side prediction for all movement states. | parity:G30-NETWORKING-AND-001, web:prediction:reconcile |
+| G30-NETWORKING-AND-002 | Present | 30. Networking and prediction | Input reconciliation. | parity:G30-NETWORKING-AND-002, web:prediction:reconcile |
+| G30-NETWORKING-AND-003 | Present | 30. Networking and prediction | Unacknowledged-input replay. | parity:G30-NETWORKING-AND-003, web:prediction:reconcile |
+| G30-NETWORKING-AND-004 | Present | 30. Networking and prediction | Remote-player interpolation. | parity:G30-NETWORKING-AND-004, web:prediction:reconcile |
+| G30-NETWORKING-AND-005 | Present | 30. Networking and prediction | Projectile interpolation. | parity:G30-NETWORKING-AND-005, web:prediction:reconcile |
+| G30-NETWORKING-AND-006 | Present | 30. Networking and prediction | Extrapolation limits. | parity:G30-NETWORKING-AND-006, web:prediction:reconcile |
+| G30-NETWORKING-AND-007 | Present | 30. Networking and prediction | Latency compensation. | parity:G30-NETWORKING-AND-007, web:prediction:reconcile |
 | G30-NETWORKING-AND-008 | Missing | 30. Networking and prediction | Server rewind/lag compensation if appropriate. | parity:G30-NETWORKING-AND-008 |
-| G30-NETWORKING-AND-009 | Missing | 30. Networking and prediction | Clock synchronization. | parity:G30-NETWORKING-AND-009 |
-| G30-NETWORKING-AND-010 | Missing | 30. Networking and prediction | Measured ping. | parity:G30-NETWORKING-AND-010 |
-| G30-NETWORKING-AND-011 | Missing | 30. Networking and prediction | Packet-loss handling. | parity:G30-NETWORKING-AND-011 |
+| G30-NETWORKING-AND-009 | Present | 30. Networking and prediction | Clock synchronization. | parity:G30-NETWORKING-AND-009, web:prediction:reconcile |
+| G30-NETWORKING-AND-010 | Present | 30. Networking and prediction | Measured ping. | parity:G30-NETWORKING-AND-010, web:prediction:reconcile |
+| G30-NETWORKING-AND-011 | Present | 30. Networking and prediction | Packet-loss handling. | parity:G30-NETWORKING-AND-011, web:prediction:reconcile |
 | G30-NETWORKING-AND-012 | Missing | 30. Networking and prediction | Snapshot delta compression. | parity:G30-NETWORKING-AND-012 |
 | G30-NETWORKING-AND-013 | Missing | 30. Networking and prediction | Interest management if maps/player counts grow. | parity:G30-NETWORKING-AND-013 |
 | G30-NETWORKING-AND-014 | Missing | 30. Networking and prediction | Binary protocol or more compact encoding if needed. | parity:G30-NETWORKING-AND-014 |
-| G30-NETWORKING-AND-015 | Missing | 30. Networking and prediction | Weapon/event prediction. | parity:G30-NETWORKING-AND-015 |
-| G30-NETWORKING-AND-016 | Missing | 30. Networking and prediction | Predicted muzzle/projectile effects. | parity:G30-NETWORKING-AND-016 |
-| G30-NETWORKING-AND-017 | Missing | 30. Networking and prediction | Rollback correction smoothing. | parity:G30-NETWORKING-AND-017 |
-| G30-NETWORKING-AND-018 | Missing | 30. Networking and prediction | Map and ruleset synchronization. | parity:G30-NETWORKING-AND-018 |
-| G30-NETWORKING-AND-019 | Missing | 30. Networking and prediction | Disconnect reason handling. | parity:G30-NETWORKING-AND-019 |
-| G30-NETWORKING-AND-020 | Missing | 30. Networking and prediction | Robust resumption after page sleep/mobile backgrounding. | parity:G30-NETWORKING-AND-020 |
-| G30-NETWORKING-AND-021 | Missing | 30. Networking and prediction | Duplicate-session handling. | parity:G30-NETWORKING-AND-021 |
-| G30-NETWORKING-AND-022 | Missing | 30. Networking and prediction | Rate limits for every client message. | parity:G30-NETWORKING-AND-022 |
-| G30-NETWORKING-AND-023 | Missing | 30. Networking and prediction | Anti-speedhack/input-frequency validation. | parity:G30-NETWORKING-AND-023 |
-| G30-NETWORKING-AND-024 | Missing | 30. Networking and prediction | Fire-rate validation. | parity:G30-NETWORKING-AND-024 |
-| G30-NETWORKING-AND-025 | Missing | 30. Networking and prediction | Aim/input sanity validation beyond coordinate bounds. | parity:G30-NETWORKING-AND-025 |
-| G30-NETWORKING-AND-026 | Missing | 30. Networking and prediction | Server-authoritative pickups, flags, bonuses, and round state. | parity:G30-NETWORKING-AND-026 |
-| G30-NETWORKING-AND-027 | Missing | 30. Networking and prediction | Network load and soak tests. | parity:G30-NETWORKING-AND-027 |
-| G30-NETWORKING-AND-028 | Missing | 30. Networking and prediction | High-latency/jitter/loss simulation tests. | parity:G30-NETWORKING-AND-028 |
-| G31-ANTI-CHEAT-001 | Missing | 31. Anti-cheat and abuse resistance | Server-authoritative collision validation. | parity:G31-ANTI-CHEAT-001 |
-| G31-ANTI-CHEAT-002 | Missing | 31. Anti-cheat and abuse resistance | Server-authoritative weapon selection. | parity:G31-ANTI-CHEAT-002 |
-| G31-ANTI-CHEAT-003 | Missing | 31. Anti-cheat and abuse resistance | Server-authoritative reload and inventory. | parity:G31-ANTI-CHEAT-003 |
-| G31-ANTI-CHEAT-004 | Missing | 31. Anti-cheat and abuse resistance | Input-rate limiting. | parity:G31-ANTI-CHEAT-004 |
-| G31-ANTI-CHEAT-005 | Missing | 31. Anti-cheat and abuse resistance | Movement feasibility validation. | parity:G31-ANTI-CHEAT-005 |
-| G31-ANTI-CHEAT-006 | Missing | 31. Anti-cheat and abuse resistance | Aim-value validation. | parity:G31-ANTI-CHEAT-006 |
-| G31-ANTI-CHEAT-007 | Missing | 31. Anti-cheat and abuse resistance | Chat abuse controls. | parity:G31-ANTI-CHEAT-007 |
-| G31-ANTI-CHEAT-008 | Missing | 31. Anti-cheat and abuse resistance | Connection/IP rate limiting. | parity:G31-ANTI-CHEAT-008 |
-| G31-ANTI-CHEAT-009 | Missing | 31. Anti-cheat and abuse resistance | Room-creation rate limiting. | parity:G31-ANTI-CHEAT-009 |
-| G31-ANTI-CHEAT-010 | Missing | 31. Anti-cheat and abuse resistance | Admin permission validation. | parity:G31-ANTI-CHEAT-010 |
-| G31-ANTI-CHEAT-011 | Missing | 31. Anti-cheat and abuse resistance | Ban enforcement. | parity:G31-ANTI-CHEAT-011 |
-| G31-ANTI-CHEAT-012 | Missing | 31. Anti-cheat and abuse resistance | Temporary bans. | parity:G31-ANTI-CHEAT-012 |
-| G31-ANTI-CHEAT-013 | Missing | 31. Anti-cheat and abuse resistance | Audit logging. | parity:G31-ANTI-CHEAT-013 |
-| G31-ANTI-CHEAT-014 | Missing | 31. Anti-cheat and abuse resistance | Suspicious behavior metrics. | parity:G31-ANTI-CHEAT-014 |
+| G30-NETWORKING-AND-015 | Present | 30. Networking and prediction | Weapon/event prediction. | parity:G30-NETWORKING-AND-015, web:prediction:reconcile |
+| G30-NETWORKING-AND-016 | Present | 30. Networking and prediction | Predicted muzzle/projectile effects. | parity:G30-NETWORKING-AND-016, web:prediction:reconcile |
+| G30-NETWORKING-AND-017 | Present | 30. Networking and prediction | Rollback correction smoothing. | parity:G30-NETWORKING-AND-017, web:prediction:reconcile |
+| G30-NETWORKING-AND-018 | Present | 30. Networking and prediction | Map and ruleset synchronization. | parity:G30-NETWORKING-AND-018, web:prediction:reconcile |
+| G30-NETWORKING-AND-019 | Present | 30. Networking and prediction | Disconnect reason handling. | parity:G30-NETWORKING-AND-019, web:prediction:reconcile |
+| G30-NETWORKING-AND-020 | Present | 30. Networking and prediction | Robust resumption after page sleep/mobile backgrounding. | parity:G30-NETWORKING-AND-020, web:prediction:reconcile |
+| G30-NETWORKING-AND-021 | Present | 30. Networking and prediction | Duplicate-session handling. | rust:security:resume |
+| G30-NETWORKING-AND-022 | Present | 30. Networking and prediction | Rate limits for every client message. | parity:G30-NETWORKING-AND-022, web:prediction:reconcile |
+| G30-NETWORKING-AND-023 | Present | 30. Networking and prediction | Anti-speedhack/input-frequency validation. | parity:G30-NETWORKING-AND-023, web:prediction:reconcile |
+| G30-NETWORKING-AND-024 | Present | 30. Networking and prediction | Fire-rate validation. | parity:G30-NETWORKING-AND-024, web:prediction:reconcile |
+| G30-NETWORKING-AND-025 | Present | 30. Networking and prediction | Aim/input sanity validation beyond coordinate bounds. | parity:G30-NETWORKING-AND-025, web:prediction:reconcile |
+| G30-NETWORKING-AND-026 | Present | 30. Networking and prediction | Server-authoritative pickups, flags, bonuses, and round state. | parity:G30-NETWORKING-AND-026, web:prediction:reconcile |
+| G30-NETWORKING-AND-027 | Present | 30. Networking and prediction | Network load and soak tests. | rust:replay:soak |
+| G30-NETWORKING-AND-028 | Present | 30. Networking and prediction | High-latency/jitter/loss simulation tests. | web:prediction:reconcile |
+| G31-ANTI-CHEAT-001 | Present | 31. Anti-cheat and abuse resistance | Server-authoritative collision validation. | parity:G31-ANTI-CHEAT-001, rust:security:limits |
+| G31-ANTI-CHEAT-002 | Present | 31. Anti-cheat and abuse resistance | Server-authoritative weapon selection. | parity:G31-ANTI-CHEAT-002, rust:security:limits |
+| G31-ANTI-CHEAT-003 | Present | 31. Anti-cheat and abuse resistance | Server-authoritative reload and inventory. | parity:G31-ANTI-CHEAT-003, rust:security:limits |
+| G31-ANTI-CHEAT-004 | Present | 31. Anti-cheat and abuse resistance | Input-rate limiting. | parity:G31-ANTI-CHEAT-004, rust:security:limits |
+| G31-ANTI-CHEAT-005 | Present | 31. Anti-cheat and abuse resistance | Movement feasibility validation. | parity:G31-ANTI-CHEAT-005, rust:security:limits |
+| G31-ANTI-CHEAT-006 | Present | 31. Anti-cheat and abuse resistance | Aim-value validation. | parity:G31-ANTI-CHEAT-006, rust:security:limits |
+| G31-ANTI-CHEAT-007 | Present | 31. Anti-cheat and abuse resistance | Chat abuse controls. | parity:G31-ANTI-CHEAT-007, rust:security:limits |
+| G31-ANTI-CHEAT-008 | Present | 31. Anti-cheat and abuse resistance | Connection/IP rate limiting. | parity:G31-ANTI-CHEAT-008, rust:security:limits |
+| G31-ANTI-CHEAT-009 | Present | 31. Anti-cheat and abuse resistance | Room-creation rate limiting. | parity:G31-ANTI-CHEAT-009, rust:security:limits |
+| G31-ANTI-CHEAT-010 | Present | 31. Anti-cheat and abuse resistance | Admin permission validation. | parity:G31-ANTI-CHEAT-010, rust:security:limits |
+| G31-ANTI-CHEAT-011 | Present | 31. Anti-cheat and abuse resistance | Ban enforcement. | parity:G31-ANTI-CHEAT-011, rust:security:limits |
+| G31-ANTI-CHEAT-012 | Present | 31. Anti-cheat and abuse resistance | Temporary bans. | parity:G31-ANTI-CHEAT-012, rust:security:limits |
+| G31-ANTI-CHEAT-013 | Present | 31. Anti-cheat and abuse resistance | Audit logging. | parity:G31-ANTI-CHEAT-013, rust:security:limits |
+| G31-ANTI-CHEAT-014 | Present | 31. Anti-cheat and abuse resistance | Suspicious behavior metrics. | parity:G31-ANTI-CHEAT-014, rust:security:limits |
 | G31-ANTI-CHEAT-015 | Missing | 31. Anti-cheat and abuse resistance | Protocol fuzzing. | parity:G31-ANTI-CHEAT-015 |
-| G31-ANTI-CHEAT-016 | Missing | 31. Anti-cheat and abuse resistance | Malformed WebSocket testing. | parity:G31-ANTI-CHEAT-016 |
-| G31-ANTI-CHEAT-017 | Missing | 31. Anti-cheat and abuse resistance | Replay-based cheat investigation. | parity:G31-ANTI-CHEAT-017 |
-| G31-ANTI-CHEAT-018 | Missing | 31. Anti-cheat and abuse resistance | Secure resume tokens. | parity:G31-ANTI-CHEAT-018 |
-| G31-ANTI-CHEAT-019 | Missing | 31. Anti-cheat and abuse resistance | Token expiry/rotation. | parity:G31-ANTI-CHEAT-019 |
+| G31-ANTI-CHEAT-016 | Present | 31. Anti-cheat and abuse resistance | Malformed WebSocket testing. | parity:G31-ANTI-CHEAT-016, rust:security:limits |
+| G31-ANTI-CHEAT-017 | Present | 31. Anti-cheat and abuse resistance | Replay-based cheat investigation. | rust:replay:repair |
+| G31-ANTI-CHEAT-018 | Present | 31. Anti-cheat and abuse resistance | Secure resume tokens. | parity:G31-ANTI-CHEAT-018, rust:security:limits |
+| G31-ANTI-CHEAT-019 | Present | 31. Anti-cheat and abuse resistance | Token expiry/rotation. | parity:G31-ANTI-CHEAT-019, rust:security:limits |
 | G31-ANTI-CHEAT-020 | Missing | 31. Anti-cheat and abuse resistance | Deployment-level denial-of-service protection. | parity:G31-ANTI-CHEAT-020 |
-| G31-ANTI-CHEAT-021 | Missing | 31. Anti-cheat and abuse resistance | No trust in client-provided cosmetics or settings that affect gameplay. | parity:G31-ANTI-CHEAT-021 |
-| G32-MENUS-AND-001 | Missing | 32. Menus and overall game flow | Main menu. | parity:G32-MENUS-AND-001 |
-| G32-MENUS-AND-002 | Missing | 32. Menus and overall game flow | Profile selection. | parity:G32-MENUS-AND-002 |
-| G32-MENUS-AND-003 | Missing | 32. Menus and overall game flow | Player customization. | parity:G32-MENUS-AND-003 |
-| G32-MENUS-AND-004 | Missing | 32. Menus and overall game flow | Join-game screen. | parity:G32-MENUS-AND-004 |
-| G32-MENUS-AND-005 | Missing | 32. Menus and overall game flow | Start-game/server screen. | parity:G32-MENUS-AND-005 |
-| G32-MENUS-AND-006 | Missing | 32. Menus and overall game flow | Options menu. | parity:G32-MENUS-AND-006 |
-| G32-MENUS-AND-007 | Missing | 32. Menus and overall game flow | Controls menu. | parity:G32-MENUS-AND-007 |
-| G32-MENUS-AND-008 | Missing | 32. Menus and overall game flow | Weapon-selection screen during respawn. | parity:G32-MENUS-AND-008 |
-| G32-MENUS-AND-009 | Missing | 32. Menus and overall game flow | Team-selection screen. | parity:G32-MENUS-AND-009 |
-| G32-MENUS-AND-010 | Missing | 32. Menus and overall game flow | Spectator selection. | parity:G32-MENUS-AND-010 |
-| G32-MENUS-AND-011 | Missing | 32. Menus and overall game flow | Pause menu. | parity:G32-MENUS-AND-011 |
-| G32-MENUS-AND-012 | Missing | 32. Menus and overall game flow | Disconnect confirmation. | parity:G32-MENUS-AND-012 |
-| G32-MENUS-AND-013 | Missing | 32. Menus and overall game flow | Map loading screen. | parity:G32-MENUS-AND-013 |
-| G32-MENUS-AND-014 | Missing | 32. Menus and overall game flow | Asset-download screen. | parity:G32-MENUS-AND-014 |
-| G32-MENUS-AND-015 | Missing | 32. Menus and overall game flow | Round-intro countdown. | parity:G32-MENUS-AND-015 |
-| G32-MENUS-AND-016 | Missing | 32. Menus and overall game flow | Round-end screen. | parity:G32-MENUS-AND-016 |
-| G32-MENUS-AND-017 | Missing | 32. Menus and overall game flow | Match-results screen. | parity:G32-MENUS-AND-017 |
-| G32-MENUS-AND-018 | Missing | 32. Menus and overall game flow | Connection-lost overlay. | parity:G32-MENUS-AND-018 |
-| G32-MENUS-AND-019 | Missing | 32. Menus and overall game flow | Version mismatch/update flow. | parity:G32-MENUS-AND-019 |
-| G32-MENUS-AND-020 | Missing | 32. Menus and overall game flow | Credits. | parity:G32-MENUS-AND-020 |
-| G32-MENUS-AND-021 | Missing | 32. Menus and overall game flow | Help/manual. | parity:G32-MENUS-AND-021 |
-| G32-MENUS-AND-022 | Missing | 32. Menus and overall game flow | First-run control tutorial. | parity:G32-MENUS-AND-022 |
-| G32-MENUS-AND-023 | Missing | 32. Menus and overall game flow | Mobile onboarding. | parity:G32-MENUS-AND-023 |
-| G33-CUSTOM-INTERFACES-001 | Missing | 33. Custom interfaces and modding | Loadable HUD/interface definitions. | parity:G33-CUSTOM-INTERFACES-001 |
-| G33-CUSTOM-INTERFACES-002 | Missing | 33. Custom interfaces and modding | Multiple interface presets. | parity:G33-CUSTOM-INTERFACES-002 |
-| G33-CUSTOM-INTERFACES-003 | Missing | 33. Custom interfaces and modding | Custom cursor. | parity:G33-CUSTOM-INTERFACES-003 |
-| G33-CUSTOM-INTERFACES-004 | Missing | 33. Custom interfaces and modding | Custom HUD image positions. | parity:G33-CUSTOM-INTERFACES-004 |
-| G33-CUSTOM-INTERFACES-005 | Missing | 33. Custom interfaces and modding | Interface scaling. | parity:G33-CUSTOM-INTERFACES-005 |
-| G33-CUSTOM-INTERFACES-006 | Missing | 33. Custom interfaces and modding | Custom weapon graphics. | parity:G33-CUSTOM-INTERFACES-006 |
-| G33-CUSTOM-INTERFACES-007 | Missing | 33. Custom interfaces and modding | Custom sounds. | parity:G33-CUSTOM-INTERFACES-007 |
-| G33-CUSTOM-INTERFACES-008 | Missing | 33. Custom interfaces and modding | Custom character/gostek graphics. | parity:G33-CUSTOM-INTERFACES-008 |
-| G33-CUSTOM-INTERFACES-009 | Missing | 33. Custom interfaces and modding | `mod.ini`-style asset scaling. | parity:G33-CUSTOM-INTERFACES-009 |
-| G33-CUSTOM-INTERFACES-010 | Missing | 33. Custom interfaces and modding | Mod selection/launching. | parity:G33-CUSTOM-INTERFACES-010 |
-| G33-CUSTOM-INTERFACES-011 | Missing | 33. Custom interfaces and modding | Mod preview. | parity:G33-CUSTOM-INTERFACES-011 |
-| G33-CUSTOM-INTERFACES-012 | Missing | 33. Custom interfaces and modding | Mod packaging. | parity:G33-CUSTOM-INTERFACES-012 |
-| G33-CUSTOM-INTERFACES-013 | Missing | 33. Custom interfaces and modding | Mod downloading. | parity:G33-CUSTOM-INTERFACES-013 |
-| G33-CUSTOM-INTERFACES-014 | Missing | 33. Custom interfaces and modding | Mod version/hash matching. | parity:G33-CUSTOM-INTERFACES-014 |
-| G33-CUSTOM-INTERFACES-015 | Missing | 33. Custom interfaces and modding | Server-required mod support. | parity:G33-CUSTOM-INTERFACES-015 |
-| G33-CUSTOM-INTERFACES-016 | Missing | 33. Custom interfaces and modding | Safe path handling. | parity:G33-CUSTOM-INTERFACES-016 |
-| G33-CUSTOM-INTERFACES-017 | Missing | 33. Custom interfaces and modding | Asset-size limits. | parity:G33-CUSTOM-INTERFACES-017 |
-| G33-CUSTOM-INTERFACES-018 | Missing | 33. Custom interfaces and modding | License/provenance metadata. | parity:G33-CUSTOM-INTERFACES-018 |
+| G31-ANTI-CHEAT-021 | Present | 31. Anti-cheat and abuse resistance | No trust in client-provided cosmetics or settings that affect gameplay. | parity:G31-ANTI-CHEAT-021, rust:security:limits |
+| G32-MENUS-AND-001 | Present | 32. Menus and overall game flow | Main menu. | parity:G32-MENUS-AND-001, web:screens:flow |
+| G32-MENUS-AND-002 | Present | 32. Menus and overall game flow | Profile selection. | parity:G32-MENUS-AND-002, web:screens:flow |
+| G32-MENUS-AND-003 | Present | 32. Menus and overall game flow | Player customization. | parity:G32-MENUS-AND-003, web:screens:flow |
+| G32-MENUS-AND-004 | Present | 32. Menus and overall game flow | Join-game screen. | parity:G32-MENUS-AND-004, web:screens:flow |
+| G32-MENUS-AND-005 | Present | 32. Menus and overall game flow | Start-game/server screen. | parity:G32-MENUS-AND-005, web:screens:flow |
+| G32-MENUS-AND-006 | Present | 32. Menus and overall game flow | Options menu. | parity:G32-MENUS-AND-006, web:screens:flow |
+| G32-MENUS-AND-007 | Present | 32. Menus and overall game flow | Controls menu. | parity:G32-MENUS-AND-007, web:screens:flow |
+| G32-MENUS-AND-008 | Present | 32. Menus and overall game flow | Weapon-selection screen during respawn. | parity:G32-MENUS-AND-008, web:screens:flow |
+| G32-MENUS-AND-009 | Present | 32. Menus and overall game flow | Team-selection screen. | parity:G32-MENUS-AND-009, web:screens:flow |
+| G32-MENUS-AND-010 | Present | 32. Menus and overall game flow | Spectator selection. | parity:G32-MENUS-AND-010, web:screens:flow |
+| G32-MENUS-AND-011 | Present | 32. Menus and overall game flow | Pause menu. | parity:G32-MENUS-AND-011, web:screens:flow |
+| G32-MENUS-AND-012 | Present | 32. Menus and overall game flow | Disconnect confirmation. | parity:G32-MENUS-AND-012, web:screens:flow |
+| G32-MENUS-AND-013 | Present | 32. Menus and overall game flow | Map loading screen. | parity:G32-MENUS-AND-013, web:screens:flow |
+| G32-MENUS-AND-014 | Present | 32. Menus and overall game flow | Asset-download screen. | parity:G32-MENUS-AND-014, web:screens:flow |
+| G32-MENUS-AND-015 | Present | 32. Menus and overall game flow | Round-intro countdown. | parity:G32-MENUS-AND-015, web:screens:flow |
+| G32-MENUS-AND-016 | Present | 32. Menus and overall game flow | Round-end screen. | parity:G32-MENUS-AND-016, web:screens:flow |
+| G32-MENUS-AND-017 | Present | 32. Menus and overall game flow | Match-results screen. | parity:G32-MENUS-AND-017, web:screens:flow |
+| G32-MENUS-AND-018 | Present | 32. Menus and overall game flow | Connection-lost overlay. | parity:G32-MENUS-AND-018, web:screens:flow |
+| G32-MENUS-AND-019 | Present | 32. Menus and overall game flow | Version mismatch/update flow. | parity:G32-MENUS-AND-019, web:screens:flow |
+| G32-MENUS-AND-020 | Present | 32. Menus and overall game flow | Credits. | parity:G32-MENUS-AND-020, web:screens:flow |
+| G32-MENUS-AND-021 | Present | 32. Menus and overall game flow | Help/manual. | parity:G32-MENUS-AND-021, web:screens:flow |
+| G32-MENUS-AND-022 | Present | 32. Menus and overall game flow | First-run control tutorial. | parity:G32-MENUS-AND-022, web:screens:flow |
+| G32-MENUS-AND-023 | Present | 32. Menus and overall game flow | Mobile onboarding. | parity:G32-MENUS-AND-023, web:screens:flow |
+| G33-CUSTOM-INTERFACES-001 | Present | 33. Custom interfaces and modding | Loadable HUD/interface definitions. | parity:G33-CUSTOM-INTERFACES-001, web:mods:package |
+| G33-CUSTOM-INTERFACES-002 | Present | 33. Custom interfaces and modding | Multiple interface presets. | parity:G33-CUSTOM-INTERFACES-002, web:mods:package |
+| G33-CUSTOM-INTERFACES-003 | Present | 33. Custom interfaces and modding | Custom cursor. | parity:G33-CUSTOM-INTERFACES-003, web:mods:package |
+| G33-CUSTOM-INTERFACES-004 | Present | 33. Custom interfaces and modding | Custom HUD image positions. | parity:G33-CUSTOM-INTERFACES-004, web:mods:package |
+| G33-CUSTOM-INTERFACES-005 | Present | 33. Custom interfaces and modding | Interface scaling. | parity:G33-CUSTOM-INTERFACES-005, web:mods:ini |
+| G33-CUSTOM-INTERFACES-006 | Present | 33. Custom interfaces and modding | Custom weapon graphics. | parity:G33-CUSTOM-INTERFACES-006, web:mods:package |
+| G33-CUSTOM-INTERFACES-007 | Present | 33. Custom interfaces and modding | Custom sounds. | parity:G33-CUSTOM-INTERFACES-007, web:mods:package |
+| G33-CUSTOM-INTERFACES-008 | Present | 33. Custom interfaces and modding | Custom character/gostek graphics. | parity:G33-CUSTOM-INTERFACES-008, web:mods:package |
+| G33-CUSTOM-INTERFACES-009 | Present | 33. Custom interfaces and modding | `mod.ini`-style asset scaling. | parity:G33-CUSTOM-INTERFACES-009, rust:mod_package:ini |
+| G33-CUSTOM-INTERFACES-010 | Present | 33. Custom interfaces and modding | Mod selection/launching. | parity:G33-CUSTOM-INTERFACES-010, web:mods:package |
+| G33-CUSTOM-INTERFACES-011 | Present | 33. Custom interfaces and modding | Mod preview. | parity:G33-CUSTOM-INTERFACES-011, web:mods:package |
+| G33-CUSTOM-INTERFACES-012 | Present | 33. Custom interfaces and modding | Mod packaging. | parity:G33-CUSTOM-INTERFACES-012, rust:mod_package:safe |
+| G33-CUSTOM-INTERFACES-013 | Present | 33. Custom interfaces and modding | Mod downloading. | parity:G33-CUSTOM-INTERFACES-013, web:mods:required |
+| G33-CUSTOM-INTERFACES-014 | Present | 33. Custom interfaces and modding | Mod version/hash matching. | parity:G33-CUSTOM-INTERFACES-014, web:mods:hash |
+| G33-CUSTOM-INTERFACES-015 | Present | 33. Custom interfaces and modding | Server-required mod support. | parity:G33-CUSTOM-INTERFACES-015, web:mods:required |
+| G33-CUSTOM-INTERFACES-016 | Present | 33. Custom interfaces and modding | Safe path handling. | parity:G33-CUSTOM-INTERFACES-016, rust:mod_package:safe |
+| G33-CUSTOM-INTERFACES-017 | Present | 33. Custom interfaces and modding | Asset-size limits. | parity:G33-CUSTOM-INTERFACES-017, rust:mod_package:safe |
+| G33-CUSTOM-INTERFACES-018 | Present | 33. Custom interfaces and modding | License/provenance metadata. | parity:G33-CUSTOM-INTERFACES-018, rust:mod_package:safe |
 | G33-CUSTOM-INTERFACES-019 | Missing | 33. Custom interfaces and modding | Cabbage | parity:G33-CUSTOM-INTERFACES-019 |
 | G33-CUSTOM-INTERFACES-020 | Missing | 33. Custom interfaces and modding | Classic | parity:G33-CUSTOM-INTERFACES-020 |
 | G33-CUSTOM-INTERFACES-021 | Missing | 33. Custom interfaces and modding | Lacey V2 | parity:G33-CUSTOM-INTERFACES-021 |
@@ -1024,87 +1024,87 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G34-MAP-EDITOR-030 | Present | 34. Map editor and content pipeline | Map preview generation. | rust:map_editor:editor_pipeline |
 | G34-MAP-EDITOR-031 | Present | 34. Map editor and content pipeline | Dedicated-server deployment. | rust:map_editor:editor_pipeline |
 | G34-MAP-EDITOR-032 | Present | 34. Map editor and content pipeline | Cross-platform editor support. | rust:map_editor:editor_pipeline |
-| G35-DEMO-AND-001 | Missing | 35. Demo and replay system | Record match inputs/events. | parity:G35-DEMO-AND-001 |
-| G35-DEMO-AND-002 | Missing | 35. Demo and replay system | Deterministic replay format. | parity:G35-DEMO-AND-002 |
-| G35-DEMO-AND-003 | Missing | 35. Demo and replay system | Replay metadata. | parity:G35-DEMO-AND-003 |
-| G35-DEMO-AND-004 | Missing | 35. Demo and replay system | Replay playback. | parity:G35-DEMO-AND-004 |
-| G35-DEMO-AND-005 | Missing | 35. Demo and replay system | Pause. | parity:G35-DEMO-AND-005 |
-| G35-DEMO-AND-006 | Missing | 35. Demo and replay system | Seek. | parity:G35-DEMO-AND-006 |
-| G35-DEMO-AND-007 | Missing | 35. Demo and replay system | Fast-forward. | parity:G35-DEMO-AND-007 |
-| G35-DEMO-AND-008 | Missing | 35. Demo and replay system | Follow player. | parity:G35-DEMO-AND-008 |
-| G35-DEMO-AND-009 | Missing | 35. Demo and replay system | Free camera. | parity:G35-DEMO-AND-009 |
-| G35-DEMO-AND-010 | Missing | 35. Demo and replay system | Replay compatibility/versioning. | parity:G35-DEMO-AND-010 |
-| G35-DEMO-AND-011 | Missing | 35. Demo and replay system | Replay validation. | parity:G35-DEMO-AND-011 |
-| G35-DEMO-AND-012 | Missing | 35. Demo and replay system | Export or share replay. | parity:G35-DEMO-AND-012 |
-| G35-DEMO-AND-013 | Missing | 35. Demo and replay system | Demo repair/recovery where feasible. | parity:G35-DEMO-AND-013 |
-| G35-DEMO-AND-014 | Missing | 35. Demo and replay system | Server-side competitive match recording. | parity:G35-DEMO-AND-014 |
-| G36-OPERATIONAL-AND-001 | Missing | 36. Operational and production work | Persistent server data. | parity:G36-OPERATIONAL-AND-001 |
+| G35-DEMO-AND-001 | Present | 35. Demo and replay system | Record match inputs/events. | parity:G35-DEMO-AND-001, rust:replay:record |
+| G35-DEMO-AND-002 | Present | 35. Demo and replay system | Deterministic replay format. | parity:G35-DEMO-AND-002, rust:replay:play |
+| G35-DEMO-AND-003 | Present | 35. Demo and replay system | Replay metadata. | parity:G35-DEMO-AND-003, rust:replay:compat |
+| G35-DEMO-AND-004 | Present | 35. Demo and replay system | Replay playback. | parity:G35-DEMO-AND-004, rust:replay:play |
+| G35-DEMO-AND-005 | Present | 35. Demo and replay system | Pause. | parity:G35-DEMO-AND-005, web:replay:player |
+| G35-DEMO-AND-006 | Present | 35. Demo and replay system | Seek. | parity:G35-DEMO-AND-006, rust:replay:seek |
+| G35-DEMO-AND-007 | Present | 35. Demo and replay system | Fast-forward. | parity:G35-DEMO-AND-007, rust:replay:seek |
+| G35-DEMO-AND-008 | Present | 35. Demo and replay system | Follow player. | parity:G35-DEMO-AND-008, web:replay:camera |
+| G35-DEMO-AND-009 | Present | 35. Demo and replay system | Free camera. | parity:G35-DEMO-AND-009, web:replay:camera |
+| G35-DEMO-AND-010 | Present | 35. Demo and replay system | Replay compatibility/versioning. | parity:G35-DEMO-AND-010, rust:replay:compat |
+| G35-DEMO-AND-011 | Present | 35. Demo and replay system | Replay validation. | parity:G35-DEMO-AND-011, rust:replay:play |
+| G35-DEMO-AND-012 | Present | 35. Demo and replay system | Export or share replay. | parity:G35-DEMO-AND-012, rust:replay:repair |
+| G35-DEMO-AND-013 | Present | 35. Demo and replay system | Demo repair/recovery where feasible. | parity:G35-DEMO-AND-013, rust:replay:repair |
+| G35-DEMO-AND-014 | Present | 35. Demo and replay system | Server-side competitive match recording. | parity:G35-DEMO-AND-014, rust:replay:record |
+| G36-OPERATIONAL-AND-001 | Present | 36. Operational and production work | Persistent server data. | parity:G36-OPERATIONAL-AND-001, rust:storage:restart |
 | G36-OPERATIONAL-AND-002 | Missing | 36. Operational and production work | Persistent accounts. | parity:G36-OPERATIONAL-AND-002 |
-| G36-OPERATIONAL-AND-003 | Missing | 36. Operational and production work | Persistent statistics. | parity:G36-OPERATIONAL-AND-003 |
-| G36-OPERATIONAL-AND-004 | Missing | 36. Operational and production work | Persistent bans/admins. | parity:G36-OPERATIONAL-AND-004 |
-| G36-OPERATIONAL-AND-005 | Missing | 36. Operational and production work | Server restart recovery. | parity:G36-OPERATIONAL-AND-005 |
-| G36-OPERATIONAL-AND-006 | Missing | 36. Operational and production work | Graceful active-match handling during deployment. | parity:G36-OPERATIONAL-AND-006 |
-| G36-OPERATIONAL-AND-007 | Missing | 36. Operational and production work | Horizontal scaling strategy. | parity:G36-OPERATIONAL-AND-007 |
-| G36-OPERATIONAL-AND-008 | Missing | 36. Operational and production work | Room ownership across multiple server processes. | parity:G36-OPERATIONAL-AND-008 |
-| G36-OPERATIONAL-AND-009 | Missing | 36. Operational and production work | Lobby service. | parity:G36-OPERATIONAL-AND-009 |
+| G36-OPERATIONAL-AND-003 | Present | 36. Operational and production work | Persistent statistics. | rust:storage:stats |
+| G36-OPERATIONAL-AND-004 | Present | 36. Operational and production work | Persistent bans/admins. | parity:G36-OPERATIONAL-AND-004, rust:storage:restart |
+| G36-OPERATIONAL-AND-005 | Present | 36. Operational and production work | Server restart recovery. | parity:G36-OPERATIONAL-AND-005, rust:storage:restart |
+| G36-OPERATIONAL-AND-006 | Present | 36. Operational and production work | Graceful active-match handling during deployment. | parity:G36-OPERATIONAL-AND-006, rust:ops:ready |
+| G36-OPERATIONAL-AND-007 | Present | 36. Operational and production work | Horizontal scaling strategy. | parity:G36-OPERATIONAL-AND-007, rust:storage:fence |
+| G36-OPERATIONAL-AND-008 | Present | 36. Operational and production work | Room ownership across multiple server processes. | parity:G36-OPERATIONAL-AND-008, rust:storage:fence |
+| G36-OPERATIONAL-AND-009 | Present | 36. Operational and production work | Lobby service. | parity:G36-OPERATIONAL-AND-009, web:lobby:filter |
 | G36-OPERATIONAL-AND-010 | Missing | 36. Operational and production work | Database. | parity:G36-OPERATIONAL-AND-010 |
 | G36-OPERATIONAL-AND-011 | Missing | 36. Operational and production work | Authentication if accounts are added. | parity:G36-OPERATIONAL-AND-011 |
-| G36-OPERATIONAL-AND-012 | Missing | 36. Operational and production work | Observability beyond three counters. | parity:G36-OPERATIONAL-AND-012 |
-| G36-OPERATIONAL-AND-013 | Missing | 36. Operational and production work | Structured logs. | parity:G36-OPERATIONAL-AND-013 |
-| G36-OPERATIONAL-AND-014 | Missing | 36. Operational and production work | Error tracking. | parity:G36-OPERATIONAL-AND-014 |
-| G36-OPERATIONAL-AND-015 | Missing | 36. Operational and production work | Latency metrics. | parity:G36-OPERATIONAL-AND-015 |
-| G36-OPERATIONAL-AND-016 | Missing | 36. Operational and production work | Tick-duration metrics. | parity:G36-OPERATIONAL-AND-016 |
-| G36-OPERATIONAL-AND-017 | Missing | 36. Operational and production work | Connected-player metrics. | parity:G36-OPERATIONAL-AND-017 |
-| G36-OPERATIONAL-AND-018 | Missing | 36. Operational and production work | Per-room metrics. | parity:G36-OPERATIONAL-AND-018 |
-| G36-OPERATIONAL-AND-019 | Missing | 36. Operational and production work | Health versus readiness endpoints. | parity:G36-OPERATIONAL-AND-019 |
-| G36-OPERATIONAL-AND-020 | Missing | 36. Operational and production work | Backups. | parity:G36-OPERATIONAL-AND-020 |
-| G36-OPERATIONAL-AND-021 | Missing | 36. Operational and production work | Migration process. | parity:G36-OPERATIONAL-AND-021 |
-| G36-OPERATIONAL-AND-022 | Missing | 36. Operational and production work | Load testing. | parity:G36-OPERATIONAL-AND-022 |
-| G36-OPERATIONAL-AND-023 | Missing | 36. Operational and production work | Soak testing. | parity:G36-OPERATIONAL-AND-023 |
+| G36-OPERATIONAL-AND-012 | Present | 36. Operational and production work | Observability beyond three counters. | parity:G36-OPERATIONAL-AND-012, rust:ops:ready |
+| G36-OPERATIONAL-AND-013 | Present | 36. Operational and production work | Structured logs. | parity:G36-OPERATIONAL-AND-013, rust:ops:ready |
+| G36-OPERATIONAL-AND-014 | Present | 36. Operational and production work | Error tracking. | parity:G36-OPERATIONAL-AND-014, rust:ops:ready |
+| G36-OPERATIONAL-AND-015 | Present | 36. Operational and production work | Latency metrics. | parity:G36-OPERATIONAL-AND-015, web:prediction:reconcile |
+| G36-OPERATIONAL-AND-016 | Present | 36. Operational and production work | Tick-duration metrics. | parity:G36-OPERATIONAL-AND-016, rust:ops:ready |
+| G36-OPERATIONAL-AND-017 | Present | 36. Operational and production work | Connected-player metrics. | parity:G36-OPERATIONAL-AND-017, rust:ops:ready |
+| G36-OPERATIONAL-AND-018 | Present | 36. Operational and production work | Per-room metrics. | parity:G36-OPERATIONAL-AND-018, rust:ops:ready |
+| G36-OPERATIONAL-AND-019 | Present | 36. Operational and production work | Health versus readiness endpoints. | parity:G36-OPERATIONAL-AND-019, rust:ops:ready |
+| G36-OPERATIONAL-AND-020 | Present | 36. Operational and production work | Backups. | parity:G36-OPERATIONAL-AND-020, rust:storage:restart |
+| G36-OPERATIONAL-AND-021 | Present | 36. Operational and production work | Migration process. | parity:G36-OPERATIONAL-AND-021, rust:storage:restart |
+| G36-OPERATIONAL-AND-022 | Present | 36. Operational and production work | Load testing. | parity:G36-OPERATIONAL-AND-022, server:load |
+| G36-OPERATIONAL-AND-023 | Present | 36. Operational and production work | Soak testing. | parity:G36-OPERATIONAL-AND-023, rust:replay:soak |
 | G36-OPERATIONAL-AND-024 | Missing | 36. Operational and production work | Browser compatibility testing. | parity:G36-OPERATIONAL-AND-024 |
-| G36-OPERATIONAL-AND-025 | Missing | 36. Operational and production work | Mobile-device testing. | parity:G36-OPERATIONAL-AND-025 |
-| G36-OPERATIONAL-AND-026 | Missing | 36. Operational and production work | Touch-control usability testing. | parity:G36-OPERATIONAL-AND-026 |
-| G36-OPERATIONAL-AND-027 | Missing | 36. Operational and production work | Accessibility testing. | parity:G36-OPERATIONAL-AND-027 |
-| G36-OPERATIONAL-AND-028 | Missing | 36. Operational and production work | Security review. | parity:G36-OPERATIONAL-AND-028 |
-| G36-OPERATIONAL-AND-029 | Missing | 36. Operational and production work | Dependency scanning. | parity:G36-OPERATIONAL-AND-029 |
-| G36-OPERATIONAL-AND-030 | Missing | 36. Operational and production work | Deployment rollback testing. | parity:G36-OPERATIONAL-AND-030 |
+| G36-OPERATIONAL-AND-025 | Present | 36. Operational and production work | Mobile-device testing. | parity:G36-OPERATIONAL-AND-025, web:mobile:movement-pad |
+| G36-OPERATIONAL-AND-026 | Present | 36. Operational and production work | Touch-control usability testing. | parity:G36-OPERATIONAL-AND-026, web:mobile:movement-pad |
+| G36-OPERATIONAL-AND-027 | Present | 36. Operational and production work | Accessibility testing. | parity:G36-OPERATIONAL-AND-027, web:a11y:labels |
+| G36-OPERATIONAL-AND-028 | Present | 36. Operational and production work | Security review. | parity:G36-OPERATIONAL-AND-028, docs:ops:security-review |
+| G36-OPERATIONAL-AND-029 | Present | 36. Operational and production work | Dependency scanning. | parity:G36-OPERATIONAL-AND-029, ci:audit |
+| G36-OPERATIONAL-AND-030 | Present | 36. Operational and production work | Deployment rollback testing. | parity:G36-OPERATIONAL-AND-030, scripts:record-image-digests |
 | G36-OPERATIONAL-AND-031 | Missing | 36. Operational and production work | Asset CDN/caching. | parity:G36-OPERATIONAL-AND-031 |
-| G36-OPERATIONAL-AND-032 | Missing | 36. Operational and production work | Static-asset compression. | parity:G36-OPERATIONAL-AND-032 |
-| G36-OPERATIONAL-AND-033 | Missing | 36. Operational and production work | Privacy policy and moderation policy if publicly operated. | parity:G36-OPERATIONAL-AND-033 |
+| G36-OPERATIONAL-AND-032 | Present | 36. Operational and production work | Static-asset compression. | parity:G36-OPERATIONAL-AND-032, infra:caddy:encode |
+| G36-OPERATIONAL-AND-033 | Present | 36. Operational and production work | Privacy policy and moderation policy if publicly operated. | parity:G36-OPERATIONAL-AND-033, docs:ops:policies |
 | G37-TESTING-REQUIRED-001 | Present | 37. Testing required for parity | Source-versus-Rust movement fixtures. | rust:movement_fixtures |
 | G37-TESTING-REQUIRED-002 | Present | 37. Testing required for parity | Jump fixtures. | rust:movement_fixtures |
 | G37-TESTING-REQUIRED-003 | Present | 37. Testing required for parity | Jet fixtures. | rust:movement_fixtures |
 | G37-TESTING-REQUIRED-004 | Present | 37. Testing required for parity | Crouch/prone/roll/backflip fixtures. | rust:movement_fixtures |
 | G37-TESTING-REQUIRED-005 | Present | 37. Testing required for parity | Polygon collision fixtures. | rust:collision_fixtures:geometry |
 | G37-TESTING-REQUIRED-006 | Present | 37. Testing required for parity | One-way polygon fixtures. | rust:collision_fixtures:one-way |
-| G37-TESTING-REQUIRED-007 | Missing | 37. Testing required for parity | Weapon fixture for every weapon and field. | parity:G37-TESTING-REQUIRED-007 |
-| G37-TESTING-REQUIRED-008 | Missing | 37. Testing required for parity | Fire-rate fixtures. | parity:G37-TESTING-REQUIRED-008 |
-| G37-TESTING-REQUIRED-009 | Missing | 37. Testing required for parity | Reload fixtures. | parity:G37-TESTING-REQUIRED-009 |
-| G37-TESTING-REQUIRED-010 | Missing | 37. Testing required for parity | Startup fixtures. | parity:G37-TESTING-REQUIRED-010 |
-| G37-TESTING-REQUIRED-011 | Missing | 37. Testing required for parity | Spread fixtures. | parity:G37-TESTING-REQUIRED-011 |
-| G37-TESTING-REQUIRED-012 | Missing | 37. Testing required for parity | Recoil fixtures. | parity:G37-TESTING-REQUIRED-012 |
-| G37-TESTING-REQUIRED-013 | Missing | 37. Testing required for parity | Bink fixtures. | parity:G37-TESTING-REQUIRED-013 |
-| G37-TESTING-REQUIRED-014 | Missing | 37. Testing required for parity | Velocity-inheritance fixtures. | parity:G37-TESTING-REQUIRED-014 |
-| G37-TESTING-REQUIRED-015 | Missing | 37. Testing required for parity | Head/chest/leg damage fixtures. | parity:G37-TESTING-REQUIRED-015 |
-| G37-TESTING-REQUIRED-016 | Missing | 37. Testing required for parity | Explosion fixtures. | parity:G37-TESTING-REQUIRED-016 |
-| G37-TESTING-REQUIRED-017 | Missing | 37. Testing required for parity | Grenade bounce/fuse fixtures. | parity:G37-TESTING-REQUIRED-017 |
-| G37-TESTING-REQUIRED-018 | Missing | 37. Testing required for parity | Knife-throw fixtures. | parity:G37-TESTING-REQUIRED-018 |
-| G37-TESTING-REQUIRED-019 | Missing | 37. Testing required for parity | Flame fixtures. | parity:G37-TESTING-REQUIRED-019 |
-| G37-TESTING-REQUIRED-020 | Missing | 37. Testing required for parity | Flag interaction fixtures. | parity:G37-TESTING-REQUIRED-020 |
-| G37-TESTING-REQUIRED-021 | Missing | 37. Testing required for parity | Bonus-kit fixtures. | parity:G37-TESTING-REQUIRED-021 |
-| G37-TESTING-REQUIRED-022 | Missing | 37. Testing required for parity | Every mode’s scoring fixtures. | parity:G37-TESTING-REQUIRED-022 |
-| G37-TESTING-REQUIRED-023 | Missing | 37. Testing required for parity | Round-limit fixtures. | parity:G37-TESTING-REQUIRED-023 |
-| G37-TESTING-REQUIRED-024 | Missing | 37. Testing required for parity | Respawn fixtures. | parity:G37-TESTING-REQUIRED-024 |
-| G37-TESTING-REQUIRED-025 | Missing | 37. Testing required for parity | Map-loading fixtures. | parity:G37-TESTING-REQUIRED-025 |
-| G37-TESTING-REQUIRED-026 | Missing | 37. Testing required for parity | PMS parser fuzzing. | parity:G37-TESTING-REQUIRED-026 |
+| G37-TESTING-REQUIRED-007 | Present | 37. Testing required for parity | Weapon fixture for every weapon and field. | parity:G37-TESTING-REQUIRED-007, rust:weapon_config_fixtures |
+| G37-TESTING-REQUIRED-008 | Present | 37. Testing required for parity | Fire-rate fixtures. | parity:G37-TESTING-REQUIRED-008, rust:game_core::tests::fire_is_rate_limited |
+| G37-TESTING-REQUIRED-009 | Present | 37. Testing required for parity | Reload fixtures. | parity:G37-TESTING-REQUIRED-009, rust:weapon_inventory_fixtures |
+| G37-TESTING-REQUIRED-010 | Present | 37. Testing required for parity | Startup fixtures. | parity:G37-TESTING-REQUIRED-010, rust:weapon_projectile_fixtures:firing-rules |
+| G37-TESTING-REQUIRED-011 | Present | 37. Testing required for parity | Spread fixtures. | parity:G37-TESTING-REQUIRED-011, rust:weapon_ballistics_fixtures:accuracy |
+| G37-TESTING-REQUIRED-012 | Present | 37. Testing required for parity | Recoil fixtures. | parity:G37-TESTING-REQUIRED-012, rust:weapon_ballistics_fixtures:accuracy |
+| G37-TESTING-REQUIRED-013 | Present | 37. Testing required for parity | Bink fixtures. | parity:G37-TESTING-REQUIRED-013, rust:weapon_ballistics_fixtures:accuracy |
+| G37-TESTING-REQUIRED-014 | Present | 37. Testing required for parity | Velocity-inheritance fixtures. | parity:G37-TESTING-REQUIRED-014, rust:weapon_ballistics_fixtures:inherit |
+| G37-TESTING-REQUIRED-015 | Present | 37. Testing required for parity | Head/chest/leg damage fixtures. | parity:G37-TESTING-REQUIRED-015, rust:damage_fixtures:regions |
+| G37-TESTING-REQUIRED-016 | Present | 37. Testing required for parity | Explosion fixtures. | parity:G37-TESTING-REQUIRED-016, rust:weapon_ballistics_fixtures:explosion |
+| G37-TESTING-REQUIRED-017 | Present | 37. Testing required for parity | Grenade bounce/fuse fixtures. | parity:G37-TESTING-REQUIRED-017, rust:weapon_family_fixtures:explosive |
+| G37-TESTING-REQUIRED-018 | Present | 37. Testing required for parity | Knife-throw fixtures. | parity:G37-TESTING-REQUIRED-018, rust:weapon_inventory_fixtures |
+| G37-TESTING-REQUIRED-019 | Present | 37. Testing required for parity | Flame fixtures. | parity:G37-TESTING-REQUIRED-019, rust:weapon_family_fixtures:flame |
+| G37-TESTING-REQUIRED-020 | Present | 37. Testing required for parity | Flag interaction fixtures. | parity:G37-TESTING-REQUIRED-020, rust:objective:flag-states |
+| G37-TESTING-REQUIRED-021 | Present | 37. Testing required for parity | Bonus-kit fixtures. | parity:G37-TESTING-REQUIRED-021, rust:bonus:effects |
+| G37-TESTING-REQUIRED-022 | Present | 37. Testing required for parity | Every mode’s scoring fixtures. | parity:G37-TESTING-REQUIRED-022, rust:match_lifecycle:limits |
+| G37-TESTING-REQUIRED-023 | Present | 37. Testing required for parity | Round-limit fixtures. | parity:G37-TESTING-REQUIRED-023, rust:match_lifecycle:limits |
+| G37-TESTING-REQUIRED-024 | Present | 37. Testing required for parity | Respawn fixtures. | parity:G37-TESTING-REQUIRED-024, rust:damage_fixtures:respawn |
+| G37-TESTING-REQUIRED-025 | Present | 37. Testing required for parity | Map-loading fixtures. | parity:G37-TESTING-REQUIRED-025, rust:map_validation:filters |
+| G37-TESTING-REQUIRED-026 | Present | 37. Testing required for parity | PMS parser fuzzing. | parity:G37-TESTING-REQUIRED-026, rust:content::pms |
 | G37-TESTING-REQUIRED-027 | Present | 37. Testing required for parity | Determinism across native Rust and Wasm. | parity:G37-TESTING-REQUIRED-027 |
-| G37-TESTING-REQUIRED-028 | Missing | 37. Testing required for parity | Network reconciliation tests. | parity:G37-TESTING-REQUIRED-028 |
-| G37-TESTING-REQUIRED-029 | Missing | 37. Testing required for parity | Two-player browser integration test. | parity:G37-TESTING-REQUIRED-029 |
-| G37-TESTING-REQUIRED-030 | Missing | 37. Testing required for parity | Full 16-player test. | parity:G37-TESTING-REQUIRED-030 |
-| G37-TESTING-REQUIRED-031 | Missing | 37. Testing required for parity | Reconnect test. | parity:G37-TESTING-REQUIRED-031 |
-| G37-TESTING-REQUIRED-032 | Missing | 37. Testing required for parity | Server-restart test. | parity:G37-TESTING-REQUIRED-032 |
-| G37-TESTING-REQUIRED-033 | Missing | 37. Testing required for parity | Mobile portrait test. | parity:G37-TESTING-REQUIRED-033 |
-| G37-TESTING-REQUIRED-034 | Missing | 37. Testing required for parity | Mobile landscape test. | parity:G37-TESTING-REQUIRED-034 |
-| G37-TESTING-REQUIRED-035 | Missing | 37. Testing required for parity | Low/high latency tests. | parity:G37-TESTING-REQUIRED-035 |
-| G37-TESTING-REQUIRED-036 | Missing | 37. Testing required for parity | Packet-loss tests. | parity:G37-TESTING-REQUIRED-036 |
-| G37-TESTING-REQUIRED-037 | Missing | 37. Testing required for parity | Long-running server soak test. | parity:G37-TESTING-REQUIRED-037 |
+| G37-TESTING-REQUIRED-028 | Present | 37. Testing required for parity | Network reconciliation tests. | parity:G37-TESTING-REQUIRED-028, web:prediction:reconcile |
+| G37-TESTING-REQUIRED-029 | Present | 37. Testing required for parity | Two-player browser integration test. | parity:G37-TESTING-REQUIRED-029, web:smoke:aim-input |
+| G37-TESTING-REQUIRED-030 | Present | 37. Testing required for parity | Full 16-player test. | parity:G37-TESTING-REQUIRED-030, rust:capacity:16 |
+| G37-TESTING-REQUIRED-031 | Present | 37. Testing required for parity | Reconnect test. | parity:G37-TESTING-REQUIRED-031, rust:security:resume |
+| G37-TESTING-REQUIRED-032 | Present | 37. Testing required for parity | Server-restart test. | parity:G37-TESTING-REQUIRED-032, rust:storage:restart |
+| G37-TESTING-REQUIRED-033 | Present | 37. Testing required for parity | Mobile portrait test. | parity:G37-TESTING-REQUIRED-033, web:mobile:movement-pad |
+| G37-TESTING-REQUIRED-034 | Present | 37. Testing required for parity | Mobile landscape test. | parity:G37-TESTING-REQUIRED-034, web:mobile:movement-pad |
+| G37-TESTING-REQUIRED-035 | Present | 37. Testing required for parity | Low/high latency tests. | parity:G37-TESTING-REQUIRED-035, web:prediction:reconcile |
+| G37-TESTING-REQUIRED-036 | Present | 37. Testing required for parity | Packet-loss tests. | parity:G37-TESTING-REQUIRED-036, web:prediction:reconcile |
+| G37-TESTING-REQUIRED-037 | Present | 37. Testing required for parity | Long-running server soak test. | parity:G37-TESTING-REQUIRED-037, rust:replay:soak |

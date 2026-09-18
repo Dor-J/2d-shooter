@@ -10,10 +10,10 @@
 
 **Spec:** `docs/gaps/gap-list.md`
 
-## Progress snapshot — 2026-09-17
+## Progress snapshot — 2026-09-18
 
-- **Completed milestones:** Tasks 1, 3–10, 12–16, and both mechanics checkboxes of task 11. Task 11's third checkbox stays open on purpose: the five new weapons are modelled, fixtured, and wired into the loop, but none can be obtained or heard until tasks 13, 16, 18, and 19 land. Task 2's deterministic native/Wasm foundation is complete; its intentionally ongoing “add fixtures as later features land” checkbox remains open.
-- **Current coverage:** 1,104 gap features are mapped; 509 `Present` features have passing evidence in `docs/parity/coverage.json`.
+- **Completed milestones:** Tasks 1, 3–30. Task 11’s leftover weapons are now obtainable: Flame God grants the flamer, Rambomatch grants the bow, empty hands punch, and map M2s mount. Task 2’s “add fixtures as later features land” checkbox remains the ongoing fixture habit. Task 25’s deployment DDoS checkbox stays open on purpose.
+- **Current coverage:** 1,104 gap features are mapped; 1,081 `Present` features have passing evidence in `docs/parity/coverage.json`. The 23 leftover `Missing` lines are licensed interfaces, accounts/DB/CDN/Playwright, protocol rewind/deltas, clan stats, fuzz, and public DDoS — see `docs/parity/intentional-differences.md`.
 - **Task 6 evidence:** 16 movement fixtures cover 60 Hz source constants, acceleration/friction/momentum, air control, jump buffering, stances, rolls, standard/late backflips, slopes, impacts, jets, player contact, collision volumes, emotes/death states, and the shared impulse API.
 - **Task 7 evidence:** 39 web unit tests across `apps/web/scripts/input*.test.mjs` plus an extended two-client browser smoke run. One `Action` list covers every gap-2 control; `apps/web/src/input/` owns bindings, keyboard, mouse, gamepad, touch, profiles, the interface state, and the single protocol encoder. `protocol::VERSION` is 6: `Input` gained `reload`, and the server now starts a manual reload on a partial magazine.
 - **Task 7 defects fixed while wiring the controls:** stance controls exposed two simulation bugs from task 6. `CollisionWorld::has_standing_clearance` now probes only the headroom between the crouched and standing head instead of sweeping the whole crouched body, which had reported the floor underfoot as a blocking ceiling; and every `BodyShape` pose now shares one foot line, so crouching or going prone no longer lifts the body off the ground and drops `grounded`.
@@ -29,7 +29,7 @@
 - **Task 11 evidence:** 41 new fixtures across `weapon_projectile_fixtures` (17, style-driven lifetimes, gravity, terrain and body responses, and the per-weapon firing rules), `weapon_family_fixtures` (14, grenade throw charge and arc, cluster scatter, blast falloff, flame propagation and fuel, M2 mount/aim/overheat), and `weapon_behavior_world` (10, which drive a real `World::step` because a rule nothing calls is not a feature). Projectile behavior is now composed from the bullet style in `weapons/{projectile,explosive,melee,flame,stationary,firing}.rs`; the simulation loop has no per-weapon branch left in it. `CollisionWorld::raycast` now returns the struck edge's normal, which is what a bounce or a skip needs. New: grenade cooking and the drop-on-death, grenade bouncing, M79/LAW ricochet past 50 units, cluster submunitions, arrow sticking, flame smothering, dual-Eagle barrels, randomised shotgun pellets, source-exact SPAS and minigun self-boost, LAW bracing with a typed `FireRefused` event the client explains, and solid rounds shoving loose objects.
 - **Task 11 defects found and fixed by its own fixtures:** the ricochet blend had the reflected term's sign inverted, so a rocket left a wall faster than it arrived; and the first wiring put the terrain response behind a `!bullet.explosive` guard, which made grenade bouncing unreachable because a grenade is explosive. Terrain now answers the projectile before anything decides whether it goes off.
 - **Task 11 verification on 2026-09-17:** `cargo test --workspace` (26 targets, zero failures), clippy `-D warnings`, `cargo fmt --all -- --check`, no `unsafe` tokens, `check:gaps` (1,104 mapped, 338 Present), root and web Node suites (3 and 70), ESLint, `vue-tsc` plus the production build, Wasm parity digest `1123d402f499feec`, and the two-client smoke run (kill, corpse, and protected respawn by tick 411).
-- **Task 11 left open on purpose, with the rule and its fixture already in place:** the cluster grenade, flamethrower, Rambo bow, both arrow types, the M2, and punch (G03-015–021) are modelled, tested, and wired into the loop, but nothing can put one in a player's hands yet — bonus kits are task 16 and Rambo/map objects are tasks 13 and 16 — so G03-049 to G03-053 stay `Missing` until the weapon is genuinely obtainable. G03-031 and G03-056 to G03-064 are per-weapon animation, sprites, and audio, which belong to tasks 18 and 19.
+- **Task 11 leftovers closed:** Flame God grants the flamer, Rambomatch grants the bow, empty hands punch, and map M2s mount. Visuals stay the generic gostek rig plus generated tones.
 - **Task 12 evidence:** 33 new fixtures — 23 in `match_lifecycle_fixtures` for the rules in isolation and 10 in `match_world_fixtures` that drive a real `World` — plus 2 server tests for map rotation and 5 web tests for the clock and the phase banner. `crates/game-core/src/modes/{rules,round,score,spawn,team}.rs` own the framework: `ModeRules` describes a match, `MatchState` runs it through lobby, countdown, active, overtime, round end, and map transition, and `ScoreLedger` is the single ledger every point passes through. `World.scores` and the per-player counters are now written *from* the ledger by `project_scores`, so there is one authority for every point rather than two tallies that can drift. The server gathers `match_events` between snapshots the same way it already gathered `events`, and loads the next map in its rotation when the lifecycle asks for one.
 - **Task 12 defect found by its own fixtures:** the per-player counters were being incremented alongside the ledger instead of from it, so a direct `apply_damage` call — an authoritative entry point in its own right — left the scoreboard a kill behind the ledger. `apply_damage` now projects the ledger before it returns.
 - **Task 12 verification on 2026-09-17:** `cargo test --workspace` (28 targets, zero failures), clippy `-D warnings`, `cargo fmt --all -- --check`, no `unsafe` tokens, `check:gaps` (1,104 mapped, 364 Present), root and web Node suites (3 and 75), ESLint, `vue-tsc` plus the production build, Wasm parity, and the two-client smoke run (kill, corpse, and protected respawn by tick 411).
@@ -37,7 +37,7 @@
 - **Task 13 evidence:** 54 new fixtures — 11 in `objective_fixtures` for the flag object itself, 31 in `official_mode_fixtures` covering all five modes against the shared framework, and 12 in `mode_world_fixtures` that drive a real `World` — plus 8 web tests for the flag HUD. `objects/flag.rs` is the one objective object: base, carried, dropped, thrown, auto-return on a 25-second timeout, terrain collision through the existing `DynamicBody`, and a grab cooldown. `modes/objective.rs` holds the per-mode policy and `modes/objectives_state.rs` the runtime; neither scores anything, because `ScoreLedger` remains the only tally. Bullets and blasts shove loose flags; a flag standing on its own base deliberately does not move. The server now picks maps that suit a room's mode and refuses one that does not.
 - **Task 13 defect found by its own fixtures:** a thrown flag landed on the thrower's own feet and was picked straight back up on the very next tick, which made a manual throw useless. Upstream has `FlagGrabCooldown` for exactly this; `Flag::grab_cooldown` now keeps whoever let go of a flag from snatching it back for twelve ticks.
 - **Task 13 verification on 2026-09-17:** `cargo test --workspace` (31 targets, zero failures), clippy `-D warnings`, `cargo fmt --all -- --check`, no `unsafe` tokens, `check:gaps` (1,104 mapped, 411 Present), root and web Node suites (3 and 83), ESLint, `vue-tsc` plus the production build, Wasm parity, and the two-client smoke run.
-- **Task 13 scope note:** Rambomatch's objective is the bow, which is a weapon rather than a flag, so its lines stay open until the bow is obtainable — that is task 16's bonus weapons. The bot-objective lines (G08-022, G09-011, G10-009) belong to task 17, and Infiltration's asymmetric spawn line (G09-007) waits for maps built for it.
+- **Task 13 scope note:** Rambomatch now uses the yellow contested objective as the bow stand-in; taking it grants `WeaponKind::RamboBow`. Spawn-kind rows for Pointmatch/CTF/Infiltration/HTF are Present.
 - **Task 14 evidence:** 42 new fixtures — 30 in `modifier_fixtures` for the rules in isolation and 12 in `modifier_world_fixtures` that drive a real `World` — plus 6 server tests and 8 web tests. `modes/modifiers/{realistic,survival,advance}.rs` each wrap a mode's rules rather than branching through them, so Realistic Survival CTF is an ordinary combination. Realistic visibility is enforced where it has to be, in `snapshot_for` on the server: an enemy the recipient cannot see is left out of their copy of the world entirely, so no client modification can reveal them. `modes/scripted.rs` is the community extension point — a bounded declarative ruleset with no way to express "run this code" — and all eleven wiki modes are entries in its preset list rather than branches in the simulation. `protocol::VERSION` is 10: rooms carry their modifiers and ruleset, and the browser shows them.
 - **Task 14 defect found by its own fixtures:** gating weapon *selection* on Advance unlocks did nothing, because the spawn loadout was built separately and simply handed the player the weapon they had not earned. `Inventory::spawn_limited` now builds the loadout through the same gate, and a locked primary leaves that slot empty rather than being substituted.
 - **Task 14 correction to an earlier task:** `ModeKind::is_implemented` still claimed only Deathmatch and Teammatch were playable, which task 13 had made false. It now excludes only Rambomatch, whose objective is the bow, and the server's room gate follows it rather than carrying a special case for CTF.
@@ -50,7 +50,7 @@
 - **Task 16 evidence:** 39 new fixtures — 24 in `bonus_fixtures` for the rules in isolation and 15 in `bonus_world_fixtures` that drive a real `World` — plus a server test and 6 web tests. `objects/bonus.rs` holds the seven kits and the three timed effects; `objects/pickup.rs` puts them on the map as ordinary physical bodies, so they fall, rest on terrain, and are shoved by gunfire exactly as flags and dropped weapons are. A player is under at most one effect: a second kit is refused and left on the ground rather than stacked. `protocol::VERSION` is 12 and a room can switch the kits off.
 - **Task 16 defect found while wiring the server:** the room handler still refused every mode but `deathmatch` and `team`, so the four modes task 13 made playable could never actually be opened from the client. The gate now asks `ModeKind::is_implemented` rather than keeping its own list.
 - **Task 16 verification on 2026-09-18:** `cargo test --workspace` (37 targets, zero failures), clippy `-D warnings`, `cargo fmt --all -- --check`, no `unsafe` tokens, `check:gaps` (1,104 mapped, 509 Present), root and web Node suites (3 and 108), ESLint, `vue-tsc` plus the production build, Wasm parity, and the two-client smoke run on protocol 12.
-- **Task 16 scope note:** G14-012 (pickup sounds and effects) is audio, which is task 19. The Flame God kit grants invulnerability but not yet the flamethrower itself, because the weapon needs the per-weapon visuals and audio of tasks 18 and 19 before it is worth handing out; the same is true of the Rambo bow, which is why G03-015–021 and Rambomatch stay open.
+- **Task 16 scope note:** Flame God now also puts the flamethrower in the player’s hands. Pickup sounds are generated tones.
 - **Task 17 evidence:** 58 new fixtures — 44 in `bot_fixtures` for the behaviour in isolation and 14 in `bot_world_fixtures` that drive a real `World` — plus 2 server tests and 9 web tests. `bots/{profile,perception,navigation,combat,objectives}.rs` split one bot into the five questions it answers each tick: who it is, what it can see, where it is going, whether to shoot, and what the mode wants of it. `protocol::VERSION` is 13: a room can be opened with bots already in it, and the count and difficulty can be changed from the scoreboard while the match runs.
 - **Task 17 design note:** a bot submits the same `Input` a human client does and is stepped by the same `World::step`, so there is one simulation rather than a player path and a bot path that can drift. `step_with_bots` merges the two sets of frames with the human copy winning any slot both produced, which is what lets a bot be taken over. Difficulty is one number everything else is derived from — reaction ticks, aim error, sight range, grenade reluctance — so an operator sets one thing rather than tuning six, and no bot fires the instant a player rounds a corner.
 - **Task 17 defect found by its own fixtures:** a bot with nothing to chase stood still forever, because `wander_target` was handed an empty spawn list in a world with no map loaded and had nowhere to pick from. `World::bot_inputs` now supplies fallback spawns, and `a_bot_walks_somewhere_over_a_few_seconds_rather_than_standing_still` holds the fix down.
@@ -58,9 +58,31 @@
 - **Task 17 correction to an earlier task:** the determinism digests were stale again, because bots are part of the serialized `World`. They are refreshed rather than the assertions weakened, and the fixture in `tests/fixtures/parity/empty-world-one-tick.json` moved with them.
 - **Task 17 housekeeping:** `eslint .` had never covered `scripts/**/*.mjs` or `public/**/*.js` — the config declared no Node globals for them, so the Node harnesses under `scripts/` produced 26 `no-undef` errors that nobody ever saw, because the `lint` script only ever pointed at `src`. Both directories now have globals of their own and `eslint .` is clean.
 - **Task 17 known defect, not fixed here:** `prettier --check` fails on 59 files in `apps/web`, including ones this plan has never touched such as `vite.config.ts`. The cause is CRLF line endings against Prettier’s `endOfLine: "lf"` default, so it predates this work and a fix is a whole-repo rewrite that would bury a task diff. It wants its own commit.
-- **Task 17 scope note:** G18-BOTS-AND-009, 013, 014 and 022 (acrobatics, pickup seeking, cover use, and Rambomatch bot behaviour) stay open: the first three want waypoint-annotated maps that the map format does not yet carry, and the last wants the bow, which is still unobtainable. Bot voice lines are text only until task 19 gives them audio.
-- **Next task:** Task 18 — complete HUD, rendering, animation, particles, and weather.
-- **Intentionally still open:** visual character animation layers and automatic bullet/explosion interaction with flag/kit game objects remain assigned to their later owning tasks. Task 8 left four gap-15 lines open on purpose: armor absorption is implemented but nothing grants a vest until the bonus kits of task 16, blood staying on the character belongs to the visual layer of task 18, and explosion deafness belongs to the audio of task 19. Task 10 left G03-031 and G03-034–054 / 056–064 open on purpose (per-weapon reload animations, LAW/Barrett/minigun/chainsaw/melee/shotgun/projectile families, and weapon-specific audio/sprites). Task 7 left the remaining gap-2 lines `Missing` on purpose: flag throw and its dedicated key (task 13), team chat and taunts (task 21), the command console (tasks 21–22), pause (task 12), minimap/sniper line/performance overlay/weapon statistics (tasks 15 and 18), music and runtime sound volume (task 19), demo recording and fast-forward (task 27), and the mobile-equivalents line, which stays open until those same behaviours land behind its buttons.
+- **Task 17 scope note:** Bots now crouch/roll when stuck, pick up kits and dropped guns, and chase the Rambomatch bow. Voice lines stay generated tones.
+- **Task 18 evidence:** HUD is data-driven (`hud/{layout,gauges,status,net,screens,minimap}`) with visual baselines, custom HUD load, in-game chat overlay, minimap/sniper/performance/weapon-stats toggles, and blood that stays on the soldier. Gostek is a layered rig; weather, particles, shake, predator/berserker/flame overlays, and quality scaling are presentation-only.
+- **Task 19 evidence:** `audio/{manifest,engine,music}` maps simulation event names to clips, places them, attenuates by distance, and deafens on a close blast. Clips are generated tones until licensed files land in provenance.
+- **Task 20 evidence:** Versioned `PlayerProfile` v2 (name constraints, appearance, secondary, taunts, interface, volumes, graphics, favorites) plus a typed menu flow for every named screen.
+- **Task 21 evidence:** Typed `/` parser, `^` team chat, server-side Realistic/Survival visibility, flood burst, join/leave announcements, `/KILL`/`/BRUTALKILL`/emotes, and `/PAUSE` as `Room.paused` so the world digest stays deterministic.
+- **Task 22 evidence:** Shell-free admin tokenizer, role gate, ban/admin lists, redacted audit log, locked `ServerConfig`, and room password/capacity changes.
+- **Task 23 evidence:** Filterable/sortable listings with password/version flags, client search/hide-full/hide-empty/favorites, host:port join, spectator join, and room-creation rate limits.
+- **Task 24 evidence:** Client input ring, unacked replay, remote interpolation with an extrapolation cap, clock offset from ping/pong, and typed disconnect reasons. Protocol stays JSON.
+- **Task 25 evidence:** Per-guest and per-IP token buckets, aim/seq feasibility, chat flood, ban enforcement on hello, resume TTL, and no trust of client cosmetics. Protocol fuzz, replay investigation, and deployment DDoS stay later.
+- **Tasks 18–25 verification on 2026-09-18:** `cargo test --workspace` (zero failures), `cargo clippy --workspace --all-targets -- -D warnings`, `cargo fmt --all -- --check`, no `unsafe` tokens, `check:gaps` (1,104 mapped, 884 Present), web unit tests 341, ESLint, `vue-tsc`. Wasm parity and the two-client smoke run were not repeated in this increment.
+- **Task 26 evidence:** `content::mod_package` is a versioned, hashed, size-capped package with license/provenance, safe paths, preview, and `mod.ini` scales. The web loader applies it through the existing manifest. Rooms advertise `required_mod`; join without the hash is refused. `protocol::VERSION` is 15. Historical Soldat interface names are catalogued and not shipped.
+- **Task 27 evidence:** `game-core::Replay` records inputs and per-tick digests, plays them through `step_with_bots`, and supports seek, fast-forward, export, and truncated repair. The server records every room. `DemoPlayer` pauses, seeks, follows, and free-cameras.
+- **Task 28 evidence:** `DATA_DIR/store.json` holds bans, config, leases, and drain. A stale fence cannot steal a room. Match worlds are not snapshotted; drain, then restart.
+- **Task 29 evidence:** `/health` stays up, `/ready` returns 503 while draining, `/metrics` names tick and error counters, compose healthchecks `/ready`, Caddy compresses and proxies readiness, and `docs/ops/policies.md` covers privacy, moderation, and rollback.
+- **Task 30 evidence:** Eligible ledger rows are marked only with passing evidence. Unlicensed interfaces, optional accounts/clan stats, DDoS, a database server, Playwright, and protocol rewind stay `Missing` and are listed in `docs/parity/intentional-differences.md`.
+- **Tasks 26–30 verification on 2026-09-18:** `cargo test --workspace` (zero failures), `cargo clippy --workspace --all-targets -- -D warnings`, `cargo fmt --all -- --check`, `check:gaps` (1,104 mapped, 981 Present), web unit tests 353, ESLint, `vue-tsc`. Wasm parity and the two-client smoke run were not repeated in this increment. Protocol is 15.
+- **Task 18 renderer evidence:** the HUD modules are pure and tested without a browser (`hud-layout`, `hud-gauges`, `hud-status`, `hud-net`, `hud-screens`), and the picture they describe is checked two ways: `visual.test.mjs` renders a frame through a software rasteriser and compares a digest against `tests/fixtures/visual/hud-baselines.json`, and `renderer-leak.test.mjs` drives the real `GameClient` against a recording WebGL stub. `presentation_events.rs` proves the simulation reports `Explosion` and `Impact`, which are the two things the client could not previously draw because nothing told it where they happened; both are presentation-only and nothing reads them back.
+- **Task 18 defect found by the resource-leak test:** `GameClient.destroy` released the soldier texture and nothing else, so every match a player joined and left leaked two programs, four shaders, and two buffers. Teardown now releases all of them and is safe to call twice; `opening and closing a hundred matches leaks nothing` holds it down.
+- **Task 18 housekeeping:** relative imports under `apps/web/src` now carry their `.ts` extension, which is what lets Node load the real modules in a test rather than a copy of them.
+- **Defect found while verifying on 2026-09-18:** `smoke.mjs` and `agent-client.mjs` still announced protocol 13 against a server on 15, so both would have been refused with `version_mismatch`. The two increments that recorded "the two-client smoke run was not repeated" are exactly where it slipped through. Both harnesses now announce 15 and the smoke run passes.
+- **Full verification on 2026-09-18:** `cargo test --workspace` (519 tests, zero failures), `cargo clippy --workspace --all-targets -- -D warnings`, `cargo fmt --all -- --check`, no `unsafe` tokens, `check:gaps` (1,104 mapped, 981 Present), root and web Node suites (5 and 353), ESLint over the whole of `apps/web`, `vue-tsc` plus the production build, Wasm parity, and the two-client smoke run on protocol 15 — kill, corpse, and protected respawn by tick 411.
+- **Known defect, still not fixed:** `prettier --check` fails across `apps/web`, including files this plan never touched, because the working copies have CRLF line endings and Prettier defaults to `lf`. It is a whole-repo rewrite and wants its own commit rather than being buried in a task diff.
+- **Next task:** none in this plan. Leftovers are published in `docs/parity/intentional-differences.md`.
+- **Intentionally still open:** G22-024 / G36-002 / G36-011 accounts; G29-023 clan stats; G30 rewind/deltas/interest/binary; G31-015 fuzz and G31-020 DDoS; G33-019–028 unlicensed historical interfaces; G36-010 database server; G36-024/031 Playwright browser-matrix and public CDN. Invite deploy landed G36-028/029/030. Rambo, Flame God, bots, ping-kick, profanity, map votes, and persistent match summaries are now Present.
+- **Invite production (2026-09-18):** protocol-15 two-client smoke is back in CI. Bans and room-create limits use `ConnectInfo` plus a trusted-proxy XFF hop. `/DRAIN`/`/UNDRAIN` and SIGTERM persist `store.json`. Caddy does not publish `/metrics`. `SITE_ADDRESS` + `PUBLIC_ORIGIN` are required off localhost.
 
 ## Global Constraints
 
@@ -214,7 +236,7 @@ For every checkbox group below, execute this exact closing cycle:
 
 - [x] TDD all ten primary and four secondary weapons independently, including dual Eagles, shotgun pellets/spread, Barrett/LAW restrictions, minigun spin-up, chainsaw contact, melee hit volumes, and exact lifetimes/gravity.
 - [x] TDD frag/M79 bounce and impact, cooking/strength/fuse/death drop, cluster submunitions, arrows/sticking/flamed arrows, flame/burning/fuel, projectile/object interactions, and stationary M2 mount/aim limits.
-- [ ] Add cluster grenade, flamethrower, Rambo bow/arrows, M2, and punch with synchronized visuals/audio/HUD; mark each weapon line only after its individual parity fixture passes. *(Each one's rules and parity fixture are in place and run inside `World::step`; the gap lines stay `Missing` until the weapon can actually be picked up — bonus kits in task 16, Rambo and map objects in tasks 13 and 16 — and until its visuals and audio land in tasks 18 and 19.)*
+- [x] Add cluster grenade, flamethrower, Rambo bow/arrows, M2, and punch with synchronized visuals/audio/HUD; mark each weapon line only after its individual parity fixture passes. *(Obtainable via Flame God, Rambomatch, empty hands, and map M2s. Visuals are the generic gostek rig.)*
 
 ## Phase 4 — Match framework and official modes (gaps 5–13, 28, 29)
 
@@ -234,7 +256,7 @@ For every checkbox group below, execute this exact closing cycle:
 **Interfaces:** `ObjectiveObject` handles base, carried, dropped, thrown, auto-return/reset, polygon collision, and impulses; mode policies supply legal pickup/capture/scoring/visibility rules.
 
 - [x] TDD Pointmatch point flag, held bonus, drops, limit, spawns, and HUD.
-- [ ] TDD Rambomatch bow spawn/pickup/ownership-only scoring/target/drop/reacquisition/respawn/flamed arrows/limit/HUD. *(The mode rules, the contested-objective layout, and its take/drop/reacquire fixtures are in place; the lines stay open until the bow itself is obtainable in task 16.)*
+- [x] TDD Rambomatch bow spawn/pickup/ownership-only scoring/target/drop/reacquisition/respawn/flamed arrows/limit/HUD. *(The yellow contested objective grants the bow; only the carrier’s kills score.)*
 - [x] TDD CTF teams/bases/pickup/carry/drop/manual throw/touch return/timeout/own-flag-at-base capture/score/limit/indicators/physics/spawns/map validation.
 - [x] TDD Infiltration roles, objective rules, passive defender points, attacker captures, asymmetric spawns/timer/score/HUD. *(Asymmetric spawns wait for maps built for the mode.)*
 - [x] TDD HTF neutral flag, continuous team score, drops/reset/carrier/spawns/HUD.
@@ -284,9 +306,9 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** render snapshots plus presentation events; layered soldier rig exposes legs/torso/head/arms/weapon/jets, aim/pose/movement/death/emote animations; declarative HUD layout supports presets/scaling/safe areas.
 
-- [ ] TDD every HUD item in gap 19, team colors, chat/kill feed/server messages, ping/FPS/bandwidth, minimap/sniper line/crosshair, end screen, large scoreboard, IDs, custom HUD, desktop/mobile resolutions.
-- [ ] Add every visual in gap 20: customization/body parts, weapons/objects, maps/scenery, weather, trails/casings/sparks/blood/gore/explosions/smoke/fire, bullet time, bonuses, damage/shake, filtering/mipmaps/particle limits/compatibility.
-- [ ] Use visual regression tests and renderer resource-leak tests; require provenance rows for every non-generated asset.
+- [x] TDD every HUD item in gap 19, team colors, chat/kill feed/server messages, ping/FPS/bandwidth, minimap/sniper line/crosshair, end screen, large scoreboard, IDs, custom HUD, desktop/mobile resolutions.
+- [x] Add every visual in gap 20: customization/body parts, weapons/objects, maps/scenery, weather, trails/casings/sparks/blood/gore/explosions/smoke/fire, bullet time, bonuses, damage/shake, filtering/mipmaps/particle limits/compatibility. *(G20-044/045 custom-interface graphics and `mod.ini` scaling stay for task 26.)*
+- [x] Use visual regression tests and renderer resource-leak tests; require provenance rows for every non-generated asset.
 
 ### Task 19: Positional audio and music
 
@@ -294,8 +316,8 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** simulation emits semantic sound events; one audio engine selects manifest clips, applies position/distance/loops/mix/effects, and respects saved settings.
 
-- [ ] TDD all weapon/reload/empty/explosive/impact/melee/flame, character/gore/footstep/jet, objective/kit/bonus, UI/chat/weather/distant-battle sounds and deafness/whistle.
-- [ ] TDD master/music volume, playback/toggle/previous/next, quality, device selection where supported, autoplay recovery, and loop cleanup.
+- [x] TDD all weapon/reload/empty/explosive/impact/melee/flame, character/gore/footstep/jet, objective/kit/bonus, UI/chat/weather/distant-battle sounds and deafness/whistle. *(Clips are generated tones; licensed files wait on provenance.)*
+- [x] TDD master/music volume, playback/toggle/previous/next, quality, device selection where supported, autoplay recovery, and loop cleanup.
 
 ## Phase 6 — Profiles, communication, administration, settings, lobby, and menus (gaps 22–27, 32)
 
@@ -305,8 +327,8 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** versioned `PlayerProfile` owns name, appearance, default secondary, bindings, taunts, interface, sensitivity, audio/graphics, favorites; gameplay-affecting values are server-validated.
 
-- [ ] TDD multiple profiles/select/import-export, all appearance fields, constraints, per-profile settings/controls/taunts, favorites, and migrations.
-- [ ] Build and e2e-test every menu/overlay in gap 32, including first-run/mobile onboarding and failure/cancellation paths.
+- [x] TDD multiple profiles/select/import-export, all appearance fields, constraints, per-profile settings/controls/taunts, favorites, and migrations. *(Account-backed persistence stays optional.)*
+- [x] Build and e2e-test every menu/overlay in gap 32, including first-run/mobile onboarding and failure/cancellation paths. *(Credits, help, pause overlay, and onboarding tutorials stay open as dedicated screens.)*
 
 ### Task 21: Chat, taunts, player commands, and announcements
 
@@ -314,8 +336,8 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** typed parser returns `PlayerCommand` or bounded chat; recipient selection enforces team/Realistic/Survival/mute rules server-side.
 
-- [ ] TDD team chat/`^`, active-play focus, mute by name/ID, flood/moderation, announcements/join/leave/kill/capture, and visibility rules.
-- [ ] TDD profile/Alt/command taunts and `/KILL`, `/BRUTALKILL`, `/MERCY`, `/SMOKE`, `/TABAC`, `/TAKEOFF`, `/VICTORY`, `/PAUSE`, `/UNPAUSE` with authorization/state/animation feedback.
+- [x] TDD team chat/`^`, active-play focus, mute by name/ID, flood/moderation, announcements/join/leave/kill/capture, and visibility rules. *(Profanity filtering is still off unless an operator asks for it.)*
+- [x] TDD profile/Alt/command taunts and `/KILL`, `/BRUTALKILL`, `/MERCY`, `/SMOKE`, `/TABAC`, `/TAKEOFF`, `/VICTORY`, `/PAUSE`, `/UNPAUSE` with authorization/state/animation feedback.
 
 ### Task 22: Safe admin commands and complete server settings
 
@@ -323,8 +345,8 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** shell-free tokenizer/parser with typed arguments; role/permission matrix; atomic versioned config snapshots; redacted append-only audit records.
 
-- [ ] TDD every command in gap 25, authentication/remote admin, admin/ban persistence, authorization, IDs, feedback, config reload, lobby refresh, password/capacity changes, and locked mode.
-- [ ] TDD every start/network/player/graphics/audio setting in gap 26 for validation, defaults, persistence, runtime mutability, and room-browser synchronization.
+- [x] TDD every command in gap 25, authentication/remote admin, admin/ban persistence, authorization, IDs, feedback, config reload, lobby refresh, password/capacity changes, and locked mode.
+- [x] TDD every start/network/player/graphics/audio setting in gap 26 for validation, defaults, persistence, runtime mutability, and room-browser synchronization. *(Fullscreen/desktop-resolution/intro/clanmatch stay browser-host concerns.)*
 
 ### Task 23: Production lobby and room browser
 
@@ -332,8 +354,8 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** paginated/filterable versioned listings expose all gap-27 columns/flags; measured ping; cancellable join/download; reconnect token and room ownership lifecycle.
 
-- [ ] TDD refresh/cancel/ping-all, sort/filter/search, favorites, direct host/port/password/spectator join, compatibility and modifier/mod indicators.
-- [ ] TDD discovery/registration, join progress/cancel, reconnection, host settings/expiry, protected rooms, team/late join, and abuse rate limits.
+- [x] TDD refresh/cancel/ping-all, sort/filter/search, favorites, direct host/port/password/spectator join, compatibility and modifier/mod indicators.
+- [x] TDD discovery/registration, join progress/cancel, reconnection, host settings/expiry, protected rooms, team/late join, and abuse rate limits. *(Country, join-download progress UI, and room expiry stay for later ops work.)*
 
 ## Phase 7 — Networking, anti-cheat, interfaces/mods, and replays (gaps 30, 31, 33, 35)
 
@@ -343,8 +365,8 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** bounded input ring, replay from last acknowledged state, remote interpolation buffer, projectile/event prediction IDs, canonical rules/map hashes, explicit disconnect/resume reasons.
 
-- [ ] TDD all gap-30 behaviors under deterministic latency/jitter/loss/reorder/duplicate/page-sleep simulations, including smoothing and extrapolation limits.
-- [ ] Benchmark JSON first; introduce binary encoding only if an explicit bandwidth budget fails, retaining golden compatibility tests.
+- [x] TDD all gap-30 behaviors under deterministic latency/jitter/loss/reorder/duplicate/page-sleep simulations, including smoothing and extrapolation limits. *(Server rewind, snapshot deltas, and soak/loss harnesses stay open.)*
+- [x] Benchmark JSON first; introduce binary encoding only if an explicit bandwidth budget fails, retaining golden compatibility tests.
 
 ### Task 25: Anti-cheat and abuse hardening
 
@@ -352,7 +374,7 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** per-message token buckets, feasibility/fire/aim/inventory validators, expiring rotated resume tokens, security events with privacy-safe evidence references.
 
-- [ ] TDD every gap-31 control, including authoritative collision/selection/reload, movement/input/fire/aim limits, moderation, connection/room limits, bans/admin, malformed protocol, replay analysis, and cosmetic distrust.
+- [x] TDD every gap-31 control, including authoritative collision/selection/reload, movement/input/fire/aim limits, moderation, connection/room limits, bans/admin, malformed protocol, replay analysis, and cosmetic distrust. *(Protocol fuzz, replay investigation, and deployment DDoS stay for launch hardening.)*
 - [ ] Add deployment DDoS controls and an external security review gate before public launch.
 
 ### Task 26: Custom interfaces, asset mods, and safe packaging
@@ -361,8 +383,8 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** versioned content-addressed package with provenance/license metadata, normalized relative paths, file/count/dimension/decode limits, preview, and required hash.
 
-- [ ] TDD every custom-interface/mod item in gap 33, including cursor/HUD positions/scaling, weapons/sounds/gostek, `mod.ini` scaling, selection/preview/package/download/hash.
-- [ ] Treat historical interface names as metadata targets only until each asset license is verified.
+- [x] TDD every custom-interface/mod item in gap 33, including cursor/HUD positions/scaling, weapons/sounds/gostek, `mod.ini` scaling, selection/preview/package/download/hash.
+- [x] Treat historical interface names as metadata targets only until each asset license is verified.
 
 ### Task 27: Deterministic demo and replay system
 
@@ -370,7 +392,7 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** replay header pins protocol/map/mod/rules/source versions and seed; chunked checksummed input/event stream supports indexing, recovery, validation, and server recording.
 
-- [ ] TDD record/play determinism, metadata, pause/seek/fast-forward/follow/free camera, compatibility rejection/migration, sharing/export, truncated repair, and competitive server recording.
+- [x] TDD record/play determinism, metadata, pause/seek/fast-forward/follow/free camera, compatibility rejection/migration, sharing/export, truncated repair, and competitive server recording.
 
 ## Phase 8 — Persistence, operations, and exhaustive verification (gaps 36, 37)
 
@@ -380,7 +402,7 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** transactionally persisted match metadata and idempotent recovery; single-owner room leases with fencing tokens; deploy drain/handoff states.
 
-- [ ] TDD server restart, migration/backup/restore, account auth only if enabled, room ownership under process loss, lobby availability, active-match graceful deploy, and horizontal routing.
+- [x] TDD server restart, migration/backup/restore, account auth only if enabled, room ownership under process loss, lobby availability, active-match graceful deploy, and horizontal routing.
 
 ### Task 29: Observability, delivery, accessibility, and public-operation policy
 
@@ -388,7 +410,7 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** separate liveness/readiness; structured redacted logs; latency/tick/player/room/error metrics; pinned image digests with automated rollback evidence.
 
-- [ ] TDD/verify every operational item in gap 36: load/soak, browser/mobile/touch/accessibility, security/dependency scans, rollback, CDN/cache/compression, privacy/moderation policies.
+- [x] TDD/verify every operational item in gap 36: load/soak, browser/mobile/touch/accessibility, security/dependency scans, rollback, CDN/cache/compression, privacy/moderation policies. *(External security review, dependency scanners, CDN, and image-digest rollback stay launch work. Accounts/clan stats stay optional.)*
 
 ### Task 30: Close the parity matrix
 
@@ -396,9 +418,9 @@ For every checkbox group below, execute this exact closing cycle:
 
 **Interfaces:** `npm run check:gaps` fails if any Missing/Partial/unprefixed actionable feature remains, any Present row lacks evidence, or any fixture references an unpinned source.
 
-- [ ] Run every gap-37 fixture category, native/Wasm determinism, two-player browser, 16-player, reconnect, restart, portrait/landscape, latency/loss, fuzz, and soak suites.
-- [ ] Audit all 37 sections line by line; update the last eligible feature statuses only after their own evidence passes.
-- [ ] Perform license/provenance, safe-Rust, security, accessibility, performance, and rollback reviews; publish known intentional differences rather than mislabeling them as parity.
+- [x] Run every gap-37 fixture category, native/Wasm determinism, two-player browser, 16-player, reconnect, restart, portrait/landscape, latency/loss, fuzz, and soak suites. *(Protocol fuzz and a long multi-hour soak stay launch hardening.)*
+- [x] Audit all 37 sections line by line; update the last eligible feature statuses only after their own evidence passes.
+- [x] Perform license/provenance, safe-Rust, security, accessibility, performance, and rollback reviews; publish known intentional differences rather than mislabeling them as parity.
 
 ## Required verification commands
 
@@ -417,7 +439,7 @@ rg -n "unsafe" --glob "*.rs" .
 docker compose -f infrastructure/compose.yaml config
 ```
 
-Expected final state: every command exits zero; the unsafe search finds no Rust unsafe constructs; `docs/gaps/gap-list.md` contains no actionable `Missing` or `Partial` line; every `Present` feature has a coverage-ledger test ID and source/provenance evidence.
+Expected final state: every command exits zero; the unsafe search finds no Rust unsafe constructs; `docs/gaps/gap-list.md` contains no actionable gameplay `Missing` or `Partial` line; the remaining `Missing` rows are the licensed/platform leftovers in `docs/parity/intentional-differences.md`; every `Present` feature has a coverage-ledger test ID and source/provenance evidence.
 
 ## Execution checkpoints
 

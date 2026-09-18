@@ -340,7 +340,8 @@
       "feature": "Flag and kit push from bullets/explosions.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-038"
+        "rust:mode_world:physics",
+        "rust:bonus_world:physics"
       ]
     },
     {
@@ -358,7 +359,8 @@
       "feature": "Directional aiming and body rotation.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-040"
+        "parity:G01-CHARACTER-MOVEMENT-040",
+        "web:render:gostek"
       ]
     },
     {
@@ -367,7 +369,8 @@
       "feature": "Separate legs, torso, head, arms, weapon, and jet animations.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-041"
+        "parity:G01-CHARACTER-MOVEMENT-041",
+        "web:render:gostek"
       ]
     },
     {
@@ -376,7 +379,8 @@
       "feature": "Death animations.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-042"
+        "parity:G01-CHARACTER-MOVEMENT-042",
+        "web:render:gostek"
       ]
     },
     {
@@ -385,7 +389,8 @@
       "feature": "Mercy/victory/smoke/tobacco/helmet animations.",
       "source": "docs/gaps/gap-list.md#1-character-movement-and-physics",
       "acceptance": [
-        "parity:G01-CHARACTER-MOVEMENT-043"
+        "rust:commands:emote",
+        "web:render:gostek"
       ]
     },
     {
@@ -565,7 +570,8 @@
       "feature": "Pick up flags and kits.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-020"
+        "parity:G02-INPUT-AND-020",
+        "web:objectives:status"
       ]
     },
     {
@@ -574,7 +580,7 @@
       "feature": "Flag throw using jump+crouch.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-021"
+        "web:input:flag-throw"
       ]
     },
     {
@@ -583,7 +589,7 @@
       "feature": "Dedicated configurable flag-throw key.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-022"
+        "web:input:flag-throw"
       ]
     },
     {
@@ -610,7 +616,8 @@
       "feature": "Team chat.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-025"
+        "parity:G02-INPUT-AND-025",
+        "rust:chat:scope"
       ]
     },
     {
@@ -619,7 +626,8 @@
       "feature": "Command console.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-026"
+        "parity:G02-INPUT-AND-026",
+        "rust:commands:parse"
       ]
     },
     {
@@ -637,7 +645,8 @@
       "feature": "Weapon-statistics screen.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-028"
+        "parity:G02-INPUT-AND-028",
+        "web:hud:screens"
       ]
     },
     {
@@ -646,7 +655,8 @@
       "feature": "Minimap toggle.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-029"
+        "parity:G02-INPUT-AND-029",
+        "web:hud:net"
       ]
     },
     {
@@ -655,7 +665,8 @@
       "feature": "Sniper-line toggle.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-030"
+        "parity:G02-INPUT-AND-030",
+        "web:hud:net"
       ]
     },
     {
@@ -664,7 +675,8 @@
       "feature": "Performance-statistics overlay.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-031"
+        "parity:G02-INPUT-AND-031",
+        "web:hud:net"
       ]
     },
     {
@@ -682,7 +694,8 @@
       "feature": "Music toggle.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-033"
+        "parity:G02-INPUT-AND-033",
+        "web:audio:engine"
       ]
     },
     {
@@ -691,7 +704,8 @@
       "feature": "Previous/next music track.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-034"
+        "parity:G02-INPUT-AND-034",
+        "web:audio:engine"
       ]
     },
     {
@@ -700,7 +714,8 @@
       "feature": "Demo recording.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-035"
+        "web:replay:player",
+        "rust:replay:record"
       ]
     },
     {
@@ -709,7 +724,8 @@
       "feature": "Demo playback fast-forward.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-036"
+        "web:replay:player",
+        "rust:replay:seek"
       ]
     },
     {
@@ -718,7 +734,8 @@
       "feature": "Pause.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-037"
+        "parity:G02-INPUT-AND-037",
+        "rust:commands:parse"
       ]
     },
     {
@@ -736,7 +753,8 @@
       "feature": "Taunt shortcuts.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-039"
+        "parity:G02-INPUT-AND-039",
+        "rust:commands:emote"
       ]
     },
     {
@@ -754,7 +772,8 @@
       "feature": "Runtime sound-volume adjustment.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-041"
+        "parity:G02-INPUT-AND-041",
+        "web:audio:engine"
       ]
     },
     {
@@ -817,7 +836,7 @@
       "feature": "Mobile equivalents for crouch, prone, roll, reload, weapon switch, weapon throw, flag throw, scoreboard, and team chat.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-048"
+        "web:mobile:movement-pad"
       ]
     },
     {
@@ -826,7 +845,9 @@
       "feature": "Desert Eagles.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-001"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -835,7 +856,9 @@
       "feature": "HK MP5.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-002"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -844,7 +867,9 @@
       "feature": "AK-74.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-003"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -853,7 +878,9 @@
       "feature": "Steyr AUG.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-004"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -862,7 +889,9 @@
       "feature": "SPAS-12.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-005"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -871,7 +900,9 @@
       "feature": "Ruger 77.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-006"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -880,7 +911,9 @@
       "feature": "M79.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-007"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -889,7 +922,9 @@
       "feature": "Barrett M82A1.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-008"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -898,7 +933,9 @@
       "feature": "FN Minimi.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-009"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -907,7 +944,9 @@
       "feature": "XM214 Minigun.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-010"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -916,7 +955,9 @@
       "feature": "USSOCOM.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-011"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -925,7 +966,9 @@
       "feature": "Combat Knife.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-012"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -934,7 +977,9 @@
       "feature": "Chainsaw.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-013"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -943,7 +988,9 @@
       "feature": "M72 LAW.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-014"
+        "rust:weapon_config_fixtures",
+        "rust:weapon_ballistics_fixtures:damage",
+        "web:weapons:table"
       ]
     },
     {
@@ -952,7 +999,8 @@
       "feature": "Cluster grenades.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-015"
+        "rust:obtainable_weapons",
+        "rust:weapon_family_fixtures:explosive"
       ]
     },
     {
@@ -961,7 +1009,8 @@
       "feature": "Flamethrower.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-016"
+        "rust:obtainable_weapons",
+        "rust:weapon_family_fixtures:flame"
       ]
     },
     {
@@ -970,7 +1019,8 @@
       "feature": "Rambo Bow.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-017"
+        "rust:obtainable_weapons",
+        "rust:modes:rambomatch"
       ]
     },
     {
@@ -979,7 +1029,7 @@
       "feature": "Normal arrows.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-018"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -988,7 +1038,7 @@
       "feature": "Flamed arrows.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-019"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -997,7 +1047,8 @@
       "feature": "Stationary M2 machine gun.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-020"
+        "rust:obtainable_weapons",
+        "rust:weapon_family_fixtures:stationary"
       ]
     },
     {
@@ -1006,7 +1057,7 @@
       "feature": "Punch/unarmed combat.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-021"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -1096,7 +1147,8 @@
       "feature": "Per-weapon reload animations.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-031"
+        "web:render:gostek",
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1270,7 +1322,8 @@
       "feature": "Cluster grenade submunition spawning.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-048"
+        "rust:weapon_family_fixtures:explosive",
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -1279,7 +1332,7 @@
       "feature": "Arrow sticking/interaction.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-049"
+        "rust:weapon_projectile_fixtures:styles"
       ]
     },
     {
@@ -1288,7 +1341,7 @@
       "feature": "Flame propagation and burning.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-050"
+        "rust:weapon_family_fixtures:flame"
       ]
     },
     {
@@ -1297,7 +1350,8 @@
       "feature": "Flamethrower fuel/ammunition behavior.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-051"
+        "rust:weapon_family_fixtures:flame",
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -1306,7 +1360,8 @@
       "feature": "Stationary-gun mounting and dismounting.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-052"
+        "rust:obtainable_weapons",
+        "rust:weapon_family_fixtures:stationary"
       ]
     },
     {
@@ -1315,7 +1370,7 @@
       "feature": "Stationary-gun aiming limits.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-053"
+        "rust:weapon_family_fixtures:stationary"
       ]
     },
     {
@@ -1344,7 +1399,8 @@
       "feature": "Muzzle flashes.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-056"
+        "web:render:particles",
+        "rust:presentation:impact"
       ]
     },
     {
@@ -1353,7 +1409,7 @@
       "feature": "Shell casings.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-057"
+        "web:render:particles"
       ]
     },
     {
@@ -1362,7 +1418,7 @@
       "feature": "Weapon-specific sounds.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-058"
+        "web:audio:engine"
       ]
     },
     {
@@ -1371,7 +1427,7 @@
       "feature": "Reload sounds.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-059"
+        "web:audio:engine"
       ]
     },
     {
@@ -1380,7 +1436,7 @@
       "feature": "Empty-magazine sound.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-060"
+        "web:audio:engine"
       ]
     },
     {
@@ -1389,7 +1445,8 @@
       "feature": "Bullet impact effects.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-061"
+        "rust:presentation:impact",
+        "web:render:effects"
       ]
     },
     {
@@ -1398,7 +1455,7 @@
       "feature": "Tracers matching weapon configuration.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-062"
+        "web:render:effects"
       ]
     },
     {
@@ -1407,7 +1464,8 @@
       "feature": "Explosion visual and audio effects.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-063"
+        "rust:presentation:explosion",
+        "web:audio:engine"
       ]
     },
     {
@@ -1416,7 +1474,7 @@
       "feature": "Weapon sprites held by characters.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-064"
+        "web:render:gostek"
       ]
     },
     {
@@ -1856,7 +1914,8 @@
       "feature": "Rambomatch.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-004"
+        "rust:modes:rambomatch",
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -2408,7 +2467,8 @@
       "feature": "Pointmatch spawns and maps.",
       "source": "docs/gaps/gap-list.md#6-pointmatch",
       "acceptance": [
-        "parity:G06-POINTMATCH-007"
+        "rust:obtainable_weapons",
+        "rust:modes:pointmatch"
       ]
     },
     {
@@ -2428,7 +2488,8 @@
       "feature": "Rambo Bow spawn.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-001"
+        "rust:obtainable_weapons",
+        "rust:modes:rambomatch"
       ]
     },
     {
@@ -2437,7 +2498,7 @@
       "feature": "Bow pickup.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-002"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -2446,7 +2507,7 @@
       "feature": "Only the Rambo player earning kills/points under the mode’s rules.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-003"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -2455,7 +2516,7 @@
       "feature": "Rambo target indication.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-004"
+        "web:hud:status"
       ]
     },
     {
@@ -2464,7 +2525,7 @@
       "feature": "Bow drop and reacquisition.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-005"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -2473,7 +2534,7 @@
       "feature": "Rambo-specific respawn behavior.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-006"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -2482,7 +2543,7 @@
       "feature": "Flamed-arrow support.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-007"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -2491,7 +2552,8 @@
       "feature": "Rambomatch scoring and win limit.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-008"
+        "rust:obtainable_weapons",
+        "rust:modes:rambomatch"
       ]
     },
     {
@@ -2500,7 +2562,7 @@
       "feature": "Rambomatch HUD.",
       "source": "docs/gaps/gap-list.md#7-rambomatch",
       "acceptance": [
-        "parity:G07-RAMBOMATCH-009"
+        "web:hud:status"
       ]
     },
     {
@@ -2715,7 +2777,8 @@
       "feature": "CTF spawn points.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-020"
+        "rust:obtainable_weapons",
+        "rust:damage_fixtures:spawn-selection"
       ]
     },
     {
@@ -2805,7 +2868,8 @@
       "feature": "Infiltration-specific spawn points.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-007"
+        "rust:obtainable_weapons",
+        "rust:damage_fixtures:spawn-selection"
       ]
     },
     {
@@ -2921,7 +2985,8 @@
       "feature": "HTF-specific spawn points.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-007"
+        "rust:obtainable_weapons",
+        "rust:damage_fixtures:spawn-selection"
       ]
     },
     {
@@ -3038,7 +3103,8 @@
       "feature": "Realistic movement and survival tuning.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-009"
+        "rust:realistic_movement",
+        "rust:modifiers:realistic"
       ]
     },
     {
@@ -3371,7 +3437,7 @@
       "feature": "Pickup sounds and effects.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-012"
+        "web:audio:engine"
       ]
     },
     {
@@ -3523,7 +3589,8 @@
       "feature": "Bulletproof vest/armor.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-005"
+        "parity:G15-HEALTH-ARMOR-005",
+        "rust:bonus:effects"
       ]
     },
     {
@@ -3550,7 +3617,8 @@
       "feature": "Blood remaining on the character.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-008"
+        "parity:G15-HEALTH-ARMOR-008",
+        "web:render:gostek"
       ]
     },
     {
@@ -3712,7 +3780,7 @@
       "feature": "Explosion deafness/whistling effect.",
       "source": "docs/gaps/gap-list.md#15-health-armor-death-and-respawn",
       "acceptance": [
-        "parity:G15-HEALTH-ARMOR-026"
+        "web:audio:engine"
       ]
     },
     {
@@ -3775,7 +3843,7 @@
       "feature": "Edge textures.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-007"
+        "web:render:map"
       ]
     },
     {
@@ -3802,7 +3870,7 @@
       "feature": "Animated scenery if supported.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-010"
+        "web:render:map"
       ]
     },
     {
@@ -3847,7 +3915,7 @@
       "feature": "Flag spawn types.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-015"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -3856,7 +3924,7 @@
       "feature": "Bonus-kit spawn types.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-016"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -3865,7 +3933,7 @@
       "feature": "Grenade spawn types where relevant.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-017"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -3874,7 +3942,7 @@
       "feature": "Stationary-gun locations.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-018"
+        "rust:obtainable_weapons"
       ]
     },
     {
@@ -3928,7 +3996,7 @@
       "feature": "Map boundaries.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-024"
+        "rust:map:bounds"
       ]
     },
     {
@@ -4036,7 +4104,7 @@
       "feature": "Map voting or polling if the intended Soldat server experience includes it.",
       "source": "docs/gaps/gap-list.md#16-maps-and-terrain-engine",
       "acceptance": [
-        "parity:G16-MAPS-AND-036"
+        "rust:admin:parse"
       ]
     },
     {
@@ -5042,7 +5110,7 @@
       "feature": "Crouching, prone, rolls, and backflips.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-009"
+        "rust:bots:navigation"
       ]
     },
     {
@@ -5081,7 +5149,8 @@
       "feature": "Weapon pickup.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-013"
+        "rust:obtainable_weapons",
+        "rust:bots:objectives"
       ]
     },
     {
@@ -5090,7 +5159,8 @@
       "feature": "Bonus pickup.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-014"
+        "rust:obtainable_weapons",
+        "rust:bots:objectives"
       ]
     },
     {
@@ -5172,7 +5242,8 @@
       "feature": "Rambomatch behavior.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-022"
+        "rust:obtainable_weapons",
+        "rust:bots:objectives"
       ]
     },
     {
@@ -5269,7 +5340,8 @@
       "feature": "Team coloring.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-006"
+        "parity:G19-HUD-AND-006",
+        "web:hud:gauges"
       ]
     },
     {
@@ -5278,7 +5350,8 @@
       "feature": "Red health bar.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-007"
+        "parity:G19-HUD-AND-007",
+        "web:hud:gauges"
       ]
     },
     {
@@ -5287,7 +5360,8 @@
       "feature": "Yellow ammunition/reload bar.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-008"
+        "parity:G19-HUD-AND-008",
+        "web:hud:gauges"
       ]
     },
     {
@@ -5296,7 +5370,8 @@
       "feature": "Bullet count positioned with the ammo display.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-009"
+        "parity:G19-HUD-AND-009",
+        "web:hud:gauges"
       ]
     },
     {
@@ -5305,7 +5380,8 @@
       "feature": "Fire-interval bar.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-010"
+        "parity:G19-HUD-AND-010",
+        "web:hud:gauges"
       ]
     },
     {
@@ -5314,7 +5390,8 @@
       "feature": "Blue jet-fuel bar.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-011"
+        "parity:G19-HUD-AND-011",
+        "web:hud:gauges"
       ]
     },
     {
@@ -5323,7 +5400,8 @@
       "feature": "Server rank.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-012"
+        "parity:G19-HUD-AND-012",
+        "web:hud:status"
       ]
     },
     {
@@ -5332,7 +5410,8 @@
       "feature": "Current kills/points.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-013"
+        "parity:G19-HUD-AND-013",
+        "web:hud:status"
       ]
     },
     {
@@ -5341,7 +5420,8 @@
       "feature": "Difference from the leader.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-014"
+        "parity:G19-HUD-AND-014",
+        "web:hud:status"
       ]
     },
     {
@@ -5350,7 +5430,8 @@
       "feature": "Kill/point/capture limit.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-015"
+        "parity:G19-HUD-AND-015",
+        "web:hud:status"
       ]
     },
     {
@@ -5359,7 +5440,8 @@
       "feature": "Alpha team score.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-016"
+        "parity:G19-HUD-AND-016",
+        "web:hud:status"
       ]
     },
     {
@@ -5368,7 +5450,8 @@
       "feature": "Bravo team score.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-017"
+        "parity:G19-HUD-AND-017",
+        "web:hud:status"
       ]
     },
     {
@@ -5377,7 +5460,8 @@
       "feature": "Charlie team score.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-018"
+        "parity:G19-HUD-AND-018",
+        "web:hud:status"
       ]
     },
     {
@@ -5386,7 +5470,8 @@
       "feature": "Delta team score.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-019"
+        "parity:G19-HUD-AND-019",
+        "web:hud:status"
       ]
     },
     {
@@ -5395,7 +5480,8 @@
       "feature": "Missing-flag indicators.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-020"
+        "parity:G19-HUD-AND-020",
+        "web:hud:status"
       ]
     },
     {
@@ -5404,7 +5490,8 @@
       "feature": "Flag-carrier state.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-021"
+        "parity:G19-HUD-AND-021",
+        "web:hud:status"
       ]
     },
     {
@@ -5413,7 +5500,8 @@
       "feature": "Bonus status and duration.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-022"
+        "parity:G19-HUD-AND-022",
+        "web:hud:status"
       ]
     },
     {
@@ -5422,7 +5510,8 @@
       "feature": "Armor indicator.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-023"
+        "parity:G19-HUD-AND-023",
+        "web:hud:status"
       ]
     },
     {
@@ -5431,7 +5520,8 @@
       "feature": "Weapon image.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-024"
+        "parity:G19-HUD-AND-024",
+        "web:hud:status"
       ]
     },
     {
@@ -5440,7 +5530,8 @@
       "feature": "Secondary weapon indicator.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-025"
+        "parity:G19-HUD-AND-025",
+        "web:hud:status"
       ]
     },
     {
@@ -5449,7 +5540,8 @@
       "feature": "Grenade type/count.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-026"
+        "parity:G19-HUD-AND-026",
+        "web:hud:status"
       ]
     },
     {
@@ -5458,7 +5550,8 @@
       "feature": "Reload progress rather than only “RELOADING.”",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-027"
+        "parity:G19-HUD-AND-027",
+        "web:hud:gauges"
       ]
     },
     {
@@ -5467,7 +5560,8 @@
       "feature": "Respawn countdown.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-028"
+        "parity:G19-HUD-AND-028",
+        "web:hud:respawn"
       ]
     },
     {
@@ -5485,7 +5579,8 @@
       "feature": "Chat overlay inside the game.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-030"
+        "parity:G19-HUD-AND-030",
+        "web:hud:status"
       ]
     },
     {
@@ -5494,7 +5589,8 @@
       "feature": "Team-chat distinction.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-031"
+        "parity:G19-HUD-AND-031",
+        "web:hud:status"
       ]
     },
     {
@@ -5503,7 +5599,8 @@
       "feature": "Server messages.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-032"
+        "parity:G19-HUD-AND-032",
+        "web:hud:status"
       ]
     },
     {
@@ -5512,7 +5609,8 @@
       "feature": "Connection/ping indicator.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-033"
+        "parity:G19-HUD-AND-033",
+        "web:hud:net"
       ]
     },
     {
@@ -5521,7 +5619,8 @@
       "feature": "Ping dot with size/color grading.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-034"
+        "parity:G19-HUD-AND-034",
+        "web:hud:net"
       ]
     },
     {
@@ -5530,7 +5629,8 @@
       "feature": "FPS display.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-035"
+        "parity:G19-HUD-AND-035",
+        "web:hud:net"
       ]
     },
     {
@@ -5539,7 +5639,8 @@
       "feature": "Network-bandwidth display.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-036"
+        "parity:G19-HUD-AND-036",
+        "web:hud:net"
       ]
     },
     {
@@ -5548,7 +5649,8 @@
       "feature": "Minimap.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-037"
+        "parity:G19-HUD-AND-037",
+        "web:hud:net"
       ]
     },
     {
@@ -5557,7 +5659,8 @@
       "feature": "Sniper line.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-038"
+        "parity:G19-HUD-AND-038",
+        "web:hud:net"
       ]
     },
     {
@@ -5566,7 +5669,8 @@
       "feature": "Crosshair accuracy/bink visualization.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-039"
+        "parity:G19-HUD-AND-039",
+        "web:hud:net"
       ]
     },
     {
@@ -5575,7 +5679,8 @@
       "feature": "Spectator HUD.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-040"
+        "parity:G19-HUD-AND-040",
+        "web:hud:screens"
       ]
     },
     {
@@ -5584,7 +5689,8 @@
       "feature": "End-of-round screen.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-041"
+        "parity:G19-HUD-AND-041",
+        "web:hud:screens"
       ]
     },
     {
@@ -5593,7 +5699,8 @@
       "feature": "Weapon-statistics screen.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-042"
+        "parity:G19-HUD-AND-042",
+        "web:hud:screens"
       ]
     },
     {
@@ -5602,7 +5709,8 @@
       "feature": "Scrollable large scoreboard.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-043"
+        "parity:G19-HUD-AND-043",
+        "web:hud:screens"
       ]
     },
     {
@@ -5611,7 +5719,8 @@
       "feature": "Player IDs on the command-enabled scoreboard.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-044"
+        "parity:G19-HUD-AND-044",
+        "web:hud:screens"
       ]
     },
     {
@@ -5620,7 +5729,8 @@
       "feature": "Custom HUD/interface loading.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-045"
+        "parity:G19-HUD-AND-045",
+        "web:hud:layout"
       ]
     },
     {
@@ -5629,7 +5739,8 @@
       "feature": "HUD scaling.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-046"
+        "parity:G19-HUD-AND-046",
+        "web:hud:layout"
       ]
     },
     {
@@ -5638,7 +5749,9 @@
       "feature": "Safe-area and resolution tests across desktop and mobile.",
       "source": "docs/gaps/gap-list.md#19-hud-and-game-screen",
       "acceptance": [
-        "parity:G19-HUD-AND-047"
+        "parity:G19-HUD-AND-047",
+        "web:hud:layout",
+        "web:render:visual"
       ]
     },
     {
@@ -5647,7 +5760,8 @@
       "feature": "Full animated soldier/gostek rendering.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-001"
+        "parity:G20-RENDERING-AND-001",
+        "web:render:gostek"
       ]
     },
     {
@@ -5656,7 +5770,8 @@
       "feature": "Separate body parts.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-002"
+        "parity:G20-RENDERING-AND-002",
+        "web:render:gostek"
       ]
     },
     {
@@ -5665,7 +5780,8 @@
       "feature": "Hair.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-003"
+        "parity:G20-RENDERING-AND-003",
+        "web:render:gostek"
       ]
     },
     {
@@ -5674,7 +5790,8 @@
       "feature": "Headgear.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-004"
+        "parity:G20-RENDERING-AND-004",
+        "web:render:gostek"
       ]
     },
     {
@@ -5683,7 +5800,8 @@
       "feature": "Helmet/hat/none.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-005"
+        "parity:G20-RENDERING-AND-005",
+        "web:render:gostek"
       ]
     },
     {
@@ -5692,7 +5810,8 @@
       "feature": "Chains and dog tags.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-006"
+        "parity:G20-RENDERING-AND-006",
+        "web:render:gostek"
       ]
     },
     {
@@ -5701,7 +5820,8 @@
       "feature": "Shirt, pants, skin, hair, shoes, and jet colors.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-007"
+        "parity:G20-RENDERING-AND-007",
+        "web:render:gostek"
       ]
     },
     {
@@ -5710,7 +5830,8 @@
       "feature": "Weapon sprites.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-008"
+        "parity:G20-RENDERING-AND-008",
+        "web:render:gostek"
       ]
     },
     {
@@ -5719,7 +5840,8 @@
       "feature": "Character pose matching aim angle.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-009"
+        "parity:G20-RENDERING-AND-009",
+        "web:render:gostek"
       ]
     },
     {
@@ -5728,7 +5850,8 @@
       "feature": "Muzzle flashes.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-010"
+        "parity:G20-RENDERING-AND-010",
+        "web:render:particles"
       ]
     },
     {
@@ -5737,7 +5860,8 @@
       "feature": "Bullet trails.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-011"
+        "parity:G20-RENDERING-AND-011",
+        "web:render:particles"
       ]
     },
     {
@@ -5746,7 +5870,8 @@
       "feature": "Shell casings.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-012"
+        "parity:G20-RENDERING-AND-012",
+        "web:render:particles"
       ]
     },
     {
@@ -5755,7 +5880,9 @@
       "feature": "Sparks.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-013"
+        "parity:G20-RENDERING-AND-013",
+        "web:render:particles",
+        "rust:presentation:impact"
       ]
     },
     {
@@ -5764,7 +5891,8 @@
       "feature": "Blood.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-014"
+        "parity:G20-RENDERING-AND-014",
+        "web:render:particles"
       ]
     },
     {
@@ -5773,7 +5901,8 @@
       "feature": "Gore.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-015"
+        "parity:G20-RENDERING-AND-015",
+        "web:render:particles"
       ]
     },
     {
@@ -5782,7 +5911,10 @@
       "feature": "Explosion animation.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-016"
+        "parity:G20-RENDERING-AND-016",
+        "web:render:particles",
+        "rust:presentation:explosion",
+        "web:render:visual"
       ]
     },
     {
@@ -5791,7 +5923,8 @@
       "feature": "Smoke.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-017"
+        "parity:G20-RENDERING-AND-017",
+        "web:render:particles"
       ]
     },
     {
@@ -5800,7 +5933,8 @@
       "feature": "Fire.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-018"
+        "parity:G20-RENDERING-AND-018",
+        "web:render:particles"
       ]
     },
     {
@@ -5809,7 +5943,8 @@
       "feature": "Burning characters.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-019"
+        "parity:G20-RENDERING-AND-019",
+        "web:render:objects"
       ]
     },
     {
@@ -5818,7 +5953,8 @@
       "feature": "Grenade sprites.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-020"
+        "parity:G20-RENDERING-AND-020",
+        "web:render:objects"
       ]
     },
     {
@@ -5827,7 +5963,8 @@
       "feature": "Arrow sprites.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-021"
+        "parity:G20-RENDERING-AND-021",
+        "web:render:objects"
       ]
     },
     {
@@ -5836,7 +5973,8 @@
       "feature": "Dropped weapons.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-022"
+        "parity:G20-RENDERING-AND-022",
+        "web:render:objects"
       ]
     },
     {
@@ -5845,7 +5983,8 @@
       "feature": "Flags.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-023"
+        "parity:G20-RENDERING-AND-023",
+        "web:render:objects"
       ]
     },
     {
@@ -5854,7 +5993,8 @@
       "feature": "Kits.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-024"
+        "parity:G20-RENDERING-AND-024",
+        "web:render:objects"
       ]
     },
     {
@@ -5863,7 +6003,8 @@
       "feature": "Stationary gun.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-025"
+        "parity:G20-RENDERING-AND-025",
+        "web:render:objects"
       ]
     },
     {
@@ -5872,7 +6013,8 @@
       "feature": "Polygon textures.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-026"
+        "parity:G20-RENDERING-AND-026",
+        "web:render:map"
       ]
     },
     {
@@ -5881,7 +6023,8 @@
       "feature": "Edge textures.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-027"
+        "parity:G20-RENDERING-AND-027",
+        "web:render:map"
       ]
     },
     {
@@ -5890,7 +6033,8 @@
       "feature": "Background scenery.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-028"
+        "parity:G20-RENDERING-AND-028",
+        "web:render:map"
       ]
     },
     {
@@ -5899,7 +6043,8 @@
       "feature": "Foreground scenery.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-029"
+        "parity:G20-RENDERING-AND-029",
+        "web:render:map"
       ]
     },
     {
@@ -5908,7 +6053,8 @@
       "feature": "Rain.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-030"
+        "parity:G20-RENDERING-AND-030",
+        "web:render:weather"
       ]
     },
     {
@@ -5917,7 +6063,8 @@
       "feature": "Snow.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-031"
+        "parity:G20-RENDERING-AND-031",
+        "web:render:weather"
       ]
     },
     {
@@ -5926,7 +6073,8 @@
       "feature": "Wind effects.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-032"
+        "parity:G20-RENDERING-AND-032",
+        "web:render:weather"
       ]
     },
     {
@@ -5935,7 +6083,8 @@
       "feature": "Bullet-time visual effect.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-033"
+        "parity:G20-RENDERING-AND-033",
+        "web:render:effects"
       ]
     },
     {
@@ -5944,7 +6093,8 @@
       "feature": "Predator transparency.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-034"
+        "parity:G20-RENDERING-AND-034",
+        "web:render:effects"
       ]
     },
     {
@@ -5953,7 +6103,8 @@
       "feature": "Berserker overlay.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-035"
+        "parity:G20-RENDERING-AND-035",
+        "web:render:effects"
       ]
     },
     {
@@ -5962,7 +6113,8 @@
       "feature": "Flame God overlay.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-036"
+        "parity:G20-RENDERING-AND-036",
+        "web:render:effects"
       ]
     },
     {
@@ -5971,7 +6123,8 @@
       "feature": "Damage feedback.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-037"
+        "parity:G20-RENDERING-AND-037",
+        "web:render:effects"
       ]
     },
     {
@@ -5980,7 +6133,8 @@
       "feature": "Screen shake where appropriate.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-038"
+        "parity:G20-RENDERING-AND-038",
+        "web:render:effects"
       ]
     },
     {
@@ -5989,7 +6143,8 @@
       "feature": "Resolution scaling.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-039"
+        "parity:G20-RENDERING-AND-039",
+        "web:render:effects"
       ]
     },
     {
@@ -5998,7 +6153,8 @@
       "feature": "Texture filtering settings.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-040"
+        "parity:G20-RENDERING-AND-040",
+        "web:render:effects"
       ]
     },
     {
@@ -6007,7 +6163,8 @@
       "feature": "Mipmapping.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-041"
+        "parity:G20-RENDERING-AND-041",
+        "web:render:effects"
       ]
     },
     {
@@ -6016,7 +6173,8 @@
       "feature": "Low-particle modes.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-042"
+        "parity:G20-RENDERING-AND-042",
+        "web:render:effects"
       ]
     },
     {
@@ -6025,7 +6183,9 @@
       "feature": "Compatibility rendering path.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-043"
+        "parity:G20-RENDERING-AND-043",
+        "web:render:effects",
+        "web:render:leak"
       ]
     },
     {
@@ -6034,7 +6194,8 @@
       "feature": "Custom-interface graphics.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-044"
+        "parity:G20-RENDERING-AND-044",
+        "web:mods:package"
       ]
     },
     {
@@ -6043,7 +6204,8 @@
       "feature": "Mod-controlled asset scaling through `mod.ini`-like rules.",
       "source": "docs/gaps/gap-list.md#20-rendering-and-visual-effects",
       "acceptance": [
-        "parity:G20-RENDERING-AND-045"
+        "parity:G20-RENDERING-AND-045",
+        "web:mods:ini"
       ]
     },
     {
@@ -6052,7 +6214,8 @@
       "feature": "Weapon-specific firing sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-001"
+        "parity:G21-SOUND-AND-001",
+        "web:audio:engine"
       ]
     },
     {
@@ -6061,7 +6224,8 @@
       "feature": "Reload sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-002"
+        "parity:G21-SOUND-AND-002",
+        "web:audio:engine"
       ]
     },
     {
@@ -6070,7 +6234,8 @@
       "feature": "Empty-weapon sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-003"
+        "parity:G21-SOUND-AND-003",
+        "web:audio:engine"
       ]
     },
     {
@@ -6079,7 +6244,8 @@
       "feature": "Grenade pin/throw/bounce/explosion sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-004"
+        "parity:G21-SOUND-AND-004",
+        "web:audio:engine"
       ]
     },
     {
@@ -6088,7 +6254,8 @@
       "feature": "M79 and LAW explosion sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-005"
+        "parity:G21-SOUND-AND-005",
+        "web:audio:engine"
       ]
     },
     {
@@ -6097,7 +6264,8 @@
       "feature": "Bullet impacts.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-006"
+        "parity:G21-SOUND-AND-006",
+        "web:audio:engine"
       ]
     },
     {
@@ -6106,7 +6274,8 @@
       "feature": "Ricochets if applicable.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-007"
+        "parity:G21-SOUND-AND-007",
+        "web:audio:engine"
       ]
     },
     {
@@ -6115,7 +6284,8 @@
       "feature": "Chainsaw loop.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-008"
+        "parity:G21-SOUND-AND-008",
+        "web:audio:engine"
       ]
     },
     {
@@ -6124,7 +6294,8 @@
       "feature": "Knife sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-009"
+        "parity:G21-SOUND-AND-009",
+        "web:audio:engine"
       ]
     },
     {
@@ -6133,7 +6304,8 @@
       "feature": "Punch sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-010"
+        "parity:G21-SOUND-AND-010",
+        "web:audio:engine"
       ]
     },
     {
@@ -6142,7 +6314,8 @@
       "feature": "Flamethrower loop.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-011"
+        "parity:G21-SOUND-AND-011",
+        "web:audio:engine"
       ]
     },
     {
@@ -6151,7 +6324,8 @@
       "feature": "Character pain.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-012"
+        "parity:G21-SOUND-AND-012",
+        "web:audio:engine"
       ]
     },
     {
@@ -6160,7 +6334,8 @@
       "feature": "Death sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-013"
+        "parity:G21-SOUND-AND-013",
+        "web:audio:engine"
       ]
     },
     {
@@ -6169,7 +6344,8 @@
       "feature": "Gore sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-014"
+        "parity:G21-SOUND-AND-014",
+        "web:audio:engine"
       ]
     },
     {
@@ -6178,7 +6354,8 @@
       "feature": "Footsteps selected by map property.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-015"
+        "parity:G21-SOUND-AND-015",
+        "web:audio:engine"
       ]
     },
     {
@@ -6187,7 +6364,8 @@
       "feature": "Jetpack sound.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-016"
+        "parity:G21-SOUND-AND-016",
+        "web:audio:engine"
       ]
     },
     {
@@ -6196,7 +6374,8 @@
       "feature": "Flag pickup/drop/return/capture sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-017"
+        "parity:G21-SOUND-AND-017",
+        "web:audio:engine"
       ]
     },
     {
@@ -6205,7 +6384,8 @@
       "feature": "Kit pickup sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-018"
+        "parity:G21-SOUND-AND-018",
+        "web:audio:engine"
       ]
     },
     {
@@ -6214,7 +6394,8 @@
       "feature": "Bonus activation/expiration sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-019"
+        "parity:G21-SOUND-AND-019",
+        "web:audio:engine"
       ]
     },
     {
@@ -6223,7 +6404,8 @@
       "feature": "UI/menu sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-020"
+        "parity:G21-SOUND-AND-020",
+        "web:audio:engine"
       ]
     },
     {
@@ -6232,7 +6414,8 @@
       "feature": "Chat/message notification.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-021"
+        "parity:G21-SOUND-AND-021",
+        "web:audio:engine"
       ]
     },
     {
@@ -6241,7 +6424,8 @@
       "feature": "Distant-battle sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-022"
+        "parity:G21-SOUND-AND-022",
+        "web:audio:engine"
       ]
     },
     {
@@ -6250,7 +6434,8 @@
       "feature": "Weather sounds.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-023"
+        "parity:G21-SOUND-AND-023",
+        "web:audio:engine"
       ]
     },
     {
@@ -6259,7 +6444,8 @@
       "feature": "Explosion deafness and whistle effect.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-024"
+        "parity:G21-SOUND-AND-024",
+        "web:audio:engine"
       ]
     },
     {
@@ -6268,7 +6454,8 @@
       "feature": "Positional audio.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-025"
+        "parity:G21-SOUND-AND-025",
+        "web:audio:engine"
       ]
     },
     {
@@ -6277,7 +6464,8 @@
       "feature": "Distance attenuation.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-026"
+        "parity:G21-SOUND-AND-026",
+        "web:audio:engine"
       ]
     },
     {
@@ -6286,7 +6474,8 @@
       "feature": "Master sound volume.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-027"
+        "parity:G21-SOUND-AND-027",
+        "web:audio:engine"
       ]
     },
     {
@@ -6295,7 +6484,8 @@
       "feature": "Music volume.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-028"
+        "parity:G21-SOUND-AND-028",
+        "web:audio:engine"
       ]
     },
     {
@@ -6304,7 +6494,8 @@
       "feature": "Music playback.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-029"
+        "parity:G21-SOUND-AND-029",
+        "web:audio:engine"
       ]
     },
     {
@@ -6313,7 +6504,8 @@
       "feature": "Toggle music.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-030"
+        "parity:G21-SOUND-AND-030",
+        "web:audio:engine"
       ]
     },
     {
@@ -6322,7 +6514,8 @@
       "feature": "Previous/next track.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-031"
+        "parity:G21-SOUND-AND-031",
+        "web:audio:engine"
       ]
     },
     {
@@ -6331,7 +6524,8 @@
       "feature": "Sound-quality option.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-032"
+        "parity:G21-SOUND-AND-032",
+        "web:audio:engine"
       ]
     },
     {
@@ -6340,7 +6534,8 @@
       "feature": "Sound-output/device option where browser APIs permit it.",
       "source": "docs/gaps/gap-list.md#21-sound-and-music",
       "acceptance": [
-        "parity:G21-SOUND-AND-033"
+        "parity:G21-SOUND-AND-033",
+        "web:audio:engine"
       ]
     },
     {
@@ -6349,7 +6544,8 @@
       "feature": "Persistent player profiles.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-001"
+        "parity:G22-PLAYER-PROFILES-001",
+        "web:profiles:player"
       ]
     },
     {
@@ -6358,7 +6554,8 @@
       "feature": "Multiple profiles.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-002"
+        "parity:G22-PLAYER-PROFILES-002",
+        "web:profiles:player"
       ]
     },
     {
@@ -6367,7 +6564,8 @@
       "feature": "Profile selection screen.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-003"
+        "parity:G22-PLAYER-PROFILES-003",
+        "web:profiles:player"
       ]
     },
     {
@@ -6376,7 +6574,8 @@
       "feature": "Per-profile settings.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-004"
+        "parity:G22-PLAYER-PROFILES-004",
+        "web:profiles:player"
       ]
     },
     {
@@ -6385,7 +6584,8 @@
       "feature": "Per-profile controls.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-005"
+        "parity:G22-PLAYER-PROFILES-005",
+        "web:profiles:player"
       ]
     },
     {
@@ -6394,7 +6594,8 @@
       "feature": "Per-profile taunts.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-006"
+        "parity:G22-PLAYER-PROFILES-006",
+        "web:profiles:player"
       ]
     },
     {
@@ -6403,7 +6604,8 @@
       "feature": "Default secondary weapon.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-007"
+        "parity:G22-PLAYER-PROFILES-007",
+        "web:profiles:player"
       ]
     },
     {
@@ -6412,7 +6614,8 @@
       "feature": "Player name constraints matching the intended rules.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-008"
+        "parity:G22-PLAYER-PROFILES-008",
+        "web:profiles:player"
       ]
     },
     {
@@ -6421,7 +6624,8 @@
       "feature": "Shirt color.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-009"
+        "parity:G22-PLAYER-PROFILES-009",
+        "web:profiles:player"
       ]
     },
     {
@@ -6430,7 +6634,8 @@
       "feature": "Pants color.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-010"
+        "parity:G22-PLAYER-PROFILES-010",
+        "web:profiles:player"
       ]
     },
     {
@@ -6439,7 +6644,8 @@
       "feature": "Skin color.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-011"
+        "parity:G22-PLAYER-PROFILES-011",
+        "web:profiles:player"
       ]
     },
     {
@@ -6448,7 +6654,8 @@
       "feature": "Hair color.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-012"
+        "parity:G22-PLAYER-PROFILES-012",
+        "web:profiles:player"
       ]
     },
     {
@@ -6457,7 +6664,8 @@
       "feature": "Shoe color.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-013"
+        "parity:G22-PLAYER-PROFILES-013",
+        "web:profiles:player"
       ]
     },
     {
@@ -6466,7 +6674,8 @@
       "feature": "Jet-flame color.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-014"
+        "parity:G22-PLAYER-PROFILES-014",
+        "web:profiles:player"
       ]
     },
     {
@@ -6475,7 +6684,8 @@
       "feature": "Hairstyle.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-015"
+        "parity:G22-PLAYER-PROFILES-015",
+        "web:profiles:player"
       ]
     },
     {
@@ -6484,7 +6694,8 @@
       "feature": "Headgear.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-016"
+        "parity:G22-PLAYER-PROFILES-016",
+        "web:profiles:player"
       ]
     },
     {
@@ -6493,7 +6704,8 @@
       "feature": "Chain style.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-017"
+        "parity:G22-PLAYER-PROFILES-017",
+        "web:profiles:player"
       ]
     },
     {
@@ -6502,7 +6714,8 @@
       "feature": "Interface selection.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-018"
+        "parity:G22-PLAYER-PROFILES-018",
+        "web:profiles:player"
       ]
     },
     {
@@ -6511,7 +6724,8 @@
       "feature": "Saved mouse sensitivity.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-019"
+        "parity:G22-PLAYER-PROFILES-019",
+        "web:profiles:player"
       ]
     },
     {
@@ -6520,7 +6734,8 @@
       "feature": "Saved sound/music volume.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-020"
+        "parity:G22-PLAYER-PROFILES-020",
+        "web:profiles:player"
       ]
     },
     {
@@ -6529,7 +6744,8 @@
       "feature": "Saved graphics settings.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-021"
+        "parity:G22-PLAYER-PROFILES-021",
+        "web:profiles:player"
       ]
     },
     {
@@ -6538,7 +6754,8 @@
       "feature": "Saved favorite servers.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-022"
+        "parity:G22-PLAYER-PROFILES-022",
+        "web:profiles:player"
       ]
     },
     {
@@ -6547,7 +6764,8 @@
       "feature": "Profile import/export if desired.",
       "source": "docs/gaps/gap-list.md#22-player-profiles-and-customization",
       "acceptance": [
-        "parity:G22-PLAYER-PROFILES-023"
+        "parity:G22-PLAYER-PROFILES-023",
+        "web:profiles:player"
       ]
     },
     {
@@ -6583,7 +6801,8 @@
       "feature": "Team chat.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-003"
+        "parity:G23-CHAT-AND-003",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6592,7 +6811,8 @@
       "feature": "`^` shorthand for team chat.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-004"
+        "parity:G23-CHAT-AND-004",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6601,7 +6821,8 @@
       "feature": "In-game chat overlay.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-005"
+        "parity:G23-CHAT-AND-005",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6610,7 +6831,8 @@
       "feature": "Chat while actively playing without interfering with controls.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-006"
+        "parity:G23-CHAT-AND-006",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6619,7 +6841,8 @@
       "feature": "Taunt file/configuration.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-007"
+        "parity:G23-CHAT-AND-007",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6628,7 +6851,8 @@
       "feature": "Alt+letter and Alt+number taunts.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-008"
+        "parity:G23-CHAT-AND-008",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6637,7 +6861,8 @@
       "feature": "Per-profile taunts.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-009"
+        "parity:G23-CHAT-AND-009",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6646,7 +6871,8 @@
       "feature": "Command taunts.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-010"
+        "parity:G23-CHAT-AND-010",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6655,7 +6881,8 @@
       "feature": "Chat mute.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-011"
+        "parity:G23-CHAT-AND-011",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6664,7 +6891,8 @@
       "feature": "Mute by player name.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-012"
+        "parity:G23-CHAT-AND-012",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6673,7 +6901,8 @@
       "feature": "Mute by player ID.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-013"
+        "parity:G23-CHAT-AND-013",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6682,7 +6911,8 @@
       "feature": "Spam/flood controls beyond the basic one-second limit.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-014"
+        "parity:G23-CHAT-AND-014",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6691,7 +6921,7 @@
       "feature": "Profanity/moderation options if required.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-015"
+        "rust:chat:censor"
       ]
     },
     {
@@ -6700,7 +6930,8 @@
       "feature": "Server announcements.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-016"
+        "parity:G23-CHAT-AND-016",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6709,7 +6940,8 @@
       "feature": "Join/leave messages.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-017"
+        "parity:G23-CHAT-AND-017",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6718,7 +6950,8 @@
       "feature": "Kill/capture announcements.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-018"
+        "parity:G23-CHAT-AND-018",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6727,7 +6960,8 @@
       "feature": "Realistic/Survival chat-visibility rules.",
       "source": "docs/gaps/gap-list.md#23-chat-and-taunts",
       "acceptance": [
-        "parity:G23-CHAT-AND-019"
+        "parity:G23-CHAT-AND-019",
+        "rust:chat:visibility"
       ]
     },
     {
@@ -6736,7 +6970,8 @@
       "feature": "`/KILL`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-001"
+        "parity:G24-PLAYER-COMMANDS-001",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6745,7 +6980,8 @@
       "feature": "`/BRUTALKILL`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-002"
+        "parity:G24-PLAYER-COMMANDS-002",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6754,7 +6990,8 @@
       "feature": "`/MERCY`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-003"
+        "parity:G24-PLAYER-COMMANDS-003",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6763,7 +7000,8 @@
       "feature": "`/SMOKE`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-004"
+        "parity:G24-PLAYER-COMMANDS-004",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6772,7 +7010,8 @@
       "feature": "`/TABAC`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-005"
+        "parity:G24-PLAYER-COMMANDS-005",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6781,7 +7020,8 @@
       "feature": "`/TAKEOFF`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-006"
+        "parity:G24-PLAYER-COMMANDS-006",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6790,7 +7030,8 @@
       "feature": "`/VICTORY`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-007"
+        "parity:G24-PLAYER-COMMANDS-007",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6799,7 +7040,8 @@
       "feature": "`/PAUSE`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-008"
+        "parity:G24-PLAYER-COMMANDS-008",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6808,7 +7050,8 @@
       "feature": "`/UNPAUSE`",
       "source": "docs/gaps/gap-list.md#24-player-commands",
       "acceptance": [
-        "parity:G24-PLAYER-COMMANDS-009"
+        "parity:G24-PLAYER-COMMANDS-009",
+        "rust:commands:parse"
       ]
     },
     {
@@ -6817,7 +7060,8 @@
       "feature": "`/ADDMAP <map>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-001"
+        "parity:G25-SERVER-AND-001",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6826,7 +7070,8 @@
       "feature": "`/DELMAP <map>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-002"
+        "parity:G25-SERVER-AND-002",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6835,7 +7080,8 @@
       "feature": "`/ADDBOT<team> <bot>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-003"
+        "parity:G25-SERVER-AND-003",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6844,7 +7090,8 @@
       "feature": "`/KICK <player or ID>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-004"
+        "parity:G25-SERVER-AND-004",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6853,7 +7100,8 @@
       "feature": "`/KICKLAST`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-005"
+        "parity:G25-SERVER-AND-005",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6862,7 +7110,8 @@
       "feature": "`/TEMPBAN <minutes> <IP/player>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-006"
+        "parity:G25-SERVER-AND-006",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6871,7 +7120,8 @@
       "feature": "`/BAN <player or ID>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-007"
+        "parity:G25-SERVER-AND-007",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6880,7 +7130,8 @@
       "feature": "`/BANIP <IP>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-008"
+        "parity:G25-SERVER-AND-008",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6889,7 +7140,8 @@
       "feature": "`/UNBAN <IP>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-009"
+        "parity:G25-SERVER-AND-009",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6898,7 +7150,8 @@
       "feature": "`/MAP <map>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-010"
+        "parity:G25-SERVER-AND-010",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6907,7 +7160,8 @@
       "feature": "`/RESTART`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-011"
+        "parity:G25-SERVER-AND-011",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6916,7 +7170,8 @@
       "feature": "`/NEXTMAP`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-012"
+        "parity:G25-SERVER-AND-012",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6925,7 +7180,8 @@
       "feature": "`/ADM <player>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-013"
+        "parity:G25-SERVER-AND-013",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6934,7 +7190,8 @@
       "feature": "`/ADMIP <IP>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-014"
+        "parity:G25-SERVER-AND-014",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6943,7 +7200,8 @@
       "feature": "`/UNADM <IP>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-015"
+        "parity:G25-SERVER-AND-015",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6952,7 +7210,8 @@
       "feature": "`/RESPAWNTIME <seconds>`",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-016"
+        "parity:G25-SERVER-AND-016",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6961,7 +7220,8 @@
       "feature": "Admin authentication.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-017"
+        "parity:G25-SERVER-AND-017",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6970,7 +7230,8 @@
       "feature": "Remote-admin support.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-018"
+        "parity:G25-SERVER-AND-018",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6979,7 +7240,8 @@
       "feature": "Persistent ban list.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-019"
+        "parity:G25-SERVER-AND-019",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6988,7 +7250,8 @@
       "feature": "Persistent admin list.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-020"
+        "parity:G25-SERVER-AND-020",
+        "rust:admin:parse"
       ]
     },
     {
@@ -6997,7 +7260,8 @@
       "feature": "Audit log.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-021"
+        "parity:G25-SERVER-AND-021",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7006,7 +7270,8 @@
       "feature": "Command authorization.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-022"
+        "parity:G25-SERVER-AND-022",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7015,7 +7280,8 @@
       "feature": "Player-ID display.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-023"
+        "parity:G25-SERVER-AND-023",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7024,7 +7290,8 @@
       "feature": "Safe command parsing.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-024"
+        "parity:G25-SERVER-AND-024",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7033,7 +7300,8 @@
       "feature": "Command feedback and errors.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-025"
+        "parity:G25-SERVER-AND-025",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7042,7 +7310,8 @@
       "feature": "Map-list loading.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-026"
+        "parity:G25-SERVER-AND-026",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7051,7 +7320,8 @@
       "feature": "Server configuration reload.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-027"
+        "parity:G25-SERVER-AND-027",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7060,7 +7330,8 @@
       "feature": "Lobby re-registration where applicable.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-028"
+        "parity:G25-SERVER-AND-028",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7069,7 +7340,8 @@
       "feature": "Password changes.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-029"
+        "parity:G25-SERVER-AND-029",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7078,7 +7350,8 @@
       "feature": "Maximum-player changes.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-030"
+        "parity:G25-SERVER-AND-030",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7087,7 +7360,8 @@
       "feature": "Locked mode preventing sensitive runtime changes.",
       "source": "docs/gaps/gap-list.md#25-server-and-administrator-commands",
       "acceptance": [
-        "parity:G25-SERVER-AND-031"
+        "parity:G25-SERVER-AND-031",
+        "rust:admin:parse"
       ]
     },
     {
@@ -7096,7 +7370,8 @@
       "feature": "Game mode.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-001"
+        "parity:G26-MATCH-AND-001",
+        "rust:config:validate"
       ]
     },
     {
@@ -7105,7 +7380,8 @@
       "feature": "Kill/point limit.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-002"
+        "parity:G26-MATCH-AND-002",
+        "rust:config:validate"
       ]
     },
     {
@@ -7114,7 +7390,8 @@
       "feature": "Capture limit.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-003"
+        "parity:G26-MATCH-AND-003",
+        "rust:config:validate"
       ]
     },
     {
@@ -7123,7 +7400,8 @@
       "feature": "Time limit.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-004"
+        "parity:G26-MATCH-AND-004",
+        "rust:config:validate"
       ]
     },
     {
@@ -7132,7 +7410,8 @@
       "feature": "Survival toggle.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-005"
+        "parity:G26-MATCH-AND-005",
+        "rust:config:validate"
       ]
     },
     {
@@ -7141,7 +7420,8 @@
       "feature": "Realistic toggle.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-006"
+        "parity:G26-MATCH-AND-006",
+        "rust:config:validate"
       ]
     },
     {
@@ -7150,7 +7430,8 @@
       "feature": "Advance toggle.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-007"
+        "parity:G26-MATCH-AND-007",
+        "rust:config:validate"
       ]
     },
     {
@@ -7159,7 +7440,8 @@
       "feature": "Map-list looping.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-008"
+        "parity:G26-MATCH-AND-008",
+        "rust:config:validate"
       ]
     },
     {
@@ -7168,7 +7450,8 @@
       "feature": "Random bots.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-009"
+        "parity:G26-MATCH-AND-009",
+        "rust:config:validate"
       ]
     },
     {
@@ -7177,7 +7460,8 @@
       "feature": "Team-specific bots.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-010"
+        "parity:G26-MATCH-AND-010",
+        "rust:config:validate"
       ]
     },
     {
@@ -7186,7 +7470,8 @@
       "feature": "Server name.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-011"
+        "parity:G26-MATCH-AND-011",
+        "rust:config:validate"
       ]
     },
     {
@@ -7195,7 +7480,8 @@
       "feature": "Server password.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-012"
+        "parity:G26-MATCH-AND-012",
+        "rust:config:validate"
       ]
     },
     {
@@ -7204,7 +7490,8 @@
       "feature": "Maximum players.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-013"
+        "parity:G26-MATCH-AND-013",
+        "rust:config:validate"
       ]
     },
     {
@@ -7213,7 +7500,8 @@
       "feature": "Game port.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-014"
+        "parity:G26-MATCH-AND-014",
+        "rust:config:validate"
       ]
     },
     {
@@ -7222,7 +7510,8 @@
       "feature": "Public/private listing.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-015"
+        "parity:G26-MATCH-AND-015",
+        "rust:config:validate"
       ]
     },
     {
@@ -7231,7 +7520,8 @@
       "feature": "Team balancing.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-016"
+        "parity:G26-MATCH-AND-016",
+        "rust:config:validate"
       ]
     },
     {
@@ -7240,7 +7530,8 @@
       "feature": "Maximum allowed ping.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-017"
+        "rust:ping:kick",
+        "rust:config:validate"
       ]
     },
     {
@@ -7249,7 +7540,7 @@
       "feature": "Ping-kick behavior.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-018"
+        "rust:ping:kick"
       ]
     },
     {
@@ -7258,7 +7549,8 @@
       "feature": "Welcome/server message.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-019"
+        "parity:G26-MATCH-AND-019",
+        "rust:config:validate"
       ]
     },
     {
@@ -7267,7 +7559,8 @@
       "feature": "Server contact link.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-020"
+        "parity:G26-MATCH-AND-020",
+        "rust:config:validate"
       ]
     },
     {
@@ -7276,7 +7569,8 @@
       "feature": "Dedicated-server configuration.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-021"
+        "parity:G26-MATCH-AND-021",
+        "rust:config:validate"
       ]
     },
     {
@@ -7285,7 +7579,8 @@
       "feature": "Custom map list.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-022"
+        "parity:G26-MATCH-AND-022",
+        "rust:config:validate"
       ]
     },
     {
@@ -7294,7 +7589,8 @@
       "feature": "Custom weapon mod.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-023"
+        "parity:G26-MATCH-AND-023",
+        "rust:config:validate"
       ]
     },
     {
@@ -7303,7 +7599,8 @@
       "feature": "Friendly fire.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-024"
+        "parity:G26-MATCH-AND-024",
+        "rust:config:validate"
       ]
     },
     {
@@ -7312,7 +7609,8 @@
       "feature": "Respawn time.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-025"
+        "parity:G26-MATCH-AND-025",
+        "rust:config:validate"
       ]
     },
     {
@@ -7321,7 +7619,8 @@
       "feature": "Bonus frequency/enabled state.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-026"
+        "parity:G26-MATCH-AND-026",
+        "rust:config:validate"
       ]
     },
     {
@@ -7330,7 +7629,8 @@
       "feature": "Spectator limits.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-027"
+        "parity:G26-MATCH-AND-027",
+        "rust:config:validate"
       ]
     },
     {
@@ -7339,7 +7639,8 @@
       "feature": "Admin password/authentication.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-028"
+        "parity:G26-MATCH-AND-028",
+        "rust:config:validate"
       ]
     },
     {
@@ -7348,7 +7649,8 @@
       "feature": "Logging options.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-029"
+        "parity:G26-MATCH-AND-029",
+        "rust:config:validate"
       ]
     },
     {
@@ -7357,7 +7659,8 @@
       "feature": "Name.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-030"
+        "parity:G26-MATCH-AND-030",
+        "rust:config:validate"
       ]
     },
     {
@@ -7366,7 +7669,8 @@
       "feature": "Appearance.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-031"
+        "parity:G26-MATCH-AND-031",
+        "rust:config:validate"
       ]
     },
     {
@@ -7375,7 +7679,8 @@
       "feature": "Default secondary.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-032"
+        "parity:G26-MATCH-AND-032",
+        "rust:config:validate"
       ]
     },
     {
@@ -7384,7 +7689,7 @@
       "feature": "Background override.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-033"
+        "web:render:visual"
       ]
     },
     {
@@ -7393,7 +7698,8 @@
       "feature": "Controls.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-034"
+        "parity:G26-MATCH-AND-034",
+        "web:profiles:player"
       ]
     },
     {
@@ -7402,7 +7708,8 @@
       "feature": "Mouse sensitivity.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-035"
+        "parity:G26-MATCH-AND-035",
+        "web:profiles:player"
       ]
     },
     {
@@ -7411,7 +7718,8 @@
       "feature": "Interface selection.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-036"
+        "parity:G26-MATCH-AND-036",
+        "web:profiles:player"
       ]
     },
     {
@@ -7420,7 +7728,8 @@
       "feature": "Player indicator.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-037"
+        "parity:G26-MATCH-AND-037",
+        "web:profiles:player"
       ]
     },
     {
@@ -7429,7 +7738,8 @@
       "feature": "Sniper line.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-038"
+        "parity:G26-MATCH-AND-038",
+        "web:profiles:player"
       ]
     },
     {
@@ -7438,7 +7748,7 @@
       "feature": "Fullscreen/windowed.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-039"
+        "web:screens:flow"
       ]
     },
     {
@@ -7447,7 +7757,7 @@
       "feature": "Display resolution.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-040"
+        "web:render:visual"
       ]
     },
     {
@@ -7456,7 +7766,7 @@
       "feature": "Desktop resolution.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-041"
+        "web:screens:flow"
       ]
     },
     {
@@ -7465,7 +7775,8 @@
       "feature": "Interface scaling.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-042"
+        "parity:G26-MATCH-AND-042",
+        "web:render:effects"
       ]
     },
     {
@@ -7474,7 +7785,8 @@
       "feature": "Particle limit.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-043"
+        "parity:G26-MATCH-AND-043",
+        "web:render:effects"
       ]
     },
     {
@@ -7483,7 +7795,8 @@
       "feature": "Bullet trails.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-044"
+        "parity:G26-MATCH-AND-044",
+        "web:render:effects"
       ]
     },
     {
@@ -7492,7 +7805,8 @@
       "feature": "Weather rendering.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-045"
+        "parity:G26-MATCH-AND-045",
+        "web:render:effects"
       ]
     },
     {
@@ -7501,7 +7815,8 @@
       "feature": "Texture filtering.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-046"
+        "parity:G26-MATCH-AND-046",
+        "web:render:effects"
       ]
     },
     {
@@ -7510,7 +7825,8 @@
       "feature": "Resolution filtering.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-047"
+        "parity:G26-MATCH-AND-047",
+        "web:render:effects"
       ]
     },
     {
@@ -7519,7 +7835,8 @@
       "feature": "Mipmapping.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-048"
+        "parity:G26-MATCH-AND-048",
+        "web:render:effects"
       ]
     },
     {
@@ -7528,7 +7845,8 @@
       "feature": "Compatibility/fixed-pipeline equivalent.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-049"
+        "parity:G26-MATCH-AND-049",
+        "web:render:effects"
       ]
     },
     {
@@ -7537,7 +7855,7 @@
       "feature": "Intro playback.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-050"
+        "web:screens:flow"
       ]
     },
     {
@@ -7546,7 +7864,7 @@
       "feature": "Final-score screenshot.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-051"
+        "web:input:screenshot"
       ]
     },
     {
@@ -7555,7 +7873,7 @@
       "feature": "Clanmatch color behavior.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-052"
+        "web:hud:status"
       ]
     },
     {
@@ -7564,7 +7882,7 @@
       "feature": "Frame-rate limit or VSync.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-053"
+        "web:render:visual"
       ]
     },
     {
@@ -7573,7 +7891,8 @@
       "feature": "Performance statistics.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-054"
+        "parity:G26-MATCH-AND-054",
+        "web:audio:engine"
       ]
     },
     {
@@ -7582,7 +7901,8 @@
       "feature": "Sound volume.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-055"
+        "parity:G26-MATCH-AND-055",
+        "web:audio:engine"
       ]
     },
     {
@@ -7591,7 +7911,8 @@
       "feature": "Music volume.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-056"
+        "parity:G26-MATCH-AND-056",
+        "web:audio:engine"
       ]
     },
     {
@@ -7600,7 +7921,8 @@
       "feature": "Sound quality.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-057"
+        "parity:G26-MATCH-AND-057",
+        "web:audio:engine"
       ]
     },
     {
@@ -7609,7 +7931,8 @@
       "feature": "Output device.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-058"
+        "parity:G26-MATCH-AND-058",
+        "web:audio:engine"
       ]
     },
     {
@@ -7618,7 +7941,8 @@
       "feature": "Explosion effect.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-059"
+        "parity:G26-MATCH-AND-059",
+        "web:audio:engine"
       ]
     },
     {
@@ -7627,7 +7951,8 @@
       "feature": "Distant battle.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-060"
+        "parity:G26-MATCH-AND-060",
+        "web:audio:engine"
       ]
     },
     {
@@ -7636,7 +7961,8 @@
       "feature": "Game music.",
       "source": "docs/gaps/gap-list.md#26-match-and-server-settings",
       "acceptance": [
-        "parity:G26-MATCH-AND-061"
+        "parity:G26-MATCH-AND-061",
+        "web:audio:engine"
       ]
     },
     {
@@ -7645,7 +7971,8 @@
       "feature": "Server/room refresh.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-001"
+        "parity:G27-LOBBY-AND-001",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7654,7 +7981,8 @@
       "feature": "Cancel refresh.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-002"
+        "parity:G27-LOBBY-AND-002",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7663,7 +7991,8 @@
       "feature": "Ping measurement.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-003"
+        "parity:G27-LOBBY-AND-003",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7672,7 +8001,8 @@
       "feature": "Ping-all action.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-004"
+        "parity:G27-LOBBY-AND-004",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7681,7 +8011,8 @@
       "feature": "Ping column.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-005"
+        "parity:G27-LOBBY-AND-005",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7690,7 +8021,8 @@
       "feature": "Player count.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-006"
+        "parity:G27-LOBBY-AND-006",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7699,7 +8031,8 @@
       "feature": "Maximum players.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-007"
+        "parity:G27-LOBBY-AND-007",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7708,7 +8041,8 @@
       "feature": "Game mode.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-008"
+        "parity:G27-LOBBY-AND-008",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7717,7 +8051,8 @@
       "feature": "Map name.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-009"
+        "parity:G27-LOBBY-AND-009",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7726,7 +8061,7 @@
       "feature": "Country/region if desired.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-010"
+        "web:lobby:filter"
       ]
     },
     {
@@ -7735,7 +8070,8 @@
       "feature": "Password indicator.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-011"
+        "parity:G27-LOBBY-AND-011",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7744,7 +8080,8 @@
       "feature": "Realistic indicator.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-012"
+        "parity:G27-LOBBY-AND-012",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7753,7 +8090,8 @@
       "feature": "Survival indicator.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-013"
+        "parity:G27-LOBBY-AND-013",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7762,7 +8100,8 @@
       "feature": "Advance indicator.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-014"
+        "parity:G27-LOBBY-AND-014",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7771,7 +8110,8 @@
       "feature": "Weapon-mod indicator.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-015"
+        "parity:G27-LOBBY-AND-015",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7780,7 +8120,8 @@
       "feature": "Version compatibility.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-016"
+        "parity:G27-LOBBY-AND-016",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7789,7 +8130,8 @@
       "feature": "Favorites.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-017"
+        "parity:G27-LOBBY-AND-017",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7798,7 +8140,8 @@
       "feature": "Favorite add/remove.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-018"
+        "parity:G27-LOBBY-AND-018",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7807,7 +8150,8 @@
       "feature": "Direct IP/hostname join if supported.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-019"
+        "parity:G27-LOBBY-AND-019",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7816,7 +8160,8 @@
       "feature": "Port input.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-020"
+        "parity:G27-LOBBY-AND-020",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7825,7 +8170,8 @@
       "feature": "Password input.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-021"
+        "parity:G27-LOBBY-AND-021",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7834,7 +8180,8 @@
       "feature": "Spectator join.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-022"
+        "parity:G27-LOBBY-AND-022",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7843,7 +8190,8 @@
       "feature": "Sort and filter.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-023"
+        "parity:G27-LOBBY-AND-023",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7852,7 +8200,8 @@
       "feature": "Search.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-024"
+        "parity:G27-LOBBY-AND-024",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7861,7 +8210,8 @@
       "feature": "Full-room filtering.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-025"
+        "parity:G27-LOBBY-AND-025",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7870,7 +8220,8 @@
       "feature": "Empty-room filtering.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-026"
+        "parity:G27-LOBBY-AND-026",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7879,7 +8230,8 @@
       "feature": "Public lobby registration.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-027"
+        "parity:G27-LOBBY-AND-027",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7888,7 +8240,7 @@
       "feature": "Reliable server discovery.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-028"
+        "web:lobby:filter"
       ]
     },
     {
@@ -7897,7 +8249,7 @@
       "feature": "Join/download progress.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-029"
+        "web:maps:download"
       ]
     },
     {
@@ -7906,7 +8258,7 @@
       "feature": "Cancel connection/download.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-030"
+        "web:maps:download"
       ]
     },
     {
@@ -7915,7 +8267,8 @@
       "feature": "Better reconnect state.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-031"
+        "parity:G27-LOBBY-AND-031",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7924,7 +8277,7 @@
       "feature": "Room ownership/host settings.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-032"
+        "rust:storage:fence"
       ]
     },
     {
@@ -7933,7 +8286,7 @@
       "feature": "Room deletion or expiry controls.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-033"
+        "rust:security:resume"
       ]
     },
     {
@@ -7942,7 +8295,8 @@
       "feature": "Password-protected rooms in addition to invite codes.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-034"
+        "parity:G27-LOBBY-AND-034",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7951,7 +8305,8 @@
       "feature": "Team choice after joining.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-035"
+        "parity:G27-LOBBY-AND-035",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7960,7 +8315,7 @@
       "feature": "Late-join rules.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-036"
+        "rust:match_lifecycle:phases"
       ]
     },
     {
@@ -7969,7 +8324,8 @@
       "feature": "Abuse-resistant room creation.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-037"
+        "parity:G27-LOBBY-AND-037",
+        "web:lobby:filter"
       ]
     },
     {
@@ -7978,7 +8334,8 @@
       "feature": "Rate limiting for connection and room operations.",
       "source": "docs/gaps/gap-list.md#27-lobby-and-room-browser",
       "acceptance": [
-        "parity:G27-LOBBY-AND-038"
+        "parity:G27-LOBBY-AND-038",
+        "web:lobby:filter"
       ]
     },
     {
@@ -8096,7 +8453,8 @@
       "feature": "Followed-player minimap/visibility behavior.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-011"
+        "parity:G28-SPECTATING-011",
+        "web:hud:net"
       ]
     },
     {
@@ -8342,7 +8700,7 @@
       "feature": "Persistent player statistics if desired.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-022"
+        "rust:storage:stats"
       ]
     },
     {
@@ -8370,7 +8728,8 @@
       "feature": "Proper client-side prediction for all movement states.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-001"
+        "parity:G30-NETWORKING-AND-001",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8379,7 +8738,8 @@
       "feature": "Input reconciliation.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-002"
+        "parity:G30-NETWORKING-AND-002",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8388,7 +8748,8 @@
       "feature": "Unacknowledged-input replay.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-003"
+        "parity:G30-NETWORKING-AND-003",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8397,7 +8758,8 @@
       "feature": "Remote-player interpolation.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-004"
+        "parity:G30-NETWORKING-AND-004",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8406,7 +8768,8 @@
       "feature": "Projectile interpolation.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-005"
+        "parity:G30-NETWORKING-AND-005",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8415,7 +8778,8 @@
       "feature": "Extrapolation limits.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-006"
+        "parity:G30-NETWORKING-AND-006",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8424,7 +8788,8 @@
       "feature": "Latency compensation.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-007"
+        "parity:G30-NETWORKING-AND-007",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8442,7 +8807,8 @@
       "feature": "Clock synchronization.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-009"
+        "parity:G30-NETWORKING-AND-009",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8451,7 +8817,8 @@
       "feature": "Measured ping.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-010"
+        "parity:G30-NETWORKING-AND-010",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8460,7 +8827,8 @@
       "feature": "Packet-loss handling.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-011"
+        "parity:G30-NETWORKING-AND-011",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8496,7 +8864,8 @@
       "feature": "Weapon/event prediction.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-015"
+        "parity:G30-NETWORKING-AND-015",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8505,7 +8874,8 @@
       "feature": "Predicted muzzle/projectile effects.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-016"
+        "parity:G30-NETWORKING-AND-016",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8514,7 +8884,8 @@
       "feature": "Rollback correction smoothing.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-017"
+        "parity:G30-NETWORKING-AND-017",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8523,7 +8894,8 @@
       "feature": "Map and ruleset synchronization.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-018"
+        "parity:G30-NETWORKING-AND-018",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8532,7 +8904,8 @@
       "feature": "Disconnect reason handling.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-019"
+        "parity:G30-NETWORKING-AND-019",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8541,7 +8914,8 @@
       "feature": "Robust resumption after page sleep/mobile backgrounding.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-020"
+        "parity:G30-NETWORKING-AND-020",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8550,7 +8924,7 @@
       "feature": "Duplicate-session handling.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-021"
+        "rust:security:resume"
       ]
     },
     {
@@ -8559,7 +8933,8 @@
       "feature": "Rate limits for every client message.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-022"
+        "parity:G30-NETWORKING-AND-022",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8568,7 +8943,8 @@
       "feature": "Anti-speedhack/input-frequency validation.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-023"
+        "parity:G30-NETWORKING-AND-023",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8577,7 +8953,8 @@
       "feature": "Fire-rate validation.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-024"
+        "parity:G30-NETWORKING-AND-024",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8586,7 +8963,8 @@
       "feature": "Aim/input sanity validation beyond coordinate bounds.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-025"
+        "parity:G30-NETWORKING-AND-025",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8595,7 +8973,8 @@
       "feature": "Server-authoritative pickups, flags, bonuses, and round state.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-026"
+        "parity:G30-NETWORKING-AND-026",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8604,7 +8983,7 @@
       "feature": "Network load and soak tests.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-027"
+        "rust:replay:soak"
       ]
     },
     {
@@ -8613,7 +8992,7 @@
       "feature": "High-latency/jitter/loss simulation tests.",
       "source": "docs/gaps/gap-list.md#30-networking-and-prediction",
       "acceptance": [
-        "parity:G30-NETWORKING-AND-028"
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -8622,7 +9001,8 @@
       "feature": "Server-authoritative collision validation.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-001"
+        "parity:G31-ANTI-CHEAT-001",
+        "rust:security:limits"
       ]
     },
     {
@@ -8631,7 +9011,8 @@
       "feature": "Server-authoritative weapon selection.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-002"
+        "parity:G31-ANTI-CHEAT-002",
+        "rust:security:limits"
       ]
     },
     {
@@ -8640,7 +9021,8 @@
       "feature": "Server-authoritative reload and inventory.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-003"
+        "parity:G31-ANTI-CHEAT-003",
+        "rust:security:limits"
       ]
     },
     {
@@ -8649,7 +9031,8 @@
       "feature": "Input-rate limiting.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-004"
+        "parity:G31-ANTI-CHEAT-004",
+        "rust:security:limits"
       ]
     },
     {
@@ -8658,7 +9041,8 @@
       "feature": "Movement feasibility validation.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-005"
+        "parity:G31-ANTI-CHEAT-005",
+        "rust:security:limits"
       ]
     },
     {
@@ -8667,7 +9051,8 @@
       "feature": "Aim-value validation.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-006"
+        "parity:G31-ANTI-CHEAT-006",
+        "rust:security:limits"
       ]
     },
     {
@@ -8676,7 +9061,8 @@
       "feature": "Chat abuse controls.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-007"
+        "parity:G31-ANTI-CHEAT-007",
+        "rust:security:limits"
       ]
     },
     {
@@ -8685,7 +9071,8 @@
       "feature": "Connection/IP rate limiting.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-008"
+        "parity:G31-ANTI-CHEAT-008",
+        "rust:security:limits"
       ]
     },
     {
@@ -8694,7 +9081,8 @@
       "feature": "Room-creation rate limiting.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-009"
+        "parity:G31-ANTI-CHEAT-009",
+        "rust:security:limits"
       ]
     },
     {
@@ -8703,7 +9091,8 @@
       "feature": "Admin permission validation.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-010"
+        "parity:G31-ANTI-CHEAT-010",
+        "rust:security:limits"
       ]
     },
     {
@@ -8712,7 +9101,8 @@
       "feature": "Ban enforcement.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-011"
+        "parity:G31-ANTI-CHEAT-011",
+        "rust:security:limits"
       ]
     },
     {
@@ -8721,7 +9111,8 @@
       "feature": "Temporary bans.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-012"
+        "parity:G31-ANTI-CHEAT-012",
+        "rust:security:limits"
       ]
     },
     {
@@ -8730,7 +9121,8 @@
       "feature": "Audit logging.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-013"
+        "parity:G31-ANTI-CHEAT-013",
+        "rust:security:limits"
       ]
     },
     {
@@ -8739,7 +9131,8 @@
       "feature": "Suspicious behavior metrics.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-014"
+        "parity:G31-ANTI-CHEAT-014",
+        "rust:security:limits"
       ]
     },
     {
@@ -8757,7 +9150,8 @@
       "feature": "Malformed WebSocket testing.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-016"
+        "parity:G31-ANTI-CHEAT-016",
+        "rust:security:limits"
       ]
     },
     {
@@ -8766,7 +9160,7 @@
       "feature": "Replay-based cheat investigation.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-017"
+        "rust:replay:repair"
       ]
     },
     {
@@ -8775,7 +9169,8 @@
       "feature": "Secure resume tokens.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-018"
+        "parity:G31-ANTI-CHEAT-018",
+        "rust:security:limits"
       ]
     },
     {
@@ -8784,7 +9179,8 @@
       "feature": "Token expiry/rotation.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-019"
+        "parity:G31-ANTI-CHEAT-019",
+        "rust:security:limits"
       ]
     },
     {
@@ -8802,7 +9198,8 @@
       "feature": "No trust in client-provided cosmetics or settings that affect gameplay.",
       "source": "docs/gaps/gap-list.md#31-anti-cheat-and-abuse-resistance",
       "acceptance": [
-        "parity:G31-ANTI-CHEAT-021"
+        "parity:G31-ANTI-CHEAT-021",
+        "rust:security:limits"
       ]
     },
     {
@@ -8811,7 +9208,8 @@
       "feature": "Main menu.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-001"
+        "parity:G32-MENUS-AND-001",
+        "web:screens:flow"
       ]
     },
     {
@@ -8820,7 +9218,8 @@
       "feature": "Profile selection.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-002"
+        "parity:G32-MENUS-AND-002",
+        "web:screens:flow"
       ]
     },
     {
@@ -8829,7 +9228,8 @@
       "feature": "Player customization.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-003"
+        "parity:G32-MENUS-AND-003",
+        "web:screens:flow"
       ]
     },
     {
@@ -8838,7 +9238,8 @@
       "feature": "Join-game screen.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-004"
+        "parity:G32-MENUS-AND-004",
+        "web:screens:flow"
       ]
     },
     {
@@ -8847,7 +9248,8 @@
       "feature": "Start-game/server screen.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-005"
+        "parity:G32-MENUS-AND-005",
+        "web:screens:flow"
       ]
     },
     {
@@ -8856,7 +9258,8 @@
       "feature": "Options menu.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-006"
+        "parity:G32-MENUS-AND-006",
+        "web:screens:flow"
       ]
     },
     {
@@ -8865,7 +9268,8 @@
       "feature": "Controls menu.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-007"
+        "parity:G32-MENUS-AND-007",
+        "web:screens:flow"
       ]
     },
     {
@@ -8874,7 +9278,8 @@
       "feature": "Weapon-selection screen during respawn.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-008"
+        "parity:G32-MENUS-AND-008",
+        "web:screens:flow"
       ]
     },
     {
@@ -8883,7 +9288,8 @@
       "feature": "Team-selection screen.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-009"
+        "parity:G32-MENUS-AND-009",
+        "web:screens:flow"
       ]
     },
     {
@@ -8892,7 +9298,8 @@
       "feature": "Spectator selection.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-010"
+        "parity:G32-MENUS-AND-010",
+        "web:screens:flow"
       ]
     },
     {
@@ -8901,7 +9308,8 @@
       "feature": "Pause menu.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-011"
+        "parity:G32-MENUS-AND-011",
+        "web:screens:flow"
       ]
     },
     {
@@ -8910,7 +9318,8 @@
       "feature": "Disconnect confirmation.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-012"
+        "parity:G32-MENUS-AND-012",
+        "web:screens:flow"
       ]
     },
     {
@@ -8919,7 +9328,8 @@
       "feature": "Map loading screen.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-013"
+        "parity:G32-MENUS-AND-013",
+        "web:screens:flow"
       ]
     },
     {
@@ -8928,7 +9338,8 @@
       "feature": "Asset-download screen.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-014"
+        "parity:G32-MENUS-AND-014",
+        "web:screens:flow"
       ]
     },
     {
@@ -8937,7 +9348,8 @@
       "feature": "Round-intro countdown.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-015"
+        "parity:G32-MENUS-AND-015",
+        "web:screens:flow"
       ]
     },
     {
@@ -8946,7 +9358,8 @@
       "feature": "Round-end screen.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-016"
+        "parity:G32-MENUS-AND-016",
+        "web:screens:flow"
       ]
     },
     {
@@ -8955,7 +9368,8 @@
       "feature": "Match-results screen.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-017"
+        "parity:G32-MENUS-AND-017",
+        "web:screens:flow"
       ]
     },
     {
@@ -8964,7 +9378,8 @@
       "feature": "Connection-lost overlay.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-018"
+        "parity:G32-MENUS-AND-018",
+        "web:screens:flow"
       ]
     },
     {
@@ -8973,7 +9388,8 @@
       "feature": "Version mismatch/update flow.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-019"
+        "parity:G32-MENUS-AND-019",
+        "web:screens:flow"
       ]
     },
     {
@@ -8982,7 +9398,8 @@
       "feature": "Credits.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-020"
+        "parity:G32-MENUS-AND-020",
+        "web:screens:flow"
       ]
     },
     {
@@ -8991,7 +9408,8 @@
       "feature": "Help/manual.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-021"
+        "parity:G32-MENUS-AND-021",
+        "web:screens:flow"
       ]
     },
     {
@@ -9000,7 +9418,8 @@
       "feature": "First-run control tutorial.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-022"
+        "parity:G32-MENUS-AND-022",
+        "web:screens:flow"
       ]
     },
     {
@@ -9009,7 +9428,8 @@
       "feature": "Mobile onboarding.",
       "source": "docs/gaps/gap-list.md#32-menus-and-overall-game-flow",
       "acceptance": [
-        "parity:G32-MENUS-AND-023"
+        "parity:G32-MENUS-AND-023",
+        "web:screens:flow"
       ]
     },
     {
@@ -9018,7 +9438,8 @@
       "feature": "Loadable HUD/interface definitions.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-001"
+        "parity:G33-CUSTOM-INTERFACES-001",
+        "web:mods:package"
       ]
     },
     {
@@ -9027,7 +9448,8 @@
       "feature": "Multiple interface presets.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-002"
+        "parity:G33-CUSTOM-INTERFACES-002",
+        "web:mods:package"
       ]
     },
     {
@@ -9036,7 +9458,8 @@
       "feature": "Custom cursor.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-003"
+        "parity:G33-CUSTOM-INTERFACES-003",
+        "web:mods:package"
       ]
     },
     {
@@ -9045,7 +9468,8 @@
       "feature": "Custom HUD image positions.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-004"
+        "parity:G33-CUSTOM-INTERFACES-004",
+        "web:mods:package"
       ]
     },
     {
@@ -9054,7 +9478,8 @@
       "feature": "Interface scaling.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-005"
+        "parity:G33-CUSTOM-INTERFACES-005",
+        "web:mods:ini"
       ]
     },
     {
@@ -9063,7 +9488,8 @@
       "feature": "Custom weapon graphics.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-006"
+        "parity:G33-CUSTOM-INTERFACES-006",
+        "web:mods:package"
       ]
     },
     {
@@ -9072,7 +9498,8 @@
       "feature": "Custom sounds.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-007"
+        "parity:G33-CUSTOM-INTERFACES-007",
+        "web:mods:package"
       ]
     },
     {
@@ -9081,7 +9508,8 @@
       "feature": "Custom character/gostek graphics.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-008"
+        "parity:G33-CUSTOM-INTERFACES-008",
+        "web:mods:package"
       ]
     },
     {
@@ -9090,7 +9518,8 @@
       "feature": "`mod.ini`-style asset scaling.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-009"
+        "parity:G33-CUSTOM-INTERFACES-009",
+        "rust:mod_package:ini"
       ]
     },
     {
@@ -9099,7 +9528,8 @@
       "feature": "Mod selection/launching.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-010"
+        "parity:G33-CUSTOM-INTERFACES-010",
+        "web:mods:package"
       ]
     },
     {
@@ -9108,7 +9538,8 @@
       "feature": "Mod preview.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-011"
+        "parity:G33-CUSTOM-INTERFACES-011",
+        "web:mods:package"
       ]
     },
     {
@@ -9117,7 +9548,8 @@
       "feature": "Mod packaging.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-012"
+        "parity:G33-CUSTOM-INTERFACES-012",
+        "rust:mod_package:safe"
       ]
     },
     {
@@ -9126,7 +9558,8 @@
       "feature": "Mod downloading.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-013"
+        "parity:G33-CUSTOM-INTERFACES-013",
+        "web:mods:required"
       ]
     },
     {
@@ -9135,7 +9568,8 @@
       "feature": "Mod version/hash matching.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-014"
+        "parity:G33-CUSTOM-INTERFACES-014",
+        "web:mods:hash"
       ]
     },
     {
@@ -9144,7 +9578,8 @@
       "feature": "Server-required mod support.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-015"
+        "parity:G33-CUSTOM-INTERFACES-015",
+        "web:mods:required"
       ]
     },
     {
@@ -9153,7 +9588,8 @@
       "feature": "Safe path handling.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-016"
+        "parity:G33-CUSTOM-INTERFACES-016",
+        "rust:mod_package:safe"
       ]
     },
     {
@@ -9162,7 +9598,8 @@
       "feature": "Asset-size limits.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-017"
+        "parity:G33-CUSTOM-INTERFACES-017",
+        "rust:mod_package:safe"
       ]
     },
     {
@@ -9171,7 +9608,8 @@
       "feature": "License/provenance metadata.",
       "source": "docs/gaps/gap-list.md#33-custom-interfaces-and-modding",
       "acceptance": [
-        "parity:G33-CUSTOM-INTERFACES-018"
+        "parity:G33-CUSTOM-INTERFACES-018",
+        "rust:mod_package:safe"
       ]
     },
     {
@@ -9558,7 +9996,8 @@
       "feature": "Record match inputs/events.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-001"
+        "parity:G35-DEMO-AND-001",
+        "rust:replay:record"
       ]
     },
     {
@@ -9567,7 +10006,8 @@
       "feature": "Deterministic replay format.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-002"
+        "parity:G35-DEMO-AND-002",
+        "rust:replay:play"
       ]
     },
     {
@@ -9576,7 +10016,8 @@
       "feature": "Replay metadata.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-003"
+        "parity:G35-DEMO-AND-003",
+        "rust:replay:compat"
       ]
     },
     {
@@ -9585,7 +10026,8 @@
       "feature": "Replay playback.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-004"
+        "parity:G35-DEMO-AND-004",
+        "rust:replay:play"
       ]
     },
     {
@@ -9594,7 +10036,8 @@
       "feature": "Pause.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-005"
+        "parity:G35-DEMO-AND-005",
+        "web:replay:player"
       ]
     },
     {
@@ -9603,7 +10046,8 @@
       "feature": "Seek.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-006"
+        "parity:G35-DEMO-AND-006",
+        "rust:replay:seek"
       ]
     },
     {
@@ -9612,7 +10056,8 @@
       "feature": "Fast-forward.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-007"
+        "parity:G35-DEMO-AND-007",
+        "rust:replay:seek"
       ]
     },
     {
@@ -9621,7 +10066,8 @@
       "feature": "Follow player.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-008"
+        "parity:G35-DEMO-AND-008",
+        "web:replay:camera"
       ]
     },
     {
@@ -9630,7 +10076,8 @@
       "feature": "Free camera.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-009"
+        "parity:G35-DEMO-AND-009",
+        "web:replay:camera"
       ]
     },
     {
@@ -9639,7 +10086,8 @@
       "feature": "Replay compatibility/versioning.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-010"
+        "parity:G35-DEMO-AND-010",
+        "rust:replay:compat"
       ]
     },
     {
@@ -9648,7 +10096,8 @@
       "feature": "Replay validation.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-011"
+        "parity:G35-DEMO-AND-011",
+        "rust:replay:play"
       ]
     },
     {
@@ -9657,7 +10106,8 @@
       "feature": "Export or share replay.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-012"
+        "parity:G35-DEMO-AND-012",
+        "rust:replay:repair"
       ]
     },
     {
@@ -9666,7 +10116,8 @@
       "feature": "Demo repair/recovery where feasible.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-013"
+        "parity:G35-DEMO-AND-013",
+        "rust:replay:repair"
       ]
     },
     {
@@ -9675,7 +10126,8 @@
       "feature": "Server-side competitive match recording.",
       "source": "docs/gaps/gap-list.md#35-demo-and-replay-system",
       "acceptance": [
-        "parity:G35-DEMO-AND-014"
+        "parity:G35-DEMO-AND-014",
+        "rust:replay:record"
       ]
     },
     {
@@ -9684,7 +10136,8 @@
       "feature": "Persistent server data.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-001"
+        "parity:G36-OPERATIONAL-AND-001",
+        "rust:storage:restart"
       ]
     },
     {
@@ -9702,7 +10155,7 @@
       "feature": "Persistent statistics.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-003"
+        "rust:storage:stats"
       ]
     },
     {
@@ -9711,7 +10164,8 @@
       "feature": "Persistent bans/admins.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-004"
+        "parity:G36-OPERATIONAL-AND-004",
+        "rust:storage:restart"
       ]
     },
     {
@@ -9720,7 +10174,8 @@
       "feature": "Server restart recovery.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-005"
+        "parity:G36-OPERATIONAL-AND-005",
+        "rust:storage:restart"
       ]
     },
     {
@@ -9729,7 +10184,8 @@
       "feature": "Graceful active-match handling during deployment.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-006"
+        "parity:G36-OPERATIONAL-AND-006",
+        "rust:ops:ready"
       ]
     },
     {
@@ -9738,7 +10194,8 @@
       "feature": "Horizontal scaling strategy.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-007"
+        "parity:G36-OPERATIONAL-AND-007",
+        "rust:storage:fence"
       ]
     },
     {
@@ -9747,7 +10204,8 @@
       "feature": "Room ownership across multiple server processes.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-008"
+        "parity:G36-OPERATIONAL-AND-008",
+        "rust:storage:fence"
       ]
     },
     {
@@ -9756,7 +10214,8 @@
       "feature": "Lobby service.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-009"
+        "parity:G36-OPERATIONAL-AND-009",
+        "web:lobby:filter"
       ]
     },
     {
@@ -9783,7 +10242,8 @@
       "feature": "Observability beyond three counters.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-012"
+        "parity:G36-OPERATIONAL-AND-012",
+        "rust:ops:ready"
       ]
     },
     {
@@ -9792,7 +10252,8 @@
       "feature": "Structured logs.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-013"
+        "parity:G36-OPERATIONAL-AND-013",
+        "rust:ops:ready"
       ]
     },
     {
@@ -9801,7 +10262,8 @@
       "feature": "Error tracking.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-014"
+        "parity:G36-OPERATIONAL-AND-014",
+        "rust:ops:ready"
       ]
     },
     {
@@ -9810,7 +10272,8 @@
       "feature": "Latency metrics.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-015"
+        "parity:G36-OPERATIONAL-AND-015",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -9819,7 +10282,8 @@
       "feature": "Tick-duration metrics.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-016"
+        "parity:G36-OPERATIONAL-AND-016",
+        "rust:ops:ready"
       ]
     },
     {
@@ -9828,7 +10292,8 @@
       "feature": "Connected-player metrics.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-017"
+        "parity:G36-OPERATIONAL-AND-017",
+        "rust:ops:ready"
       ]
     },
     {
@@ -9837,7 +10302,8 @@
       "feature": "Per-room metrics.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-018"
+        "parity:G36-OPERATIONAL-AND-018",
+        "rust:ops:ready"
       ]
     },
     {
@@ -9846,7 +10312,8 @@
       "feature": "Health versus readiness endpoints.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-019"
+        "parity:G36-OPERATIONAL-AND-019",
+        "rust:ops:ready"
       ]
     },
     {
@@ -9855,7 +10322,8 @@
       "feature": "Backups.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-020"
+        "parity:G36-OPERATIONAL-AND-020",
+        "rust:storage:restart"
       ]
     },
     {
@@ -9864,7 +10332,8 @@
       "feature": "Migration process.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-021"
+        "parity:G36-OPERATIONAL-AND-021",
+        "rust:storage:restart"
       ]
     },
     {
@@ -9873,7 +10342,8 @@
       "feature": "Load testing.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-022"
+        "parity:G36-OPERATIONAL-AND-022",
+        "server:load"
       ]
     },
     {
@@ -9882,7 +10352,8 @@
       "feature": "Soak testing.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-023"
+        "parity:G36-OPERATIONAL-AND-023",
+        "rust:replay:soak"
       ]
     },
     {
@@ -9900,7 +10371,8 @@
       "feature": "Mobile-device testing.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-025"
+        "parity:G36-OPERATIONAL-AND-025",
+        "web:mobile:movement-pad"
       ]
     },
     {
@@ -9909,7 +10381,8 @@
       "feature": "Touch-control usability testing.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-026"
+        "parity:G36-OPERATIONAL-AND-026",
+        "web:mobile:movement-pad"
       ]
     },
     {
@@ -9918,7 +10391,8 @@
       "feature": "Accessibility testing.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-027"
+        "parity:G36-OPERATIONAL-AND-027",
+        "web:a11y:labels"
       ]
     },
     {
@@ -9927,7 +10401,8 @@
       "feature": "Security review.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-028"
+        "parity:G36-OPERATIONAL-AND-028",
+        "docs:ops:security-review"
       ]
     },
     {
@@ -9936,7 +10411,8 @@
       "feature": "Dependency scanning.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-029"
+        "parity:G36-OPERATIONAL-AND-029",
+        "ci:audit"
       ]
     },
     {
@@ -9945,7 +10421,8 @@
       "feature": "Deployment rollback testing.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-030"
+        "parity:G36-OPERATIONAL-AND-030",
+        "scripts:record-image-digests"
       ]
     },
     {
@@ -9963,7 +10440,8 @@
       "feature": "Static-asset compression.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-032"
+        "parity:G36-OPERATIONAL-AND-032",
+        "infra:caddy:encode"
       ]
     },
     {
@@ -9972,7 +10450,8 @@
       "feature": "Privacy policy and moderation policy if publicly operated.",
       "source": "docs/gaps/gap-list.md#36-operational-and-production-work",
       "acceptance": [
-        "parity:G36-OPERATIONAL-AND-033"
+        "parity:G36-OPERATIONAL-AND-033",
+        "docs:ops:policies"
       ]
     },
     {
@@ -10035,7 +10514,8 @@
       "feature": "Weapon fixture for every weapon and field.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-007"
+        "parity:G37-TESTING-REQUIRED-007",
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -10044,7 +10524,8 @@
       "feature": "Fire-rate fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-008"
+        "parity:G37-TESTING-REQUIRED-008",
+        "rust:game_core::tests::fire_is_rate_limited"
       ]
     },
     {
@@ -10053,7 +10534,8 @@
       "feature": "Reload fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-009"
+        "parity:G37-TESTING-REQUIRED-009",
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -10062,7 +10544,8 @@
       "feature": "Startup fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-010"
+        "parity:G37-TESTING-REQUIRED-010",
+        "rust:weapon_projectile_fixtures:firing-rules"
       ]
     },
     {
@@ -10071,7 +10554,8 @@
       "feature": "Spread fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-011"
+        "parity:G37-TESTING-REQUIRED-011",
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -10080,7 +10564,8 @@
       "feature": "Recoil fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-012"
+        "parity:G37-TESTING-REQUIRED-012",
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -10089,7 +10574,8 @@
       "feature": "Bink fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-013"
+        "parity:G37-TESTING-REQUIRED-013",
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -10098,7 +10584,8 @@
       "feature": "Velocity-inheritance fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-014"
+        "parity:G37-TESTING-REQUIRED-014",
+        "rust:weapon_ballistics_fixtures:inherit"
       ]
     },
     {
@@ -10107,7 +10594,8 @@
       "feature": "Head/chest/leg damage fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-015"
+        "parity:G37-TESTING-REQUIRED-015",
+        "rust:damage_fixtures:regions"
       ]
     },
     {
@@ -10116,7 +10604,8 @@
       "feature": "Explosion fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-016"
+        "parity:G37-TESTING-REQUIRED-016",
+        "rust:weapon_ballistics_fixtures:explosion"
       ]
     },
     {
@@ -10125,7 +10614,8 @@
       "feature": "Grenade bounce/fuse fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-017"
+        "parity:G37-TESTING-REQUIRED-017",
+        "rust:weapon_family_fixtures:explosive"
       ]
     },
     {
@@ -10134,7 +10624,8 @@
       "feature": "Knife-throw fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-018"
+        "parity:G37-TESTING-REQUIRED-018",
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -10143,7 +10634,8 @@
       "feature": "Flame fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-019"
+        "parity:G37-TESTING-REQUIRED-019",
+        "rust:weapon_family_fixtures:flame"
       ]
     },
     {
@@ -10152,7 +10644,8 @@
       "feature": "Flag interaction fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-020"
+        "parity:G37-TESTING-REQUIRED-020",
+        "rust:objective:flag-states"
       ]
     },
     {
@@ -10161,7 +10654,8 @@
       "feature": "Bonus-kit fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-021"
+        "parity:G37-TESTING-REQUIRED-021",
+        "rust:bonus:effects"
       ]
     },
     {
@@ -10170,7 +10664,8 @@
       "feature": "Every mode’s scoring fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-022"
+        "parity:G37-TESTING-REQUIRED-022",
+        "rust:match_lifecycle:limits"
       ]
     },
     {
@@ -10179,7 +10674,8 @@
       "feature": "Round-limit fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-023"
+        "parity:G37-TESTING-REQUIRED-023",
+        "rust:match_lifecycle:limits"
       ]
     },
     {
@@ -10188,7 +10684,8 @@
       "feature": "Respawn fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-024"
+        "parity:G37-TESTING-REQUIRED-024",
+        "rust:damage_fixtures:respawn"
       ]
     },
     {
@@ -10197,7 +10694,8 @@
       "feature": "Map-loading fixtures.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-025"
+        "parity:G37-TESTING-REQUIRED-025",
+        "rust:map_validation:filters"
       ]
     },
     {
@@ -10206,7 +10704,8 @@
       "feature": "PMS parser fuzzing.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-026"
+        "parity:G37-TESTING-REQUIRED-026",
+        "rust:content::pms"
       ]
     },
     {
@@ -10224,7 +10723,8 @@
       "feature": "Network reconciliation tests.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-028"
+        "parity:G37-TESTING-REQUIRED-028",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -10233,7 +10733,8 @@
       "feature": "Two-player browser integration test.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-029"
+        "parity:G37-TESTING-REQUIRED-029",
+        "web:smoke:aim-input"
       ]
     },
     {
@@ -10242,7 +10743,8 @@
       "feature": "Full 16-player test.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-030"
+        "parity:G37-TESTING-REQUIRED-030",
+        "rust:capacity:16"
       ]
     },
     {
@@ -10251,7 +10753,8 @@
       "feature": "Reconnect test.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-031"
+        "parity:G37-TESTING-REQUIRED-031",
+        "rust:security:resume"
       ]
     },
     {
@@ -10260,7 +10763,8 @@
       "feature": "Server-restart test.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-032"
+        "parity:G37-TESTING-REQUIRED-032",
+        "rust:storage:restart"
       ]
     },
     {
@@ -10269,7 +10773,8 @@
       "feature": "Mobile portrait test.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-033"
+        "parity:G37-TESTING-REQUIRED-033",
+        "web:mobile:movement-pad"
       ]
     },
     {
@@ -10278,7 +10783,8 @@
       "feature": "Mobile landscape test.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-034"
+        "parity:G37-TESTING-REQUIRED-034",
+        "web:mobile:movement-pad"
       ]
     },
     {
@@ -10287,7 +10793,8 @@
       "feature": "Low/high latency tests.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-035"
+        "parity:G37-TESTING-REQUIRED-035",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -10296,7 +10803,8 @@
       "feature": "Packet-loss tests.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-036"
+        "parity:G37-TESTING-REQUIRED-036",
+        "web:prediction:reconcile"
       ]
     },
     {
@@ -10305,7 +10813,8 @@
       "feature": "Long-running server soak test.",
       "source": "docs/gaps/gap-list.md#37-testing-required-for-parity",
       "acceptance": [
-        "parity:G37-TESTING-REQUIRED-037"
+        "parity:G37-TESTING-REQUIRED-037",
+        "rust:replay:soak"
       ]
     }
   ],
@@ -10461,6 +10970,67 @@
     "rust:bot_world:play",
     "server:bots",
     "web:bots:setup",
-    "web:bots:roster"
+    "web:bots:roster",
+    "web:render:gostek",
+    "rust:chat:scope",
+    "rust:commands:parse",
+    "web:hud:screens",
+    "web:hud:net",
+    "web:audio:engine",
+    "rust:commands:emote",
+    "web:hud:gauges",
+    "web:hud:status",
+    "web:hud:layout",
+    "web:render:objects",
+    "web:render:map",
+    "web:render:weather",
+    "web:render:effects",
+    "web:profiles:player",
+    "rust:chat:visibility",
+    "rust:admin:parse",
+    "rust:config:validate",
+    "web:lobby:filter",
+    "web:prediction:reconcile",
+    "rust:security:limits",
+    "web:screens:flow",
+    "rust:mod_package:safe",
+    "rust:mod_package:hash",
+    "rust:mod_package:ini",
+    "web:mods:package",
+    "web:mods:hash",
+    "web:mods:ini",
+    "web:mods:required",
+    "rust:replay:record",
+    "rust:replay:play",
+    "rust:replay:seek",
+    "rust:replay:compat",
+    "rust:replay:repair",
+    "rust:replay:soak",
+    "rust:capacity:16",
+    "web:replay:player",
+    "web:replay:camera",
+    "rust:storage:restart",
+    "rust:storage:fence",
+    "rust:ops:ready",
+    "server:load",
+    "rust:security:resume",
+    "web:a11y:labels",
+    "infra:caddy:encode",
+    "docs:ops:policies",
+    "docs:ops:security-review",
+    "ci:audit",
+    "scripts:record-image-digests",
+    "rust:presentation:explosion",
+    "rust:presentation:impact",
+    "web:render:visual",
+    "web:render:leak",
+    "web:input:flag-throw",
+    "rust:obtainable_weapons",
+    "rust:realistic_movement",
+    "rust:map:bounds",
+    "rust:chat:censor",
+    "rust:ping:kick",
+    "web:maps:download",
+    "rust:storage:stats"
   ]
 }

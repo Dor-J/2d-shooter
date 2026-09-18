@@ -5,7 +5,8 @@ COPY crates ./crates
 COPY apps/api ./apps/api
 RUN cargo build -p server --release
 FROM debian:bookworm-slim
-RUN useradd --system --uid 10001 arena
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/* \
+    && useradd --system --uid 10001 arena
 COPY --from=build /src/target/release/server /usr/local/bin/arena-server
 USER arena
 ENV BIND_ADDR=0.0.0.0:3000

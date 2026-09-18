@@ -14,7 +14,7 @@ Install Rust 1.88 with `wasm32-unknown-unknown`, Bun, and `wasm-pack`. Run `bun 
 
 ## Production container
 
-Set `SITE_ADDRESS` to the public domain and `PUBLIC_ORIGIN` to its `https://` origin, then run `docker compose -f infrastructure/compose.yaml up --build -d`. Caddy terminates TLS and forwards `/ws` to the game server. `/health` and `/metrics` are available for monitoring. Deploy with a pinned image digest and keep the previous digest for rollback. The current server stores match state only in memory; restarting it ends active matches.
+Set `SITE_ADDRESS` to the public domain and `PUBLIC_ORIGIN` to its `https://` origin (both required off localhost), then run `docker compose -f infrastructure/compose.yaml up --build -d`. Caddy terminates TLS and forwards `/ws`, `/health`, and `/ready`. `/metrics` stays on the docker network. Record image digests with `node scripts/record-image-digests.mjs` and keep the previous digest for rollback. Match state is in memory; restarting ends active matches. `/DRAIN` then restart is the operator path.
 
 ## Status
 

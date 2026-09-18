@@ -1,3 +1,5 @@
+# Invite deploy: set SITE_ADDRESS=<domain> and PUBLIC_ORIGIN=https://<domain>.
+# Empty ALLOWED_ORIGIN is only for a raw local cargo run.
 services:
   api:
     build:
@@ -7,8 +9,18 @@ services:
       BIND_ADDR: 0.0.0.0:3000
       ALLOWED_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost}
       RUST_LOG: server=info
+      DATA_DIR: /var/lib/arena
+      SERVER_ID: api-1
+      TRUSTED_PROXIES: private
+    volumes:
+      - arena-data:/var/lib/arena
     restart: unless-stopped
     stop_grace_period: 10s
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/ready"]
+      interval: 5s
+      timeout: 2s
+      retries: 6
   web:
     build:
       context: ..
@@ -19,5 +31,14 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - api
+      api:
+        condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+
+volumes:
+  arena-data:

@@ -1,0 +1,4 @@
+# First-run allowlist for `cargo audit` / rustsec/audit-check.
+# Add a RUSTSEC-id here only with a reason in docs/ops/security-review.md.
+[advisories]
+ignore = []

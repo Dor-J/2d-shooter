@@ -1,6 +1,6 @@
 {$SITE_ADDRESS} {
     encode zstd gzip
-    @api path /ws /health /metrics
+    @api path /ws /health /ready
     reverse_proxy @api api:3000
     root * /srv
     try_files {path} /index.html
@@ -11,3 +11,19 @@
         -Server
     }
 }
+
+# /metrics stays on the docker network (api:3000/metrics), not on :80/:443.
+# To expose it, set METRICS_USER and METRICS_PASSWORD_HASH (caddy hash-password)
+# and add a handle:
+#
+#   @metrics path /metrics
+#   handle @metrics {
+#       basic_auth {
+#           {$METRICS_USER} {$METRICS_PASSWORD_HASH}
+#       }
+#       reverse_proxy api:3000
+#   }
+#
+# Invite-only IP allowlist (uncomment and list operator / VPN ranges):
+#   @invite not remote_ip 10.0.0.0/8 192.168.0.0/16
+#   respond @invite 403
