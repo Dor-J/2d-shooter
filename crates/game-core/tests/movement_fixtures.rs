@@ -178,6 +178,13 @@ fn jet_force_depends_on_pose_and_fuel_recharges_on_ground() {
     assert!(player.vel.y < prone_velocity);
 
     player.grounded = true;
+    player.vel.y = 0.0;
+    player.fuel = config.fuel_capacity;
+    player.previous_input = input();
+    advance_character(&mut player, jet, &config, true);
+    assert!(player.vel.y < 0.0, "jet lifts off the ground");
+
+    player.grounded = true;
     player.fuel = config.fuel_capacity / 2.0;
     let fuel = player.fuel;
     advance_character(&mut player, input(), &config, true);

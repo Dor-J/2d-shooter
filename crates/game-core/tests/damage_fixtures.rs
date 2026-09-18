@@ -25,6 +25,7 @@ fn hit(attacker: u32, target: u32, amount: i32, region: BodyRegion) -> DamageEve
         region,
         cause: DamageCause::Bullet,
         direction: Vec2 { x: 1.0, y: 0.0 },
+        pre_scaled: false,
     }
 }
 

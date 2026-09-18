@@ -62,6 +62,9 @@ fn world_projectiles_use_loaded_polygon_geometry() {
         explosive: false,
         kind: ProjectileKind::Bullet,
         splash_radius: 0.0,
+        weapon: None,
+        origin: Vec2::default(),
+        last_impact: Vec2::default(),
     });
 
     world.step(&BTreeMap::new());
