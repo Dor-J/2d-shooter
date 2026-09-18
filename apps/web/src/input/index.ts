@@ -7,6 +7,7 @@ import { InterfaceState, type InterfaceEvent } from './overlays.ts'
 import type { ControlProfile } from './profiles.ts'
 import { ActionState } from './state.ts'
 import { TouchDevice } from './touch.ts'
+import type { Action } from './actions.ts'
 
 export type InputSystemOptions = {
   bindings?: BindingSet
@@ -18,6 +19,7 @@ export type TickContext = {
   aim: { x: number; y: number }
   airborne?: boolean
   gamepad?: GamepadLike | null
+  owned?: number[]
 }
 
 export type TickResult = {
@@ -39,6 +41,7 @@ export class InputSystem {
   ui = new InterfaceState()
   weapon = 0
   seq = 0
+  lastFrame: InputFrame | null = null
   #memory: WeaponMemory = { primary: 0, secondary: SECONDARY_WEAPONS[0] }
   #suspended = false
 
@@ -89,6 +92,11 @@ export class InputSystem {
     this.gamepad.resume()
   }
 
+  /** Same write path devices use; an in-page agent holds or releases one action. */
+  setAction(action: Action, down: boolean) {
+    this.state.set(action, down)
+  }
+
   releaseAll() {
     this.keyboard.releaseAll()
     this.mouse.releaseAll()
@@ -100,7 +108,7 @@ export class InputSystem {
   /** One simulation tick: poll, resolve, encode, dispatch interface intents, then commit edges. */
   tick(context: TickContext): TickResult {
     if (context.gamepad !== undefined) this.gamepad.poll(context.gamepad)
-    this.weapon = resolveWeapon(this.weapon, this.state, this.#memory)
+    this.weapon = resolveWeapon(this.weapon, this.state, this.#memory, context.owned)
     this.#memory = rememberWeapon(this.#memory, this.weapon)
     const events = this.ui.apply(this.state)
     for (const event of events) {
@@ -115,6 +123,7 @@ export class InputSystem {
       airborne: context.airborne,
     })
     this.state.commit()
+    this.lastFrame = frame
     return { frame, events }
   }
 }

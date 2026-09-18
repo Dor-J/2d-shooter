@@ -1,4 +1,4 @@
-import type { MapManifest } from './types'
+import type { MapManifest } from './types.ts'
 
 export interface MapStorage {
   get(key: string): Promise<Uint8Array | undefined>

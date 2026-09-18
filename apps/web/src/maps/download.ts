@@ -1,4 +1,4 @@
-import type { MapManifest } from './types'
+import type { MapManifest } from './types.ts'
 
 export class DownloadError extends Error {}
 

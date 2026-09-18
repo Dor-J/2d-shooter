@@ -19,6 +19,10 @@ export type InputFrame = {
   throw_grenade: boolean
   aim: Vec2
   weapon: number
+  drop: boolean
+  throw_weapon: boolean
+  throw_knife: boolean
+  pickup: boolean
 }
 
 export const WEAPON_COUNT = 14
@@ -33,6 +37,8 @@ export type EncoderContext = {
   weapon: number
   /** Jump+crouch means backflip in the air and a flag throw on the ground. */
   airborne?: boolean
+  /** Carried slot numbers. When set, next/prev/switch stay inside the inventory. */
+  owned?: number[]
 }
 
 const EMOTES: [string, Emote][] = [
@@ -58,12 +64,33 @@ export function resolveWeapon(
   current: number,
   state: ActionState,
   memory: WeaponMemory = { primary: 0, secondary: SECONDARY_WEAPONS[0] },
+  owned?: number[],
 ): number {
   for (let slot = 0; slot < 10; slot += 1) {
     if (state.pressed(`selectWeapon${slot + 1}`)) return slot
   }
-  if (state.pressed('nextWeapon')) return (current + 1) % WEAPON_COUNT
-  if (state.pressed('previousWeapon')) return (current - 1 + WEAPON_COUNT) % WEAPON_COUNT
+  const cycle = owned && owned.length > 0 ? owned : null
+  if (state.pressed('switchWeapon')) {
+    if (cycle) {
+      const index = cycle.indexOf(current)
+      return cycle[(index + 1) % cycle.length] ?? cycle[0]
+    }
+    return PRIMARY_WEAPONS.includes(current) ? memory.secondary : memory.primary
+  }
+  if (state.pressed('nextWeapon')) {
+    if (cycle) {
+      const index = cycle.indexOf(current)
+      return cycle[(index + 1) % cycle.length] ?? cycle[0]
+    }
+    return (current + 1) % WEAPON_COUNT
+  }
+  if (state.pressed('previousWeapon')) {
+    if (cycle) {
+      const index = cycle.indexOf(current)
+      return cycle[(index - 1 + cycle.length) % cycle.length] ?? cycle[0]
+    }
+    return (current - 1 + WEAPON_COUNT) % WEAPON_COUNT
+  }
   if (state.pressed('selectPrimary')) {
     return PRIMARY_WEAPONS.includes(current) ? current : memory.primary
   }
@@ -97,5 +124,9 @@ export function encodeInput(state: ActionState, context: EncoderContext): InputF
     throw_grenade: state.held('throwGrenade'),
     aim: { x: context.aim.x, y: context.aim.y },
     weapon: Math.min(WEAPON_COUNT - 1, Math.max(0, Math.trunc(context.weapon))),
+    drop: state.held('dropWeapon'),
+    throw_weapon: state.held('throwWeapon'),
+    throw_knife: state.held('throwKnife'),
+    pickup: state.held('pickup'),
   }
 }
