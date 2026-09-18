@@ -61,11 +61,11 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G02-INPUT-AND-012 | Present | 2. Input and controls | Roll. | web:smoke:stance |
 | G02-INPUT-AND-013 | Present | 2. Input and controls | Backflip combinations. | web:input:backflip-combo |
 | G02-INPUT-AND-014 | Present | 2. Input and controls | Explicit reload. | web:smoke:reload |
-| G02-INPUT-AND-015 | Missing | 2. Input and controls | Switch between carried primary and secondary weapons. | parity:G02-INPUT-AND-015 |
-| G02-INPUT-AND-016 | Missing | 2. Input and controls | Drop current weapon. | parity:G02-INPUT-AND-016 |
-| G02-INPUT-AND-017 | Missing | 2. Input and controls | Hold-to-charge weapon throw. | parity:G02-INPUT-AND-017 |
-| G02-INPUT-AND-018 | Missing | 2. Input and controls | Throw combat knife. | parity:G02-INPUT-AND-018 |
-| G02-INPUT-AND-019 | Missing | 2. Input and controls | Pick up weapons. | parity:G02-INPUT-AND-019 |
+| G02-INPUT-AND-015 | Present | 2. Input and controls | Switch between carried primary and secondary weapons. | rust:weapon_inventory_fixtures |
+| G02-INPUT-AND-016 | Present | 2. Input and controls | Drop current weapon. | rust:weapon_inventory_fixtures |
+| G02-INPUT-AND-017 | Present | 2. Input and controls | Hold-to-charge weapon throw. | rust:weapon_inventory_fixtures |
+| G02-INPUT-AND-018 | Present | 2. Input and controls | Throw combat knife. | rust:weapon_inventory_fixtures |
+| G02-INPUT-AND-019 | Present | 2. Input and controls | Pick up weapons. | rust:weapon_inventory_fixtures |
 | G02-INPUT-AND-020 | Missing | 2. Input and controls | Pick up flags and kits. | parity:G02-INPUT-AND-020 |
 | G02-INPUT-AND-021 | Missing | 2. Input and controls | Flag throw using jump+crouch. | parity:G02-INPUT-AND-021 |
 | G02-INPUT-AND-022 | Missing | 2. Input and controls | Dedicated configurable flag-throw key. | parity:G02-INPUT-AND-022 |
@@ -116,18 +116,18 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G03-WEAPONS-019 | Missing | 3. Weapons | Flamed arrows. | parity:G03-WEAPONS-019 |
 | G03-WEAPONS-020 | Missing | 3. Weapons | Stationary M2 machine gun. | parity:G03-WEAPONS-020 |
 | G03-WEAPONS-021 | Missing | 3. Weapons | Punch/unarmed combat. | parity:G03-WEAPONS-021 |
-| G03-WEAPONS-022 | Missing | 3. Weapons | Primary-plus-secondary inventory slots. | parity:G03-WEAPONS-022 |
-| G03-WEAPONS-023 | Missing | 3. Weapons | Carrying two primary weapons. | parity:G03-WEAPONS-023 |
-| G03-WEAPONS-024 | Missing | 3. Weapons | Weapon pickups. | parity:G03-WEAPONS-024 |
-| G03-WEAPONS-025 | Missing | 3. Weapons | Weapon dropping. | parity:G03-WEAPONS-025 |
-| G03-WEAPONS-026 | Missing | 3. Weapons | Thrown-weapon physics. | parity:G03-WEAPONS-026 |
-| G03-WEAPONS-027 | Missing | 3. Weapons | Thrown combat knife. | parity:G03-WEAPONS-027 |
-| G03-WEAPONS-028 | Missing | 3. Weapons | Knife recovery/pickup. | parity:G03-WEAPONS-028 |
-| G03-WEAPONS-029 | Missing | 3. Weapons | Manual reload. | parity:G03-WEAPONS-029 |
-| G03-WEAPONS-030 | Missing | 3. Weapons | Reload interruption. | parity:G03-WEAPONS-030 |
+| G03-WEAPONS-022 | Present | 3. Weapons | Primary-plus-secondary inventory slots. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-023 | Present | 3. Weapons | Carrying two primary weapons. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-024 | Present | 3. Weapons | Weapon pickups. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-025 | Present | 3. Weapons | Weapon dropping. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-026 | Present | 3. Weapons | Thrown-weapon physics. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-027 | Present | 3. Weapons | Thrown combat knife. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-028 | Present | 3. Weapons | Knife recovery/pickup. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-029 | Present | 3. Weapons | Manual reload. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-030 | Present | 3. Weapons | Reload interruption. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-031 | Missing | 3. Weapons | Per-weapon reload animations. | parity:G03-WEAPONS-031 |
-| G03-WEAPONS-032 | Missing | 3. Weapons | Weapon-switch delays. | parity:G03-WEAPONS-032 |
-| G03-WEAPONS-033 | Missing | 3. Weapons | Correct weapon startup behavior. | parity:G03-WEAPONS-033 |
+| G03-WEAPONS-032 | Present | 3. Weapons | Weapon-switch delays. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-033 | Present | 3. Weapons | Correct weapon startup behavior. | rust:game_core::tests::fire_is_rate_limited |
 | G03-WEAPONS-034 | Missing | 3. Weapons | LAW firing restrictions. | parity:G03-WEAPONS-034 |
 | G03-WEAPONS-035 | Missing | 3. Weapons | Barrett movement/startup restrictions. | parity:G03-WEAPONS-035 |
 | G03-WEAPONS-036 | Missing | 3. Weapons | Minigun spin-up behavior. | parity:G03-WEAPONS-036 |
@@ -149,7 +149,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G03-WEAPONS-052 | Missing | 3. Weapons | Stationary-gun mounting and dismounting. | parity:G03-WEAPONS-052 |
 | G03-WEAPONS-053 | Missing | 3. Weapons | Stationary-gun aiming limits. | parity:G03-WEAPONS-053 |
 | G03-WEAPONS-054 | Missing | 3. Weapons | Projectile-to-projectile or projectile-to-object interactions where applicable. | parity:G03-WEAPONS-054 |
-| G03-WEAPONS-055 | Missing | 3. Weapons | Muzzle origin based on character pose. | parity:G03-WEAPONS-055 |
+| G03-WEAPONS-055 | Present | 3. Weapons | Muzzle origin based on character pose. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-056 | Missing | 3. Weapons | Muzzle flashes. | parity:G03-WEAPONS-056 |
 | G03-WEAPONS-057 | Missing | 3. Weapons | Shell casings. | parity:G03-WEAPONS-057 |
 | G03-WEAPONS-058 | Missing | 3. Weapons | Weapon-specific sounds. | parity:G03-WEAPONS-058 |
@@ -159,50 +159,50 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G03-WEAPONS-062 | Missing | 3. Weapons | Tracers matching weapon configuration. | parity:G03-WEAPONS-062 |
 | G03-WEAPONS-063 | Missing | 3. Weapons | Explosion visual and audio effects. | parity:G03-WEAPONS-063 |
 | G03-WEAPONS-064 | Missing | 3. Weapons | Weapon sprites held by characters. | parity:G03-WEAPONS-064 |
-| G03-WEAPONS-065 | Missing | 3. Weapons | Weapons lying on the ground. | parity:G03-WEAPONS-065 |
-| G03-WEAPONS-066 | Missing | 3. Weapons | Weapon pickup indicators. | parity:G03-WEAPONS-066 |
-| G04-WEAPON-MOD-001 | Missing | 4. Weapon Mod parity | Damage. | parity:G04-WEAPON-MOD-001 |
-| G04-WEAPON-MOD-002 | Missing | 4. Weapon Mod parity | Fire interval. | parity:G04-WEAPON-MOD-002 |
-| G04-WEAPON-MOD-003 | Missing | 4. Weapon Mod parity | Ammunition capacity. | parity:G04-WEAPON-MOD-003 |
-| G04-WEAPON-MOD-004 | Missing | 4. Weapon Mod parity | Reload time. | parity:G04-WEAPON-MOD-004 |
-| G04-WEAPON-MOD-005 | Missing | 4. Weapon Mod parity | Projectile speed. | parity:G04-WEAPON-MOD-005 |
-| G04-WEAPON-MOD-006 | Missing | 4. Weapon Mod parity | Bullet style. | parity:G04-WEAPON-MOD-006 |
-| G04-WEAPON-MOD-007 | Missing | 4. Weapon Mod parity | Startup time. | parity:G04-WEAPON-MOD-007 |
-| G04-WEAPON-MOD-008 | Missing | 4. Weapon Mod parity | Bink. | parity:G04-WEAPON-MOD-008 |
-| G04-WEAPON-MOD-009 | Missing | 4. Weapon Mod parity | Self-bink through negative bink values. | parity:G04-WEAPON-MOD-009 |
-| G04-WEAPON-MOD-010 | Missing | 4. Weapon Mod parity | Movement accuracy. | parity:G04-WEAPON-MOD-010 |
-| G04-WEAPON-MOD-011 | Missing | 4. Weapon Mod parity | Bullet spread. | parity:G04-WEAPON-MOD-011 |
-| G04-WEAPON-MOD-012 | Missing | 4. Weapon Mod parity | Recoil. | parity:G04-WEAPON-MOD-012 |
-| G04-WEAPON-MOD-013 | Missing | 4. Weapon Mod parity | Push. | parity:G04-WEAPON-MOD-013 |
-| G04-WEAPON-MOD-014 | Missing | 4. Weapon Mod parity | Inherited velocity. | parity:G04-WEAPON-MOD-014 |
-| G04-WEAPON-MOD-015 | Missing | 4. Weapon Mod parity | Head damage modifier. | parity:G04-WEAPON-MOD-015 |
-| G04-WEAPON-MOD-016 | Missing | 4. Weapon Mod parity | Chest damage modifier. | parity:G04-WEAPON-MOD-016 |
-| G04-WEAPON-MOD-017 | Missing | 4. Weapon Mod parity | Leg damage modifier. | parity:G04-WEAPON-MOD-017 |
-| G04-WEAPON-MOD-018 | Missing | 4. Weapon Mod parity | Separate normal and Realistic weapon tables. | parity:G04-WEAPON-MOD-018 |
-| G04-WEAPON-MOD-019 | Missing | 4. Weapon Mod parity | Cluster-grenade nesting under frag grenades. | parity:G04-WEAPON-MOD-019 |
-| G04-WEAPON-MOD-020 | Missing | 4. Weapon Mod parity | Server-selected/custom weapon mods. | parity:G04-WEAPON-MOD-020 |
-| G04-WEAPON-MOD-021 | Missing | 4. Weapon Mod parity | Weapon-mod synchronization with clients. | parity:G04-WEAPON-MOD-021 |
-| G04-WEAPON-MOD-022 | Missing | 4. Weapon Mod parity | Validation of custom weapon values. | parity:G04-WEAPON-MOD-022 |
-| G04-WEAPON-MOD-023 | Missing | 4. Weapon Mod parity | A safe loader for `weapons.ini`-style data. | parity:G04-WEAPON-MOD-023 |
-| G04-WEAPON-MOD-024 | Missing | 4. Weapon Mod parity | Version/hash checking so clients know which mod is active. | parity:G04-WEAPON-MOD-024 |
-| G04-WEAPON-MOD-025 | Missing | 4. Weapon Mod parity | Weapon-mod display in the room/server browser. | parity:G04-WEAPON-MOD-025 |
-| G04-WEAPON-MOD-026 | Missing | 4. Weapon Mod parity | Replace simplified damage with `Damage × CurrentSpeed × HitboxModifier`. | parity:G04-WEAPON-MOD-026 |
-| G04-WEAPON-MOD-027 | Missing | 4. Weapon Mod parity | Add projectile speed decay. | parity:G04-WEAPON-MOD-027 |
-| G04-WEAPON-MOD-028 | Missing | 4. Weapon Mod parity | Add player velocity inheritance. | parity:G04-WEAPON-MOD-028 |
-| G04-WEAPON-MOD-029 | Missing | 4. Weapon Mod parity | Allow movement direction to increase or decrease projectile speed and damage. | parity:G04-WEAPON-MOD-029 |
-| G04-WEAPON-MOD-030 | Missing | 4. Weapon Mod parity | Add head, chest, and leg hit detection. | parity:G04-WEAPON-MOD-030 |
-| G04-WEAPON-MOD-031 | Missing | 4. Weapon Mod parity | Add bink when the player is hit. | parity:G04-WEAPON-MOD-031 |
-| G04-WEAPON-MOD-032 | Missing | 4. Weapon Mod parity | Add self-bink when firing relevant weapons. | parity:G04-WEAPON-MOD-032 |
-| G04-WEAPON-MOD-033 | Missing | 4. Weapon Mod parity | Add cursor expansion representing current accuracy. | parity:G04-WEAPON-MOD-033 |
-| G04-WEAPON-MOD-034 | Missing | 4. Weapon Mod parity | Add movement accuracy penalties. | parity:G04-WEAPON-MOD-034 |
-| G04-WEAPON-MOD-035 | Missing | 4. Weapon Mod parity | Add stronger jetting accuracy penalties. | parity:G04-WEAPON-MOD-035 |
-| G04-WEAPON-MOD-036 | Missing | 4. Weapon Mod parity | Add recoil to the aim/cursor. | parity:G04-WEAPON-MOD-036 |
-| G04-WEAPON-MOD-037 | Missing | 4. Weapon Mod parity | Add correct bullet spread. | parity:G04-WEAPON-MOD-037 |
-| G04-WEAPON-MOD-038 | Missing | 4. Weapon Mod parity | Add bullet mass/push behavior. | parity:G04-WEAPON-MOD-038 |
-| G04-WEAPON-MOD-039 | Missing | 4. Weapon Mod parity | Add distance-dependent damage caused by changing projectile speed. | parity:G04-WEAPON-MOD-039 |
-| G04-WEAPON-MOD-040 | Missing | 4. Weapon Mod parity | Add exact explosive damage and falloff. | parity:G04-WEAPON-MOD-040 |
-| G04-WEAPON-MOD-041 | Missing | 4. Weapon Mod parity | Add terrain occlusion for splash damage if Soldat’s source behavior requires it. | parity:G04-WEAPON-MOD-041 |
-| G04-WEAPON-MOD-042 | Missing | 4. Weapon Mod parity | Add friendly-fire and team-bink rules. | parity:G04-WEAPON-MOD-042 |
+| G03-WEAPONS-065 | Present | 3. Weapons | Weapons lying on the ground. | rust:weapon_inventory_fixtures |
+| G03-WEAPONS-066 | Present | 3. Weapons | Weapon pickup indicators. | web:weapons:inventory |
+| G04-WEAPON-MOD-001 | Present | 4. Weapon Mod parity | Damage. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-002 | Present | 4. Weapon Mod parity | Fire interval. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-003 | Present | 4. Weapon Mod parity | Ammunition capacity. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-004 | Present | 4. Weapon Mod parity | Reload time. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-005 | Present | 4. Weapon Mod parity | Projectile speed. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-006 | Present | 4. Weapon Mod parity | Bullet style. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-007 | Present | 4. Weapon Mod parity | Startup time. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-008 | Present | 4. Weapon Mod parity | Bink. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-009 | Present | 4. Weapon Mod parity | Self-bink through negative bink values. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-010 | Present | 4. Weapon Mod parity | Movement accuracy. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-011 | Present | 4. Weapon Mod parity | Bullet spread. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-012 | Present | 4. Weapon Mod parity | Recoil. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-013 | Present | 4. Weapon Mod parity | Push. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-014 | Present | 4. Weapon Mod parity | Inherited velocity. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-015 | Present | 4. Weapon Mod parity | Head damage modifier. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-016 | Present | 4. Weapon Mod parity | Chest damage modifier. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-017 | Present | 4. Weapon Mod parity | Leg damage modifier. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-018 | Present | 4. Weapon Mod parity | Separate normal and Realistic weapon tables. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-019 | Present | 4. Weapon Mod parity | Cluster-grenade nesting under frag grenades. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-020 | Present | 4. Weapon Mod parity | Server-selected/custom weapon mods. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-021 | Present | 4. Weapon Mod parity | Weapon-mod synchronization with clients. | web:weapons:table |
+| G04-WEAPON-MOD-022 | Present | 4. Weapon Mod parity | Validation of custom weapon values. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-023 | Present | 4. Weapon Mod parity | A safe loader for `weapons.ini`-style data. | rust:weapon_config_fixtures |
+| G04-WEAPON-MOD-024 | Present | 4. Weapon Mod parity | Version/hash checking so clients know which mod is active. | web:weapons:table |
+| G04-WEAPON-MOD-025 | Present | 4. Weapon Mod parity | Weapon-mod display in the room/server browser. | web:weapons:table |
+| G04-WEAPON-MOD-026 | Present | 4. Weapon Mod parity | Replace simplified damage with `Damage × CurrentSpeed × HitboxModifier`. | rust:weapon_ballistics_fixtures:damage |
+| G04-WEAPON-MOD-027 | Present | 4. Weapon Mod parity | Add projectile speed decay. | rust:weapon_ballistics_fixtures:decay |
+| G04-WEAPON-MOD-028 | Present | 4. Weapon Mod parity | Add player velocity inheritance. | rust:weapon_ballistics_fixtures:inherit |
+| G04-WEAPON-MOD-029 | Present | 4. Weapon Mod parity | Allow movement direction to increase or decrease projectile speed and damage. | rust:weapon_ballistics_fixtures:inherit |
+| G04-WEAPON-MOD-030 | Present | 4. Weapon Mod parity | Add head, chest, and leg hit detection. | rust:weapon_ballistics_fixtures:damage |
+| G04-WEAPON-MOD-031 | Present | 4. Weapon Mod parity | Add bink when the player is hit. | rust:weapon_ballistics_fixtures:accuracy |
+| G04-WEAPON-MOD-032 | Present | 4. Weapon Mod parity | Add self-bink when firing relevant weapons. | rust:weapon_ballistics_fixtures:accuracy |
+| G04-WEAPON-MOD-033 | Present | 4. Weapon Mod parity | Add cursor expansion representing current accuracy. | web:weapons:cursor |
+| G04-WEAPON-MOD-034 | Present | 4. Weapon Mod parity | Add movement accuracy penalties. | rust:weapon_ballistics_fixtures:accuracy |
+| G04-WEAPON-MOD-035 | Present | 4. Weapon Mod parity | Add stronger jetting accuracy penalties. | rust:weapon_ballistics_fixtures:accuracy |
+| G04-WEAPON-MOD-036 | Present | 4. Weapon Mod parity | Add recoil to the aim/cursor. | web:weapons:cursor |
+| G04-WEAPON-MOD-037 | Present | 4. Weapon Mod parity | Add correct bullet spread. | rust:weapon_ballistics_fixtures:accuracy |
+| G04-WEAPON-MOD-038 | Present | 4. Weapon Mod parity | Add bullet mass/push behavior. | rust:weapon_ballistics_fixtures:accuracy |
+| G04-WEAPON-MOD-039 | Present | 4. Weapon Mod parity | Add distance-dependent damage caused by changing projectile speed. | rust:weapon_ballistics_fixtures:decay |
+| G04-WEAPON-MOD-040 | Present | 4. Weapon Mod parity | Add exact explosive damage and falloff. | rust:weapon_ballistics_fixtures:explosion |
+| G04-WEAPON-MOD-041 | Present | 4. Weapon Mod parity | Add terrain occlusion for splash damage if Soldat’s source behavior requires it. | rust:weapon_ballistics_fixtures:explosion |
+| G04-WEAPON-MOD-042 | Present | 4. Weapon Mod parity | Add friendly-fire and team-bink rules. | rust:weapon_ballistics_fixtures:friendly |
 | G05-GAME-MODES-001 | Partial | 5. Game modes | Deathmatch. | parity:G05-GAME-MODES-001 |
 | G05-GAME-MODES-002 | Partial | 5. Game modes | Team Deathmatch, corresponding to Soldat’s Teammatch. | parity:G05-GAME-MODES-002 |
 | G05-GAME-MODES-003 | Missing | 5. Game modes | Pointmatch. | parity:G05-GAME-MODES-003 |

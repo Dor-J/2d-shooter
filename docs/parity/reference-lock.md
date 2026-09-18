@@ -17,3 +17,7 @@ Current source-derived implementations:
 | PMS binary layout and CRC | `shared/MapFile.pas` (`TMapFile`, `LoadMapFile`, `crc32`) |
 | PMS allocation limits | `shared/PolyMap.pas` (`MAX_POLYS`, `MAX_SECTOR`, `MAX_PROPS`, `MAX_SPAWNPOINTS`, `MAX_COLLIDERS`) |
 | PMS waypoint limits | `shared/Waypoints.pas` (`MAX_WAYPOINTS`, `MAX_CONNECTIONS`) |
+| Weapon tables | `server/configs/weapons.ini`, `server/configs/weapons_realistic.ini` in opensoldat/base |
+| Weapon semantics and checksum | `shared/Weapons.pas` (`TGun`, `ORIGINAL_WEAPONS`, `BULLET_STYLE_*`, `BuildWeapons`, `CreateWMChecksum`) |
+| Damage and accuracy formulas | `shared/mechanics/Bullets.pas`, `shared/mechanics/Sprites.pas` (`TSprite.Fire`, `TSprite.GetMoveacc`, `CalculateBink`) |
+| Inventory, reload, drop, throw | `shared/mechanics/Sprites.pas` (`ChangeWeapon`, `DropWeapon`, `ThrowFlags`, knife throw / pickup) |

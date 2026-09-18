@@ -520,7 +520,7 @@
       "feature": "Switch between carried primary and secondary weapons.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-015"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -529,7 +529,7 @@
       "feature": "Drop current weapon.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-016"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -538,7 +538,7 @@
       "feature": "Hold-to-charge weapon throw.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-017"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -547,7 +547,7 @@
       "feature": "Throw combat knife.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-018"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -556,7 +556,7 @@
       "feature": "Pick up weapons.",
       "source": "docs/gaps/gap-list.md#2-input-and-controls",
       "acceptance": [
-        "parity:G02-INPUT-AND-019"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1015,7 +1015,7 @@
       "feature": "Primary-plus-secondary inventory slots.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-022"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1024,7 +1024,7 @@
       "feature": "Carrying two primary weapons.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-023"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1033,7 +1033,7 @@
       "feature": "Weapon pickups.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-024"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1042,7 +1042,7 @@
       "feature": "Weapon dropping.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-025"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1051,7 +1051,7 @@
       "feature": "Thrown-weapon physics.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-026"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1060,7 +1060,7 @@
       "feature": "Thrown combat knife.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-027"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1069,7 +1069,7 @@
       "feature": "Knife recovery/pickup.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-028"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1078,7 +1078,7 @@
       "feature": "Manual reload.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-029"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1087,7 +1087,7 @@
       "feature": "Reload interruption.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-030"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1105,7 +1105,7 @@
       "feature": "Weapon-switch delays.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-032"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1114,7 +1114,7 @@
       "feature": "Correct weapon startup behavior.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-033"
+        "rust:game_core::tests::fire_is_rate_limited"
       ]
     },
     {
@@ -1123,7 +1123,9 @@
       "feature": "LAW firing restrictions.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-034"
+        "parity:G03-WEAPONS-034",
+        "rust:weapon_projectile_fixtures:firing-rules",
+        "rust:weapon_behavior_world:law"
       ]
     },
     {
@@ -1132,7 +1134,8 @@
       "feature": "Barrett movement/startup restrictions.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-035"
+        "parity:G03-WEAPONS-035",
+        "rust:weapon_projectile_fixtures:firing-rules"
       ]
     },
     {
@@ -1141,7 +1144,9 @@
       "feature": "Minigun spin-up behavior.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-036"
+        "parity:G03-WEAPONS-036",
+        "rust:weapon_projectile_fixtures:firing-rules",
+        "rust:weapon_behavior_world:minigun"
       ]
     },
     {
@@ -1150,7 +1155,8 @@
       "feature": "Chainsaw continuous-contact behavior.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-037"
+        "parity:G03-WEAPONS-037",
+        "rust:weapon_projectile_fixtures:firing-rules"
       ]
     },
     {
@@ -1159,7 +1165,8 @@
       "feature": "Proper melee collision.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-038"
+        "parity:G03-WEAPONS-038",
+        "rust:weapon_projectile_fixtures:firing-rules"
       ]
     },
     {
@@ -1168,7 +1175,9 @@
       "feature": "Dual Desert Eagle projectiles and muzzle positions.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-039"
+        "parity:G03-WEAPONS-039",
+        "rust:weapon_projectile_fixtures:firing-rules",
+        "rust:weapon_behavior_world:eagles"
       ]
     },
     {
@@ -1177,7 +1186,9 @@
       "feature": "Proper shotgun pellet count and randomized spread.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-040"
+        "parity:G03-WEAPONS-040",
+        "rust:weapon_projectile_fixtures:firing-rules",
+        "rust:weapon_behavior_world:shotgun"
       ]
     },
     {
@@ -1186,7 +1197,8 @@
       "feature": "Projectile lifetime matching Soldat.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-041"
+        "parity:G03-WEAPONS-041",
+        "rust:weapon_projectile_fixtures:styles"
       ]
     },
     {
@@ -1195,7 +1207,9 @@
       "feature": "Projectile gravity per bullet style.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-042"
+        "parity:G03-WEAPONS-042",
+        "rust:weapon_projectile_fixtures:styles",
+        "rust:weapon_behavior_world:grenade"
       ]
     },
     {
@@ -1204,7 +1218,9 @@
       "feature": "Grenade bouncing.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-043"
+        "parity:G03-WEAPONS-043",
+        "rust:weapon_projectile_fixtures:styles",
+        "rust:weapon_behavior_world:grenade"
       ]
     },
     {
@@ -1213,7 +1229,8 @@
       "feature": "M79 projectile bouncing/impact behavior.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-044"
+        "parity:G03-WEAPONS-044",
+        "rust:weapon_projectile_fixtures:styles"
       ]
     },
     {
@@ -1222,7 +1239,9 @@
       "feature": "Grenade cooking/throw strength.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-045"
+        "parity:G03-WEAPONS-045",
+        "rust:weapon_family_fixtures:explosive",
+        "rust:weapon_behavior_world:grenade"
       ]
     },
     {
@@ -1231,7 +1250,8 @@
       "feature": "Grenade fuse timing.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-046"
+        "parity:G03-WEAPONS-046",
+        "rust:weapon_projectile_fixtures:styles"
       ]
     },
     {
@@ -1240,7 +1260,8 @@
       "feature": "Dropped grenade behavior on death.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-047"
+        "parity:G03-WEAPONS-047",
+        "rust:weapon_behavior_world:grenade"
       ]
     },
     {
@@ -1303,7 +1324,9 @@
       "feature": "Projectile-to-projectile or projectile-to-object interactions where applicable.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-054"
+        "parity:G03-WEAPONS-054",
+        "rust:weapon_projectile_fixtures:styles",
+        "rust:weapon_behavior_world:objects"
       ]
     },
     {
@@ -1312,7 +1335,7 @@
       "feature": "Muzzle origin based on character pose.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-055"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1402,7 +1425,7 @@
       "feature": "Weapons lying on the ground.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-065"
+        "rust:weapon_inventory_fixtures"
       ]
     },
     {
@@ -1411,7 +1434,7 @@
       "feature": "Weapon pickup indicators.",
       "source": "docs/gaps/gap-list.md#3-weapons",
       "acceptance": [
-        "parity:G03-WEAPONS-066"
+        "web:weapons:inventory"
       ]
     },
     {
@@ -1420,7 +1443,7 @@
       "feature": "Damage.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-001"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1429,7 +1452,7 @@
       "feature": "Fire interval.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-002"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1438,7 +1461,7 @@
       "feature": "Ammunition capacity.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-003"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1447,7 +1470,7 @@
       "feature": "Reload time.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-004"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1456,7 +1479,7 @@
       "feature": "Projectile speed.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-005"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1465,7 +1488,7 @@
       "feature": "Bullet style.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-006"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1474,7 +1497,7 @@
       "feature": "Startup time.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-007"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1483,7 +1506,7 @@
       "feature": "Bink.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-008"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1492,7 +1515,7 @@
       "feature": "Self-bink through negative bink values.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-009"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1501,7 +1524,7 @@
       "feature": "Movement accuracy.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-010"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1510,7 +1533,7 @@
       "feature": "Bullet spread.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-011"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1519,7 +1542,7 @@
       "feature": "Recoil.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-012"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1528,7 +1551,7 @@
       "feature": "Push.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-013"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1537,7 +1560,7 @@
       "feature": "Inherited velocity.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-014"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1546,7 +1569,7 @@
       "feature": "Head damage modifier.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-015"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1555,7 +1578,7 @@
       "feature": "Chest damage modifier.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-016"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1564,7 +1587,7 @@
       "feature": "Leg damage modifier.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-017"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1573,7 +1596,7 @@
       "feature": "Separate normal and Realistic weapon tables.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-018"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1582,7 +1605,7 @@
       "feature": "Cluster-grenade nesting under frag grenades.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-019"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1591,7 +1614,7 @@
       "feature": "Server-selected/custom weapon mods.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-020"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1600,7 +1623,7 @@
       "feature": "Weapon-mod synchronization with clients.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-021"
+        "web:weapons:table"
       ]
     },
     {
@@ -1609,7 +1632,7 @@
       "feature": "Validation of custom weapon values.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-022"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1618,7 +1641,7 @@
       "feature": "A safe loader for `weapons.ini`-style data.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-023"
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -1627,7 +1650,7 @@
       "feature": "Version/hash checking so clients know which mod is active.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-024"
+        "web:weapons:table"
       ]
     },
     {
@@ -1636,7 +1659,7 @@
       "feature": "Weapon-mod display in the room/server browser.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-025"
+        "web:weapons:table"
       ]
     },
     {
@@ -1645,7 +1668,7 @@
       "feature": "Replace simplified damage with `Damage × CurrentSpeed × HitboxModifier`.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-026"
+        "rust:weapon_ballistics_fixtures:damage"
       ]
     },
     {
@@ -1654,7 +1677,7 @@
       "feature": "Add projectile speed decay.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-027"
+        "rust:weapon_ballistics_fixtures:decay"
       ]
     },
     {
@@ -1663,7 +1686,7 @@
       "feature": "Add player velocity inheritance.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-028"
+        "rust:weapon_ballistics_fixtures:inherit"
       ]
     },
     {
@@ -1672,7 +1695,7 @@
       "feature": "Allow movement direction to increase or decrease projectile speed and damage.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-029"
+        "rust:weapon_ballistics_fixtures:inherit"
       ]
     },
     {
@@ -1681,7 +1704,7 @@
       "feature": "Add head, chest, and leg hit detection.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-030"
+        "rust:weapon_ballistics_fixtures:damage"
       ]
     },
     {
@@ -1690,7 +1713,7 @@
       "feature": "Add bink when the player is hit.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-031"
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -1699,7 +1722,7 @@
       "feature": "Add self-bink when firing relevant weapons.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-032"
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -1708,7 +1731,7 @@
       "feature": "Add cursor expansion representing current accuracy.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-033"
+        "web:weapons:cursor"
       ]
     },
     {
@@ -1717,7 +1740,7 @@
       "feature": "Add movement accuracy penalties.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-034"
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -1726,7 +1749,7 @@
       "feature": "Add stronger jetting accuracy penalties.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-035"
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -1735,7 +1758,7 @@
       "feature": "Add recoil to the aim/cursor.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-036"
+        "web:weapons:cursor"
       ]
     },
     {
@@ -1744,7 +1767,7 @@
       "feature": "Add correct bullet spread.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-037"
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -1753,7 +1776,7 @@
       "feature": "Add bullet mass/push behavior.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-038"
+        "rust:weapon_ballistics_fixtures:accuracy"
       ]
     },
     {
@@ -1762,7 +1785,7 @@
       "feature": "Add distance-dependent damage caused by changing projectile speed.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-039"
+        "rust:weapon_ballistics_fixtures:decay"
       ]
     },
     {
@@ -1771,7 +1794,7 @@
       "feature": "Add exact explosive damage and falloff.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-040"
+        "rust:weapon_ballistics_fixtures:explosion"
       ]
     },
     {
@@ -1780,7 +1803,7 @@
       "feature": "Add terrain occlusion for splash damage if Soldat’s source behavior requires it.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-041"
+        "rust:weapon_ballistics_fixtures:explosion"
       ]
     },
     {
@@ -1789,7 +1812,7 @@
       "feature": "Add friendly-fire and team-bink rules.",
       "source": "docs/gaps/gap-list.md#4-weapon-mod-parity",
       "acceptance": [
-        "parity:G04-WEAPON-MOD-042"
+        "rust:weapon_ballistics_fixtures:friendly"
       ]
     },
     {
@@ -1798,7 +1821,10 @@
       "feature": "Deathmatch.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-001"
+        "parity:G05-GAME-MODES-001",
+        "rust:match_world:lifecycle",
+        "rust:match_lifecycle:limits",
+        "web:smoke:scoreboard"
       ]
     },
     {
@@ -1807,7 +1833,10 @@
       "feature": "Team Deathmatch, corresponding to Soldat’s Teammatch.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-002"
+        "parity:G05-GAME-MODES-002",
+        "rust:match_world:ledger",
+        "rust:match_world:teams",
+        "rust:match_lifecycle:teams"
       ]
     },
     {
@@ -1816,7 +1845,9 @@
       "feature": "Pointmatch.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-003"
+        "parity:G05-GAME-MODES-003",
+        "rust:modes:pointmatch",
+        "rust:mode_world:pointmatch"
       ]
     },
     {
@@ -1834,7 +1865,9 @@
       "feature": "Capture the Flag.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-005"
+        "parity:G05-GAME-MODES-005",
+        "rust:modes:ctf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -1843,7 +1876,8 @@
       "feature": "Infiltration.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-006"
+        "parity:G05-GAME-MODES-006",
+        "rust:modes:infiltration"
       ]
     },
     {
@@ -1852,7 +1886,9 @@
       "feature": "Hold the Flag.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-007"
+        "parity:G05-GAME-MODES-007",
+        "rust:modes:htf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -1861,7 +1897,9 @@
       "feature": "Realistic mode.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-008"
+        "parity:G05-GAME-MODES-008",
+        "rust:modifiers:realistic",
+        "rust:modifier_world:realistic"
       ]
     },
     {
@@ -1870,7 +1908,9 @@
       "feature": "Survival mode.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-009"
+        "parity:G05-GAME-MODES-009",
+        "rust:modifiers:survival",
+        "rust:modifier_world:survival"
       ]
     },
     {
@@ -1879,7 +1919,9 @@
       "feature": "Advance mode.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-010"
+        "parity:G05-GAME-MODES-010",
+        "rust:modifiers:advance",
+        "rust:modifier_world:advance"
       ]
     },
     {
@@ -1888,7 +1930,9 @@
       "feature": "Climb.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-011"
+        "parity:G05-GAME-MODES-011",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1897,7 +1941,9 @@
       "feature": "Dodgeball.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-012"
+        "parity:G05-GAME-MODES-012",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1906,7 +1952,9 @@
       "feature": "Domination.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-013"
+        "parity:G05-GAME-MODES-013",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1915,7 +1963,9 @@
       "feature": "Hide and Seek.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-014"
+        "parity:G05-GAME-MODES-014",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1924,7 +1974,9 @@
       "feature": "Knife Only.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-015"
+        "parity:G05-GAME-MODES-015",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1933,7 +1985,9 @@
       "feature": "OneShots.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-016"
+        "parity:G05-GAME-MODES-016",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1942,7 +1996,9 @@
       "feature": "Pirates vs Ninjas.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-017"
+        "parity:G05-GAME-MODES-017",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1951,7 +2007,9 @@
       "feature": "Realistic Soldat/Counter-Strike.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-018"
+        "parity:G05-GAME-MODES-018",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1960,7 +2018,9 @@
       "feature": "Trench Wars.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-019"
+        "parity:G05-GAME-MODES-019",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1969,7 +2029,9 @@
       "feature": "Tactical Trench Wars.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-020"
+        "parity:G05-GAME-MODES-020",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1978,7 +2040,9 @@
       "feature": "Zombie.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-021"
+        "parity:G05-GAME-MODES-021",
+        "rust:modifiers:scripted",
+        "server:community-modes"
       ]
     },
     {
@@ -1987,7 +2051,9 @@
       "feature": "Kill limit.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-022"
+        "parity:G05-GAME-MODES-022",
+        "rust:match_lifecycle:limits",
+        "rust:match_world:lifecycle"
       ]
     },
     {
@@ -1996,7 +2062,8 @@
       "feature": "Point limit.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-023"
+        "parity:G05-GAME-MODES-023",
+        "rust:match_lifecycle:limits"
       ]
     },
     {
@@ -2005,7 +2072,8 @@
       "feature": "Capture limit.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-024"
+        "parity:G05-GAME-MODES-024",
+        "rust:match_lifecycle:limits"
       ]
     },
     {
@@ -2014,7 +2082,10 @@
       "feature": "Time limit.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-025"
+        "parity:G05-GAME-MODES-025",
+        "rust:match_lifecycle:limits",
+        "rust:match_world:lifecycle",
+        "web:match:clock"
       ]
     },
     {
@@ -2023,7 +2094,10 @@
       "feature": "Round start countdown.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-026"
+        "parity:G05-GAME-MODES-026",
+        "rust:match_lifecycle:phases",
+        "rust:match_world:lifecycle",
+        "web:match:banner"
       ]
     },
     {
@@ -2032,7 +2106,9 @@
       "feature": "Round end.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-027"
+        "parity:G05-GAME-MODES-027",
+        "rust:match_lifecycle:phases",
+        "rust:match_world:lifecycle"
       ]
     },
     {
@@ -2041,7 +2117,9 @@
       "feature": "Winner calculation.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-028"
+        "parity:G05-GAME-MODES-028",
+        "rust:match_lifecycle:outcome",
+        "web:match:banner"
       ]
     },
     {
@@ -2050,7 +2128,9 @@
       "feature": "Draw handling.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-029"
+        "parity:G05-GAME-MODES-029",
+        "rust:match_lifecycle:outcome",
+        "web:match:banner"
       ]
     },
     {
@@ -2059,7 +2139,9 @@
       "feature": "Overtime policy where appropriate.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-030"
+        "parity:G05-GAME-MODES-030",
+        "rust:match_lifecycle:phases",
+        "rust:match_lifecycle:outcome"
       ]
     },
     {
@@ -2068,7 +2150,9 @@
       "feature": "Map rotation.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-031"
+        "parity:G05-GAME-MODES-031",
+        "rust:match_lifecycle:rotation",
+        "server:map-rotation"
       ]
     },
     {
@@ -2077,7 +2161,9 @@
       "feature": "Map-loop option.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-032"
+        "parity:G05-GAME-MODES-032",
+        "rust:match_lifecycle:rotation",
+        "server:map-rotation"
       ]
     },
     {
@@ -2086,7 +2172,10 @@
       "feature": "Next-map transition.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-033"
+        "parity:G05-GAME-MODES-033",
+        "rust:match_lifecycle:phases",
+        "server:map-rotation",
+        "rust:match_world:lifecycle"
       ]
     },
     {
@@ -2095,7 +2184,9 @@
       "feature": "Match restart.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-034"
+        "parity:G05-GAME-MODES-034",
+        "rust:match_world:restart",
+        "rust:match_lifecycle:rotation"
       ]
     },
     {
@@ -2104,7 +2195,8 @@
       "feature": "Configurable respawn time.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "rust:damage_fixtures:respawn"
+        "rust:damage_fixtures:respawn",
+        "rust:match_lifecycle:teams"
       ]
     },
     {
@@ -2113,7 +2205,9 @@
       "feature": "Survival round elimination.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-036"
+        "parity:G05-GAME-MODES-036",
+        "rust:modifiers:survival",
+        "rust:modifier_world:survival"
       ]
     },
     {
@@ -2122,7 +2216,8 @@
       "feature": "Survival dead-player restrictions.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-037"
+        "parity:G05-GAME-MODES-037",
+        "rust:modifiers:survival"
       ]
     },
     {
@@ -2131,7 +2226,9 @@
       "feature": "Advance-mode weapon unlocking.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-038"
+        "parity:G05-GAME-MODES-038",
+        "rust:modifiers:advance",
+        "rust:modifier_world:advance"
       ]
     },
     {
@@ -2140,7 +2237,9 @@
       "feature": "Team balancing.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-039"
+        "parity:G05-GAME-MODES-039",
+        "rust:match_lifecycle:teams",
+        "rust:match_world:teams"
       ]
     },
     {
@@ -2149,7 +2248,9 @@
       "feature": "Team selection.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-040"
+        "parity:G05-GAME-MODES-040",
+        "rust:match_lifecycle:teams",
+        "rust:match_world:teams"
       ]
     },
     {
@@ -2158,7 +2259,9 @@
       "feature": "Spectator team.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-041"
+        "parity:G05-GAME-MODES-041",
+        "rust:match_lifecycle:teams",
+        "rust:match_world:teams"
       ]
     },
     {
@@ -2167,7 +2270,8 @@
       "feature": "Mid-match spectator switching.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-042"
+        "parity:G05-GAME-MODES-042",
+        "rust:match_world:teams"
       ]
     },
     {
@@ -2176,7 +2280,9 @@
       "feature": "Friendly-fire configuration.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-043"
+        "parity:G05-GAME-MODES-043",
+        "rust:match_lifecycle:scoring",
+        "rust:weapon_ballistics_fixtures"
       ]
     },
     {
@@ -2185,7 +2291,9 @@
       "feature": "Teamkill handling.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-044"
+        "parity:G05-GAME-MODES-044",
+        "rust:match_lifecycle:scoring",
+        "rust:match_world:ledger"
       ]
     },
     {
@@ -2194,7 +2302,9 @@
       "feature": "Suicide scoring.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-045"
+        "parity:G05-GAME-MODES-045",
+        "rust:match_lifecycle:scoring",
+        "rust:match_world:ledger"
       ]
     },
     {
@@ -2203,7 +2313,9 @@
       "feature": "Disconnect/reconnect score preservation.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-046"
+        "parity:G05-GAME-MODES-046",
+        "rust:match_lifecycle:scoring",
+        "rust:match_world:ledger"
       ]
     },
     {
@@ -2212,7 +2324,9 @@
       "feature": "Automatic round-end scoreboard.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-047"
+        "parity:G05-GAME-MODES-047",
+        "rust:match_lifecycle:phases",
+        "rust:match_world:lifecycle"
       ]
     },
     {
@@ -2221,7 +2335,8 @@
       "feature": "Automatic final-score screenshot option.",
       "source": "docs/gaps/gap-list.md#5-game-modes",
       "acceptance": [
-        "parity:G05-GAME-MODES-048"
+        "parity:G05-GAME-MODES-048",
+        "rust:match_lifecycle:phases"
       ]
     },
     {
@@ -2230,7 +2345,8 @@
       "feature": "Yellow point flag.",
       "source": "docs/gaps/gap-list.md#6-pointmatch",
       "acceptance": [
-        "parity:G06-POINTMATCH-001"
+        "parity:G06-POINTMATCH-001",
+        "rust:modes:pointmatch"
       ]
     },
     {
@@ -2239,7 +2355,8 @@
       "feature": "Holding the point flag.",
       "source": "docs/gaps/gap-list.md#6-pointmatch",
       "acceptance": [
-        "parity:G06-POINTMATCH-002"
+        "parity:G06-POINTMATCH-002",
+        "rust:modes:pointmatch"
       ]
     },
     {
@@ -2248,7 +2365,9 @@
       "feature": "Extra points awarded while holding it.",
       "source": "docs/gaps/gap-list.md#6-pointmatch",
       "acceptance": [
-        "parity:G06-POINTMATCH-003"
+        "parity:G06-POINTMATCH-003",
+        "rust:modes:pointmatch",
+        "rust:mode_world:pointmatch"
       ]
     },
     {
@@ -2257,7 +2376,9 @@
       "feature": "Flag drop on death.",
       "source": "docs/gaps/gap-list.md#6-pointmatch",
       "acceptance": [
-        "parity:G06-POINTMATCH-004"
+        "parity:G06-POINTMATCH-004",
+        "rust:modes:pointmatch",
+        "rust:objective:flag-states"
       ]
     },
     {
@@ -2266,7 +2387,9 @@
       "feature": "Point-limit victory.",
       "source": "docs/gaps/gap-list.md#6-pointmatch",
       "acceptance": [
-        "parity:G06-POINTMATCH-005"
+        "parity:G06-POINTMATCH-005",
+        "rust:modes:pointmatch",
+        "rust:match_lifecycle:limits"
       ]
     },
     {
@@ -2275,7 +2398,8 @@
       "feature": "Pointmatch-specific scoring.",
       "source": "docs/gaps/gap-list.md#6-pointmatch",
       "acceptance": [
-        "parity:G06-POINTMATCH-006"
+        "parity:G06-POINTMATCH-006",
+        "rust:mode_world:pointmatch"
       ]
     },
     {
@@ -2293,7 +2417,9 @@
       "feature": "Point-flag HUD status.",
       "source": "docs/gaps/gap-list.md#6-pointmatch",
       "acceptance": [
-        "parity:G06-POINTMATCH-008"
+        "parity:G06-POINTMATCH-008",
+        "web:objectives:status",
+        "web:objectives:countdown"
       ]
     },
     {
@@ -2383,7 +2509,9 @@
       "feature": "Alpha and Bravo teams.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-001"
+        "parity:G08-CAPTURE-THE-001",
+        "rust:modes:ctf",
+        "rust:match_world:teams"
       ]
     },
     {
@@ -2392,7 +2520,9 @@
       "feature": "Red and blue flags.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-002"
+        "parity:G08-CAPTURE-THE-002",
+        "rust:modes:ctf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2401,7 +2531,9 @@
       "feature": "Flag bases.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-003"
+        "parity:G08-CAPTURE-THE-003",
+        "rust:modes:ctf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2410,7 +2542,9 @@
       "feature": "Enemy-flag pickup.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-004"
+        "parity:G08-CAPTURE-THE-004",
+        "rust:modes:ctf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2419,7 +2553,9 @@
       "feature": "Flag carrying.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-005"
+        "parity:G08-CAPTURE-THE-005",
+        "rust:modes:ctf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2428,7 +2564,10 @@
       "feature": "Flag dropping on death.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-006"
+        "parity:G08-CAPTURE-THE-006",
+        "rust:modes:ctf",
+        "rust:mode_world:flags",
+        "rust:objective:flag-states"
       ]
     },
     {
@@ -2437,7 +2576,9 @@
       "feature": "Manual flag throw.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-007"
+        "parity:G08-CAPTURE-THE-007",
+        "rust:modes:ctf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2446,7 +2587,8 @@
       "feature": "Flag return by touching a dropped friendly flag.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-008"
+        "parity:G08-CAPTURE-THE-008",
+        "rust:modes:ctf"
       ]
     },
     {
@@ -2455,7 +2597,8 @@
       "feature": "Automatic return timeout if applicable.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-009"
+        "parity:G08-CAPTURE-THE-009",
+        "rust:objective:flag-states"
       ]
     },
     {
@@ -2464,7 +2607,9 @@
       "feature": "Capture only when the player’s own flag is at base.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-010"
+        "parity:G08-CAPTURE-THE-010",
+        "rust:modes:ctf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2473,7 +2618,9 @@
       "feature": "Capture scoring.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-011"
+        "parity:G08-CAPTURE-THE-011",
+        "rust:modes:ctf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2482,7 +2629,8 @@
       "feature": "Capture limit.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-012"
+        "parity:G08-CAPTURE-THE-012",
+        "rust:match_lifecycle:limits"
       ]
     },
     {
@@ -2491,7 +2639,9 @@
       "feature": "Flag-carrier indicator.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-013"
+        "parity:G08-CAPTURE-THE-013",
+        "web:objectives:status",
+        "web:objectives:countdown"
       ]
     },
     {
@@ -2500,7 +2650,10 @@
       "feature": "Missing-flag indicator.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-014"
+        "parity:G08-CAPTURE-THE-014",
+        "rust:modes:ctf",
+        "web:objectives:status",
+        "web:objectives:countdown"
       ]
     },
     {
@@ -2509,7 +2662,9 @@
       "feature": "Flag status HUD.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-015"
+        "parity:G08-CAPTURE-THE-015",
+        "web:objectives:status",
+        "web:objectives:countdown"
       ]
     },
     {
@@ -2518,7 +2673,9 @@
       "feature": "Team score HUD.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-016"
+        "parity:G08-CAPTURE-THE-016",
+        "web:match:banner",
+        "rust:match_world:ledger"
       ]
     },
     {
@@ -2527,7 +2684,9 @@
       "feature": "Flag physics.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-017"
+        "parity:G08-CAPTURE-THE-017",
+        "rust:objective:flag-physics",
+        "rust:mode_world:physics"
       ]
     },
     {
@@ -2536,7 +2695,8 @@
       "feature": "Bullets and explosions pushing flags.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-018"
+        "parity:G08-CAPTURE-THE-018",
+        "rust:mode_world:physics"
       ]
     },
     {
@@ -2545,7 +2705,8 @@
       "feature": "Flag collision with polygons.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-019"
+        "parity:G08-CAPTURE-THE-019",
+        "rust:objective:flag-physics"
       ]
     },
     {
@@ -2563,7 +2724,8 @@
       "feature": "CTF-compatible map validation.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-021"
+        "parity:G08-CAPTURE-THE-021",
+        "rust:modes:ctf"
       ]
     },
     {
@@ -2572,7 +2734,9 @@
       "feature": "CTF bots and flag objectives.",
       "source": "docs/gaps/gap-list.md#8-capture-the-flag",
       "acceptance": [
-        "parity:G08-CAPTURE-THE-022"
+        "parity:G08-CAPTURE-THE-022",
+        "rust:bots:objectives",
+        "rust:bot_world:play"
       ]
     },
     {
@@ -2581,7 +2745,8 @@
       "feature": "Attacking and defending teams.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-001"
+        "parity:G09-INFILTRATION-001",
+        "rust:modes:infiltration"
       ]
     },
     {
@@ -2590,7 +2755,8 @@
       "feature": "Black/white or objective-specific flags.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-002"
+        "parity:G09-INFILTRATION-002",
+        "rust:modes:infiltration"
       ]
     },
     {
@@ -2599,7 +2765,8 @@
       "feature": "Objective capture rules.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-003"
+        "parity:G09-INFILTRATION-003",
+        "rust:modes:infiltration"
       ]
     },
     {
@@ -2608,7 +2775,8 @@
       "feature": "Passive defender scoring.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-004"
+        "parity:G09-INFILTRATION-004",
+        "rust:modes:infiltration"
       ]
     },
     {
@@ -2617,7 +2785,8 @@
       "feature": "Attacker capture scoring.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-005"
+        "parity:G09-INFILTRATION-005",
+        "rust:modes:infiltration"
       ]
     },
     {
@@ -2626,7 +2795,8 @@
       "feature": "Team-role asymmetry.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-006"
+        "parity:G09-INFILTRATION-006",
+        "rust:modes:infiltration"
       ]
     },
     {
@@ -2644,7 +2814,8 @@
       "feature": "Infiltration timer and score rules.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-008"
+        "parity:G09-INFILTRATION-008",
+        "rust:modes:infiltration"
       ]
     },
     {
@@ -2653,7 +2824,9 @@
       "feature": "Team score HUD.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-009"
+        "parity:G09-INFILTRATION-009",
+        "web:match:banner",
+        "rust:match_world:ledger"
       ]
     },
     {
@@ -2662,7 +2835,9 @@
       "feature": "Objective state indicators.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-010"
+        "parity:G09-INFILTRATION-010",
+        "web:objectives:status",
+        "web:objectives:countdown"
       ]
     },
     {
@@ -2671,7 +2846,8 @@
       "feature": "Infiltration bot behavior.",
       "source": "docs/gaps/gap-list.md#9-infiltration",
       "acceptance": [
-        "parity:G09-INFILTRATION-011"
+        "parity:G09-INFILTRATION-011",
+        "rust:bots:objectives"
       ]
     },
     {
@@ -2680,7 +2856,8 @@
       "feature": "Neutral yellow flag.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-001"
+        "parity:G10-HOLD-THE-001",
+        "rust:modes:htf"
       ]
     },
     {
@@ -2689,7 +2866,9 @@
       "feature": "Flag pickup and carrying.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-002"
+        "parity:G10-HOLD-THE-002",
+        "rust:modes:htf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2698,7 +2877,9 @@
       "feature": "Continuous team scoring while held.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-003"
+        "parity:G10-HOLD-THE-003",
+        "rust:modes:htf",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -2707,7 +2888,9 @@
       "feature": "Flag drops.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-004"
+        "parity:G10-HOLD-THE-004",
+        "rust:modes:htf",
+        "rust:objective:flag-states"
       ]
     },
     {
@@ -2716,7 +2899,9 @@
       "feature": "Flag return/reset rules.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-005"
+        "parity:G10-HOLD-THE-005",
+        "rust:modes:htf",
+        "rust:objective:flag-states"
       ]
     },
     {
@@ -2725,7 +2910,9 @@
       "feature": "Carrier indication.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-006"
+        "parity:G10-HOLD-THE-006",
+        "web:objectives:status",
+        "web:objectives:countdown"
       ]
     },
     {
@@ -2743,7 +2930,9 @@
       "feature": "HTF score display.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-008"
+        "parity:G10-HOLD-THE-008",
+        "web:match:banner",
+        "rust:match_world:ledger"
       ]
     },
     {
@@ -2752,7 +2941,8 @@
       "feature": "HTF bots and objective behavior.",
       "source": "docs/gaps/gap-list.md#10-hold-the-flag",
       "acceptance": [
-        "parity:G10-HOLD-THE-009"
+        "parity:G10-HOLD-THE-009",
+        "rust:bots:objectives"
       ]
     },
     {
@@ -2761,7 +2951,9 @@
       "feature": "Separate `weapons_realistic.ini` statistics.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-001"
+        "parity:G11-REALISTIC-MODE-001",
+        "rust:modifiers:realistic",
+        "rust:modifier_world:realistic"
       ]
     },
     {
@@ -2770,7 +2962,10 @@
       "feature": "Reduced/changed weapon damage behavior.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-002"
+        "parity:G11-REALISTIC-MODE-002",
+        "rust:modifiers:realistic",
+        "rust:modifier_world:realistic",
+        "rust:weapon_config_fixtures"
       ]
     },
     {
@@ -2779,7 +2974,9 @@
       "feature": "Recoil behavior appropriate to Realistic.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-003"
+        "parity:G11-REALISTIC-MODE-003",
+        "rust:modifiers:realistic",
+        "rust:modifier_world:realistic"
       ]
     },
     {
@@ -2788,7 +2985,9 @@
       "feature": "Visibility/line-of-sight restrictions.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-004"
+        "parity:G11-REALISTIC-MODE-004",
+        "rust:modifiers:realistic",
+        "server:realistic-visibility"
       ]
     },
     {
@@ -2797,7 +2996,9 @@
       "feature": "Enemies visible only when the observed player can see them.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-005"
+        "parity:G11-REALISTIC-MODE-005",
+        "rust:modifiers:realistic",
+        "server:realistic-visibility"
       ]
     },
     {
@@ -2806,7 +3007,9 @@
       "feature": "Dead-player and spectator visibility restrictions.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-006"
+        "parity:G11-REALISTIC-MODE-006",
+        "rust:modifiers:realistic",
+        "server:realistic-visibility"
       ]
     },
     {
@@ -2815,7 +3018,8 @@
       "feature": "Enemy team-chat visibility restrictions.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-007"
+        "parity:G11-REALISTIC-MODE-007",
+        "rust:modifiers:realistic"
       ]
     },
     {
@@ -2824,7 +3028,8 @@
       "feature": "Fall damage if required by the reference implementation.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-008"
+        "parity:G11-REALISTIC-MODE-008",
+        "rust:modifiers:realistic"
       ]
     },
     {
@@ -2842,7 +3047,8 @@
       "feature": "Realistic-specific HUD behavior.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-010"
+        "parity:G11-REALISTIC-MODE-010",
+        "web:modifiers:badges"
       ]
     },
     {
@@ -2851,7 +3057,9 @@
       "feature": "Server/room Realistic flag.",
       "source": "docs/gaps/gap-list.md#11-realistic-mode",
       "acceptance": [
-        "parity:G11-REALISTIC-MODE-011"
+        "parity:G11-REALISTIC-MODE-011",
+        "server:modifier-rooms",
+        "web:modifiers:badges"
       ]
     },
     {
@@ -2860,7 +3068,9 @@
       "feature": "No immediate respawn.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-001"
+        "parity:G12-SURVIVAL-MODE-001",
+        "rust:modifiers:survival",
+        "rust:modifier_world:survival"
       ]
     },
     {
@@ -2869,7 +3079,9 @@
       "feature": "Round-based respawning.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-002"
+        "parity:G12-SURVIVAL-MODE-002",
+        "rust:modifiers:survival",
+        "rust:modifier_world:survival"
       ]
     },
     {
@@ -2878,7 +3090,8 @@
       "feature": "Round begins when enough players are ready.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-003"
+        "parity:G12-SURVIVAL-MODE-003",
+        "rust:modifiers:survival"
       ]
     },
     {
@@ -2887,7 +3100,9 @@
       "feature": "Round ends when one player/team remains.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-004"
+        "parity:G12-SURVIVAL-MODE-004",
+        "rust:modifiers:survival",
+        "rust:modifier_world:survival"
       ]
     },
     {
@@ -2896,7 +3111,9 @@
       "feature": "Dead players spectate.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-005"
+        "parity:G12-SURVIVAL-MODE-005",
+        "rust:modifiers:survival",
+        "web:modifiers:survival"
       ]
     },
     {
@@ -2905,7 +3122,9 @@
       "feature": "Survival scoreboard.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-006"
+        "parity:G12-SURVIVAL-MODE-006",
+        "rust:statistics:scoreboard",
+        "web:stats:scoreboard"
       ]
     },
     {
@@ -2914,7 +3133,9 @@
       "feature": "End-of-round state.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-007"
+        "parity:G12-SURVIVAL-MODE-007",
+        "rust:modifiers:survival",
+        "rust:modifier_world:survival"
       ]
     },
     {
@@ -2923,7 +3144,8 @@
       "feature": "Flag restrictions after a Survival round ends.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-008"
+        "parity:G12-SURVIVAL-MODE-008",
+        "rust:modifiers:survival"
       ]
     },
     {
@@ -2932,7 +3154,8 @@
       "feature": "Survival chat/spectator restrictions.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-009"
+        "parity:G12-SURVIVAL-MODE-009",
+        "rust:modifiers:survival"
       ]
     },
     {
@@ -2941,7 +3164,9 @@
       "feature": "Configurable survival respawn/round behavior.",
       "source": "docs/gaps/gap-list.md#12-survival-mode",
       "acceptance": [
-        "parity:G12-SURVIVAL-MODE-010"
+        "parity:G12-SURVIVAL-MODE-010",
+        "rust:modifiers:survival",
+        "server:modifier-rooms"
       ]
     },
     {
@@ -2950,7 +3175,9 @@
       "feature": "Initial limited weapon selection.",
       "source": "docs/gaps/gap-list.md#13-advance-mode",
       "acceptance": [
-        "parity:G13-ADVANCE-MODE-001"
+        "parity:G13-ADVANCE-MODE-001",
+        "rust:modifiers:advance",
+        "rust:modifier_world:advance"
       ]
     },
     {
@@ -2959,7 +3186,9 @@
       "feature": "Unlock weapons through kills.",
       "source": "docs/gaps/gap-list.md#13-advance-mode",
       "acceptance": [
-        "parity:G13-ADVANCE-MODE-002"
+        "parity:G13-ADVANCE-MODE-002",
+        "rust:modifiers:advance",
+        "rust:modifier_world:advance"
       ]
     },
     {
@@ -2968,7 +3197,9 @@
       "feature": "Unlock progression.",
       "source": "docs/gaps/gap-list.md#13-advance-mode",
       "acceptance": [
-        "parity:G13-ADVANCE-MODE-003"
+        "parity:G13-ADVANCE-MODE-003",
+        "rust:modifiers:advance",
+        "rust:modifier_world:advance"
       ]
     },
     {
@@ -2977,7 +3208,9 @@
       "feature": "Per-player unlock state.",
       "source": "docs/gaps/gap-list.md#13-advance-mode",
       "acceptance": [
-        "parity:G13-ADVANCE-MODE-004"
+        "parity:G13-ADVANCE-MODE-004",
+        "rust:modifiers:advance",
+        "rust:modifier_world:advance"
       ]
     },
     {
@@ -2986,7 +3219,8 @@
       "feature": "Advance weapon menu.",
       "source": "docs/gaps/gap-list.md#13-advance-mode",
       "acceptance": [
-        "parity:G13-ADVANCE-MODE-005"
+        "parity:G13-ADVANCE-MODE-005",
+        "web:modifiers:advance"
       ]
     },
     {
@@ -2995,7 +3229,8 @@
       "feature": "Reset progression between matches/maps as appropriate.",
       "source": "docs/gaps/gap-list.md#13-advance-mode",
       "acceptance": [
-        "parity:G13-ADVANCE-MODE-006"
+        "parity:G13-ADVANCE-MODE-006",
+        "rust:modifiers:advance"
       ]
     },
     {
@@ -3004,7 +3239,9 @@
       "feature": "Advance configuration.",
       "source": "docs/gaps/gap-list.md#13-advance-mode",
       "acceptance": [
-        "parity:G13-ADVANCE-MODE-007"
+        "parity:G13-ADVANCE-MODE-007",
+        "rust:modifiers:advance",
+        "server:modifier-rooms"
       ]
     },
     {
@@ -3013,7 +3250,9 @@
       "feature": "Medic Kit: restore health to maximum.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-001"
+        "parity:G14-BONUS-KITS-001",
+        "rust:bonus:effects",
+        "rust:bonus_world:pickup"
       ]
     },
     {
@@ -3022,7 +3261,9 @@
       "feature": "Grenades Kit: restore grenades to configured maximum.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-002"
+        "parity:G14-BONUS-KITS-002",
+        "rust:bonus:effects",
+        "rust:bonus_world:pickup"
       ]
     },
     {
@@ -3031,7 +3272,9 @@
       "feature": "Cluster Grenades Kit: grant three cluster grenades.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-003"
+        "parity:G14-BONUS-KITS-003",
+        "rust:bonus:effects",
+        "rust:bonus_world:pickup"
       ]
     },
     {
@@ -3040,7 +3283,10 @@
       "feature": "Bulletproof Vest Kit: add approximately another full health bar as armor.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-004"
+        "parity:G14-BONUS-KITS-004",
+        "rust:bonus:effects",
+        "rust:bonus_world:pickup",
+        "rust:bonus_world:effects"
       ]
     },
     {
@@ -3049,7 +3295,9 @@
       "feature": "Flame God Kit: flamethrower plus temporary invulnerability.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-005"
+        "parity:G14-BONUS-KITS-005",
+        "rust:bonus:effects",
+        "rust:bonus_world:effects"
       ]
     },
     {
@@ -3058,7 +3306,9 @@
       "feature": "Berserker Kit: four-times weapon damage temporarily.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-006"
+        "parity:G14-BONUS-KITS-006",
+        "rust:bonus:effects",
+        "rust:bonus_world:effects"
       ]
     },
     {
@@ -3067,7 +3317,9 @@
       "feature": "Predator Kit: temporary invisibility.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-007"
+        "parity:G14-BONUS-KITS-007",
+        "rust:bonus:effects",
+        "rust:bonus_world:effects"
       ]
     },
     {
@@ -3076,7 +3328,9 @@
       "feature": "Bonus spawn points.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-008"
+        "parity:G14-BONUS-KITS-008",
+        "rust:bonus:pickups",
+        "rust:bonus_world:pickup"
       ]
     },
     {
@@ -3085,7 +3339,9 @@
       "feature": "Configurable kit frequency.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-009"
+        "parity:G14-BONUS-KITS-009",
+        "rust:bonus:pickups",
+        "rust:bonus:settings"
       ]
     },
     {
@@ -3094,7 +3350,8 @@
       "feature": "Kit respawn timers.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-010"
+        "parity:G14-BONUS-KITS-010",
+        "rust:bonus:pickups"
       ]
     },
     {
@@ -3103,7 +3360,9 @@
       "feature": "Pickup collision.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-011"
+        "parity:G14-BONUS-KITS-011",
+        "rust:bonus:pickups",
+        "rust:bonus_world:pickup"
       ]
     },
     {
@@ -3121,7 +3380,8 @@
       "feature": "Active-bonus HUD.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-013"
+        "parity:G14-BONUS-KITS-013",
+        "web:bonuses:hud"
       ]
     },
     {
@@ -3130,7 +3390,9 @@
       "feature": "Bonus countdown.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-014"
+        "parity:G14-BONUS-KITS-014",
+        "web:bonuses:hud",
+        "rust:bonus:stacking"
       ]
     },
     {
@@ -3139,7 +3401,8 @@
       "feature": "Bonus overlay/effect.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-015"
+        "parity:G14-BONUS-KITS-015",
+        "web:bonuses:hud"
       ]
     },
     {
@@ -3148,7 +3411,9 @@
       "feature": "Armor HUD.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-016"
+        "parity:G14-BONUS-KITS-016",
+        "rust:bonus_world:effects",
+        "web:smoke:hud-health"
       ]
     },
     {
@@ -3157,7 +3422,9 @@
       "feature": "Predator visibility affected by blood.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-017"
+        "parity:G14-BONUS-KITS-017",
+        "rust:bonus:effects",
+        "web:bonuses:predator"
       ]
     },
     {
@@ -3166,7 +3433,8 @@
       "feature": "Predator still producing audible sounds.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-018"
+        "parity:G14-BONUS-KITS-018",
+        "rust:bonus:effects"
       ]
     },
     {
@@ -3175,7 +3443,9 @@
       "feature": "Bonus expiration.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-019"
+        "parity:G14-BONUS-KITS-019",
+        "rust:bonus:stacking",
+        "rust:bonus_world:effects"
       ]
     },
     {
@@ -3184,7 +3454,9 @@
       "feature": "Bonus replacement/stacking rules.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-020"
+        "parity:G14-BONUS-KITS-020",
+        "rust:bonus:stacking",
+        "rust:bonus_world:effects"
       ]
     },
     {
@@ -3193,7 +3465,9 @@
       "feature": "Server enable/disable settings.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-021"
+        "parity:G14-BONUS-KITS-021",
+        "rust:bonus:settings",
+        "server:bonus-settings"
       ]
     },
     {
@@ -3202,7 +3476,9 @@
       "feature": "Kits affected by projectile push.",
       "source": "docs/gaps/gap-list.md#14-bonus-kits",
       "acceptance": [
-        "parity:G14-BONUS-KITS-022"
+        "parity:G14-BONUS-KITS-022",
+        "rust:bonus:pickups",
+        "rust:bonus_world:physics"
       ]
     },
     {
@@ -4678,7 +4954,9 @@
       "feature": "Bot entities driven by the authoritative simulation.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-001"
+        "parity:G18-BOTS-AND-001",
+        "rust:bot_world:join",
+        "rust:bot_world:drive"
       ]
     },
     {
@@ -4687,7 +4965,9 @@
       "feature": "Random-bot count.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-002"
+        "parity:G18-BOTS-AND-002",
+        "server:bots",
+        "web:bots:setup"
       ]
     },
     {
@@ -4696,7 +4976,9 @@
       "feature": "Per-team bot count.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-003"
+        "parity:G18-BOTS-AND-003",
+        "rust:bots:profiles",
+        "rust:bot_world:join"
       ]
     },
     {
@@ -4705,7 +4987,10 @@
       "feature": "Bot difficulty.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-004"
+        "parity:G18-BOTS-AND-004",
+        "rust:bots:profiles",
+        "server:bots",
+        "web:bots:setup"
       ]
     },
     {
@@ -4714,7 +4999,9 @@
       "feature": "Bot accuracy levels.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-005"
+        "parity:G18-BOTS-AND-005",
+        "rust:bots:profiles",
+        "rust:bots:perception"
       ]
     },
     {
@@ -4723,7 +5010,9 @@
       "feature": "Bot reaction time.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-006"
+        "parity:G18-BOTS-AND-006",
+        "rust:bots:profiles",
+        "rust:bots:perception"
       ]
     },
     {
@@ -4732,7 +5021,9 @@
       "feature": "Bot movement.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-007"
+        "parity:G18-BOTS-AND-007",
+        "rust:bots:navigation",
+        "rust:bot_world:play"
       ]
     },
     {
@@ -4741,7 +5032,8 @@
       "feature": "Jet navigation.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-008"
+        "parity:G18-BOTS-AND-008",
+        "rust:bots:navigation"
       ]
     },
     {
@@ -4759,7 +5051,8 @@
       "feature": "Weapon selection.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-010"
+        "parity:G18-BOTS-AND-010",
+        "rust:bots:combat"
       ]
     },
     {
@@ -4768,7 +5061,8 @@
       "feature": "Reloading.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-011"
+        "parity:G18-BOTS-AND-011",
+        "rust:bots:combat"
       ]
     },
     {
@@ -4777,7 +5071,8 @@
       "feature": "Grenade use.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-012"
+        "parity:G18-BOTS-AND-012",
+        "rust:bots:combat"
       ]
     },
     {
@@ -4804,7 +5099,8 @@
       "feature": "Waypoint navigation.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-015"
+        "parity:G18-BOTS-AND-015",
+        "rust:bots:navigation"
       ]
     },
     {
@@ -4813,7 +5109,8 @@
       "feature": "Recovery when stuck.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-016"
+        "parity:G18-BOTS-AND-016",
+        "rust:bots:navigation"
       ]
     },
     {
@@ -4822,7 +5119,9 @@
       "feature": "Deathmatch target selection.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-017"
+        "parity:G18-BOTS-AND-017",
+        "rust:bots:perception",
+        "rust:bot_world:play"
       ]
     },
     {
@@ -4831,7 +5130,9 @@
       "feature": "Team coordination.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-018"
+        "parity:G18-BOTS-AND-018",
+        "rust:bots:objectives",
+        "rust:bot_world:play"
       ]
     },
     {
@@ -4840,7 +5141,9 @@
       "feature": "CTF attacking, defending, returning, and capturing.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-019"
+        "parity:G18-BOTS-AND-019",
+        "rust:bots:objectives",
+        "rust:bot_world:play"
       ]
     },
     {
@@ -4849,7 +5152,8 @@
       "feature": "Infiltration objectives.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-020"
+        "parity:G18-BOTS-AND-020",
+        "rust:bots:objectives"
       ]
     },
     {
@@ -4858,7 +5162,8 @@
       "feature": "HTF carrier support.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-021"
+        "parity:G18-BOTS-AND-021",
+        "rust:bots:objectives"
       ]
     },
     {
@@ -4876,7 +5181,9 @@
       "feature": "Survival behavior.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-023"
+        "parity:G18-BOTS-AND-023",
+        "rust:bot_world:play",
+        "rust:modifier_world:survival"
       ]
     },
     {
@@ -4885,7 +5192,8 @@
       "feature": "Bot chat.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-024"
+        "parity:G18-BOTS-AND-024",
+        "rust:bots:chat"
       ]
     },
     {
@@ -4894,7 +5202,8 @@
       "feature": "Custom bot profiles.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-025"
+        "parity:G18-BOTS-AND-025",
+        "rust:bots:profiles"
       ]
     },
     {
@@ -4903,7 +5212,10 @@
       "feature": "Server commands to add/remove bots.",
       "source": "docs/gaps/gap-list.md#18-bots-and-ai",
       "acceptance": [
-        "parity:G18-BOTS-AND-026"
+        "parity:G18-BOTS-AND-026",
+        "server:bots",
+        "rust:bot_world:join",
+        "web:bots:roster"
       ]
     },
     {
@@ -7675,7 +7987,9 @@
       "feature": "Spectator team.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-001"
+        "parity:G28-SPECTATING-001",
+        "rust:spectator_world:follow",
+        "rust:match_world:teams"
       ]
     },
     {
@@ -7684,7 +7998,9 @@
       "feature": "Join directly as spectator.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-002"
+        "parity:G28-SPECTATING-002",
+        "rust:spectator:targets",
+        "rust:spectator_world:follow"
       ]
     },
     {
@@ -7693,7 +8009,9 @@
       "feature": "Switch followed player.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-003"
+        "parity:G28-SPECTATING-003",
+        "rust:spectator:targets",
+        "rust:spectator_world:follow"
       ]
     },
     {
@@ -7702,7 +8020,10 @@
       "feature": "Previous/next player.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-004"
+        "parity:G28-SPECTATING-004",
+        "rust:spectator:targets",
+        "rust:spectator_world:follow",
+        "web:spectate:keys"
       ]
     },
     {
@@ -7711,7 +8032,10 @@
       "feature": "Free camera if desired.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-005"
+        "parity:G28-SPECTATING-005",
+        "rust:spectator:targets",
+        "rust:spectator_world:follow",
+        "web:spectate:keys"
       ]
     },
     {
@@ -7720,7 +8044,8 @@
       "feature": "Spectator HUD.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-006"
+        "parity:G28-SPECTATING-006",
+        "web:spectate:hud"
       ]
     },
     {
@@ -7729,7 +8054,9 @@
       "feature": "Spectator scoreboard.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-007"
+        "parity:G28-SPECTATING-007",
+        "rust:statistics:scoreboard",
+        "web:stats:scoreboard"
       ]
     },
     {
@@ -7738,7 +8065,8 @@
       "feature": "Spectator chat restrictions.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-008"
+        "parity:G28-SPECTATING-008",
+        "rust:spectator:visibility"
       ]
     },
     {
@@ -7747,7 +8075,8 @@
       "feature": "Realistic visibility restrictions.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-009"
+        "parity:G28-SPECTATING-009",
+        "rust:spectator:visibility"
       ]
     },
     {
@@ -7756,7 +8085,9 @@
       "feature": "Survival restrictions.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-010"
+        "parity:G28-SPECTATING-010",
+        "rust:spectator:visibility",
+        "rust:modifiers:survival"
       ]
     },
     {
@@ -7774,7 +8105,8 @@
       "feature": "Delay option for competitive matches.",
       "source": "docs/gaps/gap-list.md#28-spectating",
       "acceptance": [
-        "parity:G28-SPECTATING-012"
+        "parity:G28-SPECTATING-012",
+        "rust:spectator:visibility"
       ]
     },
     {
@@ -7783,7 +8115,9 @@
       "feature": "Correct scoring for every game mode.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-001"
+        "parity:G29-SCORING-AND-001",
+        "rust:match_lifecycle:scoring",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -7792,7 +8126,9 @@
       "feature": "Match time.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-002"
+        "parity:G29-SCORING-AND-002",
+        "web:match:clock",
+        "rust:match_lifecycle:limits"
       ]
     },
     {
@@ -7801,7 +8137,9 @@
       "feature": "Individual points.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-003"
+        "parity:G29-SCORING-AND-003",
+        "rust:statistics:scoreboard",
+        "web:stats:scoreboard"
       ]
     },
     {
@@ -7810,7 +8148,8 @@
       "feature": "Team points.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-004"
+        "parity:G29-SCORING-AND-004",
+        "rust:match_world:ledger"
       ]
     },
     {
@@ -7819,7 +8158,10 @@
       "feature": "Captures.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-005"
+        "parity:G29-SCORING-AND-005",
+        "rust:statistics:weapons",
+        "rust:statistics_world:feed",
+        "rust:mode_world:flags"
       ]
     },
     {
@@ -7828,7 +8170,9 @@
       "feature": "Flag returns.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-006"
+        "parity:G29-SCORING-AND-006",
+        "rust:statistics:weapons",
+        "rust:statistics_world:feed"
       ]
     },
     {
@@ -7837,7 +8181,9 @@
       "feature": "Current server rank.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-007"
+        "parity:G29-SCORING-AND-007",
+        "rust:statistics:scoreboard",
+        "web:stats:scoreboard"
       ]
     },
     {
@@ -7846,7 +8192,9 @@
       "feature": "Score difference from leader.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-008"
+        "parity:G29-SCORING-AND-008",
+        "rust:statistics:scoreboard",
+        "web:stats:scoreboard"
       ]
     },
     {
@@ -7855,7 +8203,8 @@
       "feature": "Kill/point/capture limit display.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-009"
+        "parity:G29-SCORING-AND-009",
+        "web:stats:scoreboard"
       ]
     },
     {
@@ -7864,7 +8213,9 @@
       "feature": "Weapon statistics for the current round.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-010"
+        "parity:G29-SCORING-AND-010",
+        "rust:statistics:weapons",
+        "web:stats:weapons"
       ]
     },
     {
@@ -7873,7 +8224,9 @@
       "feature": "Shots fired.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-011"
+        "parity:G29-SCORING-AND-011",
+        "rust:statistics:weapons",
+        "rust:statistics_world:feed"
       ]
     },
     {
@@ -7882,7 +8235,9 @@
       "feature": "Hits.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-012"
+        "parity:G29-SCORING-AND-012",
+        "rust:statistics:weapons",
+        "rust:statistics_world:feed"
       ]
     },
     {
@@ -7891,7 +8246,9 @@
       "feature": "Accuracy.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-013"
+        "parity:G29-SCORING-AND-013",
+        "rust:statistics:weapons",
+        "web:stats:weapons"
       ]
     },
     {
@@ -7900,7 +8257,9 @@
       "feature": "Kills per weapon.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-014"
+        "parity:G29-SCORING-AND-014",
+        "rust:statistics:weapons",
+        "web:stats:weapons"
       ]
     },
     {
@@ -7909,7 +8268,9 @@
       "feature": "Deaths per weapon/cause.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-015"
+        "parity:G29-SCORING-AND-015",
+        "rust:statistics:weapons",
+        "rust:statistics_world:feed"
       ]
     },
     {
@@ -7918,7 +8279,9 @@
       "feature": "Headshots.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-016"
+        "parity:G29-SCORING-AND-016",
+        "rust:statistics:weapons",
+        "rust:statistics_world:feed"
       ]
     },
     {
@@ -7927,7 +8290,8 @@
       "feature": "Suicides.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-017"
+        "parity:G29-SCORING-AND-017",
+        "rust:match_lifecycle:scoring"
       ]
     },
     {
@@ -7936,7 +8300,8 @@
       "feature": "Teamkills.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-018"
+        "parity:G29-SCORING-AND-018",
+        "rust:match_lifecycle:scoring"
       ]
     },
     {
@@ -7945,7 +8310,9 @@
       "feature": "Objective statistics.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-019"
+        "parity:G29-SCORING-AND-019",
+        "rust:statistics:weapons",
+        "rust:statistics_world:feed"
       ]
     },
     {
@@ -7954,7 +8321,9 @@
       "feature": "End-of-round summary.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-020"
+        "parity:G29-SCORING-AND-020",
+        "rust:statistics:history",
+        "web:stats:summary"
       ]
     },
     {
@@ -7963,7 +8332,8 @@
       "feature": "Match history.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-021"
+        "parity:G29-SCORING-AND-021",
+        "rust:statistics:history"
       ]
     },
     {
@@ -7990,7 +8360,8 @@
       "feature": "Exportable logs.",
       "source": "docs/gaps/gap-list.md#29-scoring-and-statistics",
       "acceptance": [
-        "parity:G29-SCORING-AND-024"
+        "parity:G29-SCORING-AND-024",
+        "rust:statistics:history"
       ]
     },
     {
@@ -9958,6 +10329,7 @@
     "web:smoke:stance",
     "web:input:backflip-combo",
     "web:smoke:reload",
+    "rust:weapon_inventory_fixtures",
     "rust:damage_fixtures:weapon-choice",
     "web:input:scoreboard",
     "web:input:screenshot",
@@ -9969,6 +10341,16 @@
     "web:input:gamepad",
     "web:input:profiles",
     "web:input:accessibility",
+    "web:weapons:inventory",
+    "rust:weapon_config_fixtures",
+    "web:weapons:table",
+    "rust:weapon_ballistics_fixtures:damage",
+    "rust:weapon_ballistics_fixtures:decay",
+    "rust:weapon_ballistics_fixtures:inherit",
+    "rust:weapon_ballistics_fixtures:accuracy",
+    "web:weapons:cursor",
+    "rust:weapon_ballistics_fixtures:explosion",
+    "rust:weapon_ballistics_fixtures:friendly",
     "rust:game_core::tests::m79_explosion_damages_nearby_enemy_not_distant_enemy",
     "rust:game_core::tests::self_explosion_is_not_credited_as_a_kill",
     "rust:game_core::tests::deterministic_replay",
@@ -9996,6 +10378,89 @@
     "web:smoke:scoreboard",
     "server:chat-rate-limit",
     "rust:map_editor:editor_pipeline",
-    "parity:G37-TESTING-REQUIRED-027"
+    "parity:G37-TESTING-REQUIRED-027",
+    "rust:weapon_projectile_fixtures:styles",
+    "rust:weapon_projectile_fixtures:firing-rules",
+    "rust:weapon_family_fixtures:explosive",
+    "rust:weapon_family_fixtures:flame",
+    "rust:weapon_family_fixtures:stationary",
+    "rust:weapon_behavior_world:law",
+    "rust:weapon_behavior_world:eagles",
+    "rust:weapon_behavior_world:shotgun",
+    "rust:weapon_behavior_world:minigun",
+    "rust:weapon_behavior_world:grenade",
+    "rust:weapon_behavior_world:objects",
+    "rust:match_lifecycle:limits",
+    "rust:match_lifecycle:phases",
+    "rust:match_lifecycle:outcome",
+    "rust:match_lifecycle:rotation",
+    "rust:match_lifecycle:teams",
+    "rust:match_lifecycle:scoring",
+    "rust:match_world:lifecycle",
+    "rust:match_world:ledger",
+    "rust:match_world:teams",
+    "rust:match_world:restart",
+    "server:map-rotation",
+    "web:match:clock",
+    "web:match:banner",
+    "rust:objective:flag-states",
+    "rust:objective:flag-physics",
+    "rust:modes:pointmatch",
+    "rust:modes:rambomatch",
+    "rust:modes:ctf",
+    "rust:modes:infiltration",
+    "rust:modes:htf",
+    "rust:mode_world:flags",
+    "rust:mode_world:pointmatch",
+    "rust:mode_world:physics",
+    "web:objectives:status",
+    "web:objectives:countdown",
+    "rust:modifiers:realistic",
+    "rust:modifiers:survival",
+    "rust:modifiers:advance",
+    "rust:modifiers:scripted",
+    "rust:modifier_world:realistic",
+    "rust:modifier_world:survival",
+    "rust:modifier_world:advance",
+    "server:modifier-rooms",
+    "server:community-modes",
+    "server:realistic-visibility",
+    "web:modifiers:badges",
+    "web:modifiers:survival",
+    "web:modifiers:advance",
+    "rust:spectator:targets",
+    "rust:spectator:visibility",
+    "rust:statistics:weapons",
+    "rust:statistics:scoreboard",
+    "rust:statistics:history",
+    "rust:spectator_world:follow",
+    "rust:statistics_world:feed",
+    "web:spectate:hud",
+    "web:spectate:keys",
+    "web:stats:scoreboard",
+    "web:stats:weapons",
+    "web:stats:summary",
+    "rust:bonus:effects",
+    "rust:bonus:stacking",
+    "rust:bonus:pickups",
+    "rust:bonus:settings",
+    "rust:bonus_world:pickup",
+    "rust:bonus_world:effects",
+    "rust:bonus_world:physics",
+    "server:bonus-settings",
+    "web:bonuses:hud",
+    "web:bonuses:predator",
+    "rust:bots:profiles",
+    "rust:bots:perception",
+    "rust:bots:navigation",
+    "rust:bots:combat",
+    "rust:bots:objectives",
+    "rust:bots:chat",
+    "rust:bot_world:join",
+    "rust:bot_world:drive",
+    "rust:bot_world:play",
+    "server:bots",
+    "web:bots:setup",
+    "web:bots:roster"
   ]
 }

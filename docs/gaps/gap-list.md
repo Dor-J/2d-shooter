@@ -77,11 +77,11 @@ The current implementation uses a simple rectangle/circle physics model and five
 - **Present:** Roll. <!-- G02-INPUT-AND-012 -->
 - **Present:** Backflip combinations. <!-- G02-INPUT-AND-013 -->
 - **Present:** Explicit reload. <!-- G02-INPUT-AND-014 -->
-- Switch between carried primary and secondary weapons. <!-- G02-INPUT-AND-015 -->
-- Drop current weapon. <!-- G02-INPUT-AND-016 -->
-- Hold-to-charge weapon throw. <!-- G02-INPUT-AND-017 -->
-- Throw combat knife. <!-- G02-INPUT-AND-018 -->
-- Pick up weapons. <!-- G02-INPUT-AND-019 -->
+- **Present:** Switch between carried primary and secondary weapons. <!-- G02-INPUT-AND-015 -->
+- **Present:** Drop current weapon. <!-- G02-INPUT-AND-016 -->
+- **Present:** Hold-to-charge weapon throw. <!-- G02-INPUT-AND-017 -->
+- **Present:** Throw combat knife. <!-- G02-INPUT-AND-018 -->
+- **Present:** Pick up weapons. <!-- G02-INPUT-AND-019 -->
 - Pick up flags and kits. <!-- G02-INPUT-AND-020 -->
 - Flag throw using jump+crouch. <!-- G02-INPUT-AND-021 -->
 - Dedicated configurable flag-throw key. <!-- G02-INPUT-AND-022 -->
@@ -148,40 +148,40 @@ The project contains all 10 primary and 4 secondary weapon definitions, but many
 
 ### Missing weapon systems
 
-- Primary-plus-secondary inventory slots. <!-- G03-WEAPONS-022 -->
-- Carrying two primary weapons. <!-- G03-WEAPONS-023 -->
-- Weapon pickups. <!-- G03-WEAPONS-024 -->
-- Weapon dropping. <!-- G03-WEAPONS-025 -->
-- Thrown-weapon physics. <!-- G03-WEAPONS-026 -->
-- Thrown combat knife. <!-- G03-WEAPONS-027 -->
-- Knife recovery/pickup. <!-- G03-WEAPONS-028 -->
-- Manual reload. <!-- G03-WEAPONS-029 -->
-- Reload interruption. <!-- G03-WEAPONS-030 -->
+- **Present:** Primary-plus-secondary inventory slots. <!-- G03-WEAPONS-022 -->
+- **Present:** Carrying two primary weapons. <!-- G03-WEAPONS-023 -->
+- **Present:** Weapon pickups. <!-- G03-WEAPONS-024 -->
+- **Present:** Weapon dropping. <!-- G03-WEAPONS-025 -->
+- **Present:** Thrown-weapon physics. <!-- G03-WEAPONS-026 -->
+- **Present:** Thrown combat knife. <!-- G03-WEAPONS-027 -->
+- **Present:** Knife recovery/pickup. <!-- G03-WEAPONS-028 -->
+- **Present:** Manual reload. <!-- G03-WEAPONS-029 -->
+- **Present:** Reload interruption. <!-- G03-WEAPONS-030 -->
 - Per-weapon reload animations. <!-- G03-WEAPONS-031 -->
-- Weapon-switch delays. <!-- G03-WEAPONS-032 -->
-- Correct weapon startup behavior. <!-- G03-WEAPONS-033 -->
-- LAW firing restrictions. <!-- G03-WEAPONS-034 -->
-- Barrett movement/startup restrictions. <!-- G03-WEAPONS-035 -->
-- Minigun spin-up behavior. <!-- G03-WEAPONS-036 -->
-- Chainsaw continuous-contact behavior. <!-- G03-WEAPONS-037 -->
-- Proper melee collision. <!-- G03-WEAPONS-038 -->
-- Dual Desert Eagle projectiles and muzzle positions. <!-- G03-WEAPONS-039 -->
-- Proper shotgun pellet count and randomized spread. <!-- G03-WEAPONS-040 -->
-- Projectile lifetime matching Soldat. <!-- G03-WEAPONS-041 -->
-- Projectile gravity per bullet style. <!-- G03-WEAPONS-042 -->
-- Grenade bouncing. <!-- G03-WEAPONS-043 -->
-- M79 projectile bouncing/impact behavior. <!-- G03-WEAPONS-044 -->
-- Grenade cooking/throw strength. <!-- G03-WEAPONS-045 -->
-- Grenade fuse timing. <!-- G03-WEAPONS-046 -->
-- Dropped grenade behavior on death. <!-- G03-WEAPONS-047 -->
+- **Present:** Weapon-switch delays. <!-- G03-WEAPONS-032 -->
+- **Present:** Correct weapon startup behavior. <!-- G03-WEAPONS-033 -->
+- **Present:** LAW firing restrictions. <!-- G03-WEAPONS-034 -->
+- **Present:** Barrett movement/startup restrictions. <!-- G03-WEAPONS-035 -->
+- **Present:** Minigun spin-up behavior. <!-- G03-WEAPONS-036 -->
+- **Present:** Chainsaw continuous-contact behavior. <!-- G03-WEAPONS-037 -->
+- **Present:** Proper melee collision. <!-- G03-WEAPONS-038 -->
+- **Present:** Dual Desert Eagle projectiles and muzzle positions. <!-- G03-WEAPONS-039 -->
+- **Present:** Proper shotgun pellet count and randomized spread. <!-- G03-WEAPONS-040 -->
+- **Present:** Projectile lifetime matching Soldat. <!-- G03-WEAPONS-041 -->
+- **Present:** Projectile gravity per bullet style. <!-- G03-WEAPONS-042 -->
+- **Present:** Grenade bouncing. <!-- G03-WEAPONS-043 -->
+- **Present:** M79 projectile bouncing/impact behavior. <!-- G03-WEAPONS-044 -->
+- **Present:** Grenade cooking/throw strength. <!-- G03-WEAPONS-045 -->
+- **Present:** Grenade fuse timing. <!-- G03-WEAPONS-046 -->
+- **Present:** Dropped grenade behavior on death. <!-- G03-WEAPONS-047 -->
 - Cluster grenade submunition spawning. <!-- G03-WEAPONS-048 -->
 - Arrow sticking/interaction. <!-- G03-WEAPONS-049 -->
 - Flame propagation and burning. <!-- G03-WEAPONS-050 -->
 - Flamethrower fuel/ammunition behavior. <!-- G03-WEAPONS-051 -->
 - Stationary-gun mounting and dismounting. <!-- G03-WEAPONS-052 -->
 - Stationary-gun aiming limits. <!-- G03-WEAPONS-053 -->
-- Projectile-to-projectile or projectile-to-object interactions where applicable. <!-- G03-WEAPONS-054 -->
-- Muzzle origin based on character pose. <!-- G03-WEAPONS-055 -->
+- **Present:** Projectile-to-projectile or projectile-to-object interactions where applicable. <!-- G03-WEAPONS-054 -->
+- **Present:** Muzzle origin based on character pose. <!-- G03-WEAPONS-055 -->
 - Muzzle flashes. <!-- G03-WEAPONS-056 -->
 - Shell casings. <!-- G03-WEAPONS-057 -->
 - Weapon-specific sounds. <!-- G03-WEAPONS-058 -->
@@ -191,8 +191,8 @@ The project contains all 10 primary and 4 secondary weapon definitions, but many
 - Tracers matching weapon configuration. <!-- G03-WEAPONS-062 -->
 - Explosion visual and audio effects. <!-- G03-WEAPONS-063 -->
 - Weapon sprites held by characters. <!-- G03-WEAPONS-064 -->
-- Weapons lying on the ground. <!-- G03-WEAPONS-065 -->
-- Weapon pickup indicators. <!-- G03-WEAPONS-066 -->
+- **Present:** Weapons lying on the ground. <!-- G03-WEAPONS-065 -->
+- **Present:** Weapon pickup indicators. <!-- G03-WEAPONS-066 -->
 
 [Weapons reference](https://wiki.soldat.pl/index.php/Weapons)
 
@@ -202,51 +202,53 @@ The project currently stores only a subset of Soldat’s weapon configuration fi
 
 Every weapon needs support for:
 
-- Damage. <!-- G04-WEAPON-MOD-001 -->
-- Fire interval. <!-- G04-WEAPON-MOD-002 -->
-- Ammunition capacity. <!-- G04-WEAPON-MOD-003 -->
-- Reload time. <!-- G04-WEAPON-MOD-004 -->
-- Projectile speed. <!-- G04-WEAPON-MOD-005 -->
-- Bullet style. <!-- G04-WEAPON-MOD-006 -->
-- Startup time. <!-- G04-WEAPON-MOD-007 -->
-- Bink. <!-- G04-WEAPON-MOD-008 -->
-- Self-bink through negative bink values. <!-- G04-WEAPON-MOD-009 -->
-- Movement accuracy. <!-- G04-WEAPON-MOD-010 -->
-- Bullet spread. <!-- G04-WEAPON-MOD-011 -->
-- Recoil. <!-- G04-WEAPON-MOD-012 -->
-- Push. <!-- G04-WEAPON-MOD-013 -->
-- Inherited velocity. <!-- G04-WEAPON-MOD-014 -->
-- Head damage modifier. <!-- G04-WEAPON-MOD-015 -->
-- Chest damage modifier. <!-- G04-WEAPON-MOD-016 -->
-- Leg damage modifier. <!-- G04-WEAPON-MOD-017 -->
-- Separate normal and Realistic weapon tables. <!-- G04-WEAPON-MOD-018 -->
-- Cluster-grenade nesting under frag grenades. <!-- G04-WEAPON-MOD-019 -->
-- Server-selected/custom weapon mods. <!-- G04-WEAPON-MOD-020 -->
-- Weapon-mod synchronization with clients. <!-- G04-WEAPON-MOD-021 -->
-- Validation of custom weapon values. <!-- G04-WEAPON-MOD-022 -->
-- A safe loader for `weapons.ini`-style data. <!-- G04-WEAPON-MOD-023 -->
-- Version/hash checking so clients know which mod is active. <!-- G04-WEAPON-MOD-024 -->
-- Weapon-mod display in the room/server browser. <!-- G04-WEAPON-MOD-025 -->
+- **Present:** Damage. <!-- G04-WEAPON-MOD-001 -->
+- **Present:** Fire interval. <!-- G04-WEAPON-MOD-002 -->
+- **Present:** Ammunition capacity. <!-- G04-WEAPON-MOD-003 -->
+- **Present:** Reload time. <!-- G04-WEAPON-MOD-004 -->
+- **Present:** Projectile speed. <!-- G04-WEAPON-MOD-005 -->
+- **Present:** Bullet style. <!-- G04-WEAPON-MOD-006 -->
+- **Present:** Startup time. <!-- G04-WEAPON-MOD-007 -->
+- **Present:** Bink. <!-- G04-WEAPON-MOD-008 -->
+- **Present:** Self-bink through negative bink values. <!-- G04-WEAPON-MOD-009 -->
+- **Present:** Movement accuracy. <!-- G04-WEAPON-MOD-010 -->
+- **Present:** Bullet spread. <!-- G04-WEAPON-MOD-011 -->
+- **Present:** Recoil. <!-- G04-WEAPON-MOD-012 -->
+- **Present:** Push. <!-- G04-WEAPON-MOD-013 -->
+- **Present:** Inherited velocity. <!-- G04-WEAPON-MOD-014 -->
+- **Present:** Head damage modifier. <!-- G04-WEAPON-MOD-015 -->
+- **Present:** Chest damage modifier. <!-- G04-WEAPON-MOD-016 -->
+- **Present:** Leg damage modifier. <!-- G04-WEAPON-MOD-017 -->
+- **Present:** Separate normal and Realistic weapon tables. <!-- G04-WEAPON-MOD-018 -->
+- **Present:** Cluster-grenade nesting under frag grenades. <!-- G04-WEAPON-MOD-019 -->
+- **Present:** Server-selected/custom weapon mods. <!-- G04-WEAPON-MOD-020 -->
+- **Present:** Weapon-mod synchronization with clients. <!-- G04-WEAPON-MOD-021 -->
+- **Present:** Validation of custom weapon values. <!-- G04-WEAPON-MOD-022 -->
+- **Present:** A safe loader for `weapons.ini`-style data. <!-- G04-WEAPON-MOD-023 -->
+- **Present:** Version/hash checking so clients know which mod is active. <!-- G04-WEAPON-MOD-024 -->
+- **Present:** Weapon-mod display in the room/server browser. <!-- G04-WEAPON-MOD-025 -->
 
 ### Damage and accuracy corrections
 
-- Replace simplified damage with `Damage × CurrentSpeed × HitboxModifier`. <!-- G04-WEAPON-MOD-026 -->
-- Add projectile speed decay. <!-- G04-WEAPON-MOD-027 -->
-- Add player velocity inheritance. <!-- G04-WEAPON-MOD-028 -->
-- Allow movement direction to increase or decrease projectile speed and damage. <!-- G04-WEAPON-MOD-029 -->
-- Add head, chest, and leg hit detection. <!-- G04-WEAPON-MOD-030 -->
-- Add bink when the player is hit. <!-- G04-WEAPON-MOD-031 -->
-- Add self-bink when firing relevant weapons. <!-- G04-WEAPON-MOD-032 -->
-- Add cursor expansion representing current accuracy. <!-- G04-WEAPON-MOD-033 -->
-- Add movement accuracy penalties. <!-- G04-WEAPON-MOD-034 -->
-- Add stronger jetting accuracy penalties. <!-- G04-WEAPON-MOD-035 -->
-- Add recoil to the aim/cursor. <!-- G04-WEAPON-MOD-036 -->
-- Add correct bullet spread. <!-- G04-WEAPON-MOD-037 -->
-- Add bullet mass/push behavior. <!-- G04-WEAPON-MOD-038 -->
-- Add distance-dependent damage caused by changing projectile speed. <!-- G04-WEAPON-MOD-039 -->
-- Add exact explosive damage and falloff. <!-- G04-WEAPON-MOD-040 -->
-- Add terrain occlusion for splash damage if Soldat’s source behavior requires it. <!-- G04-WEAPON-MOD-041 -->
-- Add friendly-fire and team-bink rules. <!-- G04-WEAPON-MOD-042 -->
+- **Present:** Replace simplified damage with `Damage × CurrentSpeed × HitboxModifier`. <!-- G04-WEAPON-MOD-026 -->
+- **Present:** Add projectile speed decay. <!-- G04-WEAPON-MOD-027 -->
+- **Present:** Add player velocity inheritance. <!-- G04-WEAPON-MOD-028 -->
+- **Present:** Allow movement direction to increase or decrease projectile speed and damage. <!-- G04-WEAPON-MOD-029 -->
+- **Present:** Add head, chest, and leg hit detection. <!-- G04-WEAPON-MOD-030 -->
+- **Present:** Add bink when the player is hit. <!-- G04-WEAPON-MOD-031 -->
+- **Present:** Add self-bink when firing relevant weapons. <!-- G04-WEAPON-MOD-032 -->
+- **Present:** Add cursor expansion representing current accuracy. <!-- G04-WEAPON-MOD-033 -->
+- **Present:** Add movement accuracy penalties. <!-- G04-WEAPON-MOD-034 -->
+- **Present:** Add stronger jetting accuracy penalties. <!-- G04-WEAPON-MOD-035 -->
+- **Present:** Add recoil to the aim/cursor. <!-- G04-WEAPON-MOD-036 -->
+- **Present:** Add correct bullet spread. <!-- G04-WEAPON-MOD-037 -->
+- **Present:** Add bullet mass/push behavior. <!-- G04-WEAPON-MOD-038 -->
+- **Present:** Add distance-dependent damage caused by changing projectile speed. <!-- G04-WEAPON-MOD-039 -->
+- **Present:** Add exact explosive damage and falloff. <!-- G04-WEAPON-MOD-040 -->
+- **Present:** Add terrain occlusion for splash damage if Soldat’s source behavior requires it. <!-- G04-WEAPON-MOD-041 -->
+- **Present:** Add friendly-fire and team-bink rules. <!-- G04-WEAPON-MOD-042 -->
+
+The pinned OpenSoldat splash path has no line-of-sight check, so explosions are not occluded by terrain.
 
 [Weapon Mod reference](https://wiki.soldat.pl/index.php/Weapon_Mod)
 
@@ -254,83 +256,83 @@ Every weapon needs support for:
 
 ### Existing
 
-- **Partial:** Deathmatch. <!-- G05-GAME-MODES-001 -->
-- **Partial:** Team Deathmatch, corresponding to Soldat’s Teammatch. <!-- G05-GAME-MODES-002 -->
+- **Present:** Deathmatch. <!-- G05-GAME-MODES-001 -->
+- **Present:** Team Deathmatch, corresponding to Soldat’s Teammatch. <!-- G05-GAME-MODES-002 -->
 
 These modes still lack round limits, time limits, proper spawning, map rotation, end-of-round state, announcements, and complete scoring.
 
 ### Missing official modes
 
-- Pointmatch. <!-- G05-GAME-MODES-003 -->
+- **Present:** Pointmatch. <!-- G05-GAME-MODES-003 -->
 - Rambomatch. <!-- G05-GAME-MODES-004 -->
-- Capture the Flag. <!-- G05-GAME-MODES-005 -->
-- Infiltration. <!-- G05-GAME-MODES-006 -->
-- Hold the Flag. <!-- G05-GAME-MODES-007 -->
+- **Present:** Capture the Flag. <!-- G05-GAME-MODES-005 -->
+- **Present:** Infiltration. <!-- G05-GAME-MODES-006 -->
+- **Present:** Hold the Flag. <!-- G05-GAME-MODES-007 -->
 
 ### Missing mode modifiers
 
-- Realistic mode. <!-- G05-GAME-MODES-008 -->
-- Survival mode. <!-- G05-GAME-MODES-009 -->
-- Advance mode. <!-- G05-GAME-MODES-010 -->
+- **Present:** Realistic mode. <!-- G05-GAME-MODES-008 -->
+- **Present:** Survival mode. <!-- G05-GAME-MODES-009 -->
+- **Present:** Advance mode. <!-- G05-GAME-MODES-010 -->
 
 ### Missing community modes mentioned by the wiki
 
 These are not necessary for initial Soldat parity, but they belong in the exhaustive feature backlog:
 
-- Climb. <!-- G05-GAME-MODES-011 -->
-- Dodgeball. <!-- G05-GAME-MODES-012 -->
-- Domination. <!-- G05-GAME-MODES-013 -->
-- Hide and Seek. <!-- G05-GAME-MODES-014 -->
-- Knife Only. <!-- G05-GAME-MODES-015 -->
-- OneShots. <!-- G05-GAME-MODES-016 -->
-- Pirates vs Ninjas. <!-- G05-GAME-MODES-017 -->
-- Realistic Soldat/Counter-Strike. <!-- G05-GAME-MODES-018 -->
-- Trench Wars. <!-- G05-GAME-MODES-019 -->
-- Tactical Trench Wars. <!-- G05-GAME-MODES-020 -->
-- Zombie. <!-- G05-GAME-MODES-021 -->
+- **Present:** Climb. <!-- G05-GAME-MODES-011 -->
+- **Present:** Dodgeball. <!-- G05-GAME-MODES-012 -->
+- **Present:** Domination. <!-- G05-GAME-MODES-013 -->
+- **Present:** Hide and Seek. <!-- G05-GAME-MODES-014 -->
+- **Present:** Knife Only. <!-- G05-GAME-MODES-015 -->
+- **Present:** OneShots. <!-- G05-GAME-MODES-016 -->
+- **Present:** Pirates vs Ninjas. <!-- G05-GAME-MODES-017 -->
+- **Present:** Realistic Soldat/Counter-Strike. <!-- G05-GAME-MODES-018 -->
+- **Present:** Trench Wars. <!-- G05-GAME-MODES-019 -->
+- **Present:** Tactical Trench Wars. <!-- G05-GAME-MODES-020 -->
+- **Present:** Zombie. <!-- G05-GAME-MODES-021 -->
 
 ### Missing match rules
 
-- Kill limit. <!-- G05-GAME-MODES-022 -->
-- Point limit. <!-- G05-GAME-MODES-023 -->
-- Capture limit. <!-- G05-GAME-MODES-024 -->
-- Time limit. <!-- G05-GAME-MODES-025 -->
-- Round start countdown. <!-- G05-GAME-MODES-026 -->
-- Round end. <!-- G05-GAME-MODES-027 -->
-- Winner calculation. <!-- G05-GAME-MODES-028 -->
-- Draw handling. <!-- G05-GAME-MODES-029 -->
-- Overtime policy where appropriate. <!-- G05-GAME-MODES-030 -->
-- Map rotation. <!-- G05-GAME-MODES-031 -->
-- Map-loop option. <!-- G05-GAME-MODES-032 -->
-- Next-map transition. <!-- G05-GAME-MODES-033 -->
-- Match restart. <!-- G05-GAME-MODES-034 -->
-- Configurable respawn time. <!-- G05-GAME-MODES-035 -->
-- Survival round elimination. <!-- G05-GAME-MODES-036 -->
-- Survival dead-player restrictions. <!-- G05-GAME-MODES-037 -->
-- Advance-mode weapon unlocking. <!-- G05-GAME-MODES-038 -->
-- Team balancing. <!-- G05-GAME-MODES-039 -->
-- Team selection. <!-- G05-GAME-MODES-040 -->
-- Spectator team. <!-- G05-GAME-MODES-041 -->
-- Mid-match spectator switching. <!-- G05-GAME-MODES-042 -->
-- Friendly-fire configuration. <!-- G05-GAME-MODES-043 -->
-- Teamkill handling. <!-- G05-GAME-MODES-044 -->
-- Suicide scoring. <!-- G05-GAME-MODES-045 -->
-- Disconnect/reconnect score preservation. <!-- G05-GAME-MODES-046 -->
-- Automatic round-end scoreboard. <!-- G05-GAME-MODES-047 -->
-- Automatic final-score screenshot option. <!-- G05-GAME-MODES-048 -->
+- **Present:** Kill limit. <!-- G05-GAME-MODES-022 -->
+- **Present:** Point limit. <!-- G05-GAME-MODES-023 -->
+- **Present:** Capture limit. <!-- G05-GAME-MODES-024 -->
+- **Present:** Time limit. <!-- G05-GAME-MODES-025 -->
+- **Present:** Round start countdown. <!-- G05-GAME-MODES-026 -->
+- **Present:** Round end. <!-- G05-GAME-MODES-027 -->
+- **Present:** Winner calculation. <!-- G05-GAME-MODES-028 -->
+- **Present:** Draw handling. <!-- G05-GAME-MODES-029 -->
+- **Present:** Overtime policy where appropriate. <!-- G05-GAME-MODES-030 -->
+- **Present:** Map rotation. <!-- G05-GAME-MODES-031 -->
+- **Present:** Map-loop option. <!-- G05-GAME-MODES-032 -->
+- **Present:** Next-map transition. <!-- G05-GAME-MODES-033 -->
+- **Present:** Match restart. <!-- G05-GAME-MODES-034 -->
+- **Present:** Configurable respawn time. <!-- G05-GAME-MODES-035 -->
+- **Present:** Survival round elimination. <!-- G05-GAME-MODES-036 -->
+- **Present:** Survival dead-player restrictions. <!-- G05-GAME-MODES-037 -->
+- **Present:** Advance-mode weapon unlocking. <!-- G05-GAME-MODES-038 -->
+- **Present:** Team balancing. <!-- G05-GAME-MODES-039 -->
+- **Present:** Team selection. <!-- G05-GAME-MODES-040 -->
+- **Present:** Spectator team. <!-- G05-GAME-MODES-041 -->
+- **Present:** Mid-match spectator switching. <!-- G05-GAME-MODES-042 -->
+- **Present:** Friendly-fire configuration. <!-- G05-GAME-MODES-043 -->
+- **Present:** Teamkill handling. <!-- G05-GAME-MODES-044 -->
+- **Present:** Suicide scoring. <!-- G05-GAME-MODES-045 -->
+- **Present:** Disconnect/reconnect score preservation. <!-- G05-GAME-MODES-046 -->
+- **Present:** Automatic round-end scoreboard. <!-- G05-GAME-MODES-047 -->
+- **Present:** Automatic final-score screenshot option. <!-- G05-GAME-MODES-048 -->
 
 [Game modes reference](https://wiki.soldat.pl/index.php/Game_Modes)
 
 ## 6. Pointmatch
 
-- Yellow point flag. <!-- G06-POINTMATCH-001 -->
-- Holding the point flag. <!-- G06-POINTMATCH-002 -->
-- Extra points awarded while holding it. <!-- G06-POINTMATCH-003 -->
-- Flag drop on death. <!-- G06-POINTMATCH-004 -->
-- Point-limit victory. <!-- G06-POINTMATCH-005 -->
-- Pointmatch-specific scoring. <!-- G06-POINTMATCH-006 -->
+- **Present:** Yellow point flag. <!-- G06-POINTMATCH-001 -->
+- **Present:** Holding the point flag. <!-- G06-POINTMATCH-002 -->
+- **Present:** Extra points awarded while holding it. <!-- G06-POINTMATCH-003 -->
+- **Present:** Flag drop on death. <!-- G06-POINTMATCH-004 -->
+- **Present:** Point-limit victory. <!-- G06-POINTMATCH-005 -->
+- **Present:** Pointmatch-specific scoring. <!-- G06-POINTMATCH-006 -->
 - Pointmatch spawns and maps. <!-- G06-POINTMATCH-007 -->
-- Point-flag HUD status. <!-- G06-POINTMATCH-008 -->
+- **Present:** Point-flag HUD status. <!-- G06-POINTMATCH-008 -->
 
 ## 7. Rambomatch
 
@@ -346,121 +348,121 @@ These are not necessary for initial Soldat parity, but they belong in the exhaus
 
 ## 8. Capture the Flag
 
-- Alpha and Bravo teams. <!-- G08-CAPTURE-THE-001 -->
-- Red and blue flags. <!-- G08-CAPTURE-THE-002 -->
-- Flag bases. <!-- G08-CAPTURE-THE-003 -->
-- Enemy-flag pickup. <!-- G08-CAPTURE-THE-004 -->
-- Flag carrying. <!-- G08-CAPTURE-THE-005 -->
-- Flag dropping on death. <!-- G08-CAPTURE-THE-006 -->
-- Manual flag throw. <!-- G08-CAPTURE-THE-007 -->
-- Flag return by touching a dropped friendly flag. <!-- G08-CAPTURE-THE-008 -->
-- Automatic return timeout if applicable. <!-- G08-CAPTURE-THE-009 -->
-- Capture only when the player’s own flag is at base. <!-- G08-CAPTURE-THE-010 -->
-- Capture scoring. <!-- G08-CAPTURE-THE-011 -->
-- Capture limit. <!-- G08-CAPTURE-THE-012 -->
-- Flag-carrier indicator. <!-- G08-CAPTURE-THE-013 -->
-- Missing-flag indicator. <!-- G08-CAPTURE-THE-014 -->
-- Flag status HUD. <!-- G08-CAPTURE-THE-015 -->
-- Team score HUD. <!-- G08-CAPTURE-THE-016 -->
-- Flag physics. <!-- G08-CAPTURE-THE-017 -->
-- Bullets and explosions pushing flags. <!-- G08-CAPTURE-THE-018 -->
-- Flag collision with polygons. <!-- G08-CAPTURE-THE-019 -->
+- **Present:** Alpha and Bravo teams. <!-- G08-CAPTURE-THE-001 -->
+- **Present:** Red and blue flags. <!-- G08-CAPTURE-THE-002 -->
+- **Present:** Flag bases. <!-- G08-CAPTURE-THE-003 -->
+- **Present:** Enemy-flag pickup. <!-- G08-CAPTURE-THE-004 -->
+- **Present:** Flag carrying. <!-- G08-CAPTURE-THE-005 -->
+- **Present:** Flag dropping on death. <!-- G08-CAPTURE-THE-006 -->
+- **Present:** Manual flag throw. <!-- G08-CAPTURE-THE-007 -->
+- **Present:** Flag return by touching a dropped friendly flag. <!-- G08-CAPTURE-THE-008 -->
+- **Present:** Automatic return timeout if applicable. <!-- G08-CAPTURE-THE-009 -->
+- **Present:** Capture only when the player’s own flag is at base. <!-- G08-CAPTURE-THE-010 -->
+- **Present:** Capture scoring. <!-- G08-CAPTURE-THE-011 -->
+- **Present:** Capture limit. <!-- G08-CAPTURE-THE-012 -->
+- **Present:** Flag-carrier indicator. <!-- G08-CAPTURE-THE-013 -->
+- **Present:** Missing-flag indicator. <!-- G08-CAPTURE-THE-014 -->
+- **Present:** Flag status HUD. <!-- G08-CAPTURE-THE-015 -->
+- **Present:** Team score HUD. <!-- G08-CAPTURE-THE-016 -->
+- **Present:** Flag physics. <!-- G08-CAPTURE-THE-017 -->
+- **Present:** Bullets and explosions pushing flags. <!-- G08-CAPTURE-THE-018 -->
+- **Present:** Flag collision with polygons. <!-- G08-CAPTURE-THE-019 -->
 - CTF spawn points. <!-- G08-CAPTURE-THE-020 -->
-- CTF-compatible map validation. <!-- G08-CAPTURE-THE-021 -->
-- CTF bots and flag objectives. <!-- G08-CAPTURE-THE-022 -->
+- **Present:** CTF-compatible map validation. <!-- G08-CAPTURE-THE-021 -->
+- **Present:** CTF bots and flag objectives. <!-- G08-CAPTURE-THE-022 -->
 
 ## 9. Infiltration
 
-- Attacking and defending teams. <!-- G09-INFILTRATION-001 -->
-- Black/white or objective-specific flags. <!-- G09-INFILTRATION-002 -->
-- Objective capture rules. <!-- G09-INFILTRATION-003 -->
-- Passive defender scoring. <!-- G09-INFILTRATION-004 -->
-- Attacker capture scoring. <!-- G09-INFILTRATION-005 -->
-- Team-role asymmetry. <!-- G09-INFILTRATION-006 -->
+- **Present:** Attacking and defending teams. <!-- G09-INFILTRATION-001 -->
+- **Present:** Black/white or objective-specific flags. <!-- G09-INFILTRATION-002 -->
+- **Present:** Objective capture rules. <!-- G09-INFILTRATION-003 -->
+- **Present:** Passive defender scoring. <!-- G09-INFILTRATION-004 -->
+- **Present:** Attacker capture scoring. <!-- G09-INFILTRATION-005 -->
+- **Present:** Team-role asymmetry. <!-- G09-INFILTRATION-006 -->
 - Infiltration-specific spawn points. <!-- G09-INFILTRATION-007 -->
-- Infiltration timer and score rules. <!-- G09-INFILTRATION-008 -->
-- Team score HUD. <!-- G09-INFILTRATION-009 -->
-- Objective state indicators. <!-- G09-INFILTRATION-010 -->
-- Infiltration bot behavior. <!-- G09-INFILTRATION-011 -->
+- **Present:** Infiltration timer and score rules. <!-- G09-INFILTRATION-008 -->
+- **Present:** Team score HUD. <!-- G09-INFILTRATION-009 -->
+- **Present:** Objective state indicators. <!-- G09-INFILTRATION-010 -->
+- **Present:** Infiltration bot behavior. <!-- G09-INFILTRATION-011 -->
 
 ## 10. Hold the Flag
 
-- Neutral yellow flag. <!-- G10-HOLD-THE-001 -->
-- Flag pickup and carrying. <!-- G10-HOLD-THE-002 -->
-- Continuous team scoring while held. <!-- G10-HOLD-THE-003 -->
-- Flag drops. <!-- G10-HOLD-THE-004 -->
-- Flag return/reset rules. <!-- G10-HOLD-THE-005 -->
-- Carrier indication. <!-- G10-HOLD-THE-006 -->
+- **Present:** Neutral yellow flag. <!-- G10-HOLD-THE-001 -->
+- **Present:** Flag pickup and carrying. <!-- G10-HOLD-THE-002 -->
+- **Present:** Continuous team scoring while held. <!-- G10-HOLD-THE-003 -->
+- **Present:** Flag drops. <!-- G10-HOLD-THE-004 -->
+- **Present:** Flag return/reset rules. <!-- G10-HOLD-THE-005 -->
+- **Present:** Carrier indication. <!-- G10-HOLD-THE-006 -->
 - HTF-specific spawn points. <!-- G10-HOLD-THE-007 -->
-- HTF score display. <!-- G10-HOLD-THE-008 -->
-- HTF bots and objective behavior. <!-- G10-HOLD-THE-009 -->
+- **Present:** HTF score display. <!-- G10-HOLD-THE-008 -->
+- **Present:** HTF bots and objective behavior. <!-- G10-HOLD-THE-009 -->
 
 ## 11. Realistic mode
 
-- Separate `weapons_realistic.ini` statistics. <!-- G11-REALISTIC-MODE-001 -->
-- Reduced/changed weapon damage behavior. <!-- G11-REALISTIC-MODE-002 -->
-- Recoil behavior appropriate to Realistic. <!-- G11-REALISTIC-MODE-003 -->
-- Visibility/line-of-sight restrictions. <!-- G11-REALISTIC-MODE-004 -->
-- Enemies visible only when the observed player can see them. <!-- G11-REALISTIC-MODE-005 -->
-- Dead-player and spectator visibility restrictions. <!-- G11-REALISTIC-MODE-006 -->
-- Enemy team-chat visibility restrictions. <!-- G11-REALISTIC-MODE-007 -->
-- Fall damage if required by the reference implementation. <!-- G11-REALISTIC-MODE-008 -->
+- **Present:** Separate `weapons_realistic.ini` statistics. <!-- G11-REALISTIC-MODE-001 -->
+- **Present:** Reduced/changed weapon damage behavior. <!-- G11-REALISTIC-MODE-002 -->
+- **Present:** Recoil behavior appropriate to Realistic. <!-- G11-REALISTIC-MODE-003 -->
+- **Present:** Visibility/line-of-sight restrictions. <!-- G11-REALISTIC-MODE-004 -->
+- **Present:** Enemies visible only when the observed player can see them. <!-- G11-REALISTIC-MODE-005 -->
+- **Present:** Dead-player and spectator visibility restrictions. <!-- G11-REALISTIC-MODE-006 -->
+- **Present:** Enemy team-chat visibility restrictions. <!-- G11-REALISTIC-MODE-007 -->
+- **Present:** Fall damage if required by the reference implementation. <!-- G11-REALISTIC-MODE-008 -->
 - Realistic movement and survival tuning. <!-- G11-REALISTIC-MODE-009 -->
-- Realistic-specific HUD behavior. <!-- G11-REALISTIC-MODE-010 -->
-- Server/room Realistic flag. <!-- G11-REALISTIC-MODE-011 -->
+- **Present:** Realistic-specific HUD behavior. <!-- G11-REALISTIC-MODE-010 -->
+- **Present:** Server/room Realistic flag. <!-- G11-REALISTIC-MODE-011 -->
 
 ## 12. Survival mode
 
-- No immediate respawn. <!-- G12-SURVIVAL-MODE-001 -->
-- Round-based respawning. <!-- G12-SURVIVAL-MODE-002 -->
-- Round begins when enough players are ready. <!-- G12-SURVIVAL-MODE-003 -->
-- Round ends when one player/team remains. <!-- G12-SURVIVAL-MODE-004 -->
-- Dead players spectate. <!-- G12-SURVIVAL-MODE-005 -->
-- Survival scoreboard. <!-- G12-SURVIVAL-MODE-006 -->
-- End-of-round state. <!-- G12-SURVIVAL-MODE-007 -->
-- Flag restrictions after a Survival round ends. <!-- G12-SURVIVAL-MODE-008 -->
-- Survival chat/spectator restrictions. <!-- G12-SURVIVAL-MODE-009 -->
-- Configurable survival respawn/round behavior. <!-- G12-SURVIVAL-MODE-010 -->
+- **Present:** No immediate respawn. <!-- G12-SURVIVAL-MODE-001 -->
+- **Present:** Round-based respawning. <!-- G12-SURVIVAL-MODE-002 -->
+- **Present:** Round begins when enough players are ready. <!-- G12-SURVIVAL-MODE-003 -->
+- **Present:** Round ends when one player/team remains. <!-- G12-SURVIVAL-MODE-004 -->
+- **Present:** Dead players spectate. <!-- G12-SURVIVAL-MODE-005 -->
+- **Present:** Survival scoreboard. <!-- G12-SURVIVAL-MODE-006 -->
+- **Present:** End-of-round state. <!-- G12-SURVIVAL-MODE-007 -->
+- **Present:** Flag restrictions after a Survival round ends. <!-- G12-SURVIVAL-MODE-008 -->
+- **Present:** Survival chat/spectator restrictions. <!-- G12-SURVIVAL-MODE-009 -->
+- **Present:** Configurable survival respawn/round behavior. <!-- G12-SURVIVAL-MODE-010 -->
 
 ## 13. Advance mode
 
-- Initial limited weapon selection. <!-- G13-ADVANCE-MODE-001 -->
-- Unlock weapons through kills. <!-- G13-ADVANCE-MODE-002 -->
-- Unlock progression. <!-- G13-ADVANCE-MODE-003 -->
-- Per-player unlock state. <!-- G13-ADVANCE-MODE-004 -->
-- Advance weapon menu. <!-- G13-ADVANCE-MODE-005 -->
-- Reset progression between matches/maps as appropriate. <!-- G13-ADVANCE-MODE-006 -->
-- Advance configuration. <!-- G13-ADVANCE-MODE-007 -->
+- **Present:** Initial limited weapon selection. <!-- G13-ADVANCE-MODE-001 -->
+- **Present:** Unlock weapons through kills. <!-- G13-ADVANCE-MODE-002 -->
+- **Present:** Unlock progression. <!-- G13-ADVANCE-MODE-003 -->
+- **Present:** Per-player unlock state. <!-- G13-ADVANCE-MODE-004 -->
+- **Present:** Advance weapon menu. <!-- G13-ADVANCE-MODE-005 -->
+- **Present:** Reset progression between matches/maps as appropriate. <!-- G13-ADVANCE-MODE-006 -->
+- **Present:** Advance configuration. <!-- G13-ADVANCE-MODE-007 -->
 
 ## 14. Bonus kits
 
 All bonus kits and spawning logic are missing:
 
-- Medic Kit: restore health to maximum. <!-- G14-BONUS-KITS-001 -->
-- Grenades Kit: restore grenades to configured maximum. <!-- G14-BONUS-KITS-002 -->
-- Cluster Grenades Kit: grant three cluster grenades. <!-- G14-BONUS-KITS-003 -->
-- Bulletproof Vest Kit: add approximately another full health bar as armor. <!-- G14-BONUS-KITS-004 -->
-- Flame God Kit: flamethrower plus temporary invulnerability. <!-- G14-BONUS-KITS-005 -->
-- Berserker Kit: four-times weapon damage temporarily. <!-- G14-BONUS-KITS-006 -->
-- Predator Kit: temporary invisibility. <!-- G14-BONUS-KITS-007 -->
+- **Present:** Medic Kit: restore health to maximum. <!-- G14-BONUS-KITS-001 -->
+- **Present:** Grenades Kit: restore grenades to configured maximum. <!-- G14-BONUS-KITS-002 -->
+- **Present:** Cluster Grenades Kit: grant three cluster grenades. <!-- G14-BONUS-KITS-003 -->
+- **Present:** Bulletproof Vest Kit: add approximately another full health bar as armor. <!-- G14-BONUS-KITS-004 -->
+- **Present:** Flame God Kit: flamethrower plus temporary invulnerability. <!-- G14-BONUS-KITS-005 -->
+- **Present:** Berserker Kit: four-times weapon damage temporarily. <!-- G14-BONUS-KITS-006 -->
+- **Present:** Predator Kit: temporary invisibility. <!-- G14-BONUS-KITS-007 -->
 
 Supporting systems still needed:
 
-- Bonus spawn points. <!-- G14-BONUS-KITS-008 -->
-- Configurable kit frequency. <!-- G14-BONUS-KITS-009 -->
-- Kit respawn timers. <!-- G14-BONUS-KITS-010 -->
-- Pickup collision. <!-- G14-BONUS-KITS-011 -->
+- **Present:** Bonus spawn points. <!-- G14-BONUS-KITS-008 -->
+- **Present:** Configurable kit frequency. <!-- G14-BONUS-KITS-009 -->
+- **Present:** Kit respawn timers. <!-- G14-BONUS-KITS-010 -->
+- **Present:** Pickup collision. <!-- G14-BONUS-KITS-011 -->
 - Pickup sounds and effects. <!-- G14-BONUS-KITS-012 -->
-- Active-bonus HUD. <!-- G14-BONUS-KITS-013 -->
-- Bonus countdown. <!-- G14-BONUS-KITS-014 -->
-- Bonus overlay/effect. <!-- G14-BONUS-KITS-015 -->
-- Armor HUD. <!-- G14-BONUS-KITS-016 -->
-- Predator visibility affected by blood. <!-- G14-BONUS-KITS-017 -->
-- Predator still producing audible sounds. <!-- G14-BONUS-KITS-018 -->
-- Bonus expiration. <!-- G14-BONUS-KITS-019 -->
-- Bonus replacement/stacking rules. <!-- G14-BONUS-KITS-020 -->
-- Server enable/disable settings. <!-- G14-BONUS-KITS-021 -->
-- Kits affected by projectile push. <!-- G14-BONUS-KITS-022 -->
+- **Present:** Active-bonus HUD. <!-- G14-BONUS-KITS-013 -->
+- **Present:** Bonus countdown. <!-- G14-BONUS-KITS-014 -->
+- **Present:** Bonus overlay/effect. <!-- G14-BONUS-KITS-015 -->
+- **Present:** Armor HUD. <!-- G14-BONUS-KITS-016 -->
+- **Present:** Predator visibility affected by blood. <!-- G14-BONUS-KITS-017 -->
+- **Present:** Predator still producing audible sounds. <!-- G14-BONUS-KITS-018 -->
+- **Present:** Bonus expiration. <!-- G14-BONUS-KITS-019 -->
+- **Present:** Bonus replacement/stacking rules. <!-- G14-BONUS-KITS-020 -->
+- **Present:** Server enable/disable settings. <!-- G14-BONUS-KITS-021 -->
+- **Present:** Kits affected by projectile push. <!-- G14-BONUS-KITS-022 -->
 
 [Bonuses reference](https://wiki.soldat.pl/index.php/Bonuses)
 
@@ -659,32 +661,32 @@ Important: the names and layouts are reference targets, but original maps, textu
 
 ## 18. Bots and AI
 
-- Bot entities driven by the authoritative simulation. <!-- G18-BOTS-AND-001 -->
-- Random-bot count. <!-- G18-BOTS-AND-002 -->
-- Per-team bot count. <!-- G18-BOTS-AND-003 -->
-- Bot difficulty. <!-- G18-BOTS-AND-004 -->
-- Bot accuracy levels. <!-- G18-BOTS-AND-005 -->
-- Bot reaction time. <!-- G18-BOTS-AND-006 -->
-- Bot movement. <!-- G18-BOTS-AND-007 -->
-- Jet navigation. <!-- G18-BOTS-AND-008 -->
+- **Present:** Bot entities driven by the authoritative simulation. <!-- G18-BOTS-AND-001 -->
+- **Present:** Random-bot count. <!-- G18-BOTS-AND-002 -->
+- **Present:** Per-team bot count. <!-- G18-BOTS-AND-003 -->
+- **Present:** Bot difficulty. <!-- G18-BOTS-AND-004 -->
+- **Present:** Bot accuracy levels. <!-- G18-BOTS-AND-005 -->
+- **Present:** Bot reaction time. <!-- G18-BOTS-AND-006 -->
+- **Present:** Bot movement. <!-- G18-BOTS-AND-007 -->
+- **Present:** Jet navigation. <!-- G18-BOTS-AND-008 -->
 - Crouching, prone, rolls, and backflips. <!-- G18-BOTS-AND-009 -->
-- Weapon selection. <!-- G18-BOTS-AND-010 -->
-- Reloading. <!-- G18-BOTS-AND-011 -->
-- Grenade use. <!-- G18-BOTS-AND-012 -->
+- **Present:** Weapon selection. <!-- G18-BOTS-AND-010 -->
+- **Present:** Reloading. <!-- G18-BOTS-AND-011 -->
+- **Present:** Grenade use. <!-- G18-BOTS-AND-012 -->
 - Weapon pickup. <!-- G18-BOTS-AND-013 -->
 - Bonus pickup. <!-- G18-BOTS-AND-014 -->
-- Waypoint navigation. <!-- G18-BOTS-AND-015 -->
-- Recovery when stuck. <!-- G18-BOTS-AND-016 -->
-- Deathmatch target selection. <!-- G18-BOTS-AND-017 -->
-- Team coordination. <!-- G18-BOTS-AND-018 -->
-- CTF attacking, defending, returning, and capturing. <!-- G18-BOTS-AND-019 -->
-- Infiltration objectives. <!-- G18-BOTS-AND-020 -->
-- HTF carrier support. <!-- G18-BOTS-AND-021 -->
+- **Present:** Waypoint navigation. <!-- G18-BOTS-AND-015 -->
+- **Present:** Recovery when stuck. <!-- G18-BOTS-AND-016 -->
+- **Present:** Deathmatch target selection. <!-- G18-BOTS-AND-017 -->
+- **Present:** Team coordination. <!-- G18-BOTS-AND-018 -->
+- **Present:** CTF attacking, defending, returning, and capturing. <!-- G18-BOTS-AND-019 -->
+- **Present:** Infiltration objectives. <!-- G18-BOTS-AND-020 -->
+- **Present:** HTF carrier support. <!-- G18-BOTS-AND-021 -->
 - Rambomatch behavior. <!-- G18-BOTS-AND-022 -->
-- Survival behavior. <!-- G18-BOTS-AND-023 -->
-- Bot chat. <!-- G18-BOTS-AND-024 -->
-- Custom bot profiles. <!-- G18-BOTS-AND-025 -->
-- Server commands to add/remove bots. <!-- G18-BOTS-AND-026 -->
+- **Present:** Survival behavior. <!-- G18-BOTS-AND-023 -->
+- **Present:** Bot chat. <!-- G18-BOTS-AND-024 -->
+- **Present:** Custom bot profiles. <!-- G18-BOTS-AND-025 -->
+- **Present:** Server commands to add/remove bots. <!-- G18-BOTS-AND-026 -->
 
 ## 19. HUD and game screen
 
@@ -1068,45 +1070,45 @@ The current room system is useful but needs:
 
 ## 28. Spectating
 
-- Spectator team. <!-- G28-SPECTATING-001 -->
-- Join directly as spectator. <!-- G28-SPECTATING-002 -->
-- Switch followed player. <!-- G28-SPECTATING-003 -->
-- Previous/next player. <!-- G28-SPECTATING-004 -->
-- Free camera if desired. <!-- G28-SPECTATING-005 -->
-- Spectator HUD. <!-- G28-SPECTATING-006 -->
-- Spectator scoreboard. <!-- G28-SPECTATING-007 -->
-- Spectator chat restrictions. <!-- G28-SPECTATING-008 -->
-- Realistic visibility restrictions. <!-- G28-SPECTATING-009 -->
-- Survival restrictions. <!-- G28-SPECTATING-010 -->
+- **Present:** Spectator team. <!-- G28-SPECTATING-001 -->
+- **Present:** Join directly as spectator. <!-- G28-SPECTATING-002 -->
+- **Present:** Switch followed player. <!-- G28-SPECTATING-003 -->
+- **Present:** Previous/next player. <!-- G28-SPECTATING-004 -->
+- **Present:** Free camera if desired. <!-- G28-SPECTATING-005 -->
+- **Present:** Spectator HUD. <!-- G28-SPECTATING-006 -->
+- **Present:** Spectator scoreboard. <!-- G28-SPECTATING-007 -->
+- **Present:** Spectator chat restrictions. <!-- G28-SPECTATING-008 -->
+- **Present:** Realistic visibility restrictions. <!-- G28-SPECTATING-009 -->
+- **Present:** Survival restrictions. <!-- G28-SPECTATING-010 -->
 - Followed-player minimap/visibility behavior. <!-- G28-SPECTATING-011 -->
-- Delay option for competitive matches. <!-- G28-SPECTATING-012 -->
+- **Present:** Delay option for competitive matches. <!-- G28-SPECTATING-012 -->
 
 ## 29. Scoring and statistics
 
-- Correct scoring for every game mode. <!-- G29-SCORING-AND-001 -->
-- Match time. <!-- G29-SCORING-AND-002 -->
-- Individual points. <!-- G29-SCORING-AND-003 -->
-- Team points. <!-- G29-SCORING-AND-004 -->
-- Captures. <!-- G29-SCORING-AND-005 -->
-- Flag returns. <!-- G29-SCORING-AND-006 -->
-- Current server rank. <!-- G29-SCORING-AND-007 -->
-- Score difference from leader. <!-- G29-SCORING-AND-008 -->
-- Kill/point/capture limit display. <!-- G29-SCORING-AND-009 -->
-- Weapon statistics for the current round. <!-- G29-SCORING-AND-010 -->
-- Shots fired. <!-- G29-SCORING-AND-011 -->
-- Hits. <!-- G29-SCORING-AND-012 -->
-- Accuracy. <!-- G29-SCORING-AND-013 -->
-- Kills per weapon. <!-- G29-SCORING-AND-014 -->
-- Deaths per weapon/cause. <!-- G29-SCORING-AND-015 -->
-- Headshots. <!-- G29-SCORING-AND-016 -->
-- Suicides. <!-- G29-SCORING-AND-017 -->
-- Teamkills. <!-- G29-SCORING-AND-018 -->
-- Objective statistics. <!-- G29-SCORING-AND-019 -->
-- End-of-round summary. <!-- G29-SCORING-AND-020 -->
-- Match history. <!-- G29-SCORING-AND-021 -->
+- **Present:** Correct scoring for every game mode. <!-- G29-SCORING-AND-001 -->
+- **Present:** Match time. <!-- G29-SCORING-AND-002 -->
+- **Present:** Individual points. <!-- G29-SCORING-AND-003 -->
+- **Present:** Team points. <!-- G29-SCORING-AND-004 -->
+- **Present:** Captures. <!-- G29-SCORING-AND-005 -->
+- **Present:** Flag returns. <!-- G29-SCORING-AND-006 -->
+- **Present:** Current server rank. <!-- G29-SCORING-AND-007 -->
+- **Present:** Score difference from leader. <!-- G29-SCORING-AND-008 -->
+- **Present:** Kill/point/capture limit display. <!-- G29-SCORING-AND-009 -->
+- **Present:** Weapon statistics for the current round. <!-- G29-SCORING-AND-010 -->
+- **Present:** Shots fired. <!-- G29-SCORING-AND-011 -->
+- **Present:** Hits. <!-- G29-SCORING-AND-012 -->
+- **Present:** Accuracy. <!-- G29-SCORING-AND-013 -->
+- **Present:** Kills per weapon. <!-- G29-SCORING-AND-014 -->
+- **Present:** Deaths per weapon/cause. <!-- G29-SCORING-AND-015 -->
+- **Present:** Headshots. <!-- G29-SCORING-AND-016 -->
+- **Present:** Suicides. <!-- G29-SCORING-AND-017 -->
+- **Present:** Teamkills. <!-- G29-SCORING-AND-018 -->
+- **Present:** Objective statistics. <!-- G29-SCORING-AND-019 -->
+- **Present:** End-of-round summary. <!-- G29-SCORING-AND-020 -->
+- **Present:** Match history. <!-- G29-SCORING-AND-021 -->
 - Persistent player statistics if desired. <!-- G29-SCORING-AND-022 -->
 - Clan/team statistics if desired. <!-- G29-SCORING-AND-023 -->
-- Exportable logs. <!-- G29-SCORING-AND-024 -->
+- **Present:** Exportable logs. <!-- G29-SCORING-AND-024 -->
 
 ## 30. Networking and prediction
 
