@@ -169,9 +169,7 @@ impl Inventory {
 pub fn muzzle_origin(pos: Vec2, aim: Vec2, state: CharacterState, facing: Direction) -> Vec2 {
     let height = match state {
         CharacterState::Crouching => 6.0,
-        CharacterState::Prone
-        | CharacterState::GoingProne { .. }
-        | CharacterState::GettingUp { .. } => 2.0,
+        CharacterState::Prone | CharacterState::GoingProne | CharacterState::GettingUp => 2.0,
         CharacterState::Rolling { .. } | CharacterState::Backflip { .. } => 4.0,
         _ => 10.0,
     };

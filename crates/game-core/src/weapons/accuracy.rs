@@ -82,7 +82,7 @@ pub fn movement_accuracy(def: &WeaponDef, pose: &ShooterPose) -> f32 {
     } else if pose.airborne()
         || matches!(
             pose.state,
-            CharacterState::GettingUp { .. } | CharacterState::GoingProne { .. }
+            CharacterState::GettingUp | CharacterState::GoingProne
         )
     {
         def.movement_acc * 3.0

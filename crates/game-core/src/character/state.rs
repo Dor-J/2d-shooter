@@ -40,22 +40,16 @@ pub enum CharacterState {
     #[default]
     Standing,
     Crouching,
-    GoingProne {
-        ticks_left: u8,
-    },
+    GoingProne,
     Prone,
-    GettingUp {
-        ticks_left: u8,
-    },
+    GettingUp,
     Rolling {
         direction: Direction,
         source: RollSource,
-        ticks_left: u8,
     },
     Backflip {
         direction: Direction,
         late: bool,
-        ticks_left: u8,
     },
     Airborne,
     Dead,
@@ -70,9 +64,9 @@ impl CharacterState {
         matches!(
             self,
             Self::Crouching
-                | Self::GoingProne { .. }
+                | Self::GoingProne
                 | Self::Prone
-                | Self::GettingUp { .. }
+                | Self::GettingUp
                 | Self::Rolling { .. }
                 | Self::Backflip { .. }
         )

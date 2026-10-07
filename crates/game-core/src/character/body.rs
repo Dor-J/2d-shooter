@@ -83,7 +83,7 @@ pub fn resolve_player_contact(left: &mut Player, right: &mut Player) -> bool {
 
 pub(crate) fn shape_for(state: CharacterState) -> BodyShape {
     match state {
-        CharacterState::Prone | CharacterState::GoingProne { .. } => BodyShape::prone(),
+        CharacterState::Prone | CharacterState::GoingProne => BodyShape::prone(),
         state if state.is_low() => BodyShape::crouching(),
         _ => BodyShape::standing(),
     }

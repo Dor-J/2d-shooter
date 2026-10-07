@@ -102,6 +102,107 @@ fn acceleration_friction_momentum_and_air_control_are_deterministic() {
 }
 
 #[test]
+fn roll_lasts_roll_clip_frames_times_speed() {
+    let config = MovementConfig::soldat_default();
+    let mut player = Player::new(1, "roller".into(), 0);
+    player.grounded = true;
+    let mut roll = input();
+    roll.roll = true;
+    advance_character(&mut player, roll, &config, true, 0);
+    assert!(matches!(player.state, CharacterState::Rolling { .. }));
+    for _ in 1..34 {
+        advance_character(&mut player, input(), &config, true, 0);
+        assert!(
+            matches!(player.state, CharacterState::Rolling { .. }),
+            "roll ended before 34 ticks"
+        );
+    }
+    advance_character(&mut player, input(), &config, true, 0);
+    assert!(
+        !matches!(player.state, CharacterState::Rolling { .. }),
+        "roll lasts frames*speed of Roll (34*1)"
+    );
+}
+
+#[test]
+fn jump_force_follows_the_jump_clip_frame() {
+    let config = MovementConfig::soldat_default();
+    let mut player = Player::new(1, "jumper".into(), 0);
+    player.grounded = true;
+    player.state = CharacterState::Standing;
+    let mut jump = input();
+    jump.jump = true;
+    let mut samples = Vec::new();
+    let record = |player: &Player, samples: &mut Vec<(u32, bool)>| {
+        if player.anim.legs.id == 3 {
+            samples.push((player.anim.legs.frame, player.forces.y == -0.66));
+        }
+    };
+    advance_character(&mut player, jump, &config, true, 0);
+    record(&player, &mut samples);
+    for _ in 0..40 {
+        advance_character(&mut player, input(), &config, true, 0);
+        if player.anim.legs.id != 3 {
+            break;
+        }
+        record(&player, &mut samples);
+        if player.anim.legs.frame >= 15 {
+            break;
+        }
+    }
+    assert!(
+        samples.iter().any(|(frame, _)| *frame >= 9),
+        "jump clip never reached frame 9: {samples:?}"
+    );
+    for frame in 0..9 {
+        let hits: Vec<_> = samples.iter().filter(|(got, _)| *got == frame).collect();
+        assert!(!hits.is_empty(), "missing jump frame {frame}");
+        assert!(
+            hits.iter().all(|(_, force)| !*force),
+            "jump force absent before frame 9 at {frame}: {hits:?}"
+        );
+    }
+    for frame in 9..15 {
+        let hits: Vec<_> = samples.iter().filter(|(got, _)| *got == frame).collect();
+        assert!(!hits.is_empty(), "missing jump frame {frame}");
+        assert!(
+            hits.iter().all(|(_, force)| *force),
+            "jump force present while frame > 8 and < 15 at {frame}: {hits:?}"
+        );
+    }
+}
+
+#[test]
+fn prone_roll_is_refused_before_frame_24() {
+    let config = MovementConfig::soldat_default();
+    let mut player = Player::new(1, "prone".into(), 0);
+    player.state = CharacterState::Prone;
+    player.grounded = true;
+    player.anim.legs.frame = 23;
+    let mut roll = input();
+    roll.left = true;
+    roll.roll = true;
+    advance_character(&mut player, roll, &config, true, 0);
+    assert_eq!(
+        player.state,
+        CharacterState::Prone,
+        "prone roll is refused before frame 24"
+    );
+
+    player.previous_input = input();
+    player.anim.legs.frame = 24;
+    advance_character(&mut player, roll, &config, true, 0);
+    assert!(matches!(
+        player.state,
+        CharacterState::Rolling {
+            direction: Direction::Left,
+            source: RollSource::ProneExit,
+            ..
+        }
+    ));
+}
+
+#[test]
 fn jump_is_edge_buffered_and_transitions_airborne() {
     let config = MovementConfig::soldat_default();
     let mut player = Player::new(1, "jumper".into(), 0);
@@ -113,34 +214,33 @@ fn jump_is_edge_buffered_and_transitions_airborne() {
     player.grounded = true;
     advance_character(&mut player, input(), &config, true, 0);
     assert_eq!(player.state, CharacterState::Airborne);
-    assert_eq!(player.forces.y, -0.66);
+    assert_eq!(player.forces.y, 0.0, "jump force waits for the jump clip");
     assert_eq!(player.vel.y, 0.0);
 }
 
 #[test]
-fn stance_transitions_use_deterministic_source_timers() {
+fn stance_transitions_follow_prone_and_get_up_clips() {
     let config = MovementConfig::soldat_default();
     let mut player = Player::new(1, "stances".into(), 0);
     player.grounded = true;
     let mut prone = input();
     prone.prone = true;
     advance_character(&mut player, prone, &config, true, 0);
-    assert_eq!(
-        player.state,
-        CharacterState::GoingProne {
-            ticks_left: config.prone_transition_ticks - 1
-        }
-    );
-    for _ in 1..config.prone_transition_ticks {
+    assert_eq!(player.state, CharacterState::GoingProne);
+    for _ in 1..27 {
         advance_character(&mut player, input(), &config, true, 0);
+        assert_eq!(player.state, CharacterState::GoingProne);
     }
+    advance_character(&mut player, input(), &config, true, 0);
     assert_eq!(player.state, CharacterState::Prone);
 
     advance_character(&mut player, prone, &config, true, 0);
-    assert!(matches!(player.state, CharacterState::GettingUp { .. }));
-    for _ in 0..config.get_up_ticks {
+    assert_eq!(player.state, CharacterState::GettingUp);
+    for _ in 1..25 {
         advance_character(&mut player, input(), &config, false, 0);
+        assert_eq!(player.state, CharacterState::GettingUp);
     }
+    advance_character(&mut player, input(), &config, false, 0);
     assert_eq!(player.state, CharacterState::Crouching);
     advance_character(&mut player, input(), &config, true, 0);
     assert_eq!(player.state, CharacterState::Standing);
@@ -179,7 +279,7 @@ fn roll_direction_source_and_backflip_variants_are_explicit() {
         CharacterState::Backflip { late: false, .. }
     ));
     player.state = CharacterState::Airborne;
-    player.airborne_ticks = config.late_backflip_after_ticks;
+    player.airborne_ticks = MovementConfig::LATE_BACKFLIP_AFTER_TICKS;
     player.previous_input = input();
     advance_character(&mut player, backflip, &config, true, 0);
     assert!(matches!(
@@ -194,6 +294,7 @@ fn prone_can_exit_directly_into_a_directional_roll() {
     let mut player = Player::new(1, "prone roller".into(), 0);
     player.state = CharacterState::Prone;
     player.grounded = true;
+    player.anim.legs.frame = 24;
     let mut roll = input();
     roll.left = true;
     roll.roll = true;
@@ -392,15 +493,17 @@ fn getting_up_from_prone_completes_on_open_ground() {
         ..Input::default()
     };
     world.step(&std::collections::BTreeMap::from([(1, prone)]));
-    for _ in 0..MovementConfig::soldat_default().prone_transition_ticks + 2 {
+    for _ in 1..27 {
         world.step(&Default::default());
     }
+    world.step(&Default::default());
     assert_eq!(world.players[&1].state, CharacterState::Prone);
 
     world.step(&std::collections::BTreeMap::from([(1, prone)]));
-    for _ in 0..MovementConfig::soldat_default().get_up_ticks + 2 {
+    for _ in 1..25 {
         world.step(&Default::default());
     }
+    world.step(&Default::default());
     assert_eq!(world.players[&1].state, CharacterState::Standing);
 }
 

@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+use crate::anim::AnimPlayer;
 use crate::map::spawn;
 use crate::{
     Attribution, Bleed, CharacterState, DeathCause, Direction, ImpulseSource, Input, Inventory,
@@ -22,6 +23,9 @@ pub struct Player {
     pub grounded: bool,
     #[serde(default)]
     pub state: CharacterState,
+    /// Legs and body playback. Both channels follow the stance clip.
+    #[serde(default)]
+    pub anim: AnimPlayer,
     #[serde(default)]
     pub facing: Direction,
     #[serde(default)]
@@ -111,6 +115,7 @@ impl Player {
             team,
             grounded: false,
             state: CharacterState::Airborne,
+            anim: AnimPlayer::default(),
             facing: Direction::Right,
             previous_input: Input::default(),
             jump_buffer_ticks: 0,

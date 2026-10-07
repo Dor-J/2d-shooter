@@ -3,7 +3,9 @@
 //! A frame lasts `speed` calls. The next call steps forward, so one cycle is
 //! `frames * speed` calls. Without loop, the last frame holds.
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Channel {
     pub id: u32,
     pub frame: u32,
@@ -44,9 +46,20 @@ impl Channel {
             self.frame = 0;
         }
     }
+
+    pub(crate) fn finished(&self) -> bool {
+        self.frames > 0
+            && !self.r#loop
+            && self.frame + 1 == self.frames
+            && self.elapsed >= self.speed
+    }
+
+    pub(crate) fn is_clip(&self, id: u32, frames: u32, speed: u32, looping: bool) -> bool {
+        self.id == id && self.frames == frames && self.speed == speed && self.r#loop == looping
+    }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AnimPlayer {
     pub legs: Channel,
     pub body: Channel,

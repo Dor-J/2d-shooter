@@ -46,7 +46,7 @@ fn fixture_replay_produces_stable_per_frame_digests() {
             .iter()
             .map(|digest| digest.as_str())
             .collect::<Vec<_>>(),
-        ["aa2c90bd4f63bf14", "7e729c2e65fef4ce"]
+        ["279229985b467568", "eee5bef8fdcc024a"]
     );
 }
 
@@ -63,7 +63,7 @@ fn replay_json_returns_the_same_digests_used_by_wasm() {
 
     assert_eq!(
         replay_fixture_json(fixture_json).unwrap(),
-        "[\"1f4165216746d077\"]"
+        "[\"74277ae8255d9ab7\"]"
     );
     assert!(replay_fixture_json("not json").is_err());
 }
