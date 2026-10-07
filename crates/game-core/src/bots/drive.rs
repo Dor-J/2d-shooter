@@ -97,6 +97,7 @@ pub(crate) fn bot_inputs(world: &mut World) -> BTreeMap<u32, Input> {
                 collision: &world.collision,
                 spawns: &spawns,
                 loot: &loot,
+                waypoints: &world.waypoints,
             },
             &mut world.rng,
             (tick % u64::from(u32::MAX)) as u32,

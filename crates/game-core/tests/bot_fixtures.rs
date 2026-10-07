@@ -425,10 +425,14 @@ fn a_bot_routes_through_a_waypoint_that_actually_helps() {
     let helpful = bots::navigation::Waypoint {
         pos: Vec2 { x: 500.0, y: 400.0 },
         needs_jet: false,
+        links: [0; 20],
+        link_count: 0,
     };
     let useless = bots::navigation::Waypoint {
         pos: Vec2 { x: 50.0, y: 400.0 },
         needs_jet: false,
+        links: [0; 20],
+        link_count: 0,
     };
 
     assert_eq!(

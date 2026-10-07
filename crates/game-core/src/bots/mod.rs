@@ -72,6 +72,8 @@ pub struct BotWorld<'a> {
     pub spawns: &'a [Vec2],
     /// Kits and dropped guns the bot may walk over.
     pub loot: &'a [Vec2],
+    /// Linked map points. Empty means walk straight at the goal.
+    pub waypoints: &'a [Waypoint],
 }
 
 /// Everything a bot needs to know about itself this tick.
@@ -108,6 +110,7 @@ pub fn think(
         collision,
         spawns,
         loot,
+        waypoints,
     } = world;
     bot.chat_cooldown = bot.chat_cooldown.saturating_sub(1);
 
@@ -171,7 +174,19 @@ pub fn think(
     }
     bot.navigation
         .check_progress(view.me.pos, rng.next_u64() % 2 == 0);
-    let movement = navigation::steer(&bot.navigation, view.me.pos, view.fuel);
+    // Progress and arrival stay on the real goal. The walk target is only the next graph hop.
+    let mut steer_nav = bot.navigation;
+    let mut jetpack = false;
+    if let Some(place) = bot.navigation.destination {
+        if let Some(step) = navigation::route(waypoints, view.me.pos, place) {
+            steer_nav.destination = Some(step.pos);
+            jetpack = step.needs_jet;
+        }
+    }
+    let mut movement = navigation::steer(&steer_nav, view.me.pos, view.fuel);
+    if jetpack {
+        movement.jet = true;
+    }
 
     // Where to shoot.
     let speed = table.get(view.holding).speed.max(0.001) * 60.0;

@@ -193,6 +193,9 @@ pub struct World {
     /// Bolted M2 guns. Empty worlds omit the field so existing digests stay put.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub guns: Vec<StationaryGun>,
+    /// Map graph for bots. Omitted from snapshots so the empty-world digest stays put.
+    #[serde(skip, default)]
+    pub waypoints: Vec<Waypoint>,
 }
 
 impl World {
@@ -235,6 +238,7 @@ impl World {
             bots: BTreeMap::new(),
             friendly_fire: false,
             guns: Vec::new(),
+            waypoints: Vec::new(),
         }
     }
 

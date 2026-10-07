@@ -6,7 +6,9 @@
 //!   rust:bot_world:play    — a bot moves, fights, and chases the objective in a real match
 
 use game_core::{
-    BotProfile, Difficulty, FlagKind, ModeKind, ModeRules, TeamChoice, Vec2, World, ALPHA, BRAVO,
+    BonusConfig, BotProfile, CollisionPolygon, CollisionWorld, DamageCause, Difficulty, Event,
+    FlagKind, KitKind, ModeKind, ModeRules, Pickup, PolygonKind, TeamChoice, Vec2, Waypoint,
+    WeaponKind, World, ALPHA, BRAVO,
 };
 use std::collections::BTreeMap;
 
@@ -275,4 +277,186 @@ fn bots_are_deterministic_so_a_recorded_match_replays() {
             .collect::<Vec<_>>()
     };
     assert_eq!(run(), run());
+}
+
+fn ground_pair() -> (Vec2, Vec2) {
+    (Vec2 { x: 480.0, y: 634.0 }, Vec2 { x: 580.0, y: 634.0 })
+}
+
+#[test]
+fn an_elite_bot_kills_a_stationary_enemy_in_line_of_sight() {
+    let mut world = World::new("deathmatch");
+    world.bonuses = BonusConfig::none();
+    world.add_bot(
+        1,
+        BotProfile::new("Elite", Difficulty::Elite),
+        TeamChoice::Auto,
+    );
+    world.add_player(2, "Target".into());
+    let (bot, enemy) = ground_pair();
+    world.players.get_mut(&1).unwrap().pos = bot;
+    world.players.get_mut(&2).unwrap().pos = enemy;
+
+    let mut from_shots = false;
+    let mut from_falling = false;
+    for _ in 0..1_800 {
+        world.step_with_bots(&BTreeMap::new());
+        for event in &world.events {
+            if let Event::Damage {
+                target: 2, cause, ..
+            } = event
+            {
+                match cause {
+                    DamageCause::Bullet | DamageCause::Pellet => from_shots = true,
+                    DamageCause::Fall => from_falling = true,
+                    _ => {}
+                }
+            }
+        }
+        if world.players[&2].hp <= 0 {
+            break;
+        }
+    }
+    assert_eq!(world.players[&2].hp, 0, "the enemy is dead");
+    assert!(from_shots, "the hp came off from shots");
+    assert!(!from_falling, "the enemy did not lose hp by falling");
+}
+
+#[test]
+fn a_bot_with_an_empty_gun_reloads_before_it_fires_again() {
+    let mut world = World::new("deathmatch");
+    world.bonuses = BonusConfig::none();
+    let mut shooter = BotProfile::new("Reloader", Difficulty::Elite);
+    shooter.favourite_weapon = WeaponKind::DesertEagles;
+    world.add_bot(1, shooter, TeamChoice::Auto);
+    world.add_player(2, "Target".into());
+    let (bot, enemy) = ground_pair();
+    world.players.get_mut(&1).unwrap().pos = bot;
+    world.players.get_mut(&2).unwrap().pos = enemy;
+    world.players.get_mut(&1).unwrap().ammo = 0;
+    if let Some(slot) = world.players.get_mut(&1).unwrap().inventory.active_mut() {
+        slot.ammo = 0;
+    }
+
+    let mut fired_empty = false;
+    let mut saw_reload = false;
+    let mut fired_after = false;
+    for _ in 0..400 {
+        let ammo = world.players[&1].ammo;
+        let timer = world.players[&1].reload_timer;
+        let inputs = world.bot_inputs();
+        if ammo == 0 && inputs[&1].fire {
+            fired_empty = true;
+        }
+        world.step(&inputs);
+        if timer > 0 {
+            saw_reload = true;
+        }
+        let player = &world.players[&1];
+        if saw_reload && player.reload_timer == 0 && player.ammo > 0 {
+            let shot = world
+                .events
+                .iter()
+                .any(|event| matches!(event, Event::Shot { player: 1 }))
+                || world.projectiles.iter().any(|shot| shot.owner == 1);
+            if shot {
+                fired_after = true;
+                break;
+            }
+        }
+    }
+    assert!(
+        !fired_empty,
+        "it does not set fire while the magazine is empty"
+    );
+    assert!(
+        fired_after,
+        "after the reload timer it fires again, saw_reload={saw_reload}"
+    );
+}
+
+#[test]
+fn a_bot_standing_on_a_medkit_picks_it_up() {
+    let mut world = World::new("deathmatch");
+    world.bonuses = BonusConfig::none();
+    world.add_bot(1, profile("Medic"), TeamChoice::Auto);
+    let at = Vec2 { x: 400.0, y: 634.0 };
+    world.players.get_mut(&1).unwrap().pos = at;
+    world.players.get_mut(&1).unwrap().hp = 40;
+    world
+        .pickups
+        .items
+        .push(Pickup::new(KitKind::Medic, at, 6_000));
+
+    let mut asked = false;
+    for _ in 0..30 {
+        let inputs = world.bot_inputs();
+        asked |= inputs[&1].pickup;
+        world.step(&inputs);
+        if asked && world.pickups.items.is_empty() {
+            break;
+        }
+    }
+    assert!(asked, "it set pickup");
+    assert!(world.pickups.items.is_empty(), "the kit was consumed");
+}
+
+fn block(x: f32, y: f32, w: f32, h: f32, kind: PolygonKind) -> [CollisionPolygon; 2] {
+    let top_left = Vec2 { x, y };
+    let top_right = Vec2 { x: x + w, y };
+    let bottom_left = Vec2 { x, y: y + h };
+    let bottom_right = Vec2 { x: x + w, y: y + h };
+    [
+        CollisionPolygon::triangle([top_left, top_right, bottom_right], kind),
+        CollisionPolygon::triangle([top_left, bottom_right, bottom_left], kind),
+    ]
+}
+
+fn node(x: f32, y: f32, jet: bool, links: &[u16]) -> Waypoint {
+    let mut point = Waypoint {
+        pos: Vec2 { x, y },
+        needs_jet: jet,
+        links: [0; 20],
+        link_count: links.len() as u8,
+    };
+    for (index, link) in links.iter().enumerate() {
+        point.links[index] = *link;
+    }
+    point
+}
+
+#[test]
+fn a_bot_follows_waypoints_around_a_wall() {
+    // Flat ground freezes a body that is exactly flush with it, so the bot starts in the air.
+    // Straight at the kit it falls and stops on the near side. The jet link flies over the wall.
+    let mut polygons = Vec::new();
+    polygons.extend(block(0.0, 640.0, 1200.0, 60.0, PolygonKind::Normal));
+    polygons.extend(block(400.0, 220.0, 40.0, 420.0, PolygonKind::Normal));
+    let mut world = World::with_collision("deathmatch", CollisionWorld::new(polygons));
+    world.bonuses = BonusConfig::none();
+    world.add_bot(1, profile("Router"), TeamChoice::Auto);
+    world.players.get_mut(&1).unwrap().pos = Vec2 { x: 220.0, y: 400.0 };
+    world.players.get_mut(&1).unwrap().parachute = false;
+    world.pickups.items.push(Pickup::new(
+        KitKind::Medic,
+        Vec2 { x: 800.0, y: 624.0 },
+        6_000,
+    ));
+    world.waypoints = vec![
+        node(220.0, 400.0, false, &[1]),
+        node(720.0, 390.0, true, &[]),
+    ];
+
+    for _ in 0..900 {
+        world.step_with_bots(&BTreeMap::new());
+        if world.players[&1].pos.x > 440.0 {
+            break;
+        }
+    }
+    assert!(
+        world.players[&1].pos.x > 440.0,
+        "the bot never reached the goal side of the wall, x={} y={}",
+        world.players[&1].pos.x,
+        world.players[&1].pos.y
+    );
 }

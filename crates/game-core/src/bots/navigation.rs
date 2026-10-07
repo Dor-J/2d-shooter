@@ -1,8 +1,8 @@
 //! Getting a bot from where it is to where it wants to be.
 //!
 //! Bots walk, jump, and jet towards a destination and notice when they have stopped making
-//! progress. There is no pathfinder here yet: a map's waypoints are followed when it has them and
-//! a direct approach is used when it does not, which is enough for every map the project ships.
+//! progress. A map with linked waypoints is followed by a breadth-first hop; a map without them
+//! is walked in a straight line.
 
 use serde::{Deserialize, Serialize};
 
@@ -26,6 +26,11 @@ pub struct Waypoint {
     pub pos: Vec2,
     /// Whether reaching this point needs the jet.
     pub needs_jet: bool,
+    /// Connected waypoint indices, in stored order. Unused slots stay zero.
+    #[serde(default)]
+    pub links: [u16; 20],
+    #[serde(default)]
+    pub link_count: u8,
 }
 
 /// How a bot is getting about.
@@ -127,15 +132,14 @@ pub fn steer(nav: &Navigation, pos: Vec2, fuel: f32) -> Movement {
     let dy = destination.y - pos.y;
 
     if nav.is_recovering() {
-        // Back out, hop, then roll — that is how a bot gets off a ledge it wedged against.
+        // Back out and hop. A fresh crouch together with a direction starts a roll, which pins
+        // the bot on the spot; holding crouch is only safe once it is already crouching.
         return Movement {
             left: nav.recovery_left,
             right: !nav.recovery_left,
             jump: true,
             jet: fuel > 0.25,
-            crouch: nav.recovery_ticks < 40,
-            prone: nav.recovery_ticks < 20,
-            roll: nav.recovery_ticks < 20,
+            ..Movement::default()
         };
     }
 
@@ -157,13 +161,119 @@ pub fn steer(nav: &Navigation, pos: Vec2, fuel: f32) -> Movement {
     movement
 }
 
+/// One hop along a waypoint graph.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct RouteStep {
+    pub pos: Vec2,
+    /// Jet while heading for this node.
+    pub needs_jet: bool,
+}
+
+/// The next linked waypoint from `from` toward `goal`.
+///
+/// Empty graphs and graphs with no connections return `None`, which means walk straight at the
+/// goal. The search is a `Vec` breadth-first walk in connection order, so it does not depend on
+/// hash iteration.
+pub fn route(waypoints: &[Waypoint], from: Vec2, goal: Vec2) -> Option<RouteStep> {
+    if !waypoints.iter().any(|point| point.link_count > 0) {
+        return None;
+    }
+    let start = nearest(waypoints, from);
+    let end = nearest(waypoints, goal);
+    let path = breadth_first(waypoints, start, end)?;
+    // The walk target is the next hop, not the node the bot is already nearest.
+    let index = path.iter().position(|&node| node == start).unwrap_or(0);
+    let step = if index + 1 < path.len() {
+        path[index + 1]
+    } else {
+        path[index]
+    };
+    let point = &waypoints[step];
+    Some(RouteStep {
+        pos: point.pos,
+        needs_jet: point.needs_jet,
+    })
+}
+
+fn nearest(waypoints: &[Waypoint], to: Vec2) -> usize {
+    let mut best = 0;
+    let mut best_distance = f32::INFINITY;
+    for (index, point) in waypoints.iter().enumerate() {
+        let distance = distance_squared(point.pos, to);
+        if distance < best_distance {
+            best = index;
+            best_distance = distance;
+        }
+    }
+    best
+}
+
+fn distance_squared(a: Vec2, b: Vec2) -> f32 {
+    let dx = a.x - b.x;
+    let dy = a.y - b.y;
+    dx * dx + dy * dy
+}
+
+fn breadth_first(waypoints: &[Waypoint], start: usize, end: usize) -> Option<Vec<usize>> {
+    let count = waypoints.len();
+    if start >= count || end >= count {
+        return None;
+    }
+    if start == end {
+        return Some(vec![start]);
+    }
+    let mut seen = vec![false; count];
+    let mut came_from = vec![usize::MAX; count];
+    let mut queue = Vec::new();
+    seen[start] = true;
+    came_from[start] = start;
+    queue.push(start);
+    let mut head = 0;
+    while head < queue.len() {
+        let node = queue[head];
+        head += 1;
+        if node == end {
+            break;
+        }
+        let point = &waypoints[node];
+        let links = usize::from(point.link_count).min(point.links.len());
+        for slot in 0..links {
+            let next = usize::from(point.links[slot]);
+            if next >= count || seen[next] {
+                continue;
+            }
+            seen[next] = true;
+            came_from[next] = node;
+            queue.push(next);
+        }
+    }
+    if !seen[end] {
+        return None;
+    }
+    let mut path = Vec::new();
+    let mut cursor = end;
+    path.push(cursor);
+    while cursor != start {
+        cursor = came_from[cursor];
+        if cursor == usize::MAX || path.len() > count {
+            return None;
+        }
+        path.push(cursor);
+    }
+    path.reverse();
+    Some(path)
+}
+
 /// The waypoint a bot should head for next on its way to `goal`.
 ///
-/// The one nearest the goal that the bot can plausibly reach: with no waypoints at all it simply
-/// walks at the goal, which is what the shipped maps expect.
+/// Linked graphs use [`route`]. With no connections, the one nearest the goal that the bot can
+/// plausibly reach wins, and with no waypoints at all it simply walks at the goal.
 pub fn next_waypoint(waypoints: &[Waypoint], from: Vec2, goal: Vec2) -> Option<Vec2> {
     if waypoints.is_empty() {
         return None;
+    }
+    if waypoints.iter().any(|point| point.link_count > 0) {
+        return route(waypoints, from, goal).map(|step| step.pos);
     }
     let distance = |a: Vec2, b: Vec2| {
         let dx = a.x - b.x;
