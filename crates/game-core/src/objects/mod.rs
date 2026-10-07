@@ -5,6 +5,10 @@ pub mod bonus;
 pub mod flag;
 pub mod pickup;
 
+mod kits;
+
+pub(crate) use kits::{apply_kit, step_bonuses};
+
 pub use bonus::{
     predator_alpha, BonusConfig, BonusEffect, KitKind, TimedEffect, BERSERKER_DAMAGE_MULTIPLIER,
     CLUSTER_GRENADES, KIT_RADIUS, PREDATOR_ALPHA, VEST_ARMOR,

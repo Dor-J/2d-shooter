@@ -360,72 +360,7 @@ impl World {
     /// Every effect a kit grants is applied here and nowhere else, so a player can never end up
     /// under two at once or under one that nothing is counting down.
     fn step_bonuses(&mut self) {
-        // Timed effects run down first, so a kit picked up this tick gets its full duration.
-        let expired: Vec<(u32, BonusEffect)> = self
-            .players
-            .iter_mut()
-            .filter_map(|(id, player)| player.bonus.step().map(|effect| (*id, effect)))
-            .collect();
-        for (player, effect) in expired {
-            if effect == BonusEffect::FlameGod {
-                if let Some(holder) = self.players.get_mut(&player) {
-                    holder.inventory.take_kind(WeaponKind::Flamer);
-                    sync_hands(holder);
-                }
-            }
-            self.events.push(Event::BonusExpired { player, effect });
-        }
-
-        let config = self.bonuses;
-        let spawns = self.map_spawns.clone();
-        let mut pickups = std::mem::take(&mut self.pickups);
-        let spawned = pickups.step(&config, &self.collision, DT, &mut self.rng, |rng| {
-            // A kit drops somewhere a player could stand, which is what the spawns already mark.
-            if spawns.is_empty() {
-                return Some(Vec2 {
-                    x: WIDTH / 2.0,
-                    y: HEIGHT / 3.0,
-                });
-            }
-            let index = (rng.next_u64() as usize) % spawns.len();
-            Some(spawns[index].position)
-        });
-        self.pickups = pickups;
-        if let Some(kind) = spawned {
-            self.events.push(Event::KitSpawned { kind });
-        }
-
-        // Anybody standing on a kit takes it, if it has anything to give them.
-        let standing: Vec<(u32, usize)> = self
-            .players
-            .values()
-            .filter(|player| player.hp > 0 && !modes::team::is_spectator(player.team))
-            .filter_map(|player| {
-                self.pickups
-                    .nearest(player.pos)
-                    .map(|index| (player.id, index))
-            })
-            .collect();
-        // Two players on the same kit: the lower id gets it, and the other finds it gone.
-        let mut taken: Vec<usize> = Vec::new();
-        for (id, index) in standing {
-            if taken.contains(&index) {
-                continue;
-            }
-            let Some(kind) = self.pickups.items.get(index).map(|item| item.kind) else {
-                continue;
-            };
-            if !self.apply_kit(id, kind) {
-                continue;
-            }
-            taken.push(index);
-            self.events.push(Event::KitTaken { player: id, kind });
-        }
-        // Remove from the back so the earlier indices stay valid.
-        taken.sort_unstable();
-        for index in taken.into_iter().rev() {
-            self.pickups.take(index);
-        }
+        objects::step_bonuses(self);
     }
 
     /// Gives one kit to one player, and says whether it was any use to them.
@@ -433,58 +368,7 @@ impl World {
     /// A kit that would do nothing — a medkit for somebody on full health, a second effect while
     /// one is running — is left on the ground for whoever needs it.
     fn apply_kit(&mut self, id: u32, kind: KitKind) -> bool {
-        let grenade_cap = self.damage.max_grenades;
-        let flamer_ammo = u16::from(self.weapons.get(WeaponKind::Flamer).ammo);
-        let Some(player) = self.players.get_mut(&id) else {
-            return false;
-        };
-        match kind {
-            KitKind::Medic => {
-                if player.hp >= 100 {
-                    return false;
-                }
-                player.hp = 100;
-                true
-            }
-            KitKind::Grenades => {
-                if player.grenades >= grenade_cap && player.cluster_grenades == 0 {
-                    return false;
-                }
-                player.grenades = grenade_cap;
-                player.cluster_grenades = 0;
-                true
-            }
-            KitKind::ClusterGrenades => {
-                player.cluster_grenades = CLUSTER_GRENADES;
-                player.grenades = player.grenades.max(CLUSTER_GRENADES);
-                true
-            }
-            KitKind::Vest => {
-                if player.armor >= VEST_ARMOR {
-                    return false;
-                }
-                player.armor = VEST_ARMOR;
-                true
-            }
-            KitKind::FlameGod | KitKind::Berserker | KitKind::Predator => {
-                let Some(effect) = kind.effect() else {
-                    return false;
-                };
-                if !player.bonus.activate(effect) {
-                    return false;
-                }
-                // Every timed kit also puts you back on your feet, which is what makes them worth
-                // running for when you are hurt.
-                player.hp = 100;
-                if kind == KitKind::FlameGod {
-                    player
-                        .inventory
-                        .force_equip(WeaponKind::Flamer, flamer_ammo);
-                    sync_hands(player);
-                }
-                true
-            }
-        }
+        objects::apply_kit(self, id, kind)
     }
 
     /// Adds a bot, which joins as an ordinary player driven by the server.
