@@ -1479,52 +1479,7 @@ impl World {
     /// Carries out a typed player command. The parser already decided what was asked; this decides
     /// whether the world will do it.
     pub fn apply_player_command(&mut self, player: u32, command: PlayerCommand) -> bool {
-        match command {
-            PlayerCommand::Kill | PlayerCommand::BrutalKill => {
-                let Some(target) = self.players.get(&player) else {
-                    return false;
-                };
-                if target.hp <= 0 {
-                    return false;
-                }
-                let amount = if command == PlayerCommand::BrutalKill {
-                    self.damage.gib_damage.max(target.hp)
-                } else {
-                    target.hp
-                };
-                self.apply_damage(DamageEvent {
-                    attacker: Some(player),
-                    target: player,
-                    amount,
-                    region: BodyRegion::Chest,
-                    cause: DamageCause::Bullet,
-                    direction: Vec2::default(),
-                    pre_scaled: true,
-                });
-                true
-            }
-            PlayerCommand::Mercy
-            | PlayerCommand::Smoke
-            | PlayerCommand::Tabac
-            | PlayerCommand::Takeoff
-            | PlayerCommand::Victory => {
-                let Some(emote) = command.emote() else {
-                    return false;
-                };
-                let Some(target) = self.players.get_mut(&player) else {
-                    return false;
-                };
-                if target.hp <= 0 {
-                    return false;
-                }
-                target.state = CharacterState::Emote {
-                    emote,
-                    ticks_left: 90,
-                };
-                true
-            }
-            PlayerCommand::Pause | PlayerCommand::Unpause => false,
-        }
+        commands::apply_player_command(self, player, command)
     }
 
     /// The single authoritative damage path. Bullets, explosions, melee, falls, bleeding, and
