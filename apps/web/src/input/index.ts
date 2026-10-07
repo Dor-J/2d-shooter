@@ -1,5 +1,12 @@
 import { type BindingSet, DEFAULT_BINDINGS, cloneBindings } from './bindings.ts'
-import { type InputFrame, type WeaponMemory, encodeInput, rememberWeapon, resolveWeapon, SECONDARY_WEAPONS } from './encoder.ts'
+import {
+  type InputFrame,
+  type WeaponMemory,
+  encodeInput,
+  rememberWeapon,
+  resolveWeapon,
+  SECONDARY_WEAPONS,
+} from './encoder.ts'
 import { GamepadDevice, type GamepadLike } from './gamepad.ts'
 import { KeyboardDevice } from './keyboard.ts'
 import { MouseDevice, clampSensitivity } from './mouse.ts'
@@ -49,7 +56,11 @@ export class InputSystem {
     this.bindings = cloneBindings(options.bindings ?? DEFAULT_BINDINGS)
     this.state = options.state ?? new ActionState()
     this.keyboard = new KeyboardDevice(this.state, this.bindings)
-    this.mouse = new MouseDevice(this.state, this.bindings, options.sensitivity ?? 1)
+    this.mouse = new MouseDevice(
+      this.state,
+      this.bindings,
+      options.sensitivity ?? 1,
+    )
     this.gamepad = new GamepadDevice(this.state, this.bindings)
     this.touch = new TouchDevice(this.state)
   }
@@ -108,11 +119,17 @@ export class InputSystem {
   /** One simulation tick: poll, resolve, encode, dispatch interface intents, then commit edges. */
   tick(context: TickContext): TickResult {
     if (context.gamepad !== undefined) this.gamepad.poll(context.gamepad)
-    this.weapon = resolveWeapon(this.weapon, this.state, this.#memory, context.owned)
+    this.weapon = resolveWeapon(
+      this.weapon,
+      this.state,
+      this.#memory,
+      context.owned,
+    )
     this.#memory = rememberWeapon(this.#memory, this.weapon)
     const events = this.ui.apply(this.state)
     for (const event of events) {
-      if (event.type === 'sensitivity') this.mouse.adjustSensitivity(event.delta * 0.25)
+      if (event.type === 'sensitivity')
+        this.mouse.adjustSensitivity(event.delta * 0.25)
       if (event.type === 'minimize') this.suspend()
     }
     this.seq += 1
@@ -128,5 +145,13 @@ export class InputSystem {
   }
 }
 
-export { ActionState, InterfaceState, KeyboardDevice, MouseDevice, GamepadDevice, TouchDevice, clampSensitivity }
+export {
+  ActionState,
+  InterfaceState,
+  KeyboardDevice,
+  MouseDevice,
+  GamepadDevice,
+  TouchDevice,
+  clampSensitivity,
+}
 export type { InputFrame, InterfaceEvent, BindingSet, ControlProfile }

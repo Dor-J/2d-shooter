@@ -100,14 +100,22 @@ export class AudioEngine {
   /// Plays the clip for a named simulation event, or nothing if the name is unknown.
   hear(
     event: string,
-    options: { at?: Vec2; listener?: Vec2; loop?: boolean; weapon?: string } = {},
+    options: {
+      at?: Vec2
+      listener?: Vec2
+      loop?: boolean
+      weapon?: string
+    } = {},
   ): PlayedSound | null {
     const clip = this.clipForEvent(event, options.weapon)
     if (!clip) return null
     return this.play(clip.id, options)
   }
 
-  play(id: ClipId, options: { at?: Vec2; listener?: Vec2; loop?: boolean } = {}): PlayedSound | null {
+  play(
+    id: ClipId,
+    options: { at?: Vec2; listener?: Vec2; loop?: boolean } = {},
+  ): PlayedSound | null {
     const clip = CLIPS[id]
     if (!clip) return null
     const listener = options.listener ?? this.lastListener
@@ -127,7 +135,8 @@ export class AudioEngine {
     }
     this.played.push(sound)
     if (sound.loop) this.loops.set(id, sound)
-    if (id === 'explosion' && options.at && spatial > 0.55) this.deafen(1.6 * spatial)
+    if (id === 'explosion' && options.at && spatial > 0.55)
+      this.deafen(1.6 * spatial)
     return sound
   }
 
@@ -144,8 +153,13 @@ export class AudioEngine {
   clipForEvent(event: string, weapon?: string): Clip | null {
     if (weapon === 'Chainsaw' && event === 'Shot') return CLIPS.chainsaw
     if (weapon === 'Combat Knife' && event === 'Shot') return CLIPS.knife
-    if ((weapon === 'Punch' || weapon === 'Fist') && event === 'Shot') return CLIPS.punch
-    if ((weapon === 'Flamethrower' || weapon === 'Flame God') && event === 'Shot') return CLIPS.flame
+    if ((weapon === 'Punch' || weapon === 'Fist') && event === 'Shot')
+      return CLIPS.punch
+    if (
+      (weapon === 'Flamethrower' || weapon === 'Flame God') &&
+      event === 'Shot'
+    )
+      return CLIPS.flame
     return clipFor(event)
   }
 }

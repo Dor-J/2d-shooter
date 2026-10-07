@@ -4,11 +4,25 @@
 // ask the only question that matters about teardown: is the ledger balanced?
 
 export function createGlStub() {
-  const created = { texture: [], buffer: [], program: [], shader: [], vao: [], framebuffer: [] }
-  const deleted = { texture: [], buffer: [], program: [], shader: [], vao: [], framebuffer: [] }
+  const created = {
+    texture: [],
+    buffer: [],
+    program: [],
+    shader: [],
+    vao: [],
+    framebuffer: [],
+  }
+  const deleted = {
+    texture: [],
+    buffer: [],
+    program: [],
+    shader: [],
+    vao: [],
+    framebuffer: [],
+  }
   let nextId = 1
 
-  const make = kind => {
+  const make = (kind) => {
     const handle = { kind, id: nextId }
     nextId += 1
     created[kind].push(handle)
@@ -50,12 +64,12 @@ export function createGlStub() {
     createTexture: () => make('texture'),
     createVertexArray: () => make('vao'),
     createFramebuffer: () => make('framebuffer'),
-    deleteShader: handle => drop('shader', handle),
-    deleteProgram: handle => drop('program', handle),
-    deleteBuffer: handle => drop('buffer', handle),
-    deleteTexture: handle => drop('texture', handle),
-    deleteVertexArray: handle => drop('vao', handle),
-    deleteFramebuffer: handle => drop('framebuffer', handle),
+    deleteShader: (handle) => drop('shader', handle),
+    deleteProgram: (handle) => drop('program', handle),
+    deleteBuffer: (handle) => drop('buffer', handle),
+    deleteTexture: (handle) => drop('texture', handle),
+    deleteVertexArray: (handle) => drop('vao', handle),
+    deleteFramebuffer: (handle) => drop('framebuffer', handle),
 
     shaderSource: () => {},
     compileShader: () => {},
@@ -99,7 +113,9 @@ export function createGlStub() {
     leaked() {
       const leaks = {}
       for (const kind of Object.keys(created)) {
-        const outstanding = created[kind].filter(handle => !deleted[kind].includes(handle))
+        const outstanding = created[kind].filter(
+          (handle) => !deleted[kind].includes(handle),
+        )
         if (outstanding.length > 0) leaks[kind] = outstanding.length
       }
       return leaks
@@ -117,11 +133,13 @@ export function createCanvasStub(gl, { width = 1200, height = 700 } = {}) {
     clientHeight: height,
     style: {},
     listeners,
-    getContext: name => (name === 'webgl2' ? gl : null),
+    getContext: (name) => (name === 'webgl2' ? gl : null),
     getBoundingClientRect: () => ({ left: 0, top: 0, width, height }),
     addEventListener: (type, handler) => listeners.push({ type, handler }),
     removeEventListener: (type, handler) => {
-      const index = listeners.findIndex(entry => entry.type === type && entry.handler === handler)
+      const index = listeners.findIndex(
+        (entry) => entry.type === type && entry.handler === handler,
+      )
       if (index >= 0) listeners.splice(index, 1)
     },
     toDataURL: () => 'data:image/png;base64,',
@@ -143,16 +161,21 @@ export function installBrowserGlobals() {
   // than assigned, and put back the same way.
   const set = (name, value) => {
     saved.set(name, Object.getOwnPropertyDescriptor(globalThis, name))
-    Object.defineProperty(globalThis, name, { value, configurable: true, writable: true })
+    Object.defineProperty(globalThis, name, {
+      value,
+      configurable: true,
+      writable: true,
+    })
   }
 
   const fakeWindow = {
     devicePixelRatio: 1,
     listeners: windowListeners,
-    addEventListener: (type, handler) => windowListeners.push({ type, handler }),
+    addEventListener: (type, handler) =>
+      windowListeners.push({ type, handler }),
     removeEventListener: (type, handler) => {
       const index = windowListeners.findIndex(
-        entry => entry.type === type && entry.handler === handler,
+        (entry) => entry.type === type && entry.handler === handler,
       )
       if (index >= 0) windowListeners.splice(index, 1)
     },
@@ -161,7 +184,11 @@ export function installBrowserGlobals() {
   }
 
   set('window', fakeWindow)
-  set('navigator', { getGamepads: () => [], maxTouchPoints: 0, clipboard: { writeText: async () => {} } })
+  set('navigator', {
+    getGamepads: () => [],
+    maxTouchPoints: 0,
+    clipboard: { writeText: async () => {} },
+  })
   set('performance', globalThis.performance ?? { now: () => 0 })
   set('requestAnimationFrame', () => {
     const id = nextFrame
@@ -169,7 +196,7 @@ export function installBrowserGlobals() {
     frames.add(id)
     return id
   })
-  set('cancelAnimationFrame', id => frames.delete(id))
+  set('cancelAnimationFrame', (id) => frames.delete(id))
   set(
     'ResizeObserver',
     class {

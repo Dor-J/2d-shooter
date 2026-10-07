@@ -26,8 +26,15 @@ test('a plain room shows no modifier badges', () => {
 test('each modifier gets its own badge, in a stable order', () => {
   const all = { realistic: true, survival: true, advance: true }
   assert.ok(anyModifier(all))
-  assert.deepEqual(modifierBadges({ modifiers: all }), ['Realistic', 'Survival', 'Advance'])
-  assert.equal(modifierSummary({ modifiers: all }), 'Realistic · Survival · Advance')
+  assert.deepEqual(modifierBadges({ modifiers: all }), [
+    'Realistic',
+    'Survival',
+    'Advance',
+  ])
+  assert.equal(
+    modifierSummary({ modifiers: all }),
+    'Realistic · Survival · Advance',
+  )
 })
 
 test('a community room is named by its ruleset first', () => {

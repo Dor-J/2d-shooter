@@ -17,7 +17,15 @@ import {
 const players = [
   { id: 1, name: 'Ada', kills: 12, deaths: 4, team: 1, ping: 40 },
   { id: 2, name: 'Bo', kills: 7, deaths: 7, team: 2, ping: 120 },
-  { id: 3, name: 'Cy', kills: 7, deaths: 2, team: 1, ping: 20, spectating: true },
+  {
+    id: 3,
+    name: 'Cy',
+    kills: 7,
+    deaths: 2,
+    team: 1,
+    ping: 20,
+    spectating: true,
+  },
 ]
 
 test('a kill ratio reads as a number even for a player who has never died', () => {
@@ -29,7 +37,7 @@ test('a kill ratio reads as a number even for a player who has never died', () =
 test('the scoreboard is ranked, coloured by team, and knows which row is yours', () => {
   const rows = scoreboardRows(players, 2)
   assert.deepEqual(
-    rows.map(row => row.id),
+    rows.map((row) => row.id),
     [1, 3, 2],
   )
   assert.equal(rows[0].rank, 1)
@@ -41,7 +49,7 @@ test('the scoreboard is ranked, coloured by team, and knows which row is yours',
 test('a scoreboard groups by side and adds each side up', () => {
   const sections = teamSections(scoreboardRows(players, 1), 2)
   assert.deepEqual(
-    sections.map(section => section.name),
+    sections.map((section) => section.name),
     ['Alpha', 'Bravo'],
   )
   assert.equal(sections[0].score, 19)
@@ -49,7 +57,10 @@ test('a scoreboard groups by side and adds each side up', () => {
 })
 
 test('players with no side get a section of their own rather than vanishing', () => {
-  const sections = teamSections(scoreboardRows([{ id: 9, name: 'Free', kills: 1, deaths: 0 }], 9), 2)
+  const sections = teamSections(
+    scoreboardRows([{ id: 9, name: 'Free', kills: 1, deaths: 0 }], 9),
+    2,
+  )
   assert.equal(sections.length, 3)
   assert.equal(sections[2].name, 'No team')
   assert.equal(sections[2].rows.length, 1)
@@ -88,7 +99,10 @@ test('player IDs are shown to somebody who can actually type a command with one'
 
 test('the end screen says who won and by how much', () => {
   const rows = scoreboardRows(players, 1)
-  const screen = endScreen({ outcome: 'winner', winner: { name: 'Ada' }, nextMapIn: 300 }, rows)
+  const screen = endScreen(
+    { outcome: 'winner', winner: { name: 'Ada' }, nextMapIn: 300 },
+    rows,
+  )
   assert.equal(screen.title, 'Ada wins')
   assert.equal(screen.subtitle, 'by 5 points')
   assert.equal(screen.nextIn, 5)
@@ -103,7 +117,10 @@ test('a one-point win is said in the singular and a dead heat is called a draw',
     ],
     1,
   )
-  assert.equal(endScreen({ outcome: 'winner', winner: { name: 'A' } }, close).subtitle, 'by 1 point')
+  assert.equal(
+    endScreen({ outcome: 'winner', winner: { name: 'A' } }, close).subtitle,
+    'by 1 point',
+  )
   const drawn = scoreboardRows(
     [
       { id: 1, name: 'A', kills: 5, deaths: 1 },
@@ -114,11 +131,18 @@ test('a one-point win is said in the singular and a dead heat is called a draw',
   const screen = endScreen({ outcome: 'draw' }, drawn)
   assert.equal(screen.title, 'Draw')
   assert.equal(screen.subtitle, 'Nobody could be separated')
-  assert.equal(screen.nextIn, null, 'a server with no rotation does not count down to nothing')
+  assert.equal(
+    screen.nextIn,
+    null,
+    'a server with no rotation does not count down to nothing',
+  )
 })
 
 test('a team win names the team', () => {
-  const screen = endScreen({ outcome: 'team', winner: { name: 'Alpha', team: 1 } }, [])
+  const screen = endScreen(
+    { outcome: 'team', winner: { name: 'Alpha', team: 1 } },
+    [],
+  )
   assert.equal(screen.title, 'Alpha wins')
   assert.deepEqual(screen.podium, [])
 })
@@ -135,12 +159,16 @@ test('the weapon screen is ordered by what actually worked', () => {
     { weapon: 'Knife', kills: 0, shots: 0, hits: 0 },
   ])
   assert.deepEqual(
-    rows.map(row => row.weapon),
+    rows.map((row) => row.weapon),
     ['Barrett', 'Ak74', 'Knife'],
   )
   assert.equal(rows[0].accuracy, 60)
   assert.equal(rows[0].rank, 1)
-  assert.equal(rows[2].accuracy, 0, 'a weapon never fired is nought per cent, not a divide by zero')
+  assert.equal(
+    rows[2].accuracy,
+    0,
+    'a weapon never fired is nought per cent, not a divide by zero',
+  )
 })
 
 test('no statistics yet is an empty screen rather than a crash', () => {

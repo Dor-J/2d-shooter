@@ -15,7 +15,8 @@ export type InterfaceEvent =
 const VOLUME_STEP = 0.1
 export const MUSIC_TRACKS = 4
 
-const clamp01 = (value: number) => Math.min(1, Math.max(0, Math.round(value * 100) / 100))
+const clamp01 = (value: number) =>
+  Math.min(1, Math.max(0, Math.round(value * 100) / 100))
 
 /**
  * Client-side consequences of interface controls. Everything here is presentation state the server
@@ -45,14 +46,20 @@ export class InterfaceState {
   setScoreboardExtent(rows: number, window: number) {
     this.scoreboardRows = Math.max(0, Math.trunc(rows))
     this.scoreboardWindow = Math.max(1, Math.trunc(window))
-    this.scoreboardOffset = Math.min(this.scoreboardOffset, this.maxScoreboardOffset())
+    this.scoreboardOffset = Math.min(
+      this.scoreboardOffset,
+      this.maxScoreboardOffset(),
+    )
   }
 
   maxScoreboardOffset(): number {
     return Math.max(0, this.scoreboardRows - this.scoreboardWindow)
   }
 
-  #toggle(events: InterfaceEvent[], name: 'minimap' | 'sniperLine' | 'performanceStats' | 'weaponStats') {
+  #toggle(
+    events: InterfaceEvent[],
+    name: 'minimap' | 'sniperLine' | 'performanceStats' | 'weaponStats',
+  ) {
     this[name] = !this[name]
     events.push({ type: 'toggle', name, value: this[name] })
   }
@@ -62,14 +69,19 @@ export class InterfaceState {
     const events: InterfaceEvent[] = []
 
     if (this.scoreboardMode === 'toggle') {
-      if (state.pressed('scoreboard')) this.scoreboardVisible = !this.scoreboardVisible
+      if (state.pressed('scoreboard'))
+        this.scoreboardVisible = !this.scoreboardVisible
     } else {
       this.scoreboardVisible = state.held('scoreboard')
     }
     if (this.scoreboardVisible) {
-      if (state.pressed('scoreboardScrollUp')) this.scoreboardOffset = Math.max(0, this.scoreboardOffset - 1)
+      if (state.pressed('scoreboardScrollUp'))
+        this.scoreboardOffset = Math.max(0, this.scoreboardOffset - 1)
       if (state.pressed('scoreboardScrollDown')) {
-        this.scoreboardOffset = Math.min(this.maxScoreboardOffset(), this.scoreboardOffset + 1)
+        this.scoreboardOffset = Math.min(
+          this.maxScoreboardOffset(),
+          this.scoreboardOffset + 1,
+        )
       }
     } else {
       this.scoreboardOffset = 0
@@ -77,7 +89,8 @@ export class InterfaceState {
 
     if (state.pressed('minimap')) this.#toggle(events, 'minimap')
     if (state.pressed('sniperLine')) this.#toggle(events, 'sniperLine')
-    if (state.pressed('performanceStats')) this.#toggle(events, 'performanceStats')
+    if (state.pressed('performanceStats'))
+      this.#toggle(events, 'performanceStats')
     if (state.pressed('weaponStats')) this.#toggle(events, 'weaponStats')
 
     if (state.pressed('chat')) events.push({ type: 'chat', scope: 'all' })
@@ -115,15 +128,25 @@ export class InterfaceState {
     }
     if (state.pressed('musicToggle')) {
       this.musicEnabled = !this.musicEnabled
-      events.push({ type: 'music', enabled: this.musicEnabled, track: this.musicTrack })
+      events.push({
+        type: 'music',
+        enabled: this.musicEnabled,
+        track: this.musicTrack,
+      })
     }
     if (state.pressed('musicNext') || state.pressed('musicPrevious')) {
       const step = state.pressed('musicNext') ? 1 : -1
       this.musicTrack = (this.musicTrack + step + MUSIC_TRACKS) % MUSIC_TRACKS
-      events.push({ type: 'music', enabled: this.musicEnabled, track: this.musicTrack })
+      events.push({
+        type: 'music',
+        enabled: this.musicEnabled,
+        track: this.musicTrack,
+      })
     }
-    if (state.pressed('sensitivityUp')) events.push({ type: 'sensitivity', delta: 1 })
-    if (state.pressed('sensitivityDown')) events.push({ type: 'sensitivity', delta: -1 })
+    if (state.pressed('sensitivityUp'))
+      events.push({ type: 'sensitivity', delta: 1 })
+    if (state.pressed('sensitivityDown'))
+      events.push({ type: 'sensitivity', delta: -1 })
 
     return events
   }

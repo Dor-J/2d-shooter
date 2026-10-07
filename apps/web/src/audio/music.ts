@@ -15,12 +15,17 @@ export function defaultMusic(): MusicState {
 }
 
 export function trackName(track: number): string {
-  const index = ((Math.trunc(track) % TRACKS.length) + TRACKS.length) % TRACKS.length
+  const index =
+    ((Math.trunc(track) % TRACKS.length) + TRACKS.length) % TRACKS.length
   return TRACKS[index]
 }
 
 export function stepTrack(track: number, delta: number): number {
-  return ((Math.trunc(track) + Math.trunc(delta)) % TRACKS.length + TRACKS.length) % TRACKS.length
+  return (
+    (((Math.trunc(track) + Math.trunc(delta)) % TRACKS.length) +
+      TRACKS.length) %
+    TRACKS.length
+  )
 }
 
 export function applyMusicCommand(
@@ -28,8 +33,12 @@ export function applyMusicCommand(
   command: { enabled?: boolean; track?: number; volume?: number },
 ): MusicState {
   const enabled = command.enabled ?? state.enabled
-  const track = command.track === undefined ? state.track : stepTrack(command.track, 0)
-  const volume = command.volume === undefined ? state.volume : Math.min(1, Math.max(0, command.volume))
+  const track =
+    command.track === undefined ? state.track : stepTrack(command.track, 0)
+  const volume =
+    command.volume === undefined
+      ? state.volume
+      : Math.min(1, Math.max(0, command.volume))
   return {
     enabled,
     track,

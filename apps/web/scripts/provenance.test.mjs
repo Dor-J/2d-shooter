@@ -2,7 +2,11 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { assetPath, defaultManifest, importedAssets } from '../src/render/manifest.ts'
+import {
+  assetPath,
+  defaultManifest,
+  importedAssets,
+} from '../src/render/manifest.ts'
 
 const ROOT = resolve(import.meta.dirname, '../../..')
 const provenance = readFileSync(resolve(ROOT, 'docs/provenance.md'), 'utf8')
@@ -25,7 +29,10 @@ test('every asset the manifest names is a file that is actually there', () => {
   for (const id of Object.keys(manifest.entries)) {
     const path = assetPath(manifest, id)
     assert.ok(path.startsWith('art/'), `${id} lives under the art directory`)
-    assert.ok(files.has(path.slice('art/'.length)), `${id} points at a file that exists: ${path}`)
+    assert.ok(
+      files.has(path.slice('art/'.length)),
+      `${id} points at a file that exists: ${path}`,
+    )
   }
 })
 

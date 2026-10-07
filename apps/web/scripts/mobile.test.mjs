@@ -1,6 +1,12 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { ARENA_H, ARENA_W, VIEW_H, VIEW_W, viewForCanvas } from '../src/mobile.ts'
+import {
+  ARENA_H,
+  ARENA_W,
+  VIEW_H,
+  VIEW_W,
+  viewForCanvas,
+} from '../src/mobile.ts'
 import { movementFromDrag } from '../src/input/touch.ts'
 import { aimFromPointer } from '../src/input/mouse.ts'
 
@@ -41,7 +47,19 @@ test('pointer position maps through camera without stretching aim', () => {
 })
 
 test('movement pad has a dead zone and an upward jump gesture', () => {
-  assert.deepEqual(movementFromDrag(3, -2), { left: false, right: false, jump: false })
-  assert.deepEqual(movementFromDrag(-35, -42), { left: true, right: false, jump: true })
-  assert.deepEqual(movementFromDrag(35, 3), { left: false, right: true, jump: false })
+  assert.deepEqual(movementFromDrag(3, -2), {
+    left: false,
+    right: false,
+    jump: false,
+  })
+  assert.deepEqual(movementFromDrag(-35, -42), {
+    left: true,
+    right: false,
+    jump: true,
+  })
+  assert.deepEqual(movementFromDrag(35, 3), {
+    left: false,
+    right: true,
+    jump: false,
+  })
 })

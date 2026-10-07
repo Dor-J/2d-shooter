@@ -29,12 +29,22 @@ export function reconcile<T extends PredictedPlayer>(
   inputs: InputFrame[],
   dt = 1 / 60,
 ): T {
-  const player = { ...acknowledged, pos: { ...acknowledged.pos }, vel: { ...acknowledged.vel } }
+  const player = {
+    ...acknowledged,
+    pos: { ...acknowledged.pos },
+    vel: { ...acknowledged.vel },
+  }
   for (const input of inputs) {
     if (input.seq <= acknowledged.last_seq) continue
     const dir = (input.right ? 1 : 0) - (input.left ? 1 : 0)
-    player.vel = { x: dir * SPEED * 60, y: player.vel.y + (input.jet ? -18 : 18) }
-    player.pos = { x: player.pos.x + player.vel.x * dt, y: player.pos.y + player.vel.y * dt }
+    player.vel = {
+      x: dir * SPEED * 60,
+      y: player.vel.y + (input.jet ? -18 : 18),
+    }
+    player.pos = {
+      x: player.pos.x + player.vel.x * dt,
+      y: player.pos.y + player.vel.y * dt,
+    }
     player.last_seq = input.seq
   }
   return player
@@ -50,7 +60,12 @@ export function interpolate(from: Vec2, to: Vec2, t: number, max = 1): Vec2 {
   }
 }
 
-export function extrapolate(pos: Vec2, vel: Vec2, dt: number, maxDt = 0.12): Vec2 {
+export function extrapolate(
+  pos: Vec2,
+  vel: Vec2,
+  dt: number,
+  maxDt = 0.12,
+): Vec2 {
   const time = Math.min(maxDt, Math.max(0, dt))
   return { x: pos.x + vel.x * time, y: pos.y + vel.y * time }
 }
@@ -61,7 +76,12 @@ export type Clock = {
 }
 
 /// A one-way estimate of how far the server clock is ahead, from a ping/pong pair.
-export function syncClock(clock: Clock, clientSent: number, serverAt: number, clientRecv: number): Clock {
+export function syncClock(
+  clock: Clock,
+  clientSent: number,
+  serverAt: number,
+  clientRecv: number,
+): Clock {
   const rtt = clientRecv - clientSent
   if (!Number.isFinite(rtt) || rtt < 0 || rtt > 2000) return clock
   const offset = serverAt + rtt / 2 - clientRecv
@@ -78,11 +98,12 @@ export class InputRing {
 
   push(frame: InputFrame) {
     this.frames.push(frame)
-    if (this.frames.length > this.limit) this.frames.splice(0, this.frames.length - this.limit)
+    if (this.frames.length > this.limit)
+      this.frames.splice(0, this.frames.length - this.limit)
   }
 
   dropThrough(seq: number) {
-    this.frames = this.frames.filter(frame => frame.seq > seq)
+    this.frames = this.frames.filter((frame) => frame.seq > seq)
   }
 }
 

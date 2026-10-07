@@ -83,7 +83,8 @@ export function particleLimit(level: ParticleLevel, base = 400): number {
 }
 
 export type GlTextureParameters = {
-  minFilter: 'NEAREST' | 'LINEAR' | 'LINEAR_MIPMAP_LINEAR' | 'NEAREST_MIPMAP_NEAREST'
+  minFilter:
+    'NEAREST' | 'LINEAR' | 'LINEAR_MIPMAP_LINEAR' | 'NEAREST_MIPMAP_NEAREST'
   magFilter: 'NEAREST' | 'LINEAR'
   generateMipmap: boolean
 }
@@ -92,7 +93,10 @@ export type GlTextureParameters = {
 ///
 /// Mipmaps are only asked for when the texture is actually being minified; a HUD atlas drawn at its
 /// own size gains nothing from them and loses sharpness.
-export function textureParameters(quality: QualitySettings, minified: boolean): GlTextureParameters {
+export function textureParameters(
+  quality: QualitySettings,
+  minified: boolean,
+): GlTextureParameters {
   const linear = quality.filtering === 'linear'
   const mipmap = quality.mipmaps && minified && !quality.compatibility
   return {
@@ -127,7 +131,10 @@ export function needsCompatibility(capabilities: {
 ///
 /// Quality is only ever stepped down automatically, never up: a renderer that oscillates between
 /// two settings is worse than one that stays on the lower.
-export function adaptQuality(quality: QualitySettings, fps: number): QualitySettings {
+export function adaptQuality(
+  quality: QualitySettings,
+  fps: number,
+): QualitySettings {
   if (!Number.isFinite(fps) || fps >= 50) return quality
   if (fps >= 35) {
     return quality.weather ? { ...quality, weather: false } : quality

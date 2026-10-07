@@ -32,10 +32,15 @@ const FULL_DROPS = 320
 const RAIN_SPEED = 900
 const SNOW_SPEED = 90
 
-export function dropCount(settings: WeatherSettings, particleBudget = 1): number {
+export function dropCount(
+  settings: WeatherSettings,
+  particleBudget = 1,
+): number {
   if (settings.kind === 'none') return 0
   const intensity = Math.min(1, Math.max(0, settings.intensity))
-  return Math.round(FULL_DROPS * intensity * Math.min(1, Math.max(0, particleBudget)))
+  return Math.round(
+    FULL_DROPS * intensity * Math.min(1, Math.max(0, particleBudget)),
+  )
 }
 
 function seeded(seed: number): () => number {

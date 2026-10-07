@@ -34,7 +34,10 @@ export type Overlay = {
 export const PREDATOR_ALPHA = 0.32
 
 /// What a bonus does to the picture.
-export function bonusOverlay(effect: string | null | undefined, own: boolean): Overlay {
+export function bonusOverlay(
+  effect: string | null | undefined,
+  own: boolean,
+): Overlay {
   switch (effect) {
     case 'Predator':
       return {
@@ -45,9 +48,17 @@ export function bonusOverlay(effect: string | null | undefined, own: boolean): O
         name: 'Predator',
       }
     case 'Berserker':
-      return { tint: [0.86, 0.22, 0.5, own ? 0.14 : 0], playerAlpha: 1, name: 'Berserker' }
+      return {
+        tint: [0.86, 0.22, 0.5, own ? 0.14 : 0],
+        playerAlpha: 1,
+        name: 'Berserker',
+      }
     case 'FlameGod':
-      return { tint: [0.95, 0.5, 0.16, own ? 0.16 : 0], playerAlpha: 1, name: 'Flame God' }
+      return {
+        tint: [0.95, 0.5, 0.16, own ? 0.16 : 0],
+        playerAlpha: 1,
+        name: 'Flame God',
+      }
     default:
       return { tint: [0, 0, 0, 0], playerAlpha: 1, name: '' }
   }
@@ -88,8 +99,13 @@ export class ScreenShake {
 }
 
 /// How hard an explosion shakes the screen from where the player is standing.
-export function blastShake(distance: number, radius: number, power = 14): number {
-  if (!Number.isFinite(distance) || !Number.isFinite(radius) || radius <= 0) return 0
+export function blastShake(
+  distance: number,
+  radius: number,
+  power = 14,
+): number {
+  if (!Number.isFinite(distance) || !Number.isFinite(radius) || radius <= 0)
+    return 0
   if (distance >= radius) return 0
   return power * (1 - distance / radius)
 }
@@ -115,7 +131,8 @@ export function damageFeedback(
     (Math.abs(direction.x) > 1e-6 || Math.abs(direction.y) > 1e-6)
   return {
     vignette: Math.min(1, Math.max(0, vignette)),
-    arrow: hasDirection && alpha > 0 ? Math.atan2(direction.y, direction.x) : null,
+    arrow:
+      hasDirection && alpha > 0 ? Math.atan2(direction.y, direction.x) : null,
     alpha,
   }
 }

@@ -24,7 +24,11 @@ test('the scoreboard follows the key while held and latches when the mode is tog
   state.commit()
   state.set('scoreboard', false)
   ui.apply(state)
-  assert.equal(ui.scoreboardVisible, false, 'hold mode hides the board on release')
+  assert.equal(
+    ui.scoreboardVisible,
+    false,
+    'hold mode hides the board on release',
+  )
 
   ui.scoreboardMode = 'toggle'
   state.commit()
@@ -34,7 +38,11 @@ test('the scoreboard follows the key while held and latches when the mode is tog
   state.commit()
   state.set('scoreboard', false)
   ui.apply(state)
-  assert.equal(ui.scoreboardVisible, true, 'toggle mode keeps the board open after release')
+  assert.equal(
+    ui.scoreboardVisible,
+    true,
+    'toggle mode keeps the board open after release',
+  )
   state.commit()
   press(state, 'scoreboard')
   ui.apply(state)
@@ -76,14 +84,21 @@ test('the scoreboard scrolls within bounds and resets when it closes', () => {
 test('interface toggles flip independently and report what changed', () => {
   const state = new ActionState()
   const ui = new InterfaceState()
-  for (const action of ['minimap', 'sniperLine', 'performanceStats', 'weaponStats']) {
+  for (const action of [
+    'minimap',
+    'sniperLine',
+    'performanceStats',
+    'weaponStats',
+  ]) {
     const before = ui[action]
     state.releaseAll()
     state.commit()
     press(state, action)
     const events = ui.apply(state)
     assert.equal(ui[action], !before, `${action} did not toggle`)
-    assert.ok(events.some(event => event.type === 'toggle' && event.name === action))
+    assert.ok(
+      events.some((event) => event.type === 'toggle' && event.name === action),
+    )
   }
 })
 
@@ -121,13 +136,15 @@ test('pause, demo, and background controls raise intents instead of guessing at 
   const ui = new InterfaceState()
   press(state, 'pause')
   let events = ui.apply(state)
-  assert.ok(events.some(event => event.type === 'pause'))
+  assert.ok(events.some((event) => event.type === 'pause'))
   state.releaseAll()
   state.commit()
   press(state, 'demoRecord')
   events = ui.apply(state)
   assert.equal(ui.recordingDemo, true)
-  assert.ok(events.some(event => event.type === 'demo' && event.recording === true))
+  assert.ok(
+    events.some((event) => event.type === 'demo' && event.recording === true),
+  )
   state.releaseAll()
   state.commit()
   press(state, 'demoFastForward')
@@ -138,7 +155,7 @@ test('pause, demo, and background controls raise intents instead of guessing at 
   press(state, 'minimize')
   events = ui.apply(state)
   assert.equal(ui.backgrounded, true)
-  assert.ok(events.some(event => event.type === 'minimize'))
+  assert.ok(events.some((event) => event.type === 'minimize'))
 })
 
 test('chat controls raise a scoped compose intent', () => {
@@ -146,14 +163,14 @@ test('chat controls raise a scoped compose intent', () => {
   const ui = new InterfaceState()
   press(state, 'chat')
   assert.deepEqual(
-    ui.apply(state).filter(event => event.type === 'chat'),
+    ui.apply(state).filter((event) => event.type === 'chat'),
     [{ type: 'chat', scope: 'all' }],
   )
   state.releaseAll()
   state.commit()
   press(state, 'teamChat')
   assert.deepEqual(
-    ui.apply(state).filter(event => event.type === 'chat'),
+    ui.apply(state).filter((event) => event.type === 'chat'),
     [{ type: 'chat', scope: 'team' }],
   )
   state.releaseAll()
@@ -169,11 +186,16 @@ test('a screenshot is saved with a sortable timestamped name', () => {
     'arena-2026-09-17-101530.png',
   )
   const saved = []
-  const canvas = { toBlob: callback => callback({ size: 12 }) }
-  const name = captureCanvas(canvas, (blob, filename) => saved.push([blob, filename]))
+  const canvas = { toBlob: (callback) => callback({ size: 12 }) }
+  const name = captureCanvas(canvas, (blob, filename) =>
+    saved.push([blob, filename]),
+  )
   assert.equal(saved.length, 1)
   assert.equal(saved[0][1], name)
-  assert.equal(captureCanvas(null, () => {}), null)
+  assert.equal(
+    captureCanvas(null, () => {}),
+    null,
+  )
 })
 
 test('the input system produces one frame per tick and suspends every device together', () => {
@@ -188,7 +210,11 @@ test('the input system produces one frame per tick and suspends every device tog
 
   system.suspend()
   const third = system.tick({ aim: { x: 10, y: 20 } })
-  assert.equal(third.frame.right, false, 'suspending drops held gameplay actions')
+  assert.equal(
+    third.frame.right,
+    false,
+    'suspending drops held gameplay actions',
+  )
   system.keyboard.keydown({ code: 'KeyD', target: null, preventDefault() {} })
   assert.equal(system.tick({ aim: { x: 10, y: 20 } }).frame.right, false)
   system.resume()
@@ -202,8 +228,16 @@ test('the input system applies a profile to every device at once', () => {
     version: 1,
     id: 'p',
     name: 'Custom',
-    bindings: { ...DEFAULT_BINDINGS, fire: [{ device: 'keyboard', code: 'KeyB' }] },
-    settings: { sensitivity: 2, volume: 0.2, musicVolume: 0.1, toggleActions: ['jet'] },
+    bindings: {
+      ...DEFAULT_BINDINGS,
+      fire: [{ device: 'keyboard', code: 'KeyB' }],
+    },
+    settings: {
+      sensitivity: 2,
+      volume: 0.2,
+      musicVolume: 0.1,
+      toggleActions: ['jet'],
+    },
   })
   assert.equal(system.mouse.sensitivity, 2)
   assert.equal(system.ui.volume, 0.2)

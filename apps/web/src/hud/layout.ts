@@ -41,7 +41,12 @@ export const DESIGN_WIDTH = 1280
 export const DESIGN_HEIGHT = 720
 
 /// The insets a display reserves — a phone's notch, a TV's overscan. Nothing is placed inside them.
-export type SafeArea = { top: number; right: number; bottom: number; left: number }
+export type SafeArea = {
+  top: number
+  right: number
+  bottom: number
+  left: number
+}
 
 export const NO_INSETS: SafeArea = { top: 0, right: 0, bottom: 0, left: 0 }
 
@@ -111,16 +116,22 @@ export function place(element: HudElement, viewport: Viewport): PlacedElement {
 }
 
 /// Places a whole layout, in draw order, leaving out anything switched off.
-export function placeLayout(layout: HudLayout, viewport: Viewport): PlacedElement[] {
+export function placeLayout(
+  layout: HudLayout,
+  viewport: Viewport,
+): PlacedElement[] {
   return layout.elements
-    .filter(element => element.visible !== false)
+    .filter((element) => element.visible !== false)
     .map((element, index) => ({ placed: place(element, viewport), index }))
     .sort((a, b) => a.placed.layer - b.placed.layer || a.index - b.index)
-    .map(entry => entry.placed)
+    .map((entry) => entry.placed)
 }
 
 /// Whether a placed element sits entirely inside the safe area.
-export function withinSafeArea(placed: PlacedElement, viewport: Viewport): boolean {
+export function withinSafeArea(
+  placed: PlacedElement,
+  viewport: Viewport,
+): boolean {
   const safe = viewport.safeArea ?? NO_INSETS
   const slack = 0.01
   return (
@@ -136,22 +147,100 @@ export function defaultLayout(): HudLayout {
   return {
     name: 'default',
     elements: [
-      { id: 'health', anchor: 'bottom-left', x: 24, y: 24, width: 240, height: 18 },
-      { id: 'jet', anchor: 'bottom-left', x: 24, y: 48, width: 240, height: 10 },
-      { id: 'ammo', anchor: 'bottom-right', x: 24, y: 24, width: 220, height: 18 },
-      { id: 'fire-interval', anchor: 'bottom-right', x: 24, y: 48, width: 220, height: 6 },
-      { id: 'weapon', anchor: 'bottom-right', x: 24, y: 62, width: 220, height: 40 },
-      { id: 'grenades', anchor: 'bottom-right', x: 252, y: 24, width: 64, height: 40 },
+      {
+        id: 'health',
+        anchor: 'bottom-left',
+        x: 24,
+        y: 24,
+        width: 240,
+        height: 18,
+      },
+      {
+        id: 'jet',
+        anchor: 'bottom-left',
+        x: 24,
+        y: 48,
+        width: 240,
+        height: 10,
+      },
+      {
+        id: 'ammo',
+        anchor: 'bottom-right',
+        x: 24,
+        y: 24,
+        width: 220,
+        height: 18,
+      },
+      {
+        id: 'fire-interval',
+        anchor: 'bottom-right',
+        x: 24,
+        y: 48,
+        width: 220,
+        height: 6,
+      },
+      {
+        id: 'weapon',
+        anchor: 'bottom-right',
+        x: 24,
+        y: 62,
+        width: 220,
+        height: 40,
+      },
+      {
+        id: 'grenades',
+        anchor: 'bottom-right',
+        x: 252,
+        y: 24,
+        width: 64,
+        height: 40,
+      },
       { id: 'bonus', anchor: 'bottom', x: 0, y: 96, width: 260, height: 22 },
       { id: 'score', anchor: 'top-left', x: 24, y: 20, width: 280, height: 56 },
       { id: 'team-scores', anchor: 'top', x: 0, y: 16, width: 320, height: 48 },
       { id: 'flags', anchor: 'top', x: 0, y: 68, width: 320, height: 24 },
-      { id: 'kill-feed', anchor: 'top-right', x: 24, y: 20, width: 380, height: 140 },
-      { id: 'network', anchor: 'top-right', x: 24, y: 168, width: 160, height: 44 },
-      { id: 'minimap', anchor: 'bottom-left', x: 24, y: 72, width: 220, height: 132 },
-      { id: 'chat', anchor: 'bottom-left', x: 24, y: 216, width: 460, height: 120 },
+      {
+        id: 'kill-feed',
+        anchor: 'top-right',
+        x: 24,
+        y: 20,
+        width: 380,
+        height: 140,
+      },
+      {
+        id: 'network',
+        anchor: 'top-right',
+        x: 24,
+        y: 168,
+        width: 160,
+        height: 44,
+      },
+      {
+        id: 'minimap',
+        anchor: 'bottom-left',
+        x: 24,
+        y: 72,
+        width: 220,
+        height: 132,
+      },
+      {
+        id: 'chat',
+        anchor: 'bottom-left',
+        x: 24,
+        y: 216,
+        width: 460,
+        height: 120,
+      },
       { id: 'notice', anchor: 'center', x: 0, y: -120, width: 520, height: 40 },
-      { id: 'respawn', anchor: 'center', x: 0, y: 0, width: 360, height: 64, layer: 2 },
+      {
+        id: 'respawn',
+        anchor: 'center',
+        x: 0,
+        y: 0,
+        width: 360,
+        height: 64,
+        layer: 2,
+      },
     ],
   }
 }
@@ -161,7 +250,7 @@ export function mobileLayout(): HudLayout {
   const hidden = new Set(['network', 'chat', 'minimap', 'fire-interval'])
   return {
     name: 'mobile',
-    elements: defaultLayout().elements.map(element =>
+    elements: defaultLayout().elements.map((element) =>
       hidden.has(element.id) ? { ...element, visible: false } : element,
     ),
   }
@@ -177,7 +266,7 @@ export function minimalLayout(): HudLayout {
   const kept = new Set(['health', 'jet', 'ammo', 'weapon', 'respawn', 'notice'])
   return {
     name: 'minimal',
-    elements: defaultLayout().elements.map(element =>
+    elements: defaultLayout().elements.map((element) =>
       kept.has(element.id) ? element : { ...element, visible: false },
     ),
   }
@@ -208,13 +297,26 @@ const ANCHORS: readonly Anchor[] = [
 ///
 /// Anything unrecognised is refused with a reason rather than silently dropped, because a HUD that
 /// quietly loses the health bar is worse than one that fails to load.
-export function readLayout(source: unknown): { layout: HudLayout } | { errors: LayoutError[] } {
+export function readLayout(
+  source: unknown,
+): { layout: HudLayout } | { errors: LayoutError[] } {
   const errors: LayoutError[] = []
   const data = source as { name?: unknown; elements?: unknown }
-  if (typeof data !== 'object' || data === null || !Array.isArray(data.elements)) {
-    return { errors: [{ element: '(document)', reason: 'expected an object with an elements list' }] }
+  if (
+    typeof data !== 'object' ||
+    data === null ||
+    !Array.isArray(data.elements)
+  ) {
+    return {
+      errors: [
+        {
+          element: '(document)',
+          reason: 'expected an object with an elements list',
+        },
+      ],
+    }
   }
-  const known = new Set(defaultLayout().elements.map(element => element.id))
+  const known = new Set(defaultLayout().elements.map((element) => element.id))
   const seen = new Set<string>()
   const elements: HudElement[] = []
   for (const raw of data.elements as unknown[]) {
@@ -233,22 +335,38 @@ export function readLayout(source: unknown): { layout: HudLayout } | { errors: L
       continue
     }
     seen.add(id)
-    if (entry.anchor !== undefined && !ANCHORS.includes(entry.anchor as Anchor)) {
-      errors.push({ element: id, reason: `unknown anchor ${String(entry.anchor)}` })
+    if (
+      entry.anchor !== undefined &&
+      !ANCHORS.includes(entry.anchor as Anchor)
+    ) {
+      errors.push({
+        element: id,
+        reason: `unknown anchor ${String(entry.anchor)}`,
+      })
       continue
     }
     const numbers = ['x', 'y', 'width', 'height'] as const
-    const bad = numbers.find(key => entry[key] !== undefined && !Number.isFinite(entry[key]))
+    const bad = numbers.find(
+      (key) => entry[key] !== undefined && !Number.isFinite(entry[key]),
+    )
     if (bad) {
       errors.push({ element: id, reason: `${bad} must be a number` })
       continue
     }
-    const fallback = defaultLayout().elements.find(element => element.id === id)!
+    const fallback = defaultLayout().elements.find(
+      (element) => element.id === id,
+    )!
     elements.push({
       ...fallback,
       ...(entry.anchor ? { anchor: entry.anchor as Anchor } : {}),
-      ...Object.fromEntries(numbers.filter(key => entry[key] !== undefined).map(key => [key, entry[key]])),
-      ...(entry.visible !== undefined ? { visible: Boolean(entry.visible) } : {}),
+      ...Object.fromEntries(
+        numbers
+          .filter((key) => entry[key] !== undefined)
+          .map((key) => [key, entry[key]]),
+      ),
+      ...(entry.visible !== undefined
+        ? { visible: Boolean(entry.visible) }
+        : {}),
       ...(entry.layer !== undefined ? { layer: Number(entry.layer) } : {}),
       id,
     })
@@ -256,9 +374,12 @@ export function readLayout(source: unknown): { layout: HudLayout } | { errors: L
   if (errors.length > 0) return { errors }
   // Anything the custom file left out keeps its stock place, so a partial HUD is a valid HUD.
   const merged = defaultLayout().elements.map(
-    element => elements.find(custom => custom.id === element.id) ?? element,
+    (element) => elements.find((custom) => custom.id === element.id) ?? element,
   )
   return {
-    layout: { name: typeof data.name === 'string' && data.name ? data.name : 'custom', elements: merged },
+    layout: {
+      name: typeof data.name === 'string' && data.name ? data.name : 'custom',
+      elements: merged,
+    },
   }
 }

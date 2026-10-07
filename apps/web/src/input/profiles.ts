@@ -1,5 +1,10 @@
 import type { Action } from './actions.ts'
-import { type BindingSet, parseBindings, resetBindings, serializeBindings } from './bindings.ts'
+import {
+  type BindingSet,
+  parseBindings,
+  resetBindings,
+  serializeBindings,
+} from './bindings.ts'
 
 export const PROFILE_VERSION = 1
 export const PROFILES_KEY = 'arena-input-profiles'
@@ -41,19 +46,42 @@ function newId(): string {
 }
 
 function readSettings(value: unknown): ProfileSettings {
-  if (!value || typeof value !== 'object') return { ...DEFAULT_PROFILE_SETTINGS }
+  if (!value || typeof value !== 'object')
+    return { ...DEFAULT_PROFILE_SETTINGS }
   const raw = value as Partial<ProfileSettings>
-  const number = (input: unknown, fallback: number, min: number, max: number) =>
-    typeof input === 'number' && Number.isFinite(input) ? Math.min(max, Math.max(min, input)) : fallback
+  const number = (
+    input: unknown,
+    fallback: number,
+    min: number,
+    max: number,
+  ) =>
+    typeof input === 'number' && Number.isFinite(input)
+      ? Math.min(max, Math.max(min, input))
+      : fallback
   return {
-    sensitivity: number(raw.sensitivity, DEFAULT_PROFILE_SETTINGS.sensitivity, 0.1, 5),
+    sensitivity: number(
+      raw.sensitivity,
+      DEFAULT_PROFILE_SETTINGS.sensitivity,
+      0.1,
+      5,
+    ),
     volume: number(raw.volume, DEFAULT_PROFILE_SETTINGS.volume, 0, 1),
-    musicVolume: number(raw.musicVolume, DEFAULT_PROFILE_SETTINGS.musicVolume, 0, 1),
-    toggleActions: Array.isArray(raw.toggleActions) ? raw.toggleActions.filter(item => typeof item === 'string') : [],
+    musicVolume: number(
+      raw.musicVolume,
+      DEFAULT_PROFILE_SETTINGS.musicVolume,
+      0,
+      1,
+    ),
+    toggleActions: Array.isArray(raw.toggleActions)
+      ? raw.toggleActions.filter((item) => typeof item === 'string')
+      : [],
   }
 }
 
-export function createProfile(name: string, bindings: BindingSet = resetBindings()): ControlProfile {
+export function createProfile(
+  name: string,
+  bindings: BindingSet = resetBindings(),
+): ControlProfile {
   return {
     version: PROFILE_VERSION,
     id: newId(),
@@ -73,7 +101,10 @@ export function migrateProfile(raw: unknown): ControlProfile {
   return {
     version: PROFILE_VERSION,
     id: typeof value.id === 'string' && value.id ? value.id : newId(),
-    name: typeof value.name === 'string' && value.name.trim() ? value.name.trim().slice(0, 24) : 'Default',
+    name:
+      typeof value.name === 'string' && value.name.trim()
+        ? value.name.trim().slice(0, 24)
+        : 'Default',
     bindings,
     settings: readSettings(value.settings),
   }
@@ -121,27 +152,38 @@ export class ProfileStore {
     } catch {
       payload = null
     }
-    const stored = payload && typeof payload === 'object' ? (payload as { profiles?: unknown; activeId?: unknown }) : {}
-    const profiles = Array.isArray(stored.profiles) ? stored.profiles.map(migrateProfile) : []
+    const stored =
+      payload && typeof payload === 'object'
+        ? (payload as { profiles?: unknown; activeId?: unknown })
+        : {}
+    const profiles = Array.isArray(stored.profiles)
+      ? stored.profiles.map(migrateProfile)
+      : []
     this.#profiles = profiles.length > 0 ? profiles : [createProfile('Default')]
     const active = typeof stored.activeId === 'string' ? stored.activeId : ''
-    this.#activeId = this.#profiles.some(profile => profile.id === active) ? active : this.#profiles[0].id
+    this.#activeId = this.#profiles.some((profile) => profile.id === active)
+      ? active
+      : this.#profiles[0].id
     if (profiles.length === 0) this.#persist()
   }
 
   #persist() {
     this.#storage.setItem(
       PROFILES_KEY,
-      JSON.stringify({ version: PROFILE_VERSION, activeId: this.#activeId, profiles: this.#profiles }),
+      JSON.stringify({
+        version: PROFILE_VERSION,
+        activeId: this.#activeId,
+        profiles: this.#profiles,
+      }),
     )
   }
 
   list(): ControlProfile[] {
-    return this.#profiles.map(profile => ({ ...profile }))
+    return this.#profiles.map((profile) => ({ ...profile }))
   }
 
   get(id: string): ControlProfile {
-    return this.#profiles.find(profile => profile.id === id) ?? this.active()
+    return this.#profiles.find((profile) => profile.id === id) ?? this.active()
   }
 
   active(): ControlProfile {
@@ -153,7 +195,7 @@ export class ProfileStore {
   }
 
   select(id: string): ControlProfile {
-    if (this.#profiles.some(profile => profile.id === id)) {
+    if (this.#profiles.some((profile) => profile.id === id)) {
       this.#activeId = id
       this.#persist()
     }
@@ -173,19 +215,27 @@ export class ProfileStore {
     return profile
   }
 
-  update(id: string, change: (profile: ControlProfile) => ControlProfile): ControlProfile {
-    const index = this.#profiles.findIndex(profile => profile.id === id)
+  update(
+    id: string,
+    change: (profile: ControlProfile) => ControlProfile,
+  ): ControlProfile {
+    const index = this.#profiles.findIndex((profile) => profile.id === id)
     if (index < 0) return this.active()
-    const next = { ...change(this.#profiles[index]), id, version: PROFILE_VERSION }
+    const next = {
+      ...change(this.#profiles[index]),
+      id,
+      version: PROFILE_VERSION,
+    }
     this.#profiles[index] = next
     this.#persist()
     return next
   }
 
   remove(id: string): ControlProfile {
-    this.#profiles = this.#profiles.filter(profile => profile.id !== id)
+    this.#profiles = this.#profiles.filter((profile) => profile.id !== id)
     if (this.#profiles.length === 0) this.#profiles = [createProfile('Default')]
-    if (!this.#profiles.some(profile => profile.id === this.#activeId)) this.#activeId = this.#profiles[0].id
+    if (!this.#profiles.some((profile) => profile.id === this.#activeId))
+      this.#activeId = this.#profiles[0].id
     this.#persist()
     return this.active()
   }

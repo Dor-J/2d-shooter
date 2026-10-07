@@ -51,7 +51,7 @@ test('favorites toggle on and off', () => {
 test('the store keeps more than one profile and remembers which is active', () => {
   const memory = new Map()
   const storage = {
-    getItem: key => memory.get(key) ?? null,
+    getItem: (key) => memory.get(key) ?? null,
     setItem: (key, value) => memory.set(key, value),
   }
   const store = new PlayerStore(storage)
@@ -60,6 +60,6 @@ test('the store keeps more than one profile and remembers which is active', () =
   const second = store.list()[1]
   store.select(second.id)
   assert.equal(store.active().name, 'Two')
-  store.update(second.id, profile => ({ ...profile, name: 'Renamed' }))
+  store.update(second.id, (profile) => ({ ...profile, name: 'Renamed' }))
   assert.equal(store.active().name, 'Renamed')
 })

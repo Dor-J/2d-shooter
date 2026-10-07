@@ -1,13 +1,39 @@
 // Acceptance evidence: web:prediction:reconcile
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { disconnectText, extrapolate, InputRing, interpolate, reconcile, syncClock } from '../src/network/prediction.ts'
+import {
+  disconnectText,
+  extrapolate,
+  InputRing,
+  interpolate,
+  reconcile,
+  syncClock,
+} from '../src/network/prediction.ts'
 
 test('unacknowledged inputs are replayed onto the last server copy', () => {
-  const acked = { id: 1, pos: { x: 100, y: 400 }, vel: { x: 0, y: 0 }, last_seq: 1 }
+  const acked = {
+    id: 1,
+    pos: { x: 100, y: 400 },
+    vel: { x: 0, y: 0 },
+    last_seq: 1,
+  }
   const next = reconcile(acked, [
-    { seq: 1, left: false, right: true, jump: false, jet: false, aim: { x: 0, y: 0 } },
-    { seq: 2, left: false, right: true, jump: false, jet: false, aim: { x: 0, y: 0 } },
+    {
+      seq: 1,
+      left: false,
+      right: true,
+      jump: false,
+      jet: false,
+      aim: { x: 0, y: 0 },
+    },
+    {
+      seq: 2,
+      left: false,
+      right: true,
+      jump: false,
+      jet: false,
+      aim: { x: 0, y: 0 },
+    },
   ])
   assert.ok(next.pos.x > acked.pos.x)
   assert.equal(next.last_seq, 2)
@@ -36,8 +62,22 @@ test('clock sync ignores a nonsense sample', () => {
 
 test('the input ring forgets what the server has already seen', () => {
   const ring = new InputRing()
-  ring.push({ seq: 1, left: false, right: false, jump: false, jet: false, aim: { x: 0, y: 0 } })
-  ring.push({ seq: 2, left: false, right: false, jump: false, jet: false, aim: { x: 0, y: 0 } })
+  ring.push({
+    seq: 1,
+    left: false,
+    right: false,
+    jump: false,
+    jet: false,
+    aim: { x: 0, y: 0 },
+  })
+  ring.push({
+    seq: 2,
+    left: false,
+    right: false,
+    jump: false,
+    jet: false,
+    aim: { x: 0, y: 0 },
+  })
   ring.dropThrough(1)
   assert.equal(ring.frames.length, 1)
   assert.equal(ring.frames[0].seq, 2)

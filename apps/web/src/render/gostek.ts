@@ -38,7 +38,14 @@ export type Appearance = {
   chain: Chain
 }
 
-export const HAIR_STYLES = ['dreadlocks', 'punk', 'mohawk', 'normal', 'flat', 'bald'] as const
+export const HAIR_STYLES = [
+  'dreadlocks',
+  'punk',
+  'mohawk',
+  'normal',
+  'flat',
+  'bald',
+] as const
 export type HairStyle = (typeof HAIR_STYLES)[number]
 
 export const HEADGEAR = ['none', 'helmet', 'hat'] as const
@@ -62,13 +69,34 @@ export function defaultAppearance(): Appearance {
 }
 
 /// The pose a soldier's body is in, which the simulation decides and the rig only draws.
-export const POSES = ['stand', 'walk', 'run', 'crouch', 'prone', 'roll', 'jet', 'fall', 'dead', 'emote'] as const
+export const POSES = [
+  'stand',
+  'walk',
+  'run',
+  'crouch',
+  'prone',
+  'roll',
+  'jet',
+  'fall',
+  'dead',
+  'emote',
+] as const
 export type Pose = (typeof POSES)[number]
 
-export function readPose(state: string | undefined, grounded: boolean, hp: number): Pose {
+export function readPose(
+  state: string | undefined,
+  grounded: boolean,
+  hp: number,
+): Pose {
   if (hp <= 0) return 'dead'
   const named = (state ?? '').toLowerCase()
-  if (named.includes('emote') || named.includes('victory') || named.includes('mercy') || named.includes('cigar') || named.includes('taunt')) {
+  if (
+    named.includes('emote') ||
+    named.includes('victory') ||
+    named.includes('mercy') ||
+    named.includes('cigar') ||
+    named.includes('taunt')
+  ) {
     return 'emote'
   }
   if (named.includes('prone')) return 'prone'
@@ -149,7 +177,7 @@ const WALK_PERIOD = 24
 /// How far through a walk cycle a soldier is, from 0 to 1.
 export function walkPhase(tick: number, moving: boolean): number {
   if (!moving) return 0
-  return ((tick % WALK_PERIOD) + WALK_PERIOD) % WALK_PERIOD / WALK_PERIOD
+  return (((tick % WALK_PERIOD) + WALK_PERIOD) % WALK_PERIOD) / WALK_PERIOD
 }
 
 function tinted(base: Rgba, team: Rgba, weight: number): Rgba {
@@ -192,7 +220,10 @@ export function buildRig(input: RigInput): Placement[] {
   const side = facing(pos, input.aim)
   const flip = side === -1
   const height = POSE_HEIGHT[pose]
-  const phase = walkPhase(input.tick, input.moving && pose !== 'prone' && pose !== 'dead')
+  const phase = walkPhase(
+    input.tick,
+    input.moving && pose !== 'prone' && pose !== 'dead',
+  )
   const swing = Math.sin(phase * Math.PI * 2)
   const crouched = pose === 'crouch' || pose === 'prone' || pose === 'roll'
   const prone = pose === 'prone' || pose === 'dead'
@@ -214,17 +245,44 @@ export function buildRig(input: RigInput): Placement[] {
   }
 
   if (input.jetting) {
-    add('jets', pos.x - side * 9, pos.y - height * 0.45, 7, 16, [jetColor[0], jetColor[1], jetColor[2], 0.9])
+    add('jets', pos.x - side * 9, pos.y - height * 0.45, 7, 16, [
+      jetColor[0],
+      jetColor[1],
+      jetColor[2],
+      0.9,
+    ])
   }
   const legY = pos.y - height * 0.16
   const legHeight = prone ? 4 : crouched ? 8 : 12
-  add('back-leg', pos.x - side * 3 - swing * 3, legY, 6, legHeight, appearance.pants)
-  add('front-leg', pos.x + side * 3 + swing * 3, legY, 6, legHeight, appearance.pants)
+  add(
+    'back-leg',
+    pos.x - side * 3 - swing * 3,
+    legY,
+    6,
+    legHeight,
+    appearance.pants,
+  )
+  add(
+    'front-leg',
+    pos.x + side * 3 + swing * 3,
+    legY,
+    6,
+    legHeight,
+    appearance.pants,
+  )
   add('torso', pos.x, top + height * 0.42, 15, prone ? 9 : height * 0.42, shirt)
 
   const shoulder = { x: pos.x + side * 2, y: top + height * 0.36 }
   const angle = armAngle(pos, input.aim)
-  add('back-arm', shoulder.x - side * 3, shoulder.y + 2, 11, 5, appearance.skin, angle)
+  add(
+    'back-arm',
+    shoulder.x - side * 3,
+    shoulder.y + 2,
+    11,
+    5,
+    appearance.skin,
+    angle,
+  )
 
   const headY = prone ? pos.y - 6 : top + 6
   add('head', pos.x + side * 1.5, headY, 11, 11, appearance.skin)
@@ -234,25 +292,50 @@ export function buildRig(input: RigInput): Placement[] {
   }
   const gear = HEADGEAR_SIZE[appearance.headgear]
   if (gear.height > 0) {
-    add('headgear', pos.x + side * 1.5, headY - 6, gear.width, gear.height, tinted(shirt, team, 0.3))
+    add(
+      'headgear',
+      pos.x + side * 1.5,
+      headY - 6,
+      gear.width,
+      gear.height,
+      tinted(shirt, team, 0.3),
+    )
   }
   const chain = CHAIN_COLORS[appearance.chain]
   if (chain) {
     add('chain', pos.x + side * 1, top + height * 0.34, 7, 3, chain)
   }
   const salute = pose === 'emote' ? -Math.PI / 2 : angle
-  add('front-arm', shoulder.x + side * 4, shoulder.y + 2, 13, 5, appearance.skin, salute)
-  add('weapon', shoulder.x + side * 13, shoulder.y + 2, 24, 5, [0.2, 0.19, 0.17, 1], angle)
+  add(
+    'front-arm',
+    shoulder.x + side * 4,
+    shoulder.y + 2,
+    13,
+    5,
+    appearance.skin,
+    salute,
+  )
+  add(
+    'weapon',
+    shoulder.x + side * 13,
+    shoulder.y + 2,
+    24,
+    5,
+    [0.2, 0.19, 0.17, 1],
+    angle,
+  )
   if (pose === 'emote') {
     add('headgear', pos.x + side * 8, headY + 4, 4, 8, [0.55, 0.36, 0.18, 1])
   }
 
-  return parts.sort((a, b) => BODY_PARTS.indexOf(a.part) - BODY_PARTS.indexOf(b.part))
+  return parts.sort(
+    (a, b) => BODY_PARTS.indexOf(a.part) - BODY_PARTS.indexOf(b.part),
+  )
 }
 
 /// Where a weapon's muzzle ends up once the arm has been posed, which is where a flash belongs.
 export function muzzlePoint(rig: Placement[]): Vec2 | null {
-  const weapon = rig.find(part => part.part === 'weapon')
+  const weapon = rig.find((part) => part.part === 'weapon')
   if (!weapon) return null
   const reach = weapon.width / 2
   return {

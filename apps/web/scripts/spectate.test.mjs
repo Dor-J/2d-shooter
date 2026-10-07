@@ -3,9 +3,18 @@
 //   web:spectate:keys — previous/next/free-camera controls
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { commandForKey, delayLabel, isSpectating, spectatorLabel } from '../src/spectate.ts'
+import {
+  commandForKey,
+  delayLabel,
+  isSpectating,
+  spectatorLabel,
+} from '../src/spectate.ts'
 
-const following = (target) => ({ view: 'Following', target, camera: { x: 0, y: 0 } })
+const following = (target) => ({
+  view: 'Following',
+  target,
+  camera: { x: 0, y: 0 },
+})
 const free = { view: 'FreeCamera', target: null, camera: { x: 0, y: 0 } }
 
 test('a playing client is not spectating', () => {

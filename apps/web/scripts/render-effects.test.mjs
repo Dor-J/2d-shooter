@@ -48,7 +48,10 @@ const view = { width: 800, height: 600 }
 
 test('clear weather draws nothing at all', () => {
   assert.equal(dropCount({ kind: 'none', intensity: 1, wind: 0 }), 0)
-  assert.deepEqual(makeWeather({ kind: 'none', intensity: 1, wind: 0 }, view), [])
+  assert.deepEqual(
+    makeWeather({ kind: 'none', intensity: 1, wind: 0 }, view),
+    [],
+  )
   assert.deepEqual(WEATHER_KINDS, ['none', 'rain', 'snow'])
   assert.equal(defaultWeather().kind, 'none')
 })
@@ -66,29 +69,43 @@ test('rain and snow fill the view, and intensity thins them out', () => {
 test('rain falls faster than snow', () => {
   const rain = makeWeather({ kind: 'rain', intensity: 1, wind: 0 }, view, 7)
   const snow = makeWeather({ kind: 'snow', intensity: 1, wind: 0 }, view, 7)
-  const average = drops => drops.reduce((sum, drop) => sum + drop.vy, 0) / drops.length
+  const average = (drops) =>
+    drops.reduce((sum, drop) => sum + drop.vy, 0) / drops.length
   assert.ok(average(rain) > average(snow) * 5)
 })
 
 test('the same seed makes the same weather, so a screenshot can be compared', () => {
   const settings = { kind: 'snow', intensity: 0.8, wind: 20 }
-  assert.deepEqual(makeWeather(settings, view, 42), makeWeather(settings, view, 42))
-  assert.notDeepEqual(makeWeather(settings, view, 42), makeWeather(settings, view, 43))
+  assert.deepEqual(
+    makeWeather(settings, view, 42),
+    makeWeather(settings, view, 42),
+  )
+  assert.notDeepEqual(
+    makeWeather(settings, view, 42),
+    makeWeather(settings, view, 43),
+  )
 })
 
 test('weather wraps back into the view rather than running out', () => {
   const settings = { kind: 'rain', intensity: 1, wind: 0 }
   const drops = makeWeather(settings, view, 3)
-  for (let i = 0; i < 120; i += 1) stepWeather(drops, 1 / 60, view, settings, i / 60)
+  for (let i = 0; i < 120; i += 1)
+    stepWeather(drops, 1 / 60, view, settings, i / 60)
   for (const drop of drops) {
-    assert.ok(drop.x >= 0 && drop.x <= view.width, `x stayed in view: ${drop.x}`)
-    assert.ok(drop.y >= 0 && drop.y <= view.height, `y stayed in view: ${drop.y}`)
+    assert.ok(
+      drop.x >= 0 && drop.x <= view.width,
+      `x stayed in view: ${drop.x}`,
+    )
+    assert.ok(
+      drop.y >= 0 && drop.y <= view.height,
+      `y stayed in view: ${drop.y}`,
+    )
   }
 })
 
 test('wind blows the weather sideways and snow drifts on its own', () => {
   const blown = makeWeather({ kind: 'rain', intensity: 1, wind: 200 }, view, 5)
-  assert.ok(blown.every(drop => drop.vx > 0))
+  assert.ok(blown.every((drop) => drop.vx > 0))
   assert.ok(windAngle({ kind: 'rain', intensity: 1, wind: 200 }) > 0)
   assert.equal(windAngle({ kind: 'rain', intensity: 1, wind: 0 }), 0)
   assert.ok(
@@ -134,8 +151,15 @@ test('predator makes a player faint but never invisible', () => {
 
 test('berserker and flame god tint your own screen and nobody else’s', () => {
   for (const effect of ['Berserker', 'FlameGod']) {
-    assert.ok(bonusOverlay(effect, true).tint[3] > 0, `${effect} tints your screen`)
-    assert.equal(bonusOverlay(effect, false).tint[3], 0, `${effect} does not tint theirs`)
+    assert.ok(
+      bonusOverlay(effect, true).tint[3] > 0,
+      `${effect} tints your screen`,
+    )
+    assert.equal(
+      bonusOverlay(effect, false).tint[3],
+      0,
+      `${effect} does not tint theirs`,
+    )
   }
   assert.equal(bonusOverlay('Berserker', true).name, 'Berserker')
   assert.equal(bonusOverlay('FlameGod', true).name, 'Flame God')
@@ -185,13 +209,21 @@ test('damage feedback points at whoever shot you and fades', () => {
   const hit = damageFeedback(0.7, { x: -1, y: 0 }, 0)
   assert.ok(Math.abs(hit.arrow - Math.PI) < 1e-9)
   assert.equal(hit.alpha, 1)
-  assert.equal(damageFeedback(0.7, { x: -1, y: 0 }, 2).arrow, null, 'and stops pointing once it fades')
+  assert.equal(
+    damageFeedback(0.7, { x: -1, y: 0 }, 2).arrow,
+    null,
+    'and stops pointing once it fades',
+  )
 })
 
 test('damage from nowhere in particular has no arrow', () => {
   assert.equal(damageFeedback(0.5, null, 0).arrow, null)
   assert.equal(damageFeedback(0.5, { x: 0, y: 0 }, 0).arrow, null)
-  assert.equal(damageFeedback(5, null, 0).vignette, 1, 'and the vignette stays in range')
+  assert.equal(
+    damageFeedback(5, null, 0).vignette,
+    1,
+    'and the vignette stays in range',
+  )
 })
 
 test('an explosion flash fades over a few frames', () => {
@@ -203,21 +235,33 @@ test('an explosion flash fades over a few frames', () => {
 
 test('the drawing buffer follows the canvas, the device, and the player’s own scale', () => {
   const quality = defaultQuality()
-  assert.deepEqual(drawingBufferSize(800, 600, 1, quality), { width: 800, height: 600 })
-  assert.deepEqual(drawingBufferSize(800, 600, 2, quality), { width: 1600, height: 1200 })
+  assert.deepEqual(drawingBufferSize(800, 600, 1, quality), {
+    width: 800,
+    height: 600,
+  })
+  assert.deepEqual(drawingBufferSize(800, 600, 2, quality), {
+    width: 1600,
+    height: 1200,
+  })
   assert.deepEqual(
     drawingBufferSize(800, 600, 4, quality),
     { width: 1600, height: 1200 },
     'a phone reporting four times the pixels does not have four times the fill rate',
   )
-  assert.deepEqual(drawingBufferSize(800, 600, 1, { ...quality, resolutionScale: 0.5 }), {
-    width: 400,
-    height: 300,
-  })
+  assert.deepEqual(
+    drawingBufferSize(800, 600, 1, { ...quality, resolutionScale: 0.5 }),
+    {
+      width: 400,
+      height: 300,
+    },
+  )
 })
 
 test('a canvas of no size still has a buffer of at least one pixel', () => {
-  assert.deepEqual(drawingBufferSize(0, 0, 1, defaultQuality()), { width: 1, height: 1 })
+  assert.deepEqual(drawingBufferSize(0, 0, 1, defaultQuality()), {
+    width: 1,
+    height: 1,
+  })
 })
 
 test('the resolution scale is clamped in both directions', () => {
@@ -232,47 +276,81 @@ test('a lower particle level runs fewer particles but never none of them', () =>
   assert.ok(particleBudget('high') > particleBudget('normal'))
   assert.equal(particleLimit('normal', 400), 400)
   assert.equal(particleLimit('low', 400), 100)
-  assert.ok(lowQuality().particles !== 'off', 'a player who cannot see blood cannot see that they hit')
+  assert.ok(
+    lowQuality().particles !== 'off',
+    'a player who cannot see blood cannot see that they hit',
+  )
 })
 
 test('mipmaps are asked for only when a texture is actually minified', () => {
   const quality = defaultQuality()
   assert.equal(textureParameters(quality, true).generateMipmap, true)
-  assert.equal(textureParameters(quality, true).minFilter, 'LINEAR_MIPMAP_LINEAR')
+  assert.equal(
+    textureParameters(quality, true).minFilter,
+    'LINEAR_MIPMAP_LINEAR',
+  )
   assert.equal(textureParameters(quality, false).generateMipmap, false)
   assert.equal(textureParameters(quality, false).minFilter, 'LINEAR')
 })
 
 test('nearest filtering and the compatibility path turn mipmapping off', () => {
-  assert.equal(textureParameters({ ...defaultQuality(), filtering: 'nearest' }, true).magFilter, 'NEAREST')
   assert.equal(
-    textureParameters({ ...defaultQuality(), compatibility: true }, true).generateMipmap,
+    textureParameters({ ...defaultQuality(), filtering: 'nearest' }, true)
+      .magFilter,
+    'NEAREST',
+  )
+  assert.equal(
+    textureParameters({ ...defaultQuality(), compatibility: true }, true)
+      .generateMipmap,
     false,
   )
 })
 
 test('a machine that cannot manage the full path is given the simple one', () => {
-  assert.equal(needsCompatibility({ webgl2: true, maxTextureSize: 8192, floatTextures: true }), false)
+  assert.equal(
+    needsCompatibility({
+      webgl2: true,
+      maxTextureSize: 8192,
+      floatTextures: true,
+    }),
+    false,
+  )
   assert.equal(needsCompatibility({ webgl2: false }), true)
   assert.equal(needsCompatibility({ maxTextureSize: 1024 }), true)
   assert.equal(needsCompatibility({ floatTextures: false }), true)
-  assert.equal(needsCompatibility({}), false, 'an unknown machine is given the benefit of the doubt')
+  assert.equal(
+    needsCompatibility({}),
+    false,
+    'an unknown machine is given the benefit of the doubt',
+  )
 })
 
 test('quality steps down when frames are being missed, and never back up on its own', () => {
   const start = defaultQuality()
-  assert.deepEqual(adaptQuality(start, 60), start, 'a machine keeping up is left alone')
+  assert.deepEqual(
+    adaptQuality(start, 60),
+    start,
+    'a machine keeping up is left alone',
+  )
   const noWeather = adaptQuality(start, 40)
   assert.equal(noWeather.weather, false)
   const fewer = adaptQuality(noWeather, 20)
   assert.equal(fewer.particles, 'low')
   const smaller = adaptQuality(fewer, 20)
   assert.ok(smaller.resolutionScale < fewer.resolutionScale)
-  assert.deepEqual(adaptQuality(smaller, 60), smaller, 'and it does not climb back on its own')
+  assert.deepEqual(
+    adaptQuality(smaller, 60),
+    smaller,
+    'and it does not climb back on its own',
+  )
 })
 
 test('quality stops stepping down once there is nothing left to give up', () => {
-  const floor = { ...lowQuality(), resolutionScale: MIN_RESOLUTION_SCALE, particles: 'low' }
+  const floor = {
+    ...lowQuality(),
+    resolutionScale: MIN_RESOLUTION_SCALE,
+    particles: 'low',
+  }
   assert.deepEqual(adaptQuality(floor, 5), floor)
 })
 
@@ -280,17 +358,27 @@ test('the manifest is the only place a filename lives', () => {
   const manifest = defaultManifest()
   assert.equal(assetPath(manifest, 'soldier'), 'art/soldier.png')
   assert.equal(assetPath(manifest, 'nothing'), null)
-  assert.deepEqual(importedAssets(manifest), [], 'every stock asset was generated for this project')
+  assert.deepEqual(
+    importedAssets(manifest),
+    [],
+    'every stock asset was generated for this project',
+  )
 })
 
 test('a sprite is drawn at the size the manifest says', () => {
   const manifest = defaultManifest()
-  assert.deepEqual(drawSize(manifest, 'soldier', { width: 52, height: 48 }), { width: 52, height: 48 })
-  const scaled = applyMod(manifest, { name: 'big', defaultScale: 2 })
-  assert.deepEqual(drawSize(scaled.manifest, 'soldier', { width: 52, height: 48 }), {
-    width: 104,
-    height: 96,
+  assert.deepEqual(drawSize(manifest, 'soldier', { width: 52, height: 48 }), {
+    width: 52,
+    height: 48,
   })
+  const scaled = applyMod(manifest, { name: 'big', defaultScale: 2 })
+  assert.deepEqual(
+    drawSize(scaled.manifest, 'soldier', { width: 52, height: 48 }),
+    {
+      width: 104,
+      height: 96,
+    },
+  )
 })
 
 test('a mod may re-point and re-scale an asset that exists', () => {
@@ -302,21 +390,47 @@ test('a mod may re-point and re-scale an asset that exists', () => {
   assert.ok('manifest' in result)
   assert.equal(result.manifest.entries.soldier.path, 'mods/winter/gostek.png')
   assert.equal(result.manifest.entries.soldier.scale, 1.2)
-  assert.deepEqual(importedAssets(result.manifest), ['soldier'], 'and the replacement needs provenance')
+  assert.deepEqual(
+    importedAssets(result.manifest),
+    ['soldier'],
+    'and the replacement needs provenance',
+  )
 })
 
 test('a mod may not invent an asset, scale one out of all proportion, or escape its directory', () => {
   const manifest = defaultManifest()
-  assert.ok('errors' in applyMod(manifest, { name: 'm', scales: { nothing: 1 } }))
-  assert.ok('errors' in applyMod(manifest, { name: 'm', scales: { soldier: 99 } }))
+  assert.ok(
+    'errors' in applyMod(manifest, { name: 'm', scales: { nothing: 1 } }),
+  )
+  assert.ok(
+    'errors' in applyMod(manifest, { name: 'm', scales: { soldier: 99 } }),
+  )
   assert.ok('errors' in applyMod(manifest, { name: 'm', defaultScale: 0 }))
-  assert.ok('errors' in applyMod(manifest, { name: 'm', replace: { soldier: '../../etc/passwd' } }))
-  assert.ok('errors' in applyMod(manifest, { name: 'm', replace: { soldier: '/absolute.png' } }))
-  assert.ok('errors' in applyMod(manifest, { name: 'm', replace: { soldier: 'https://elsewhere/x.png' } }))
+  assert.ok(
+    'errors' in
+      applyMod(manifest, {
+        name: 'm',
+        replace: { soldier: '../../etc/passwd' },
+      }),
+  )
+  assert.ok(
+    'errors' in
+      applyMod(manifest, { name: 'm', replace: { soldier: '/absolute.png' } }),
+  )
+  assert.ok(
+    'errors' in
+      applyMod(manifest, {
+        name: 'm',
+        replace: { soldier: 'https://elsewhere/x.png' },
+      }),
+  )
 })
 
 test('a custom interface provides the slots it names and the built-in shapes cover the rest', () => {
-  const result = readInterfaceSkin({ name: 'neon', provides: ['hud-health', 'hud-crosshair'] })
+  const result = readInterfaceSkin({
+    name: 'neon',
+    provides: ['hud-health', 'hud-crosshair'],
+  })
   assert.ok('skin' in result)
   assert.equal(slotSource(result.skin, 'hud-health'), 'skin')
   assert.equal(slotSource(result.skin, 'hud-ammo'), 'builtin')

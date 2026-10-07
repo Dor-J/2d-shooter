@@ -32,8 +32,14 @@ export function polygonColor(kind: string): Rgba {
 ///
 /// The texture is projected from world coordinates rather than stretched to each triangle, so two
 /// polygons that meet show one continuous surface instead of a seam.
-export function textureCoords(polygon: MapPolygon, scale = 128): { u: number; v: number }[] {
-  return polygon.vertices.map(vertex => ({ u: vertex.x / scale, v: vertex.y / scale }))
+export function textureCoords(
+  polygon: MapPolygon,
+  scale = 128,
+): { u: number; v: number }[] {
+  return polygon.vertices.map((vertex) => ({
+    u: vertex.x / scale,
+    v: vertex.y / scale,
+  }))
 }
 
 export type Edge = { from: Vec2; to: Vec2; color: Rgba; width: number }
@@ -42,7 +48,10 @@ export type Edge = { from: Vec2; to: Vec2; color: Rgba; width: number }
 ///
 /// Only the edges that face the light are drawn, so a platform reads as solid ground with a top
 /// rather than as an outlined shape.
-export function edgesOf(polygon: MapPolygon, light: Vec2 = { x: 0, y: -1 }): Edge[] {
+export function edgesOf(
+  polygon: MapPolygon,
+  light: Vec2 = { x: 0, y: -1 },
+): Edge[] {
   const edges: Edge[] = []
   const vertices = polygon.vertices
   for (let i = 0; i < vertices.length; i += 1) {
@@ -111,8 +120,12 @@ export function parallaxPosition(scenery: Scenery, camera: Vec2): Vec2 {
 
 /// Scenery split into what is drawn before the soldiers and what is drawn after.
 export function sceneryLayers(scenery: Scenery[]) {
-  const background = scenery.filter(piece => !piece.foreground).sort((a, b) => a.parallax - b.parallax)
-  const foreground = scenery.filter(piece => piece.foreground).sort((a, b) => a.parallax - b.parallax)
+  const background = scenery
+    .filter((piece) => !piece.foreground)
+    .sort((a, b) => a.parallax - b.parallax)
+  const foreground = scenery
+    .filter((piece) => piece.foreground)
+    .sort((a, b) => a.parallax - b.parallax)
   return { background, foreground }
 }
 

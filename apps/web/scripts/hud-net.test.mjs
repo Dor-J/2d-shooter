@@ -26,7 +26,11 @@ test('a connection is graded from its round-trip time', () => {
   assert.equal(gradeForPing(90), 'fair')
   assert.equal(gradeForPing(180), 'poor')
   assert.equal(gradeForPing(400), 'bad')
-  assert.equal(gradeForPing(Number.NaN), 'bad', 'an unknown ping is not a good one')
+  assert.equal(
+    gradeForPing(Number.NaN),
+    'bad',
+    'an unknown ping is not a good one',
+  )
 })
 
 test('the ping dot grows as well as reddens, for a player who cannot rely on colour', () => {
@@ -48,7 +52,10 @@ test('ping is averaged over a window rather than taken from the last packet', ()
   meter.sample(400)
   assert.equal(meter.samples.length, 4, 'the window slides rather than growing')
   assert.equal(meter.worst, 400)
-  assert.ok(meter.jitter > 350, 'a link that spikes is not a steady link, whatever its average')
+  assert.ok(
+    meter.jitter > 350,
+    'a link that spikes is not a steady link, whatever its average',
+  )
 })
 
 test('a nonsense ping sample is ignored rather than poisoning the average', () => {
@@ -122,14 +129,38 @@ test('the whole network corner comes out of one call', () => {
 })
 
 const bounds = { minX: 0, minY: 0, maxX: 400, maxY: 200 }
-const panel = { id: 'minimap', x: 100, y: 50, width: 200, height: 200, layer: 0 }
+const panel = {
+  id: 'minimap',
+  x: 100,
+  y: 50,
+  width: 200,
+  height: 200,
+  layer: 0,
+}
 
 test('map bounds come from the polygons rather than being declared twice', () => {
   const polygons = [
-    { vertices: [{ x: -10, y: 5 }, { x: 40, y: 5 }, { x: 40, y: 30 }] },
-    { vertices: [{ x: 90, y: -20 }, { x: 120, y: 0 }, { x: 120, y: 60 }] },
+    {
+      vertices: [
+        { x: -10, y: 5 },
+        { x: 40, y: 5 },
+        { x: 40, y: 30 },
+      ],
+    },
+    {
+      vertices: [
+        { x: 90, y: -20 },
+        { x: 120, y: 0 },
+        { x: 120, y: 60 },
+      ],
+    },
   ]
-  assert.deepEqual(boundsOf(polygons), { minX: -10, minY: -20, maxX: 120, maxY: 60 })
+  assert.deepEqual(boundsOf(polygons), {
+    minX: -10,
+    minY: -20,
+    maxX: 120,
+    maxY: 60,
+  })
 })
 
 test('a map with no polygons yet does not produce an infinite rectangle', () => {
@@ -140,7 +171,11 @@ test('the minimap letterboxes the map rather than stretching it', () => {
   const topLeft = projectToMinimap({ x: 0, y: 0 }, bounds, panel)
   const bottomRight = projectToMinimap({ x: 400, y: 200 }, bounds, panel)
   assert.equal(bottomRight.x - topLeft.x, 200, 'the wide side fills the panel')
-  assert.equal(bottomRight.y - topLeft.y, 100, 'and the other keeps its proportion')
+  assert.equal(
+    bottomRight.y - topLeft.y,
+    100,
+    'and the other keeps its proportion',
+  )
   assert.equal(topLeft.y, 100, 'with the difference split as a margin')
 })
 
@@ -168,7 +203,7 @@ test('the minimap never shows somebody the screen is hiding', () => {
     { id: 3, pos: { x: 20, y: 20 }, team: 2, hp: 0 },
   ]
   assert.deepEqual(
-    blips(players, bounds, panel, 1).map(blip => blip.id),
+    blips(players, bounds, panel, 1).map((blip) => blip.id),
     [1],
   )
 })
@@ -180,14 +215,24 @@ test('a point outside the map is known to be outside rather than pinned to the e
 })
 
 test('the sniper line is drawn only for a weapon that has one', () => {
-  assert.equal(sniperLine({ x: 0, y: 0 }, { x: 100, y: 0 }, { enabled: false }), null)
-  const line = sniperLine({ x: 0, y: 0 }, { x: 100, y: 0 }, { enabled: true, range: 500 })
+  assert.equal(
+    sniperLine({ x: 0, y: 0 }, { x: 100, y: 0 }, { enabled: false }),
+    null,
+  )
+  const line = sniperLine(
+    { x: 0, y: 0 },
+    { x: 100, y: 0 },
+    { enabled: true, range: 500 },
+  )
   assert.deepEqual(line.to, { x: 500, y: 0 })
   assert.equal(line.from.x, 0)
 })
 
 test('the sniper line has no direction when the cursor is on the muzzle', () => {
-  assert.equal(sniperLine({ x: 5, y: 5 }, { x: 5, y: 5 }, { enabled: true }), null)
+  assert.equal(
+    sniperLine({ x: 5, y: 5 }, { x: 5, y: 5 }, { enabled: true }),
+    null,
+  )
 })
 
 test('the crosshair opens with the same inaccuracy the server shot with', () => {

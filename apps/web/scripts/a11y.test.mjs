@@ -5,7 +5,10 @@ import { readFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const app = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), '../src/App.vue'), 'utf8')
+const app = readFileSync(
+  resolve(dirname(fileURLToPath(import.meta.url)), '../src/App.vue'),
+  'utf8',
+)
 
 test('interactive lobby and match controls keep accessible names', () => {
   for (const label of [

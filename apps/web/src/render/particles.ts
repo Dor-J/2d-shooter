@@ -20,7 +20,11 @@ export type Particle = {
   size: number
 }
 
-export type ParticleFieldOptions = { limit?: number; gravity?: number; budget?: number }
+export type ParticleFieldOptions = {
+  limit?: number
+  gravity?: number
+  budget?: number
+}
 
 /**
  * Cosmetic particles derived from authoritative damage events. A seeded generator keeps the spray
@@ -54,7 +58,11 @@ export class ParticleField {
 
   budget: number
 
-  constructor({ limit = 400, gravity = 620, budget = 1 }: ParticleFieldOptions = {}) {
+  constructor({
+    limit = 400,
+    gravity = 620,
+    budget = 1,
+  }: ParticleFieldOptions = {}) {
     this.limit = limit
     this.gravity = gravity
     this.budget = budget
@@ -89,7 +97,10 @@ export class ParticleField {
   ) {
     const random = seededRandom(seed)
     const count = this.#count(
-      Math.min(MAX_BLOOD, Math.max(MIN_BLOOD, Math.round(amount * BLOOD_PER_DAMAGE))),
+      Math.min(
+        MAX_BLOOD,
+        Math.max(MIN_BLOOD, Math.round(amount * BLOOD_PER_DAMAGE)),
+      ),
     )
     const length = Math.hypot(direction.x, direction.y) || 1
     const nx = direction.x / length
@@ -102,7 +113,9 @@ export class ParticleField {
         x: position.x,
         y: position.y,
         vx: (nx * Math.cos(spread) - ny * Math.sin(spread)) * speed,
-        vy: (nx * Math.sin(spread) + ny * Math.cos(spread)) * speed - random() * 60,
+        vy:
+          (nx * Math.sin(spread) + ny * Math.cos(spread)) * speed -
+          random() * 60,
         life: 0.5 + random() * 0.7,
         maxLife: 1.2,
         size: 1.5 + random() * 2.5,
@@ -111,7 +124,11 @@ export class ParticleField {
   }
 
   /** Gore from a body torn apart, thrown outward on top of the body's own velocity. */
-  emitGibs(position: { x: number; y: number }, velocity: { x: number; y: number }, seed: number) {
+  emitGibs(
+    position: { x: number; y: number },
+    velocity: { x: number; y: number },
+    seed: number,
+  ) {
     const random = seededRandom(seed)
     const gibs = this.#count(GIB_COUNT)
     for (let i = 0; i < gibs; i += 1) {
@@ -156,9 +173,12 @@ export class ParticleField {
     })
   }
 
-
   /** Sparks where a round struck something that is not a person. */
-  emitSparks(position: { x: number; y: number }, normal: { x: number; y: number }, seed: number) {
+  emitSparks(
+    position: { x: number; y: number },
+    normal: { x: number; y: number },
+    seed: number,
+  ) {
     const random = seededRandom(seed)
     const count = this.#count(SPARK_COUNT)
     const length = Math.hypot(normal.x, normal.y) || 1
@@ -217,7 +237,11 @@ export class ParticleField {
   }
 
   /** An explosion: one bright core, a ring of fire, and the smoke it leaves behind. */
-  emitExplosion(position: { x: number; y: number }, radius: number, seed: number) {
+  emitExplosion(
+    position: { x: number; y: number },
+    radius: number,
+    seed: number,
+  ) {
     const random = seededRandom(seed)
     this.#add({
       kind: 'explosion',
@@ -248,7 +272,10 @@ export class ParticleField {
   }
 
   /** The streak a round leaves behind it, which lives a couple of frames and no longer. */
-  emitTrail(position: { x: number; y: number }, velocity: { x: number; y: number }) {
+  emitTrail(
+    position: { x: number; y: number },
+    velocity: { x: number; y: number },
+  ) {
     if (this.budget <= 0) return
     this.#add({
       kind: 'trail',
@@ -278,6 +305,6 @@ export class ParticleField {
       particle.y += particle.vy * dt
       particle.life -= dt
     }
-    this.particles = this.particles.filter(particle => particle.life > 0)
+    this.particles = this.particles.filter((particle) => particle.life > 0)
   }
 }

@@ -32,7 +32,7 @@ export function defaultManifest(): AssetManifest {
   ]
   return {
     version: 1,
-    entries: Object.fromEntries(entries.map(asset => [asset.id, asset])),
+    entries: Object.fromEntries(entries.map((asset) => [asset.id, asset])),
   }
 }
 
@@ -78,21 +78,35 @@ export function applyMod(
   const entries: Record<string, AssetEntry> = {}
   const base = mod.defaultScale ?? 1
   if (!Number.isFinite(base) || base < MIN_MOD_SCALE || base > MAX_MOD_SCALE) {
-    errors.push({ asset: '(default)', reason: `scale must be between ${MIN_MOD_SCALE} and ${MAX_MOD_SCALE}` })
+    errors.push({
+      asset: '(default)',
+      reason: `scale must be between ${MIN_MOD_SCALE} and ${MAX_MOD_SCALE}`,
+    })
   }
   for (const [id, scale] of Object.entries(mod.scales ?? {})) {
     if (!manifest.entries[id]) {
       errors.push({ asset: id, reason: 'no such asset' })
-    } else if (!Number.isFinite(scale) || scale < MIN_MOD_SCALE || scale > MAX_MOD_SCALE) {
-      errors.push({ asset: id, reason: `scale must be between ${MIN_MOD_SCALE} and ${MAX_MOD_SCALE}` })
+    } else if (
+      !Number.isFinite(scale) ||
+      scale < MIN_MOD_SCALE ||
+      scale > MAX_MOD_SCALE
+    ) {
+      errors.push({
+        asset: id,
+        reason: `scale must be between ${MIN_MOD_SCALE} and ${MAX_MOD_SCALE}`,
+      })
     }
   }
   for (const id of Object.keys(mod.replace ?? {})) {
-    if (!manifest.entries[id]) errors.push({ asset: id, reason: 'no such asset' })
+    if (!manifest.entries[id])
+      errors.push({ asset: id, reason: 'no such asset' })
   }
   for (const [id, path] of Object.entries(mod.replace ?? {})) {
     if (path.includes('..') || path.startsWith('/') || /^[a-z]+:/i.test(path)) {
-      errors.push({ asset: id, reason: 'a replacement must stay inside the mod directory' })
+      errors.push({
+        asset: id,
+        reason: 'a replacement must stay inside the mod directory',
+      })
     }
   }
   if (errors.length > 0) return { errors }
@@ -113,8 +127,8 @@ export function applyMod(
 /// has to account for.
 export function importedAssets(manifest: AssetManifest): string[] {
   return Object.values(manifest.entries)
-    .filter(asset => !asset.generated)
-    .map(asset => asset.id)
+    .filter((asset) => !asset.generated)
+    .map((asset) => asset.id)
     .sort()
 }
 
@@ -137,27 +151,52 @@ export const INTERFACE_SLOTS = [
   'hud-minimap',
 ] as const
 
-export function readInterfaceSkin(source: unknown): { skin: InterfaceSkin } | { errors: ModError[] } {
+export function readInterfaceSkin(
+  source: unknown,
+): { skin: InterfaceSkin } | { errors: ModError[] } {
   const data = source as { name?: unknown; provides?: unknown }
-  if (typeof data !== 'object' || data === null || !Array.isArray(data.provides)) {
-    return { errors: [{ asset: '(document)', reason: 'expected a name and a list of provided slots' }] }
+  if (
+    typeof data !== 'object' ||
+    data === null ||
+    !Array.isArray(data.provides)
+  ) {
+    return {
+      errors: [
+        {
+          asset: '(document)',
+          reason: 'expected a name and a list of provided slots',
+        },
+      ],
+    }
   }
   const errors: ModError[] = []
   const provides: string[] = []
   for (const slot of data.provides as unknown[]) {
-    if (typeof slot !== 'string' || !(INTERFACE_SLOTS as readonly string[]).includes(slot)) {
-      errors.push({ asset: String(slot), reason: 'not an interface slot this game draws' })
+    if (
+      typeof slot !== 'string' ||
+      !(INTERFACE_SLOTS as readonly string[]).includes(slot)
+    ) {
+      errors.push({
+        asset: String(slot),
+        reason: 'not an interface slot this game draws',
+      })
       continue
     }
     provides.push(slot)
   }
   if (errors.length > 0) return { errors }
   return {
-    skin: { name: typeof data.name === 'string' && data.name ? data.name : 'custom', provides },
+    skin: {
+      name: typeof data.name === 'string' && data.name ? data.name : 'custom',
+      provides,
+    },
   }
 }
 
 /// Whether a slot is drawn by a skin or by the built-in shapes.
-export function slotSource(skin: InterfaceSkin | null, slot: string): 'skin' | 'builtin' {
+export function slotSource(
+  skin: InterfaceSkin | null,
+  slot: string,
+): 'skin' | 'builtin' {
   return skin && skin.provides.includes(slot) ? 'skin' : 'builtin'
 }

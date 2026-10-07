@@ -39,9 +39,12 @@ export type PlayerStanding = {
 ///
 /// Ranking is by the score the mode counts, with deaths breaking ties, so a player who is level on
 /// kills but has died less is ahead — the same order the scoreboard uses.
-export function standingFor(rows: WireStanding[], id: number): PlayerStanding | null {
+export function standingFor(
+  rows: WireStanding[],
+  id: number,
+): PlayerStanding | null {
   const ordered = rankedRows(rows)
-  const index = ordered.findIndex(row => row.id === id)
+  const index = ordered.findIndex((row) => row.id === id)
   if (index < 0) return null
   const row = ordered[index]
   const score = scoreOf(row)
@@ -52,7 +55,10 @@ export function standingFor(rows: WireStanding[], id: number): PlayerStanding | 
     score,
     deaths: row.deaths,
     behind,
-    text: behind === null ? `1st · ${score}` : `${ordinal(index + 1)} · ${score} (−${behind})`,
+    text:
+      behind === null
+        ? `1st · ${score}`
+        : `${ordinal(index + 1)} · ${score} (−${behind})`,
   }
 }
 
@@ -62,7 +68,9 @@ function scoreOf(row: WireStanding | undefined): number {
 }
 
 export function rankedRows<T extends WireStanding>(rows: T[]): T[] {
-  return [...rows].sort((a, b) => scoreOf(b) - scoreOf(a) || a.deaths - b.deaths || a.id - b.id)
+  return [...rows].sort(
+    (a, b) => scoreOf(b) - scoreOf(a) || a.deaths - b.deaths || a.id - b.id,
+  )
 }
 
 export function ordinal(rank: number): string {
@@ -97,7 +105,11 @@ export type TeamScore = {
 ///
 /// `scores` is the server's array with index 0 unused, exactly as it arrives, so a mode with two
 /// teams shows two and one with four shows four without a branch per mode.
-export function teamScores(scores: number[] | undefined, teams: number, own?: number): TeamScore[] {
+export function teamScores(
+  scores: number[] | undefined,
+  teams: number,
+  own?: number,
+): TeamScore[] {
   const counted = Math.min(4, Math.max(0, Math.trunc(teams)))
   const rows: TeamScore[] = []
   let best = -Infinity
@@ -130,7 +142,13 @@ export type FlagIndicator = {
 
 type FlagLike = {
   kind: string
-  state: { Base?: unknown; Carried?: { by: number } | number; Dropped?: { ticks_left?: number } } | string
+  state:
+    | {
+        Base?: unknown
+        Carried?: { by: number } | number
+        Dropped?: { ticks_left?: number }
+      }
+    | string
   team?: number
 }
 
@@ -138,17 +156,26 @@ type FlagLike = {
 ///
 /// A flag that is not at home is the single most important thing on a CTF screen, so it is stated
 /// plainly rather than left to a small icon.
-export function flagIndicators(flags: FlagLike[], ownTeam: number | undefined): FlagIndicator[] {
-  return flags.map(flag => {
-    const team = flag.team ?? (flag.kind === 'Alpha' ? 1 : flag.kind === 'Bravo' ? 2 : 0)
+export function flagIndicators(
+  flags: FlagLike[],
+  ownTeam: number | undefined,
+): FlagIndicator[] {
+  return flags.map((flag) => {
+    const team =
+      flag.team ?? (flag.kind === 'Alpha' ? 1 : flag.kind === 'Bravo' ? 2 : 0)
     const mine = ownTeam !== undefined && team === ownTeam
     const raw = flag.state
-    const carried = typeof raw === 'object' && raw !== null ? raw.Carried : undefined
-    const dropped = typeof raw === 'object' && raw !== null ? raw.Dropped : undefined
+    const carried =
+      typeof raw === 'object' && raw !== null ? raw.Carried : undefined
+    const dropped =
+      typeof raw === 'object' && raw !== null ? raw.Dropped : undefined
     let state: FlagIndicator['state'] = 'home'
     if (carried !== undefined) state = mine ? 'taken' : 'carried'
     else if (dropped !== undefined) state = 'dropped'
-    const ticks = dropped && typeof dropped.ticks_left === 'number' ? dropped.ticks_left : null
+    const ticks =
+      dropped && typeof dropped.ticks_left === 'number'
+        ? dropped.ticks_left
+        : null
     const returnIn = ticks === null ? null : Math.max(0, Math.ceil(ticks / 60))
     const text =
       state === 'home'
@@ -164,17 +191,23 @@ export function flagIndicators(flags: FlagLike[], ownTeam: number | undefined): 
 
 /// Whether the local player is the one carrying something, which the HUD calls out in the middle of
 /// the screen rather than in a corner.
-export function carrierBanner(indicators: FlagIndicator[], carrying: boolean): string | null {
+export function carrierBanner(
+  indicators: FlagIndicator[],
+  carrying: boolean,
+): string | null {
   if (!carrying) return null
-  const stolen = indicators.find(indicator => indicator.state === 'carried')
+  const stolen = indicators.find((indicator) => indicator.state === 'carried')
   if (stolen) return `You have the ${stolen.flag} flag — take it home`
-  return carrying ? 'You are Rambo — only your kills count' : 'You have the objective'
+  return carrying
+    ? 'You are Rambo — only your kills count'
+    : 'You have the objective'
 }
 
 /// The respawn clock, in whole seconds, as a line rather than a bare number.
 export function respawnLine(ticks: number, protectedTicks = 0): string | null {
   if (ticks > 0) return `Respawning in ${Math.ceil(ticks / 60)}`
-  if (protectedTicks > 0) return `Protected for ${Math.ceil(protectedTicks / 60)}`
+  if (protectedTicks > 0)
+    return `Protected for ${Math.ceil(protectedTicks / 60)}`
   return null
 }
 
@@ -203,7 +236,10 @@ export function weaponPanel(
   const name = names[primary] ?? 'Unarmed'
   return {
     primary: name,
-    secondary: secondary === null || secondary === undefined ? null : (names[secondary] ?? null),
+    secondary:
+      secondary === null || secondary === undefined
+        ? null
+        : (names[secondary] ?? null),
     grenades: clusters > 0 ? clusters : Math.max(0, Math.trunc(grenades)),
     grenadeKind: clusters > 0 ? GRENADE_NAMES.cluster : GRENADE_NAMES.frag,
     sprite: weaponSprite(name),
@@ -212,7 +248,10 @@ export function weaponPanel(
 
 /// The sprite id for a weapon name, which is the lower-case name with the spaces taken out.
 export function weaponSprite(name: string): string {
-  return `weapon-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`
+  return `weapon-${name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')}`
 }
 
 export type ServerMessage = {
@@ -230,7 +269,10 @@ export class MessageLog {
   limit: number
   ttl: number
 
-  constructor({ limit = 6, ttl = 12000 }: { limit?: number; ttl?: number } = {}) {
+  constructor({
+    limit = 6,
+    ttl = 12000,
+  }: { limit?: number; ttl?: number } = {}) {
     this.limit = limit
     this.ttl = ttl
   }
@@ -238,12 +280,13 @@ export class MessageLog {
   push(text: string, tone: ServerMessage['tone'], at: number) {
     if (!text) return
     this.messages.push({ text, tone, at })
-    if (this.messages.length > this.limit) this.messages.splice(0, this.messages.length - this.limit)
+    if (this.messages.length > this.limit)
+      this.messages.splice(0, this.messages.length - this.limit)
   }
 
   /// The messages still worth showing at this moment.
   visible(now: number): ServerMessage[] {
-    return this.messages.filter(message => now - message.at < this.ttl)
+    return this.messages.filter((message) => now - message.at < this.ttl)
   }
 
   clear() {

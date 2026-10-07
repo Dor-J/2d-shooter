@@ -4,19 +4,29 @@ import test from 'node:test'
 import { MapCache, mapCacheKey } from '../src/maps/cache.ts'
 import { DownloadError, MapDownload } from '../src/maps/download.ts'
 
-const hash = bytes => [...createHash('sha256').update(bytes).digest()]
+const hash = (bytes) => [...createHash('sha256').update(bytes).digest()]
 const pms = new Uint8Array([1, 2, 3])
 const texture = new Uint8Array([4, 5])
 const manifest = {
-  format_version: 1, name: 'Original', map_hash: 42, pms_sha256: hash(pms),
-  assets: [{ path: 'textures/original.png', sha256: hash(texture), bytes: texture.length }],
-  modes: ['deathmatch'], preview: null,
+  format_version: 1,
+  name: 'Original',
+  map_hash: 42,
+  pms_sha256: hash(pms),
+  assets: [
+    {
+      path: 'textures/original.png',
+      sha256: hash(texture),
+      bytes: texture.length,
+    },
+  ],
+  modes: ['deathmatch'],
+  preview: null,
 }
 
 test('download reports progress and verifies every file', async () => {
   const download = new MapDownload(manifest, 5)
   download.append('maps/Original.pms', 0, 3, [1, 2])
-  assert.equal(download.progress, .4)
+  assert.equal(download.progress, 0.4)
   download.append('maps/Original.pms', 2, 3, [3])
   download.append('textures/original.png', 0, 2, [4, 5])
   assert.equal(download.progress, 1)
@@ -25,7 +35,10 @@ test('download reports progress and verifies every file', async () => {
 
 test('download rejects bad offsets, checksums, missing assets, and cancellation', async () => {
   const offset = new MapDownload(manifest, 5)
-  assert.throws(() => offset.append('maps/Original.pms', 1, 3, [1]), /invalid_chunk_offset/)
+  assert.throws(
+    () => offset.append('maps/Original.pms', 1, 3, [1]),
+    /invalid_chunk_offset/,
+  )
   const bad = new MapDownload(manifest, 5)
   bad.append('maps/Original.pms', 0, 3, [9, 9, 9])
   await assert.rejects(bad.finish(), /checksum_mismatch/)

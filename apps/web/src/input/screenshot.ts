@@ -1,5 +1,7 @@
 export type BlobLike = { size: number }
-export type CanvasLike = { toBlob(callback: (blob: BlobLike | null) => void, type?: string): void }
+export type CanvasLike = {
+  toBlob(callback: (blob: BlobLike | null) => void, type?: string): void
+}
 export type Saver = (blob: BlobLike, filename: string) => void
 
 const pad = (value: number, width = 2) => String(value).padStart(width, '0')
@@ -12,10 +14,14 @@ export function screenshotFilename(date = new Date()): string {
 }
 
 /** Encodes the arena canvas and hands the blob to the saver; returns the filename it will use. */
-export function captureCanvas(canvas: CanvasLike | null | undefined, save: Saver, now = new Date()): string | null {
+export function captureCanvas(
+  canvas: CanvasLike | null | undefined,
+  save: Saver,
+  now = new Date(),
+): string | null {
   if (!canvas || typeof canvas.toBlob !== 'function') return null
   const filename = screenshotFilename(now)
-  canvas.toBlob(blob => {
+  canvas.toBlob((blob) => {
     if (blob) save(blob, filename)
   }, 'image/png')
   return filename

@@ -24,7 +24,7 @@ const rows = [
 
 test('players are ranked by score, with fewer deaths breaking a tie', () => {
   assert.deepEqual(
-    rankedRows(rows).map(row => row.id),
+    rankedRows(rows).map((row) => row.id),
     [2, 3, 1],
   )
 })
@@ -76,7 +76,10 @@ test('ordinals read the way English does, including the teens', () => {
 
 test('the limit line names whatever actually ends this match', () => {
   assert.equal(limitLine({ kills: 30 }), 'First to 30 kills')
-  assert.equal(limitLine({ captures: 5, time: 900 }), 'First to 5 captures · 15 min')
+  assert.equal(
+    limitLine({ captures: 5, time: 900 }),
+    'First to 5 captures · 15 min',
+  )
   assert.equal(limitLine({}), 'No limit')
   assert.equal(limitLine(undefined), '')
 })
@@ -85,11 +88,11 @@ test('a two-team mode shows two counters and a four-team mode shows four', () =>
   assert.equal(teamScores([0, 3, 5], 2).length, 2)
   const four = teamScores([0, 1, 2, 3, 4], 4)
   assert.deepEqual(
-    four.map(row => row.name),
+    four.map((row) => row.name),
     ['Alpha', 'Bravo', 'Charlie', 'Delta'],
   )
   assert.deepEqual(
-    four.map(row => row.score),
+    four.map((row) => row.score),
     [1, 2, 3, 4],
   )
 })
@@ -104,7 +107,7 @@ test('the leading team and your own team are both called out', () => {
 
 test('a missing score array reads as nil-all rather than crashing the HUD', () => {
   assert.deepEqual(
-    teamScores(undefined, 2).map(row => row.score),
+    teamScores(undefined, 2).map((row) => row.score),
     [0, 0],
   )
 })
@@ -120,7 +123,11 @@ test('a flag at home says so and a stolen one is distinguished from a taken one'
   assert.equal(indicators[1].text, 'Bravo flag taken')
 
   const fromBravo = flagIndicators(flags, 2)
-  assert.equal(fromBravo[1].state, 'taken', 'the same flag is stolen when it is yours')
+  assert.equal(
+    fromBravo[1].state,
+    'taken',
+    'the same flag is stolen when it is yours',
+  )
   assert.equal(fromBravo[1].text, 'Bravo flag stolen')
 })
 
@@ -135,8 +142,14 @@ test('a dropped flag counts down to its own return', () => {
 })
 
 test('carrying the objective is said in the middle of the screen, not left to an icon', () => {
-  const indicators = flagIndicators([{ kind: 'Bravo', state: { Carried: { by: 1 } }, team: 2 }], 1)
-  assert.equal(carrierBanner(indicators, true), 'You have the Bravo flag — take it home')
+  const indicators = flagIndicators(
+    [{ kind: 'Bravo', state: { Carried: { by: 1 } }, team: 2 }],
+    1,
+  )
+  assert.equal(
+    carrierBanner(indicators, true),
+    'You have the Bravo flag — take it home',
+  )
   assert.equal(carrierBanner(indicators, false), null)
   assert.equal(carrierBanner([], true), 'You are Rambo — only your kills count')
 })
@@ -177,10 +190,14 @@ test('server messages and team chat are kept apart by tone, not by a typed prefi
   log.push('regrouping', 'team', 0)
   log.push('(team) not really', 'all', 0)
   assert.deepEqual(
-    log.visible(0).map(message => message.tone),
+    log.visible(0).map((message) => message.tone),
     ['server', 'team', 'all'],
   )
-  assert.equal(log.visible(0)[2].tone, 'all', 'typing the word team does not make it team chat')
+  assert.equal(
+    log.visible(0)[2].tone,
+    'all',
+    'typing the word team does not make it team chat',
+  )
 })
 
 test('the message log forgets old lines and never grows past its limit', () => {
@@ -190,7 +207,7 @@ test('the message log forgets old lines and never grows past its limit', () => {
   log.push('three', 'server', 0)
   assert.equal(log.messages.length, 2)
   assert.deepEqual(
-    log.visible(0).map(message => message.text),
+    log.visible(0).map((message) => message.text),
     ['two', 'three'],
   )
   assert.deepEqual(log.visible(5000), [])

@@ -27,7 +27,11 @@ test('nothing running shows no panel at all', () => {
 test('a running bonus is named and counted down in whole seconds', () => {
   assert.ok(hasBonus(effect('Berserker', 900)))
   assert.equal(secondsLeft(effect('Berserker', 900)), 15)
-  assert.equal(secondsLeft(effect('Predator', 61)), 2, 'rounded up, never a false zero')
+  assert.equal(
+    secondsLeft(effect('Predator', 61)),
+    2,
+    'rounded up, never a false zero',
+  )
   assert.equal(secondsLeft(effect('Predator', 1)), 1)
   assert.equal(bonusText(effect('FlameGod', 600)), 'Flame God · 10s')
 })

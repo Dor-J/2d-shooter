@@ -35,7 +35,10 @@ export function killRatio(kills: number, deaths: number): string {
 }
 
 /// Every row of the big scoreboard, ranked, with the local player marked.
-export function scoreboardRows(players: ScoreboardPlayer[], self: number): ScoreboardRow[] {
+export function scoreboardRows(
+  players: ScoreboardPlayer[],
+  self: number,
+): ScoreboardRow[] {
   return rankedRows(players).map((player, index) => ({
     id: player.id,
     name: player.name,
@@ -56,7 +59,7 @@ export function scoreboardRows(players: ScoreboardPlayer[], self: number): Score
 export function teamSections(rows: ScoreboardRow[], teams: number) {
   const sections = []
   for (let team = 1; team <= teams; team += 1) {
-    const members = rows.filter(row => row.team === team)
+    const members = rows.filter((row) => row.team === team)
     sections.push({
       team,
       name: teamName(team),
@@ -65,7 +68,7 @@ export function teamSections(rows: ScoreboardRow[], teams: number) {
       score: members.reduce((sum, row) => sum + row.points, 0),
     })
   }
-  const unassigned = rows.filter(row => row.team === 0 || row.team > teams)
+  const unassigned = rows.filter((row) => row.team === 0 || row.team > teams)
   if (unassigned.length > 0) {
     sections.push({
       team: 0,
@@ -123,7 +126,10 @@ export type EndOfRound = {
 }
 
 /// The end-of-round screen: who won, by how much, and how long until the next map.
-export function endScreen(result: EndOfRound, rows: ScoreboardRow[]): EndScreen {
+export function endScreen(
+  result: EndOfRound,
+  rows: ScoreboardRow[],
+): EndScreen {
   const title =
     result.outcome === 'draw'
       ? 'Draw'
@@ -146,7 +152,10 @@ export function endScreen(result: EndOfRound, rows: ScoreboardRow[]): EndScreen 
     subtitle,
     rows,
     podium: rows.slice(0, 3),
-    nextIn: result.nextMapIn === undefined ? null : Math.max(0, Math.ceil(result.nextMapIn / 60)),
+    nextIn:
+      result.nextMapIn === undefined
+        ? null
+        : Math.max(0, Math.ceil(result.nextMapIn / 60)),
   }
 }
 
@@ -160,11 +169,16 @@ export type WeaponRow = {
   rank: number
 }
 
-type WireWeaponStat = { weapon: string; kills?: number; shots?: number; hits?: number }
+type WireWeaponStat = {
+  weapon: string
+  kills?: number
+  shots?: number
+  hits?: number
+}
 
 /// The weapon-statistics screen, ordered by what actually worked.
 export function weaponScreen(stats: WireWeaponStat[] | undefined): WeaponRow[] {
-  const rows = (stats ?? []).map(stat => {
+  const rows = (stats ?? []).map((stat) => {
     const shots = stat.shots ?? 0
     const hits = stat.hits ?? 0
     return {
@@ -176,7 +190,12 @@ export function weaponScreen(stats: WireWeaponStat[] | undefined): WeaponRow[] {
       rank: 0,
     }
   })
-  rows.sort((a, b) => b.kills - a.kills || b.accuracy - a.accuracy || a.weapon.localeCompare(b.weapon))
+  rows.sort(
+    (a, b) =>
+      b.kills - a.kills ||
+      b.accuracy - a.accuracy ||
+      a.weapon.localeCompare(b.weapon),
+  )
   return rows.map((row, index) => ({ ...row, rank: index + 1 }))
 }
 
@@ -207,10 +226,17 @@ export function spectatorHud(
   players: { id: number; name: string; team?: number }[],
 ): SpectatorHud | null {
   if (!state) return null
-  const free = state.free === true || state.following === null || state.following === undefined
-  const target = free ? null : players.find(player => player.id === state.following)
+  const free =
+    state.free === true ||
+    state.following === null ||
+    state.following === undefined
+  const target = free
+    ? null
+    : players.find((player) => player.id === state.following)
   return {
-    following: target ? { id: target.id, name: target.name, team: target.team ?? 0 } : null,
+    following: target
+      ? { id: target.id, name: target.name, team: target.team ?? 0 }
+      : null,
     mode: free ? 'free' : 'follow',
     hint: free
       ? 'Free camera · arrows to move · F to follow a player'

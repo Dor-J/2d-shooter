@@ -43,8 +43,19 @@ function ratio(value: number, of: number): number {
 /// The red health bar.
 export function healthGauge(hp: number, max = 100): Gauge {
   const fill = ratio(hp, max)
-  const color = fill <= CRITICAL_HEALTH ? HEALTH_CRITICAL : fill <= HURT_HEALTH ? HEALTH_HURT : HEALTH_FULL
-  return { id: 'health', fill, color, track: TRACK, label: `${Math.max(0, Math.round(hp))} health` }
+  const color =
+    fill <= CRITICAL_HEALTH
+      ? HEALTH_CRITICAL
+      : fill <= HURT_HEALTH
+        ? HEALTH_HURT
+        : HEALTH_FULL
+  return {
+    id: 'health',
+    fill,
+    color,
+    track: TRACK,
+    label: `${Math.max(0, Math.round(hp))} health`,
+  }
 }
 
 /// The blue jet-fuel bar. An empty tank is greyed rather than hidden, so a player can see why they
@@ -97,7 +108,9 @@ export function ammoGauge(state: AmmoState): Gauge {
 export function bulletCountText(state: AmmoState): string {
   if (state.reloadTimer > 0) return '— / —'
   const ammo = Math.max(0, Math.trunc(state.ammo))
-  return ammo === 0 ? 'EMPTY' : `${ammo} / ${Math.max(0, Math.trunc(state.magazine))}`
+  return ammo === 0
+    ? 'EMPTY'
+    : `${ammo} / ${Math.max(0, Math.trunc(state.magazine))}`
 }
 
 /// The thin bar that fills between shots, so a player can time a burst.
@@ -176,9 +189,16 @@ export function playerTint(team: number | undefined, isSelf: boolean): Rgba {
 ///
 /// Damage feedback fades with the hit and then holds at a floor while health is critical, so a
 /// player who is one shot from dead never stops being told.
-export function damageVignette(hp: number, sinceHitSeconds: number, max = 100): number {
+export function damageVignette(
+  hp: number,
+  sinceHitSeconds: number,
+  max = 100,
+): number {
   const health = ratio(hp, max)
   const flash = Math.max(0, 1 - Math.max(0, sinceHitSeconds) / 0.6)
-  const critical = health <= CRITICAL_HEALTH && hp > 0 ? (CRITICAL_HEALTH - health) / CRITICAL_HEALTH : 0
+  const critical =
+    health <= CRITICAL_HEALTH && hp > 0
+      ? (CRITICAL_HEALTH - health) / CRITICAL_HEALTH
+      : 0
   return Math.min(1, Math.max(flash * 0.7, critical * 0.55))
 }

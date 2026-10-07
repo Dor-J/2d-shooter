@@ -15,8 +15,14 @@ export const GAMEPAD_AXES = 4
 
 /** Every binding code a gamepad can produce, for the rebinding UI. */
 export function gamepadCodes(): string[] {
-  const buttons = Array.from({ length: GAMEPAD_BUTTONS }, (_, index) => `Button${index}`)
-  const axes = Array.from({ length: GAMEPAD_AXES }, (_, index) => [`Axis${index}-`, `Axis${index}+`]).flat()
+  const buttons = Array.from(
+    { length: GAMEPAD_BUTTONS },
+    (_, index) => `Button${index}`,
+  )
+  const axes = Array.from({ length: GAMEPAD_AXES }, (_, index) => [
+    `Axis${index}-`,
+    `Axis${index}+`,
+  ]).flat()
   return [...buttons, ...axes]
 }
 
@@ -47,13 +53,16 @@ export class GamepadDevice {
 
   releaseAll() {
     for (const code of this.#active) {
-      for (const action of actionsForCode(this.bindings, `gamepad:${code}`)) this.#state.set(action, false)
+      for (const action of actionsForCode(this.bindings, `gamepad:${code}`))
+        this.#state.set(action, false)
     }
     this.#active.clear()
   }
 
   /** Right stick aim direction, or null while it rests inside the dead zone. */
-  aimStick(pad: GamepadLike | null | undefined): { x: number; y: number } | null {
+  aimStick(
+    pad: GamepadLike | null | undefined,
+  ): { x: number; y: number } | null {
     if (!pad) return null
     const x = pad.axes[2] ?? 0
     const y = pad.axes[3] ?? 0

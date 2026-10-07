@@ -27,24 +27,45 @@ export type LobbyFilter = {
 }
 
 export function defaultFilter(): LobbyFilter {
-  return { search: '', hideFull: false, hideEmpty: false, favoritesOnly: false, sort: 'players' }
+  return {
+    search: '',
+    hideFull: false,
+    hideEmpty: false,
+    favoritesOnly: false,
+    sort: 'players',
+  }
 }
 
-export function filterRooms(rooms: LobbyRoom[], filter: LobbyFilter, favorites: string[]): LobbyRoom[] {
+export function filterRooms(
+  rooms: LobbyRoom[],
+  filter: LobbyFilter,
+  favorites: string[],
+): LobbyRoom[] {
   const needle = filter.search.trim().toLowerCase()
-  const rows = rooms.filter(room => {
+  const rows = rooms.filter((room) => {
     if (filter.hideFull && room.players >= room.capacity) return false
     if (filter.hideEmpty && room.players === 0) return false
-    if (filter.favoritesOnly && !favorites.includes(room.name) && !favorites.includes(String(room.id))) return false
+    if (
+      filter.favoritesOnly &&
+      !favorites.includes(room.name) &&
+      !favorites.includes(String(room.id))
+    )
+      return false
     if (!needle) return true
-    return [room.name, room.map, room.mode, room.region ?? ''].some(field => field.toLowerCase().includes(needle))
+    return [room.name, room.map, room.mode, room.region ?? ''].some((field) =>
+      field.toLowerCase().includes(needle),
+    )
   })
   return sortRooms(rows, filter.sort)
 }
 
-export function sortRooms(rooms: LobbyRoom[], key: LobbyFilter['sort']): LobbyRoom[] {
+export function sortRooms(
+  rooms: LobbyRoom[],
+  key: LobbyFilter['sort'],
+): LobbyRoom[] {
   return [...rooms].sort((a, b) => {
-    if (key === 'players') return b.players - a.players || a.name.localeCompare(b.name)
+    if (key === 'players')
+      return b.players - a.players || a.name.localeCompare(b.name)
     if (key === 'ping') return (a.ping ?? 9999) - (b.ping ?? 9999)
     if (key === 'map') return a.map.localeCompare(b.map)
     return a.name.localeCompare(b.name)
@@ -64,7 +85,9 @@ export function roomFlags(room: LobbyRoom): string[] {
   return flags
 }
 
-export function parseHostPort(value: string): { host: string; port: number } | null {
+export function parseHostPort(
+  value: string,
+): { host: string; port: number } | null {
   const trimmed = value.trim()
   if (!trimmed) return null
   const [host, portText] = trimmed.includes(']:')
@@ -85,6 +108,9 @@ export class PingAll {
   }
 
   apply(rooms: LobbyRoom[]): LobbyRoom[] {
-    return rooms.map(room => ({ ...room, ping: this.samples.get(room.id) ?? room.ping }))
+    return rooms.map((room) => ({
+      ...room,
+      ping: this.samples.get(room.id) ?? room.ping,
+    }))
   }
 }

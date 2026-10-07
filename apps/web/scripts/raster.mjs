@@ -5,7 +5,11 @@
 // covering another — the things a screenshot comparison is actually for — without a browser, a GPU,
 // or a megabyte of baseline images.
 
-export function createSurface(width, height, background = [0.06, 0.07, 0.09, 1]) {
+export function createSurface(
+  width,
+  height,
+  background = [0.06, 0.07, 0.09, 1],
+) {
   const pixels = new Float32Array(width * height * 4)
   for (let i = 0; i < width * height; i += 1) {
     pixels[i * 4] = background[0]
@@ -28,8 +32,10 @@ export function fillRect(surface, x, y, width, height, color) {
     for (let px = left; px < right; px += 1) {
       const i = (py * surface.width + px) * 4
       surface.pixels[i] = surface.pixels[i] * (1 - alpha) + color[0] * alpha
-      surface.pixels[i + 1] = surface.pixels[i + 1] * (1 - alpha) + color[1] * alpha
-      surface.pixels[i + 2] = surface.pixels[i + 2] * (1 - alpha) + color[2] * alpha
+      surface.pixels[i + 1] =
+        surface.pixels[i + 1] * (1 - alpha) + color[1] * alpha
+      surface.pixels[i + 2] =
+        surface.pixels[i + 2] * (1 - alpha) + color[2] * alpha
       surface.pixels[i + 3] = Math.min(1, surface.pixels[i + 3] + alpha)
     }
   }
@@ -47,7 +53,7 @@ export function pixelAt(surface, x, y) {
     surface.pixels[i + 1],
     surface.pixels[i + 2],
     surface.pixels[i + 3],
-  ].map(channel => Math.round(channel * 255))
+  ].map((channel) => Math.round(channel * 255))
 }
 
 /** A stable digest of the whole surface, quantised to 8 bits so float noise cannot move it. */

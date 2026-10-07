@@ -70,7 +70,12 @@ const defaults: BindingSet = {
 }
 
 export const DEFAULT_BINDINGS: BindingSet = Object.freeze(
-  Object.fromEntries(actionIds().map(action => [action, Object.freeze(defaults[action] ?? [])])),
+  Object.fromEntries(
+    actionIds().map((action) => [
+      action,
+      Object.freeze(defaults[action] ?? []),
+    ]),
+  ),
 ) as BindingSet
 
 export function bindingCode(binding: Binding): string {
@@ -79,27 +84,45 @@ export function bindingCode(binding: Binding): string {
 
 export function cloneBindings(set: BindingSet): BindingSet {
   return Object.fromEntries(
-    Object.entries(set).map(([action, bindings]) => [action, bindings.map(binding => ({ ...binding }))]),
+    Object.entries(set).map(([action, bindings]) => [
+      action,
+      bindings.map((binding) => ({ ...binding })),
+    ]),
   ) as BindingSet
 }
 
 export function actionsForCode(set: BindingSet, code: string): Action[] {
   return Object.entries(set)
-    .filter(([, bindings]) => bindings.some(binding => bindingCode(binding) === code))
+    .filter(([, bindings]) =>
+      bindings.some((binding) => bindingCode(binding) === code),
+    )
     .map(([action]) => action)
 }
 
-export function conflictsFor(set: BindingSet, binding: Binding, action: Action): Action[] {
-  return actionsForCode(set, bindingCode(binding)).filter(owner => owner !== action)
+export function conflictsFor(
+  set: BindingSet,
+  binding: Binding,
+  action: Action,
+): Action[] {
+  return actionsForCode(set, bindingCode(binding)).filter(
+    (owner) => owner !== action,
+  )
 }
 
 /** Assigns `binding` to `action` at `index`, taking the code away from whichever control held it. */
-export function rebind(set: BindingSet, action: Action, index: number, binding: Binding): BindingSet {
+export function rebind(
+  set: BindingSet,
+  action: Action,
+  index: number,
+  binding: Binding,
+): BindingSet {
   if (!isAction(action)) return cloneBindings(set)
   const code = bindingCode(binding)
   const next = cloneBindings(set)
   for (const owner of Object.keys(next)) {
-    next[owner] = next[owner].filter(existing => bindingCode(existing) !== code)
+    next[owner] = next[owner].filter(
+      (existing) => bindingCode(existing) !== code,
+    )
   }
   const slots = next[action] ?? []
   if (index >= 0 && index < slots.length) slots[index] = { ...binding }
@@ -108,9 +131,14 @@ export function rebind(set: BindingSet, action: Action, index: number, binding: 
   return next
 }
 
-export function clearBinding(set: BindingSet, action: Action, index: number): BindingSet {
+export function clearBinding(
+  set: BindingSet,
+  action: Action,
+  index: number,
+): BindingSet {
   const next = cloneBindings(set)
-  if (next[action]) next[action] = next[action].filter((_, slot) => slot !== index)
+  if (next[action])
+    next[action] = next[action].filter((_, slot) => slot !== index)
   return next
 }
 
@@ -130,7 +158,8 @@ function readBindingList(value: unknown): Binding[] | null {
   for (const entry of value) {
     if (!entry || typeof entry !== 'object') return null
     const { device, code } = entry as Partial<Binding>
-    if (typeof code !== 'string' || code.length === 0 || code.length > 32) return null
+    if (typeof code !== 'string' || code.length === 0 || code.length > 32)
+      return null
     if (!DEVICES.includes(device as DeviceKind)) return null
     bindings.push({ device: device as DeviceKind, code })
   }
@@ -148,10 +177,15 @@ export function parseBindings(raw: string | null | undefined): BindingSet {
     return merged
   }
   if (!payload || typeof payload !== 'object') return merged
-  const { version, bindings } = payload as { version?: unknown; bindings?: unknown }
+  const { version, bindings } = payload as {
+    version?: unknown
+    bindings?: unknown
+  }
   if (version !== BINDINGS_VERSION) return merged
   if (!bindings || typeof bindings !== 'object') return merged
-  for (const [action, value] of Object.entries(bindings as Record<string, unknown>)) {
+  for (const [action, value] of Object.entries(
+    bindings as Record<string, unknown>,
+  )) {
     if (!isAction(action)) continue
     const parsed = readBindingList(value)
     if (parsed) merged[action] = parsed

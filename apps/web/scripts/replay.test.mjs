@@ -45,7 +45,10 @@ test('follow and free camera are distinct modes, and export round-trips', () => 
 
 test('a wrong protocol is refused and a blank tail can be repaired', () => {
   assert.deepEqual(DemoPlayer.open(file, 14, 1), { error: 'protocol' })
-  const broken = { ...file, chunks: [...file.chunks, { tick: 5, inputs: {}, checksum: '' }] }
+  const broken = {
+    ...file,
+    chunks: [...file.chunks, { tick: 5, inputs: {}, checksum: '' }],
+  }
   const repaired = DemoPlayer.repair(broken)
   assert.ok('chunks' in repaired)
   assert.equal(repaired.chunks.length, 4)

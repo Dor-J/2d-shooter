@@ -54,7 +54,8 @@ export function acceptWeaponTable(
     return { ok: false, reason: 'hash_mismatch' }
   }
   const names =
-    Array.isArray(wire.names) && wire.names.length === DEFAULT_WEAPON_NAMES.length
+    Array.isArray(wire.names) &&
+    wire.names.length === DEFAULT_WEAPON_NAMES.length
       ? wire.names
       : [...DEFAULT_WEAPON_NAMES]
   const known = KNOWN_WEAPON_HASHES[wire.hash]
@@ -86,11 +87,23 @@ export const WEAPON_KIND_SLOT: Record<string, number> = {
 }
 
 export type WireWeaponSlot = { kind?: string; ammo?: number }
-export type WireInventory = { slots?: Array<WireWeaponSlot | null>; active?: number }
-export type GroundWeapon = { kind?: string; pos: { x: number; y: number }; weapon_slot?: number | null; active?: boolean }
+export type WireInventory = {
+  slots?: Array<WireWeaponSlot | null>
+  active?: number
+}
+export type GroundWeapon = {
+  kind?: string
+  pos: { x: number; y: number }
+  weapon_slot?: number | null
+  active?: boolean
+}
 
 /** Keep a requested switch; only snap to the server gun after a drop or an illegal pick. */
-export function syncWeaponFromSnapshot(selected: number, serverWeapon: number, owned: number[]): number {
+export function syncWeaponFromSnapshot(
+  selected: number,
+  serverWeapon: number,
+  owned: number[],
+): number {
   if (owned.includes(selected)) return selected
   if (owned.includes(serverWeapon)) return serverWeapon
   return selected
@@ -125,7 +138,14 @@ export function muzzleOrigin(
   aim: { x: number; y: number },
   pose = 'standing',
 ) {
-  const height = pose === 'crouching' ? 6 : pose === 'prone' || pose === 'going_prone' || pose === 'getting_up' ? 2 : pose === 'rolling' || pose === 'backflip' ? 4 : 10
+  const height =
+    pose === 'crouching'
+      ? 6
+      : pose === 'prone' || pose === 'going_prone' || pose === 'getting_up'
+        ? 2
+        : pose === 'rolling' || pose === 'backflip'
+          ? 4
+          : 10
   const dx = aim.x - pos.x
   const dy = aim.y - pos.y
   const len = Math.hypot(dx, dy)
@@ -144,6 +164,7 @@ export function cursorAppearance(accuracy = 0, recoil = 0) {
 
 /** What to tell the player when the server refuses their shot, so it never looks like lag. */
 export function fireRefusalText(reason: string): string {
-  if (reason === 'NeedsBracing') return 'The LAW has to be braced — crouch or go prone to fire it.'
+  if (reason === 'NeedsBracing')
+    return 'The LAW has to be braced — crouch or go prone to fire it.'
   return 'That shot could not be taken from here.'
 }

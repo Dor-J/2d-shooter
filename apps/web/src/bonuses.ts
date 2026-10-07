@@ -15,7 +15,10 @@ export type KitName =
   | 'Berserker'
   | 'Predator'
 
-export type WireTimedEffect = { active: BonusEffectName | null; ticks_left: number }
+export type WireTimedEffect = {
+  active: BonusEffectName | null
+  ticks_left: number
+}
 
 const TICK_RATE = 60
 

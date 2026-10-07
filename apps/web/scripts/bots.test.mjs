@@ -35,7 +35,11 @@ test('an unrecognised difficulty falls back the way the server does', () => {
   assert.equal(readDifficulty('IMPOSSIBLE'), 'normal')
   assert.equal(readDifficulty(''), 'normal')
   assert.equal(readDifficulty(null), 'normal')
-  assert.equal(readDifficulty(' Elite '), 'elite', 'stray spacing and case are forgiven')
+  assert.equal(
+    readDifficulty(' Elite '),
+    'elite',
+    'stray spacing and case are forgiven',
+  )
 })
 
 test('a room opened with no bots says nothing about them', () => {
@@ -66,6 +70,12 @@ test('changing the bot count of an open room sends a zero rather than nothing', 
 
 test('the roster line reads as a sentence', () => {
   assert.equal(describeBots({ count: 0, difficulty: 'elite' }), 'No bots')
-  assert.equal(describeBots({ count: 1, difficulty: 'rookie' }), '1 bot · Rookie')
-  assert.equal(describeBots({ count: 6, difficulty: 'veteran' }), '6 bots · Veteran')
+  assert.equal(
+    describeBots({ count: 1, difficulty: 'rookie' }),
+    '1 bot · Rookie',
+  )
+  assert.equal(
+    describeBots({ count: 6, difficulty: 'veteran' }),
+    '6 bots · Veteran',
+  )
 })

@@ -48,13 +48,20 @@ function waitFor(ws, type, predicate = () => true, label = type) {
 export function connect({ name = 'Agent', url = DEFAULT_URL } = {}) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url)
-    const timeout = setTimeout(() => reject(new Error(`Timed out connecting ${name}`)), 5000)
+    const timeout = setTimeout(
+      () => reject(new Error(`Timed out connecting ${name}`)),
+      5000,
+    )
     let seq = 0
     const snapshotListeners = []
     let opened = false
 
-    ws.addEventListener('open', () => ws.send(JSON.stringify({ type: 'hello', version: 15, name, resume: null })))
-    ws.addEventListener('message', event => {
+    ws.addEventListener('open', () =>
+      ws.send(
+        JSON.stringify({ type: 'hello', version: 15, name, resume: null }),
+      ),
+    )
+    ws.addEventListener('message', (event) => {
       const message = JSON.parse(event.data)
       if (message.type === 'welcome') {
         opened = true
@@ -63,19 +70,21 @@ export function connect({ name = 'Agent', url = DEFAULT_URL } = {}) {
           ws,
           player: message.player,
           createRoom(opts = {}) {
-            ws.send(JSON.stringify({
-              type: 'create_room',
-              name: opts.name ?? 'Agent Room',
-              mode: opts.mode ?? 'deathmatch',
-              public: opts.public ?? false,
-              map: opts.map,
-              weapon_mod: opts.weapon_mod,
-            }))
+            ws.send(
+              JSON.stringify({
+                type: 'create_room',
+                name: opts.name ?? 'Agent Room',
+                mode: opts.mode ?? 'deathmatch',
+                public: opts.public ?? false,
+                map: opts.map,
+                weapon_mod: opts.weapon_mod,
+              }),
+            )
             return waitFor(ws, 'joined')
           },
           join(room) {
             ws.send(JSON.stringify({ type: 'join_room', room }))
-            return waitFor(ws, 'joined', m => m.room === room)
+            return waitFor(ws, 'joined', (m) => m.room === room)
           },
           joinByCode(code) {
             ws.send(JSON.stringify({ type: 'join_by_code', code }))
@@ -114,15 +123,20 @@ async function demo() {
   const agent = await connect({ name: 'Jet Demo' })
   let ticks = 0
   const done = new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error('Timed out waiting for jet ticks')), 8000)
-    agent.onSnapshot(message => {
+    const timeout = setTimeout(
+      () => reject(new Error('Timed out waiting for jet ticks')),
+      8000,
+    )
+    agent.onSnapshot((message) => {
       const me = message.world.players[agent.player]
       if (!me) return
       ticks += 1
       agent.input({ jet: true })
       if (ticks >= 30) {
         clearTimeout(timeout)
-        console.log(`tick ${message.world.tick} pos.y=${me.pos.y} fuel=${me.fuel}`)
+        console.log(
+          `tick ${message.world.tick} pos.y=${me.pos.y} fuel=${me.fuel}`,
+        )
         resolve()
       }
     })
@@ -133,8 +147,11 @@ async function demo() {
   agent.close()
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  demo().catch(err => {
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  demo().catch((err) => {
     console.error(err)
     process.exit(1)
   })

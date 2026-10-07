@@ -48,7 +48,9 @@ export type PlayerProfile = {
 
 export type NameError = 'empty' | 'too-long' | 'controls'
 
-export function constrainName(raw: unknown): { name: string } | { error: NameError } {
+export function constrainName(
+  raw: unknown,
+): { name: string } | { error: NameError } {
   if (typeof raw !== 'string') return { error: 'empty' }
   let name = ''
   for (const ch of raw) {
@@ -86,16 +88,23 @@ export function createPlayer(name = 'Guest'): PlayerProfile {
 export function migratePlayer(raw: unknown): PlayerProfile {
   const fallback = createPlayer()
   if (!raw || typeof raw !== 'object') return fallback
-  const value = raw as Partial<PlayerProfile> & { settings?: { sensitivity?: number } }
+  const value = raw as Partial<PlayerProfile> & {
+    settings?: { sensitivity?: number }
+  }
   const name = constrainName(value.name)
   return {
     ...fallback,
     id: typeof value.id === 'string' && value.id ? value.id : fallback.id,
     name: 'name' in name ? name.name : fallback.name,
     appearance: { ...fallback.appearance, ...(value.appearance ?? {}) },
-    secondary: Number.isFinite(value.secondary) ? Math.max(0, Math.trunc(value.secondary as number)) : 10,
+    secondary: Number.isFinite(value.secondary)
+      ? Math.max(0, Math.trunc(value.secondary as number))
+      : 10,
     taunts: { ...DEFAULT_TAUNTS, ...(value.taunts ?? {}) },
-    interface: value.interface === 'mobile' || value.interface === 'minimal' ? value.interface : 'default',
+    interface:
+      value.interface === 'mobile' || value.interface === 'minimal'
+        ? value.interface
+        : 'default',
     sensitivity: Number.isFinite(value.sensitivity)
       ? Math.min(5, Math.max(0.1, value.sensitivity as number))
       : Number.isFinite(value.settings?.sensitivity)
@@ -104,7 +113,9 @@ export function migratePlayer(raw: unknown): PlayerProfile {
     audio: { ...fallback.audio, ...(value.audio ?? {}) },
     graphics: { ...fallback.graphics, ...(value.graphics ?? {}) },
     favorites: Array.isArray(value.favorites)
-      ? value.favorites.filter((item): item is string => typeof item === 'string' && item.length > 0)
+      ? value.favorites.filter(
+          (item): item is string => typeof item === 'string' && item.length > 0,
+        )
       : [],
   }
 }
@@ -117,7 +128,12 @@ export function importPlayer(text: string): PlayerProfile | null {
   try {
     const payload = JSON.parse(text)
     const candidate = payload?.profile ?? payload
-    if (!candidate || typeof candidate !== 'object' || typeof candidate.name !== 'string') return null
+    if (
+      !candidate ||
+      typeof candidate !== 'object' ||
+      typeof candidate.name !== 'string'
+    )
+      return null
     return { ...migratePlayer(candidate), id: newId() }
   } catch {
     return null
@@ -127,7 +143,9 @@ export function importPlayer(text: string): PlayerProfile | null {
 export function toggleFavorite(favorites: string[], key: string): string[] {
   const id = key.trim()
   if (!id) return favorites
-  return favorites.includes(id) ? favorites.filter(item => item !== id) : [...favorites, id]
+  return favorites.includes(id)
+    ? favorites.filter((item) => item !== id)
+    : [...favorites, id]
 }
 
 type StorageLike = {
@@ -152,31 +170,45 @@ export class PlayerStore {
     } catch {
       payload = null
     }
-    const stored = payload && typeof payload === 'object' ? (payload as { profiles?: unknown; activeId?: unknown }) : {}
-    const profiles = Array.isArray(stored.profiles) ? stored.profiles.map(migratePlayer) : []
+    const stored =
+      payload && typeof payload === 'object'
+        ? (payload as { profiles?: unknown; activeId?: unknown })
+        : {}
+    const profiles = Array.isArray(stored.profiles)
+      ? stored.profiles.map(migratePlayer)
+      : []
     this.#profiles = profiles.length > 0 ? profiles : [createPlayer()]
     const active = typeof stored.activeId === 'string' ? stored.activeId : ''
-    this.#activeId = this.#profiles.some(profile => profile.id === active) ? active : this.#profiles[0].id
+    this.#activeId = this.#profiles.some((profile) => profile.id === active)
+      ? active
+      : this.#profiles[0].id
     if (profiles.length === 0) this.#persist()
   }
 
   #persist() {
     this.#storage.setItem(
       PLAYER_PROFILES_KEY,
-      JSON.stringify({ version: PLAYER_PROFILE_VERSION, activeId: this.#activeId, profiles: this.#profiles }),
+      JSON.stringify({
+        version: PLAYER_PROFILE_VERSION,
+        activeId: this.#activeId,
+        profiles: this.#profiles,
+      }),
     )
   }
 
   list(): PlayerProfile[] {
-    return this.#profiles.map(profile => ({ ...profile }))
+    return this.#profiles.map((profile) => ({ ...profile }))
   }
 
   active(): PlayerProfile {
-    return this.#profiles.find(profile => profile.id === this.#activeId) ?? this.#profiles[0]
+    return (
+      this.#profiles.find((profile) => profile.id === this.#activeId) ??
+      this.#profiles[0]
+    )
   }
 
   select(id: string): PlayerProfile {
-    if (this.#profiles.some(profile => profile.id === id)) {
+    if (this.#profiles.some((profile) => profile.id === id)) {
       this.#activeId = id
       this.#persist()
     }
@@ -190,10 +222,17 @@ export class PlayerStore {
     return profile
   }
 
-  update(id: string, change: (profile: PlayerProfile) => PlayerProfile): PlayerProfile {
-    const index = this.#profiles.findIndex(profile => profile.id === id)
+  update(
+    id: string,
+    change: (profile: PlayerProfile) => PlayerProfile,
+  ): PlayerProfile {
+    const index = this.#profiles.findIndex((profile) => profile.id === id)
     if (index < 0) return this.active()
-    const next = { ...change(this.#profiles[index]), id, version: PLAYER_PROFILE_VERSION }
+    const next = {
+      ...change(this.#profiles[index]),
+      id,
+      version: PLAYER_PROFILE_VERSION,
+    }
     const name = constrainName(next.name)
     if ('name' in name) next.name = name.name
     this.#profiles[index] = next
@@ -202,9 +241,10 @@ export class PlayerStore {
   }
 
   remove(id: string): PlayerProfile {
-    this.#profiles = this.#profiles.filter(profile => profile.id !== id)
+    this.#profiles = this.#profiles.filter((profile) => profile.id !== id)
     if (this.#profiles.length === 0) this.#profiles = [createPlayer()]
-    if (!this.#profiles.some(profile => profile.id === this.#activeId)) this.#activeId = this.#profiles[0].id
+    if (!this.#profiles.some((profile) => profile.id === this.#activeId))
+      this.#activeId = this.#profiles[0].id
     this.#persist()
     return this.active()
   }

@@ -3,7 +3,14 @@
 // The renderer turns this list into draw calls and a test turns the same list into pixels, which
 // is what makes a screenshot comparison mean anything: both are looking at the same frame.
 
-import { gaugeFillRect, healthGauge, jetGauge, ammoGauge, teamColor, type Rgba } from '../hud/gauges.ts'
+import {
+  gaugeFillRect,
+  healthGauge,
+  jetGauge,
+  ammoGauge,
+  teamColor,
+  type Rgba,
+} from '../hud/gauges.ts'
 import { placeLayout, type HudLayout, type Viewport } from '../hud/layout.ts'
 import { buildRig, type Appearance, type Pose } from './gostek.ts'
 import { bonusOverlay } from './effects.ts'
@@ -41,7 +48,12 @@ export type SceneInput = {
   health: number
   fuel: number
   fuelCapacity: number
-  ammo: { ammo: number; magazine: number; reloadTimer: number; reloadTicks: number }
+  ammo: {
+    ammo: number
+    magazine: number
+    reloadTimer: number
+    reloadTicks: number
+  }
   tick: number
 }
 
@@ -69,7 +81,12 @@ export function buildScene(input: SceneInput): Draw[] {
         y: part.y,
         width: part.width,
         height: part.height,
-        color: [part.color[0], part.color[1], part.color[2], part.color[3] * overlay.playerAlpha],
+        color: [
+          part.color[0],
+          part.color[1],
+          part.color[2],
+          part.color[3] * overlay.playerAlpha,
+        ],
         centred: true,
       })
     }

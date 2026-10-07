@@ -43,13 +43,17 @@ export type WireScoreboardRow = {
 }
 
 /** Hits as a whole-number percentage. No shots is no accuracy, not a flattering hundred. */
-export function accuracyPercent(stats: { shots: number; hits: number } | undefined): number {
+export function accuracyPercent(
+  stats: { shots: number; hits: number } | undefined,
+): number {
   if (!stats || stats.shots <= 0) return 0
   return Math.floor((stats.hits * 100) / stats.shots)
 }
 
 /** The weapon a player has killed most with, for the weapon-statistics panel. */
-export function favouriteWeapon(stats: WirePlayerStats | undefined): string | null {
+export function favouriteWeapon(
+  stats: WirePlayerStats | undefined,
+): string | null {
   const weapons = Object.entries(stats?.weapons ?? {})
   let best: [string, WireWeaponStats] | null = null
   for (const entry of weapons) {
@@ -70,7 +74,10 @@ export function weaponRows(stats: WirePlayerStats | undefined) {
       deaths: entry.deaths,
       accuracy: accuracyPercent(entry),
     }))
-    .sort((left, right) => right.kills - left.kills || left.weapon.localeCompare(right.weapon))
+    .sort(
+      (left, right) =>
+        right.kills - left.kills || left.weapon.localeCompare(right.weapon),
+    )
 }
 
 /** How far behind the leader a row is, in words. */
@@ -81,18 +88,23 @@ export function behindText(row: WireScoreboardRow): string {
 }
 
 /** The limit line at the top of the scoreboard: what it takes to win. */
-export function limitText(limits: {
-  kills: number
-  points: number
-  captures: number
-  time_ticks: number
-} | undefined): string {
+export function limitText(
+  limits:
+    | {
+        kills: number
+        points: number
+        captures: number
+        time_ticks: number
+      }
+    | undefined,
+): string {
   if (!limits) return ''
   const parts: string[] = []
   if (limits.kills > 0) parts.push(`${limits.kills} kills`)
   if (limits.points > 0) parts.push(`${limits.points} points`)
   if (limits.captures > 0) parts.push(`${limits.captures} captures`)
-  if (limits.time_ticks > 0) parts.push(`${Math.round(limits.time_ticks / 60 / 60)} minutes`)
+  if (limits.time_ticks > 0)
+    parts.push(`${Math.round(limits.time_ticks / 60 / 60)} minutes`)
   return parts.length > 0 ? `First to ${parts.join(' or ')}` : 'No limit'
 }
 

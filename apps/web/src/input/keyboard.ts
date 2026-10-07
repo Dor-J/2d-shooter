@@ -2,7 +2,11 @@ import { type Action } from './actions.ts'
 import { type BindingSet, actionsForCode } from './bindings.ts'
 import type { ActionState } from './state.ts'
 
-export type KeyLikeEvent = { code: string; target?: unknown; preventDefault?: () => void }
+export type KeyLikeEvent = {
+  code: string
+  target?: unknown
+  preventDefault?: () => void
+}
 
 const TEXT_ENTRY_TAGS = new Set(['INPUT', 'TEXTAREA', 'SELECT'])
 
@@ -11,11 +15,24 @@ export function isTextEntryTarget(target: unknown): boolean {
   if (!target || typeof target !== 'object') return false
   const element = target as { tagName?: unknown; isContentEditable?: unknown }
   if (element.isContentEditable === true) return true
-  return typeof element.tagName === 'string' && TEXT_ENTRY_TAGS.has(element.tagName)
+  return (
+    typeof element.tagName === 'string' && TEXT_ENTRY_TAGS.has(element.tagName)
+  )
 }
 
 /** Codes the browser would otherwise act on while a match is in focus. */
-const SWALLOWED = new Set(['Space', 'Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'F2', 'F3', 'F4', 'F5'])
+const SWALLOWED = new Set([
+  'Space',
+  'Tab',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+  'F2',
+  'F3',
+  'F4',
+  'F5',
+])
 
 export class KeyboardDevice {
   bindings: BindingSet
@@ -45,7 +62,8 @@ export class KeyboardDevice {
 
   releaseAll() {
     for (const code of this.#down) {
-      for (const action of actionsForCode(this.bindings, `keyboard:${code}`)) this.#state.set(action, false)
+      for (const action of actionsForCode(this.bindings, `keyboard:${code}`))
+        this.#state.set(action, false)
     }
     this.#down.clear()
   }

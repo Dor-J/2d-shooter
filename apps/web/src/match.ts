@@ -6,7 +6,8 @@
  */
 
 /** The phases the server reports, matching `game_core::MatchPhase`. */
-export type MatchPhase = 'Lobby' | 'Countdown' | 'Active' | 'Overtime' | 'RoundEnd' | 'MapTransition'
+export type MatchPhase =
+  'Lobby' | 'Countdown' | 'Active' | 'Overtime' | 'RoundEnd' | 'MapTransition'
 
 export type Outcome = { Player: number } | { Team: number } | 'Draw'
 
@@ -19,8 +20,17 @@ export type WireMatchState = {
   minimum_players?: number
 }
 
-export type WireLimits = { kills: number; points: number; captures: number; time_ticks: number }
-export type WireModifierSet = { realistic: boolean; survival: boolean; advance: boolean }
+export type WireLimits = {
+  kills: number
+  points: number
+  captures: number
+  time_ticks: number
+}
+export type WireModifierSet = {
+  realistic: boolean
+  survival: boolean
+  advance: boolean
+}
 export type WireRules = {
   kind: string
   limits: WireLimits
@@ -38,7 +48,10 @@ export function formatClock(seconds: number): string {
 }
 
 /** What the clock should show: time left when the match is timed, time played when it is not. */
-export function clockText(state: WireMatchState | undefined, rules: WireRules | undefined): string {
+export function clockText(
+  state: WireMatchState | undefined,
+  rules: WireRules | undefined,
+): string {
   if (!state) return ''
   const limit = rules?.limits?.time_ticks ?? 0
   const ticks = limit > 0 ? Math.max(0, limit - state.elapsed) : state.elapsed
@@ -87,7 +100,11 @@ export function winnerName(
   outcome: Outcome | null | undefined,
   names: Record<string, string>,
 ): string | null {
-  if (!outcome || outcome === 'Draw' || !(typeof outcome === 'object' && 'Player' in outcome)) {
+  if (
+    !outcome ||
+    outcome === 'Draw' ||
+    !(typeof outcome === 'object' && 'Player' in outcome)
+  ) {
     return null
   }
   return names[String(outcome.Player)] ?? null

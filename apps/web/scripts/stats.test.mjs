@@ -18,8 +18,22 @@ const row = (over = {}) => ({
   team: 0,
   rank: 1,
   behind_leader: 0,
-  score: { points: 5, kills: 5, deaths: 2, teamkills: 0, suicides: 0, objectives: 0 },
-  stats: { shots: 10, hits: 4, headshots: 1, captures: 0, returns: 0, holds: 0 },
+  score: {
+    points: 5,
+    kills: 5,
+    deaths: 2,
+    teamkills: 0,
+    suicides: 0,
+    objectives: 0,
+  },
+  stats: {
+    shots: 10,
+    hits: 4,
+    headshots: 1,
+    captures: 0,
+    returns: 0,
+    holds: 0,
+  },
   ...over,
 })
 
@@ -33,7 +47,10 @@ test('accuracy is a whole percentage and never divides by zero', () => {
 test('the leader leads and everybody else is behind by a counted amount', () => {
   assert.equal(behindText(row()), 'Leading')
   assert.equal(behindText(row({ rank: 2, behind_leader: 1 })), '1 point behind')
-  assert.equal(behindText(row({ rank: 3, behind_leader: 7 })), '7 points behind')
+  assert.equal(
+    behindText(row({ rank: 3, behind_leader: 7 })),
+    '7 points behind',
+  )
 })
 
 test('the limit line says what it takes to win', () => {
@@ -45,7 +62,10 @@ test('the limit line says what it takes to win', () => {
     limitText({ kills: 0, points: 0, captures: 10, time_ticks: 0 }),
     'First to 10 captures',
   )
-  assert.equal(limitText({ kills: 0, points: 0, captures: 0, time_ticks: 0 }), 'No limit')
+  assert.equal(
+    limitText({ kills: 0, points: 0, captures: 0, time_ticks: 0 }),
+    'No limit',
+  )
   assert.equal(limitText(undefined), '')
 })
 
@@ -80,7 +100,9 @@ test('a player who has killed with nothing has no favourite weapon', () => {
       captures: 0,
       returns: 0,
       holds: 0,
-      weapons: { Ak74: { shots: 4, hits: 0, kills: 0, deaths: 2, headshots: 0 } },
+      weapons: {
+        Ak74: { shots: 4, hits: 0, kills: 0, deaths: 2, headshots: 0 },
+      },
     }),
     null,
   )

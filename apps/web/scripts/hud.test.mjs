@@ -5,7 +5,12 @@
 //   web:render:particles  — blood, gore, and gib particles derived from damage events
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { KillFeed, describeKill, respawnCountdown, damageArrowAngle } from '../src/hud/feed.ts'
+import {
+  KillFeed,
+  describeKill,
+  respawnCountdown,
+  damageArrowAngle,
+} from '../src/hud/feed.ts'
 import { ParticleField } from '../src/render/particles.ts'
 
 const names = new Map([
@@ -13,7 +18,7 @@ const names = new Map([
   [2, 'Bystander'],
   [3, 'Helper'],
 ])
-const name = id => names.get(id) ?? `Player ${id}`
+const name = (id) => names.get(id) ?? `Player ${id}`
 
 function entry(overrides = {}) {
   return {
@@ -36,10 +41,19 @@ test('kill feed lines name the killer, the victim, and what happened', () => {
     describeKill(entry({ headshot: true, region: 'head' }), name),
     'Ace headshot Bystander',
   )
-  assert.equal(describeKill(entry({ cause: 'explosion' }), name), 'Ace blew up Bystander')
-  assert.equal(describeKill(entry({ teamkill: true }), name), 'Ace team-killed Bystander')
   assert.equal(
-    describeKill(entry({ killer: null, suicide: true, cause: 'explosion' }), name),
+    describeKill(entry({ cause: 'explosion' }), name),
+    'Ace blew up Bystander',
+  )
+  assert.equal(
+    describeKill(entry({ teamkill: true }), name),
+    'Ace team-killed Bystander',
+  )
+  assert.equal(
+    describeKill(
+      entry({ killer: null, suicide: true, cause: 'explosion' }),
+      name,
+    ),
     'Bystander blew themselves up',
   )
   assert.equal(
@@ -89,7 +103,7 @@ test('blood is emitted from damage events and scales with the damage taken', () 
   field.clear()
   field.emitBlood({ x: 100, y: 100 }, { x: 1, y: 0 }, 60, 1)
   assert.ok(field.particles.length > light, 'a heavier hit sprays more blood')
-  assert.ok(field.particles.every(particle => Number.isFinite(particle.x)))
+  assert.ok(field.particles.every((particle) => Number.isFinite(particle.x)))
 })
 
 test('the same event always produces the same particles', () => {
@@ -103,7 +117,7 @@ test('the same event always produces the same particles', () => {
 test('gibs are thrown from the body and particles fade out and are collected', () => {
   const field = new ParticleField({ limit: 200 })
   field.emitGibs({ x: 50, y: 50 }, { x: 40, y: -20 }, 7)
-  assert.ok(field.particles.some(particle => particle.kind === 'gib'))
+  assert.ok(field.particles.some((particle) => particle.kind === 'gib'))
   const before = field.particles.length
   for (let i = 0; i < 600; i += 1) field.step(1 / 60)
   assert.equal(field.particles.length, 0, 'particles do not accumulate forever')
@@ -114,14 +128,15 @@ test('muzzle flashes and casings are short-lived presentation particles', () => 
   const field = new ParticleField({ limit: 20 })
   field.emitFlash({ x: 8, y: 9 })
   field.emitCasing({ x: 8, y: 9 })
-  assert.ok(field.particles.some(particle => particle.kind === 'flash'))
-  assert.ok(field.particles.some(particle => particle.kind === 'casing'))
+  assert.ok(field.particles.some((particle) => particle.kind === 'flash'))
+  assert.ok(field.particles.some((particle) => particle.kind === 'casing'))
   for (let i = 0; i < 60; i += 1) field.step(1 / 60)
   assert.equal(field.particles.length, 0)
 })
 
 test('the particle field never exceeds its limit', () => {
   const field = new ParticleField({ limit: 24 })
-  for (let i = 0; i < 40; i += 1) field.emitBlood({ x: i, y: i }, { x: 1, y: 0 }, 80, i)
+  for (let i = 0; i < 40; i += 1)
+    field.emitBlood({ x: i, y: i }, { x: 1, y: 0 }, 80, i)
   assert.ok(field.particles.length <= 24)
 })

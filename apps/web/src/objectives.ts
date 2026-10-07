@@ -6,9 +6,7 @@
  */
 
 export type WireFlagState =
-  | 'AtBase'
-  | { Carried: { by: number } }
-  | { Dropped: { ticks_left: number } }
+  'AtBase' | { Carried: { by: number } } | { Dropped: { ticks_left: number } }
 
 export type WireFlagKind = 'Alpha' | 'Bravo' | 'Yellow'
 
@@ -56,21 +54,36 @@ export function flagStatusLines(
   objectives: WireObjectives | undefined,
   names: Record<string, string>,
 ): { kind: WireFlagKind; text: string; missing: boolean }[] {
-  return (objectives?.flags ?? []).map(flag => {
+  return (objectives?.flags ?? []).map((flag) => {
     const carrier = carrierOf(flag)
     if (carrier !== null) {
       const who = names[String(carrier)] ?? 'someone'
-      return { kind: flag.kind, text: `${flagName(flag.kind)}: taken by ${who}`, missing: true }
+      return {
+        kind: flag.kind,
+        text: `${flagName(flag.kind)}: taken by ${who}`,
+        missing: true,
+      }
     }
     const countdown = returnCountdown(flag)
     if (countdown !== null) {
-      return { kind: flag.kind, text: `${flagName(flag.kind)}: dropped, back in ${countdown}s`, missing: true }
+      return {
+        kind: flag.kind,
+        text: `${flagName(flag.kind)}: dropped, back in ${countdown}s`,
+        missing: true,
+      }
     }
-    return { kind: flag.kind, text: `${flagName(flag.kind)}: at base`, missing: false }
+    return {
+      kind: flag.kind,
+      text: `${flagName(flag.kind)}: at base`,
+      missing: false,
+    }
   })
 }
 
 /** Whether this player is carrying something, for the carrier indicator over their head. */
-export function isCarrying(objectives: WireObjectives | undefined, player: number): boolean {
-  return (objectives?.flags ?? []).some(flag => carrierOf(flag) === player)
+export function isCarrying(
+  objectives: WireObjectives | undefined,
+  player: number,
+): boolean {
+  return (objectives?.flags ?? []).some((flag) => carrierOf(flag) === player)
 }

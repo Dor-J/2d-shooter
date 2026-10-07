@@ -21,7 +21,8 @@ export type ReplayFile = {
   chunks: ReplayChunk[]
 }
 
-export type Camera = { mode: 'follow'; player: number } | { mode: 'free'; x: number; y: number }
+export type Camera =
+  { mode: 'follow'; player: number } | { mode: 'free'; x: number; y: number }
 
 export class DemoPlayer {
   readonly file: ReplayFile
@@ -33,9 +34,19 @@ export class DemoPlayer {
     this.file = file
   }
 
-  static open(source: string | ReplayFile, protocol: number, weaponHash: number): DemoPlayer | { error: string } {
-    const file = typeof source === 'string' ? (JSON.parse(source) as ReplayFile) : source
-    if (!file?.header || !Array.isArray(file.chunks) || file.chunks.length === 0) return { error: 'empty' }
+  static open(
+    source: string | ReplayFile,
+    protocol: number,
+    weaponHash: number,
+  ): DemoPlayer | { error: string } {
+    const file =
+      typeof source === 'string' ? (JSON.parse(source) as ReplayFile) : source
+    if (
+      !file?.header ||
+      !Array.isArray(file.chunks) ||
+      file.chunks.length === 0
+    )
+      return { error: 'empty' }
     if (file.header.format !== 1) return { error: 'format' }
     if (file.header.protocol !== protocol) return { error: 'protocol' }
     if (file.header.weapon_hash !== weaponHash) return { error: 'weapon' }
@@ -60,12 +71,15 @@ export class DemoPlayer {
 
   step(count = 1): number {
     if (this.paused) return this.tick
-    this.index = Math.min(this.file.chunks.length - 1, this.index + Math.max(1, count))
+    this.index = Math.min(
+      this.file.chunks.length - 1,
+      this.index + Math.max(1, count),
+    )
     return this.tick
   }
 
   seek(tick: number): number {
-    const found = this.file.chunks.findIndex(chunk => chunk.tick >= tick)
+    const found = this.file.chunks.findIndex((chunk) => chunk.tick >= tick)
     this.index = found < 0 ? this.file.chunks.length - 1 : found
     return this.tick
   }
@@ -87,7 +101,7 @@ export class DemoPlayer {
   }
 
   static repair(file: ReplayFile): ReplayFile | { error: string } {
-    const chunks = file.chunks.filter(chunk => chunk.checksum)
+    const chunks = file.chunks.filter((chunk) => chunk.checksum)
     if (chunks.length === 0) return { error: 'truncated' }
     return { ...file, chunks }
   }

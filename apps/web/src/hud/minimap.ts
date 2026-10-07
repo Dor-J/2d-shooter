@@ -33,7 +33,11 @@ export function boundsOf(polygons: { vertices: Point[] }[]): Bounds {
 ///
 /// The map is letterboxed inside the panel rather than stretched, because a stretched minimap lies
 /// about which way is further.
-export function projectToMinimap(point: Point, bounds: Bounds, panel: PlacedElement): Point {
+export function projectToMinimap(
+  point: Point,
+  bounds: Bounds,
+  panel: PlacedElement,
+): Point {
   const worldWidth = Math.max(1e-6, bounds.maxX - bounds.minX)
   const worldHeight = Math.max(1e-6, bounds.maxY - bounds.minY)
   const scale = Math.min(panel.width / worldWidth, panel.height / worldHeight)
@@ -47,7 +51,14 @@ export function projectToMinimap(point: Point, bounds: Bounds, panel: PlacedElem
   }
 }
 
-export type Blip = { id: number; x: number; y: number; color: Rgba; radius: number; self: boolean }
+export type Blip = {
+  id: number
+  x: number
+  y: number
+  color: Rgba
+  radius: number
+  self: boolean
+}
 
 export type MinimapPlayer = {
   id: number
@@ -62,7 +73,12 @@ export type MinimapPlayer = {
 ///
 /// A player the mode has hidden — Realistic's limited sight, a spectator delay — is left out here
 /// as well, because a minimap that shows what the screen does not is a wallhack with a nicer name.
-export function blips(players: MinimapPlayer[], bounds: Bounds, panel: PlacedElement, self: number): Blip[] {
+export function blips(
+  players: MinimapPlayer[],
+  bounds: Bounds,
+  panel: PlacedElement,
+  self: number,
+): Blip[] {
   const result: Blip[] = []
   for (const player of players) {
     if (player.hp <= 0) continue
@@ -85,7 +101,10 @@ export function blips(players: MinimapPlayer[], bounds: Bounds, panel: PlacedEle
 /// the edge and read as a player standing there.
 export function withinBounds(point: Point, bounds: Bounds): boolean {
   return (
-    point.x >= bounds.minX && point.x <= bounds.maxX && point.y >= bounds.minY && point.y <= bounds.maxY
+    point.x >= bounds.minX &&
+    point.x <= bounds.maxX &&
+    point.y >= bounds.minY &&
+    point.y <= bounds.maxY
   )
 }
 
@@ -110,7 +129,10 @@ export function sniperLine(
   const reach = range
   return {
     from,
-    to: { x: from.x + (dx / length) * reach, y: from.y + (dy / length) * reach },
+    to: {
+      x: from.x + (dx / length) * reach,
+      y: from.y + (dy / length) * reach,
+    },
     color: [0.95, 0.3, 0.28, 0.35],
     width: 1,
   }
@@ -133,8 +155,15 @@ const SPREAD_PER_UNIT = 220
 ///
 /// The number it draws is the same accuracy the server used for the shot, so a wide crosshair is a
 /// promise the game keeps rather than a decoration.
-export function crosshair(accuracy: number, bink: number, cooling: boolean): Crosshair {
-  const spread = MIN_SPREAD + Math.max(0, accuracy) * SPREAD_PER_UNIT + Math.max(0, bink) * 0.6
+export function crosshair(
+  accuracy: number,
+  bink: number,
+  cooling: boolean,
+): Crosshair {
+  const spread =
+    MIN_SPREAD +
+    Math.max(0, accuracy) * SPREAD_PER_UNIT +
+    Math.max(0, bink) * 0.6
   return {
     spread,
     offsetY: -Math.max(0, bink) * 0.25,

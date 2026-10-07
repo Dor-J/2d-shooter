@@ -4,7 +4,11 @@
  * The server owns which ones a room runs; these are the conversions the UI needs to say so.
  */
 
-export type WireModifiers = { realistic: boolean; survival: boolean; advance: boolean }
+export type WireModifiers = {
+  realistic: boolean
+  survival: boolean
+  advance: boolean
+}
 
 export type RoomModifiers = {
   modifiers?: WireModifiers
@@ -26,11 +30,18 @@ export const COMMUNITY_MODES = [
   'Zombie',
 ] as const
 
-export const NO_MODIFIERS: WireModifiers = { realistic: false, survival: false, advance: false }
+export const NO_MODIFIERS: WireModifiers = {
+  realistic: false,
+  survival: false,
+  advance: false,
+}
 
 /** Whether any modifier is on, which is what decides whether a badge is shown at all. */
 export function anyModifier(modifiers: WireModifiers | undefined): boolean {
-  return Boolean(modifiers && (modifiers.realistic || modifiers.survival || modifiers.advance))
+  return Boolean(
+    modifiers &&
+    (modifiers.realistic || modifiers.survival || modifiers.advance),
+  )
 }
 
 /** Short badges for the room browser, in a fixed order so the list does not jump about. */
@@ -70,7 +81,10 @@ export function deathMessage(
 }
 
 /** How far along the Advance ladder a player is, for the weapon menu. */
-export function advanceProgress(unlocked: number | undefined, primaries = 10): string {
+export function advanceProgress(
+  unlocked: number | undefined,
+  primaries = 10,
+): string {
   const bits = unlocked ?? 0
   let earned = 0
   for (let index = 0; index < primaries; index += 1) {

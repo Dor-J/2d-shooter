@@ -76,8 +76,10 @@ export class ActionState {
 
   /** Ends the tick: today's held set becomes the comparison baseline for the next one. */
   commit() {
-    for (const action of this.#held) this.#ticks.set(action, (this.#ticks.get(action) ?? 0) + 1)
-    for (const action of [...this.#ticks.keys()]) if (!this.#held.has(action)) this.#ticks.delete(action)
+    for (const action of this.#held)
+      this.#ticks.set(action, (this.#ticks.get(action) ?? 0) + 1)
+    for (const action of [...this.#ticks.keys()])
+      if (!this.#held.has(action)) this.#ticks.delete(action)
     this.#previous = new Set(this.#held)
     for (const action of this.#pulses) {
       this.#held.delete(action)

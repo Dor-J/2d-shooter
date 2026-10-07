@@ -1,7 +1,19 @@
 // Acceptance evidence: web:screens:flow
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { afterConnect, afterDisconnect, afterFirstRun, afterJoin, afterLeave, back, confirmDisconnect, initialMenu, openScreen, SCREEN_COPY, SCREENS } from '../src/screens/flow.ts'
+import {
+  afterConnect,
+  afterDisconnect,
+  afterFirstRun,
+  afterJoin,
+  afterLeave,
+  back,
+  confirmDisconnect,
+  initialMenu,
+  openScreen,
+  SCREEN_COPY,
+  SCREENS,
+} from '../src/screens/flow.ts'
 
 test('first-run lands on the profile picker and a returning player lands on the main menu', () => {
   assert.equal(initialMenu(false).screen, 'first-run')
@@ -9,7 +21,16 @@ test('first-run lands on the profile picker and a returning player lands on the 
 })
 
 test('every named screen is a real place', () => {
-  for (const screen of ['credits', 'help', 'pause', 'team', 'onboarding', 'loading', 'download', 'disconnected']) {
+  for (const screen of [
+    'credits',
+    'help',
+    'pause',
+    'team',
+    'onboarding',
+    'loading',
+    'download',
+    'disconnected',
+  ]) {
     assert.ok(SCREENS.includes(screen))
     assert.ok(SCREEN_COPY[screen].title)
   }

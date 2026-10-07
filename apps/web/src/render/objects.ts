@@ -35,7 +35,7 @@ export const KIT_KINDS = Object.keys(KIT_COLORS)
 export function kitSprite(kind: string, pos: Vec2, bobTick = 0): ObjectSprite {
   const color = KIT_COLORS[kind] ?? [0.7, 0.7, 0.7, 1]
   // A gentle bob is the difference between a kit and a piece of scenery.
-  const bob = Math.sin((bobTick % 120) / 120 * Math.PI * 2) * 1.5
+  const bob = Math.sin(((bobTick % 120) / 120) * Math.PI * 2) * 1.5
   return {
     sprite: `kit-${kind.toLowerCase()}`,
     x: pos.x,
@@ -68,7 +68,8 @@ export function flagSprite(
   return {
     sprite: `flag-${kind.toLowerCase()}`,
     x: pos.x + (state === 'carried' ? -4 : 0),
-    y: pos.y - (state === 'base' ? 12 : 4) + (state === 'base' ? wave * 0.4 : 0),
+    y:
+      pos.y - (state === 'base' ? 12 : 4) + (state === 'base' ? wave * 0.4 : 0),
     width: 18,
     height: 12,
     angle: state === 'dropped' ? Math.PI / 12 : 0,
@@ -100,13 +101,14 @@ export function projectileSprite(
 ): ObjectSprite {
   const heading = Math.atan2(velocity.y, velocity.x)
   const spinning = kind === 'grenade' || kind === 'cluster'
-  const sizes: Record<string, { width: number; height: number; color: Rgba }> = {
-    grenade: { width: 8, height: 8, color: [0.34, 0.4, 0.28, 1] },
-    cluster: { width: 7, height: 7, color: [0.55, 0.45, 0.24, 1] },
-    arrow: { width: 18, height: 3, color: [0.76, 0.66, 0.44, 1] },
-    bullet: { width: 6, height: 2, color: [1, 0.9, 0.55, 1] },
-    rocket: { width: 14, height: 5, color: [0.85, 0.4, 0.2, 1] },
-  }
+  const sizes: Record<string, { width: number; height: number; color: Rgba }> =
+    {
+      grenade: { width: 8, height: 8, color: [0.34, 0.4, 0.28, 1] },
+      cluster: { width: 7, height: 7, color: [0.55, 0.45, 0.24, 1] },
+      arrow: { width: 18, height: 3, color: [0.76, 0.66, 0.44, 1] },
+      bullet: { width: 6, height: 2, color: [1, 0.9, 0.55, 1] },
+      rocket: { width: 14, height: 5, color: [0.85, 0.4, 0.2, 1] },
+    }
   const size = sizes[kind]
   return {
     sprite: `projectile-${kind}`,
@@ -121,7 +123,11 @@ export function projectileSprite(
 }
 
 /// The stationary gun bolted to a map.
-export function stationaryGunSprite(pos: Vec2, angle: number, manned: boolean): ObjectSprite {
+export function stationaryGunSprite(
+  pos: Vec2,
+  angle: number,
+  manned: boolean,
+): ObjectSprite {
   return {
     sprite: 'stationary-gun',
     x: pos.x,
@@ -140,7 +146,10 @@ export function stationaryGunSprite(pos: Vec2, angle: number, manned: boolean): 
 /// snapshot that skips does not leave a streak hanging in the air.
 export function bulletTrail(pos: Vec2, velocity: Vec2, lengthTicks = 2) {
   return {
-    from: { x: pos.x - velocity.x * lengthTicks * (1 / 60), y: pos.y - velocity.y * lengthTicks * (1 / 60) },
+    from: {
+      x: pos.x - velocity.x * lengthTicks * (1 / 60),
+      y: pos.y - velocity.y * lengthTicks * (1 / 60),
+    },
     to: { x: pos.x, y: pos.y },
     color: [1, 0.86, 0.5, 0.45] as Rgba,
     width: 1.5,

@@ -12,7 +12,12 @@ import {
   returnCountdown,
 } from '../src/objectives.ts'
 
-const flag = (kind, state) => ({ kind, base: { x: 0, y: 0 }, state, body: { pos: { x: 0, y: 0 } } })
+const flag = (kind, state) => ({
+  kind,
+  base: { x: 0, y: 0 },
+  state,
+  body: { pos: { x: 0, y: 0 } },
+})
 
 test('each flag is named the way players talk about it', () => {
   assert.equal(flagName('Alpha'), 'Red flag')
@@ -31,13 +36,26 @@ test('a carried flag names its carrier and counts as missing', () => {
   const held = flag('Bravo', { Carried: { by: 7 } })
   assert.equal(carrierOf(held), 7)
   assert.equal(isMissing(held), true)
-  assert.equal(returnCountdown(held), null, 'it is not counting down while held')
+  assert.equal(
+    returnCountdown(held),
+    null,
+    'it is not counting down while held',
+  )
 })
 
 test('a dropped flag counts down in whole seconds', () => {
-  assert.equal(returnCountdown(flag('Yellow', { Dropped: { ticks_left: 1500 } })), 25)
-  assert.equal(returnCountdown(flag('Yellow', { Dropped: { ticks_left: 61 } })), 2)
-  assert.equal(returnCountdown(flag('Yellow', { Dropped: { ticks_left: 1 } })), 1)
+  assert.equal(
+    returnCountdown(flag('Yellow', { Dropped: { ticks_left: 1500 } })),
+    25,
+  )
+  assert.equal(
+    returnCountdown(flag('Yellow', { Dropped: { ticks_left: 61 } })),
+    2,
+  )
+  assert.equal(
+    returnCountdown(flag('Yellow', { Dropped: { ticks_left: 1 } })),
+    1,
+  )
 })
 
 test('the status lines say where every flag is', () => {
@@ -60,7 +78,10 @@ test('the status lines say where every flag is', () => {
 })
 
 test('an unknown carrier still reads sensibly rather than showing undefined', () => {
-  const lines = flagStatusLines({ flags: [flag('Bravo', { Carried: { by: 99 } })] }, {})
+  const lines = flagStatusLines(
+    { flags: [flag('Bravo', { Carried: { by: 99 } })] },
+    {},
+  )
   assert.doesNotMatch(lines[0].text, /undefined/)
   assert.match(lines[0].text, /someone/)
 })

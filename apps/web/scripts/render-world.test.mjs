@@ -23,8 +23,14 @@ import {
 } from '../src/render/map.ts'
 
 test('every bonus kit is drawn in a colour of its own', () => {
-  const colors = KIT_KINDS.map(kind => kitSprite(kind, { x: 0, y: 0 }).color.join())
-  assert.equal(new Set(colors).size, KIT_KINDS.length, 'no two kits look the same')
+  const colors = KIT_KINDS.map((kind) =>
+    kitSprite(kind, { x: 0, y: 0 }).color.join(),
+  )
+  assert.equal(
+    new Set(colors).size,
+    KIT_KINDS.length,
+    'no two kits look the same',
+  )
   assert.equal(KIT_KINDS.length, 7)
 })
 
@@ -49,16 +55,27 @@ test('a carried flag is drawn behind its carrier so a firefight stays readable',
 })
 
 test('a flag on its base waves and a dropped one lies at an angle', () => {
-  assert.notEqual(flagSprite('Bravo', { x: 0, y: 0 }, 'base', 0).y, flagSprite('Bravo', { x: 0, y: 0 }, 'base', 14).y)
+  assert.notEqual(
+    flagSprite('Bravo', { x: 0, y: 0 }, 'base', 0).y,
+    flagSprite('Bravo', { x: 0, y: 0 }, 'base', 14).y,
+  )
   assert.ok(flagSprite('Bravo', { x: 0, y: 0 }, 'dropped').angle > 0)
 })
 
 test('a dropped weapon keeps its own sprite id', () => {
-  assert.equal(droppedWeaponSprite('Barrett M82A1', { x: 0, y: 0 }).sprite, 'weapon-barrett-m82a1')
+  assert.equal(
+    droppedWeaponSprite('Barrett M82A1', { x: 0, y: 0 }).sprite,
+    'weapon-barrett-m82a1',
+  )
 })
 
 test('a grenade spins and an arrow points where it is going', () => {
-  const grenade = projectileSprite('grenade', { x: 0, y: 0 }, { x: 100, y: 0 }, 0)
+  const grenade = projectileSprite(
+    'grenade',
+    { x: 0, y: 0 },
+    { x: 100, y: 0 },
+    0,
+  )
   const spun = projectileSprite('grenade', { x: 0, y: 0 }, { x: 100, y: 0 }, 8)
   assert.notEqual(grenade.angle, spun.angle)
 
@@ -91,7 +108,11 @@ test('a bullet trail is derived from the round rather than remembered between fr
   assert.equal(trail.to.x, 100)
   assert.ok(trail.from.x < trail.to.x, 'the streak is behind the round')
   const still = bulletTrail({ x: 100, y: 50 }, { x: 0, y: 0 })
-  assert.deepEqual(still.from, still.to, 'a round going nowhere leaves no streak')
+  assert.deepEqual(
+    still.from,
+    still.to,
+    'a round going nowhere leaves no streak',
+  )
 })
 
 test('every polygon kind has a colour, and the dangerous ones do not look like the safe ones', () => {
@@ -104,8 +125,22 @@ test('every polygon kind has a colour, and the dangerous ones do not look like t
 })
 
 test('a texture is projected from the world, so two polygons that meet show no seam', () => {
-  const left = { kind: 'Normal', vertices: [{ x: 0, y: 0 }, { x: 128, y: 0 }, { x: 0, y: 128 }] }
-  const right = { kind: 'Normal', vertices: [{ x: 128, y: 0 }, { x: 256, y: 0 }, { x: 128, y: 128 }] }
+  const left = {
+    kind: 'Normal',
+    vertices: [
+      { x: 0, y: 0 },
+      { x: 128, y: 0 },
+      { x: 0, y: 128 },
+    ],
+  }
+  const right = {
+    kind: 'Normal',
+    vertices: [
+      { x: 128, y: 0 },
+      { x: 256, y: 0 },
+      { x: 128, y: 128 },
+    ],
+  }
   const leftEdge = textureCoords(left, 128)[1]
   const rightEdge = textureCoords(right, 128)[0]
   assert.deepEqual(leftEdge, rightEdge)
@@ -123,17 +158,37 @@ test('only the lit edges of a polygon are drawn, so ground reads as ground', () 
     ],
   }
   const edges = edgesOf(polygon, { x: 0, y: -1 })
-  assert.ok(edges.length > 0 && edges.length < 4, 'some edges face the light and some do not')
+  assert.ok(
+    edges.length > 0 && edges.length < 4,
+    'some edges face the light and some do not',
+  )
   for (const edge of edges) assert.ok(edge.width > 0)
 })
 
 test('a degenerate edge is skipped rather than dividing by its own length', () => {
-  const polygon = { kind: 'Normal', vertices: [{ x: 5, y: 5 }, { x: 5, y: 5 }, { x: 5, y: 5 }] }
+  const polygon = {
+    kind: 'Normal',
+    vertices: [
+      { x: 5, y: 5 },
+      { x: 5, y: 5 },
+      { x: 5, y: 5 },
+    ],
+  }
   assert.deepEqual(edgesOf(polygon), [])
 })
 
 test('distant scenery moves less than the camera and foreground moves more', () => {
-  const far = { sprite: 'hill', x: 100, y: 100, width: 50, height: 50, angle: 0, parallax: 0.3, foreground: false, alpha: 1 }
+  const far = {
+    sprite: 'hill',
+    x: 100,
+    y: 100,
+    width: 50,
+    height: 50,
+    angle: 0,
+    parallax: 0.3,
+    foreground: false,
+    alpha: 1,
+  }
   const near = { ...far, parallax: 1.4, foreground: true }
   const camera = { x: 100, y: 0 }
   assert.equal(parallaxPosition(far, camera).x, 70)
@@ -142,31 +197,83 @@ test('distant scenery moves less than the camera and foreground moves more', () 
 
 test('scenery is split into what is drawn behind the soldiers and what is drawn in front', () => {
   const pieces = [
-    { sprite: 'a', x: 0, y: 0, width: 1, height: 1, angle: 0, parallax: 0.8, foreground: false, alpha: 1 },
-    { sprite: 'b', x: 0, y: 0, width: 1, height: 1, angle: 0, parallax: 0.2, foreground: false, alpha: 1 },
-    { sprite: 'c', x: 0, y: 0, width: 1, height: 1, angle: 0, parallax: 1.2, foreground: true, alpha: 1 },
+    {
+      sprite: 'a',
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1,
+      angle: 0,
+      parallax: 0.8,
+      foreground: false,
+      alpha: 1,
+    },
+    {
+      sprite: 'b',
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1,
+      angle: 0,
+      parallax: 0.2,
+      foreground: false,
+      alpha: 1,
+    },
+    {
+      sprite: 'c',
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1,
+      angle: 0,
+      parallax: 1.2,
+      foreground: true,
+      alpha: 1,
+    },
   ]
   const { background, foreground } = sceneryLayers(pieces)
   assert.deepEqual(
-    background.map(piece => piece.sprite),
+    background.map((piece) => piece.sprite),
     ['b', 'a'],
     'and the furthest away is drawn first',
   )
   assert.deepEqual(
-    foreground.map(piece => piece.sprite),
+    foreground.map((piece) => piece.sprite),
     ['c'],
   )
 })
 
 test('scenery off the side of the view is not drawn at all', () => {
-  const piece = { sprite: 'tree', x: 40, y: 40, width: 20, height: 20, angle: 0, parallax: 1, foreground: false, alpha: 1 }
+  const piece = {
+    sprite: 'tree',
+    x: 40,
+    y: 40,
+    width: 20,
+    height: 20,
+    angle: 0,
+    parallax: 1,
+    foreground: false,
+    alpha: 1,
+  }
   const view = { width: 800, height: 600 }
   assert.equal(sceneryVisible(piece, { x: 0, y: 0 }, view), true)
   assert.equal(sceneryVisible(piece, { x: 4000, y: 0 }, view), false)
 })
 
 test('animated scenery advances through its sheet', () => {
-  const piece = { sprite: 'fan', x: 0, y: 0, width: 8, height: 8, angle: 0, parallax: 1, foreground: false, alpha: 1, frames: 4, period: 2 }
+  const piece = {
+    sprite: 'fan',
+    x: 0,
+    y: 0,
+    width: 8,
+    height: 8,
+    angle: 0,
+    parallax: 1,
+    foreground: false,
+    alpha: 1,
+    frames: 4,
+    period: 2,
+  }
   assert.equal(sceneryFrame(piece, 0), 0)
   assert.equal(sceneryFrame(piece, 2), 1)
   assert.equal(sceneryFrame(piece, 8), 0)

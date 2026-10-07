@@ -35,8 +35,10 @@ export function spectatorLabel(
 
 /** The command a key press asks for, or nothing when the key means something else. */
 export function commandForKey(key: string): SpectateCommand | null {
-  if (key === 'ArrowRight' || key === 'd' || key === 'D') return { type: 'next' }
-  if (key === 'ArrowLeft' || key === 'a' || key === 'A') return { type: 'previous' }
+  if (key === 'ArrowRight' || key === 'd' || key === 'D')
+    return { type: 'next' }
+  if (key === 'ArrowLeft' || key === 'a' || key === 'A')
+    return { type: 'previous' }
   if (key === 'f' || key === 'F') return { type: 'free_camera' }
   return null
 }

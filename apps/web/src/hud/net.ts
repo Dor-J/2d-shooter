@@ -17,7 +17,12 @@ export const GRADE_COLORS: Record<LinkGrade, Rgba> = {
 }
 
 /// The dot grows as well as reddens, because colour alone is not readable for every player.
-export const GRADE_RADII: Record<LinkGrade, number> = { good: 3, fair: 4, poor: 5, bad: 6 }
+export const GRADE_RADII: Record<LinkGrade, number> = {
+  good: 3,
+  fair: 4,
+  poor: 5,
+  bad: 6,
+}
 
 export function gradeForPing(ms: number): LinkGrade {
   if (!Number.isFinite(ms) || ms < 0) return 'bad'
@@ -27,7 +32,12 @@ export function gradeForPing(ms: number): LinkGrade {
   return 'bad'
 }
 
-export type PingDot = { grade: LinkGrade; color: Rgba; radius: number; text: string }
+export type PingDot = {
+  grade: LinkGrade
+  color: Rgba
+  radius: number
+  text: string
+}
 
 export function pingDot(ms: number): PingDot {
   const grade = gradeForPing(ms)
@@ -57,12 +67,15 @@ export class PingMeter {
   sample(ms: number) {
     if (!Number.isFinite(ms) || ms < 0) return
     this.samples.push(ms)
-    if (this.samples.length > this.window) this.samples.splice(0, this.samples.length - this.window)
+    if (this.samples.length > this.window)
+      this.samples.splice(0, this.samples.length - this.window)
   }
 
   get average(): number {
     if (this.samples.length === 0) return 0
-    return this.samples.reduce((sum, value) => sum + value, 0) / this.samples.length
+    return (
+      this.samples.reduce((sum, value) => sum + value, 0) / this.samples.length
+    )
   }
 
   get worst(): number {
@@ -104,7 +117,8 @@ export class FrameMeter {
   /// The longest gap between frames in the window, which is where a stutter shows up.
   get worstFrameMs(): number {
     let worst = 0
-    for (let i = 1; i < this.times.length; i += 1) worst = Math.max(worst, this.times[i] - this.times[i - 1])
+    for (let i = 1; i < this.times.length; i += 1)
+      worst = Math.max(worst, this.times[i] - this.times[i - 1])
     return Math.round(worst)
   }
 }
@@ -130,7 +144,8 @@ export class BandwidthMeter {
     if (!Number.isFinite(down) || !Number.isFinite(up)) return
     this.entries.push({ at, down, up })
     const cutoff = at - this.window
-    while (this.entries.length > 0 && this.entries[0].at < cutoff) this.entries.shift()
+    while (this.entries.length > 0 && this.entries[0].at < cutoff)
+      this.entries.shift()
   }
 
   rate(now: number): { down: number; up: number } {
@@ -151,7 +166,8 @@ export class BandwidthMeter {
 export function formatRate(bytesPerSecond: number): string {
   if (!Number.isFinite(bytesPerSecond) || bytesPerSecond <= 0) return '0 B/s'
   if (bytesPerSecond < 1024) return `${Math.round(bytesPerSecond)} B/s`
-  if (bytesPerSecond < 1024 * 1024) return `${(bytesPerSecond / 1024).toFixed(1)} KB/s`
+  if (bytesPerSecond < 1024 * 1024)
+    return `${(bytesPerSecond / 1024).toFixed(1)} KB/s`
   return `${(bytesPerSecond / (1024 * 1024)).toFixed(2)} MB/s`
 }
 

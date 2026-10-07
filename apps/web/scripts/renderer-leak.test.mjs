@@ -1,6 +1,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createCanvasStub, createGlStub, installBrowserGlobals } from './gl-stub.mjs'
+import {
+  createCanvasStub,
+  createGlStub,
+  installBrowserGlobals,
+} from './gl-stub.mjs'
 
 /// The renderer reaches for browser globals in its constructor, so they go in before it is loaded.
 const browser = installBrowserGlobals()
@@ -17,10 +21,17 @@ test('a renderer that has been destroyed leaves no GL resource behind', () => {
   const { stub, client } = start()
   // A texture only exists once the art has loaded, which is the case a leak usually hides in.
   client.soldierTexture = stub.gl.createTexture()
-  assert.ok(stub.created.program.length > 0, 'it really did make something to leak')
+  assert.ok(
+    stub.created.program.length > 0,
+    'it really did make something to leak',
+  )
 
   client.destroy()
-  assert.deepEqual(stub.leaked(), {}, 'every program, shader, buffer, and texture was released')
+  assert.deepEqual(
+    stub.leaked(),
+    {},
+    'every program, shader, buffer, and texture was released',
+  )
 })
 
 test('a renderer that never loaded its art still tears down cleanly', () => {
@@ -34,17 +45,28 @@ test('destroying twice is not an error and does not double-delete', () => {
   client.destroy()
   const afterFirst = stub.deleted.program.length
   client.destroy()
-  assert.equal(stub.deleted.program.length, afterFirst, 'the second teardown released nothing again')
+  assert.equal(
+    stub.deleted.program.length,
+    afterFirst,
+    'the second teardown released nothing again',
+  )
 })
 
 test('every listener the renderer added is taken off again', () => {
   const before = browser.windowListeners.length
   const { canvas, client } = start()
-  assert.ok(browser.windowListeners.length > before, 'it really did attach something')
+  assert.ok(
+    browser.windowListeners.length > before,
+    'it really did attach something',
+  )
   assert.ok(canvas.listeners.length > 0)
 
   client.destroy()
-  assert.equal(browser.windowListeners.length, before, 'the window is left as it was found')
+  assert.equal(
+    browser.windowListeners.length,
+    before,
+    'the window is left as it was found',
+  )
   assert.deepEqual(canvas.listeners, [], 'and so is the canvas')
 })
 
@@ -56,7 +78,11 @@ test('the animation frame and the resize observer are both stopped', () => {
 
   client.destroy()
   assert.equal(observer.connected, false)
-  assert.equal(browser.pendingFrames(), 0, 'nothing is still being asked to draw')
+  assert.equal(
+    browser.pendingFrames(),
+    0,
+    'nothing is still being asked to draw',
+  )
 })
 
 test('opening and closing a hundred matches leaks nothing', () => {

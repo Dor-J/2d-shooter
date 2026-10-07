@@ -42,7 +42,12 @@ export function initialMenu(hasProfile: boolean): MenuState {
 
 export function openScreen(state: MenuState, screen: Screen): MenuState {
   if (state.screen === screen) return state
-  return { ...state, previous: state.screen, screen, firstRun: state.firstRun && screen !== 'main' }
+  return {
+    ...state,
+    previous: state.screen,
+    screen,
+    firstRun: state.firstRun && screen !== 'main',
+  }
 }
 
 export function back(state: MenuState): MenuState {
@@ -74,8 +79,14 @@ export function afterFirstRun(state: MenuState, mobile: boolean): MenuState {
 }
 
 export const SCREEN_COPY: Record<Screen, { title: string; body: string }> = {
-  'first-run': { title: 'Welcome', body: 'Pick a name, then try A/D to move, Space to jump, and Shift to jet.' },
-  onboarding: { title: 'Touch controls', body: 'Left pad moves. Right pad aims and fires. The top buttons jump, jet, and reload.' },
+  'first-run': {
+    title: 'Welcome',
+    body: 'Pick a name, then try A/D to move, Space to jump, and Shift to jet.',
+  },
+  onboarding: {
+    title: 'Touch controls',
+    body: 'Left pad moves. Right pad aims and fires. The top buttons jump, jet, and reload.',
+  },
   profiles: { title: 'Profiles', body: 'Choose who you play as.' },
   main: { title: 'Arena', body: 'Join a match or change your settings.' },
   join: { title: 'Join game', body: 'Pick a room, or enter a host and port.' },
@@ -84,12 +95,21 @@ export const SCREEN_COPY: Record<Screen, { title: string; body: string }> = {
   controls: { title: 'Controls', body: 'Rebind every action.' },
   customize: { title: 'Customize', body: 'Hair, kit, and colours.' },
   team: { title: 'Choose a side', body: 'Alpha, Bravo, or spectate.' },
-  credits: { title: 'Credits', body: 'Built for this project. Historical Soldat interfaces are named only until licensed.' },
-  help: { title: 'Help', body: 'Move A/D · Jump Space · Crouch S · Jet Shift · Chat Enter · Scoreboard Tab.' },
+  credits: {
+    title: 'Credits',
+    body: 'Built for this project. Historical Soldat interfaces are named only until licensed.',
+  },
+  help: {
+    title: 'Help',
+    body: 'Move A/D · Jump Space · Crouch S · Jet Shift · Chat Enter · Scoreboard Tab.',
+  },
   loading: { title: 'Loading map', body: 'Preparing the arena.' },
   download: { title: 'Downloading', body: 'Fetching the map package.' },
   match: { title: 'Match', body: 'Play.' },
   pause: { title: 'Paused', body: 'Resume, options, or leave.' },
   results: { title: 'Results', body: 'Who won, and with which weapons.' },
-  disconnected: { title: 'Connection lost', body: 'Return to the menu or try again.' },
+  disconnected: {
+    title: 'Connection lost',
+    body: 'Return to the menu or try again.',
+  },
 }

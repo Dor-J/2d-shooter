@@ -37,7 +37,11 @@ test('known default hashes are accepted and unknown hashes are rejected', () => 
 })
 
 test('a custom table is accepted only when definitions travel with it', () => {
-  const custom = acceptWeaponTable({ name: 'Tweaked', hash: 42, defs: [{ kind: 'DesertEagles' }] })
+  const custom = acceptWeaponTable({
+    name: 'Tweaked',
+    hash: 42,
+    defs: [{ kind: 'DesertEagles' }],
+  })
   assert.equal(custom.ok, true)
   if (custom.ok) assert.equal(custom.name, 'Tweaked')
   assert.equal(acceptWeaponTable({ name: 'Tweaked', hash: 42 }).ok, false)
@@ -64,12 +68,28 @@ test('a snapshot does not cancel a switch onto a carried weapon', () => {
 
 test('owned slots and nearby pickups drive the HUD highlights', () => {
   assert.deepEqual(
-    ownedSlots({ slots: [{ kind: 'DesertEagles', ammo: 7 }, { kind: 'Ussocom', ammo: 12 }], active: 0 }),
+    ownedSlots({
+      slots: [
+        { kind: 'DesertEagles', ammo: 7 },
+        { kind: 'Ussocom', ammo: 12 },
+      ],
+      active: 0,
+    }),
     [0, 10],
   )
   const nearby = nearestPickup({ x: 10, y: 10 }, [
-    { kind: 'DroppedWeapon', pos: { x: 12, y: 10 }, weapon_slot: 1, active: true },
-    { kind: 'DroppedWeapon', pos: { x: 80, y: 10 }, weapon_slot: 4, active: true },
+    {
+      kind: 'DroppedWeapon',
+      pos: { x: 12, y: 10 },
+      weapon_slot: 1,
+      active: true,
+    },
+    {
+      kind: 'DroppedWeapon',
+      pos: { x: 80, y: 10 },
+      weapon_slot: 4,
+      active: true,
+    },
   ])
   assert.equal(nearby?.weapon_slot, 1)
   const standing = muzzleOrigin({ x: 0, y: 0 }, { x: 40, y: 0 }, 'standing')

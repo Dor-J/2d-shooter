@@ -12,17 +12,83 @@ export type TouchButton = {
 /** The on-screen equivalents of the desktop controls, in thumb-reach order.
  *  Acceptance evidence: web:mobile:movement-pad */
 export const TOUCH_BUTTONS: TouchButton[] = [
-  { action: 'jet', label: 'JET', hint: 'Hold to use the jetpack', kind: 'hold', group: 'combat' },
-  { action: 'throwGrenade', label: 'NADE', hint: 'Throw a grenade', kind: 'hold', group: 'combat' },
-  { action: 'crouch', label: 'CROUCH', hint: 'Hold to crouch', kind: 'hold', group: 'stance' },
-  { action: 'prone', label: 'PRONE', hint: 'Go prone or get up', kind: 'hold', group: 'stance' },
-  { action: 'roll', label: 'ROLL', hint: 'Roll on the ground or backflip in the air', kind: 'press', group: 'stance' },
-  { action: 'reload', label: 'RELOAD', hint: 'Reload the current weapon', kind: 'press', group: 'weapons' },
-  { action: 'switchWeapon', label: 'SWITCH', hint: 'Switch between primary and secondary', kind: 'press', group: 'weapons' },
-  { action: 'throwWeapon', label: 'THROW', hint: 'Hold to charge a weapon throw', kind: 'hold', group: 'weapons' },
-  { action: 'flagThrow', label: 'FLAG', hint: 'Throw the carried flag', kind: 'press', group: 'weapons' },
-  { action: 'scoreboard', label: 'SCORE', hint: 'Hold to show the scoreboard', kind: 'hold', group: 'panel' },
-  { action: 'teamChat', label: 'TEAM', hint: 'Send a team chat message', kind: 'press', group: 'panel' },
+  {
+    action: 'jet',
+    label: 'JET',
+    hint: 'Hold to use the jetpack',
+    kind: 'hold',
+    group: 'combat',
+  },
+  {
+    action: 'throwGrenade',
+    label: 'NADE',
+    hint: 'Throw a grenade',
+    kind: 'hold',
+    group: 'combat',
+  },
+  {
+    action: 'crouch',
+    label: 'CROUCH',
+    hint: 'Hold to crouch',
+    kind: 'hold',
+    group: 'stance',
+  },
+  {
+    action: 'prone',
+    label: 'PRONE',
+    hint: 'Go prone or get up',
+    kind: 'hold',
+    group: 'stance',
+  },
+  {
+    action: 'roll',
+    label: 'ROLL',
+    hint: 'Roll on the ground or backflip in the air',
+    kind: 'press',
+    group: 'stance',
+  },
+  {
+    action: 'reload',
+    label: 'RELOAD',
+    hint: 'Reload the current weapon',
+    kind: 'press',
+    group: 'weapons',
+  },
+  {
+    action: 'switchWeapon',
+    label: 'SWITCH',
+    hint: 'Switch between primary and secondary',
+    kind: 'press',
+    group: 'weapons',
+  },
+  {
+    action: 'throwWeapon',
+    label: 'THROW',
+    hint: 'Hold to charge a weapon throw',
+    kind: 'hold',
+    group: 'weapons',
+  },
+  {
+    action: 'flagThrow',
+    label: 'FLAG',
+    hint: 'Throw the carried flag',
+    kind: 'press',
+    group: 'weapons',
+  },
+  {
+    action: 'scoreboard',
+    label: 'SCORE',
+    hint: 'Hold to show the scoreboard',
+    kind: 'hold',
+    group: 'panel',
+  },
+  {
+    action: 'teamChat',
+    label: 'TEAM',
+    hint: 'Send a team chat message',
+    kind: 'press',
+    group: 'panel',
+  },
 ]
 
 export type TouchLayout = {
@@ -32,7 +98,8 @@ export type TouchLayout = {
   padding: { top: string; bottom: string; left: string; right: string }
 }
 
-const gutter = (minimum: number, inset: string) => `max(${minimum}px, env(${inset}))`
+const gutter = (minimum: number, inset: string) =>
+  `max(${minimum}px, env(${inset}))`
 
 /** Pad and gutter sizes that keep both orientations clear of the device safe areas. */
 export function touchLayout(width: number, height: number): TouchLayout {
@@ -45,7 +112,10 @@ export function touchLayout(width: number, height: number): TouchLayout {
     buttonSize: Math.round(padSize * 0.44),
     padding: {
       top: gutter(12, 'safe-area-inset-top'),
-      bottom: gutter(orientation === 'portrait' ? 30 : 18, 'safe-area-inset-bottom'),
+      bottom: gutter(
+        orientation === 'portrait' ? 30 : 18,
+        'safe-area-inset-bottom',
+      ),
       left: gutter(sideGutter, 'safe-area-inset-left'),
       right: gutter(sideGutter, 'safe-area-inset-right'),
     },
@@ -68,7 +138,10 @@ export function aimFromStick(
 ): { x: number; y: number } | null {
   const length = Math.hypot(dx, dy)
   if (length === 0) return null
-  return { x: origin.x + (dx / length) * range, y: origin.y + (dy / length) * range }
+  return {
+    x: origin.x + (dx / length) * range,
+    y: origin.y + (dy / length) * range,
+  }
 }
 
 /**

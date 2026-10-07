@@ -13,7 +13,10 @@ export const SENSITIVITY_STEP = 0.25
 
 export function clampSensitivity(value: number): number {
   if (!Number.isFinite(value)) return 1
-  return Math.min(MAX_SENSITIVITY, Math.max(MIN_SENSITIVITY, Math.round(value * 100) / 100))
+  return Math.min(
+    MAX_SENSITIVITY,
+    Math.max(MIN_SENSITIVITY, Math.round(value * 100) / 100),
+  )
 }
 
 /** Absolute pointer aiming: the cursor is the crosshair, so sensitivity does not scale it. */
@@ -59,7 +62,8 @@ export class MouseDevice {
 
   releaseAll() {
     for (const code of this.#down) {
-      for (const action of actionsForCode(this.bindings, `mouse:${code}`)) this.#state.set(action, false)
+      for (const action of actionsForCode(this.bindings, `mouse:${code}`))
+        this.#state.set(action, false)
     }
     this.#down.clear()
   }
@@ -76,10 +80,21 @@ export class MouseDevice {
   }
 
   /** Relative aiming (pointer lock, trackpad, gamepad-style) is what sensitivity scales. */
-  aimFromLockedMovement(aim: Vec2, movementX: number, movementY: number, view: View): Vec2 {
+  aimFromLockedMovement(
+    aim: Vec2,
+    movementX: number,
+    movementY: number,
+    view: View,
+  ): Vec2 {
     return {
-      x: Math.min(view.x + view.width, Math.max(view.x, aim.x + movementX * this.sensitivity)),
-      y: Math.min(view.y + view.height, Math.max(view.y, aim.y + movementY * this.sensitivity)),
+      x: Math.min(
+        view.x + view.width,
+        Math.max(view.x, aim.x + movementX * this.sensitivity),
+      ),
+      y: Math.min(
+        view.y + view.height,
+        Math.max(view.y, aim.y + movementY * this.sensitivity),
+      ),
     }
   }
 
@@ -88,7 +103,8 @@ export class MouseDevice {
   }
 
   pointerdown(event: PointerLikeEvent): Action[] {
-    if (this.#suspended || (event.pointerType && event.pointerType !== 'mouse')) return []
+    if (this.#suspended || (event.pointerType && event.pointerType !== 'mouse'))
+      return []
     const code = this.#code(event)
     const actions = actionsForCode(this.bindings, `mouse:${code}`)
     if (actions.length === 0) return []

@@ -1,9 +1,21 @@
 // Acceptance evidence: web:audio:engine
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { AudioEngine, attenuation, clampVolume, defaultAudioSettings, panOf } from '../src/audio/engine.ts'
+import {
+  AudioEngine,
+  attenuation,
+  clampVolume,
+  defaultAudioSettings,
+  panOf,
+} from '../src/audio/engine.ts'
 import { clipFor, CLIPS } from '../src/audio/manifest.ts'
-import { applyMusicCommand, defaultMusic, stepTrack, trackName, TRACKS } from '../src/audio/music.ts'
+import {
+  applyMusicCommand,
+  defaultMusic,
+  stepTrack,
+  trackName,
+  TRACKS,
+} from '../src/audio/music.ts'
 
 test('every named event maps to a clip, and an unknown one maps to nothing', () => {
   assert.equal(clipFor('Shot')?.id, 'fire')
@@ -33,7 +45,10 @@ test('a sound to the right pans right', () => {
 
 test('the engine records what it would play rather than needing a speaker', () => {
   const audio = new AudioEngine()
-  const heard = audio.hear('Shot', { at: { x: 10, y: 0 }, listener: { x: 0, y: 0 } })
+  const heard = audio.hear('Shot', {
+    at: { x: 10, y: 0 },
+    listener: { x: 0, y: 0 },
+  })
   assert.equal(heard.clip, 'fire')
   assert.ok(heard.volume > 0)
   assert.equal(audio.played.length, 1)
@@ -69,7 +84,11 @@ test('music previous and next wrap, and mute is not a volume of zero', () => {
   assert.equal(stepTrack(3, 1), 0)
   const muted = applyMusicCommand(defaultMusic(), { enabled: false })
   assert.equal(muted.playing, false)
-  assert.equal(muted.volume, 0.5, 'the saved volume comes back when they unmute')
+  assert.equal(
+    muted.volume,
+    0.5,
+    'the saved volume comes back when they unmute',
+  )
 })
 
 test('every clip the manifest names actually exists', () => {

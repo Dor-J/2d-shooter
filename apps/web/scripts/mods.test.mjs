@@ -18,11 +18,20 @@ import { defaultManifest } from '../src/render/manifest.ts'
 
 const neon = {
   format_version: 1,
-  meta: { name: 'neon', license: 'MIT', provenance: 'generated-for-this-project', preview: 'preview.png' },
+  meta: {
+    name: 'neon',
+    license: 'MIT',
+    provenance: 'generated-for-this-project',
+    preview: 'preview.png',
+  },
   files: { 'soldier.png': 'px' },
   scales: { soldier: 1.25 },
   cursor: 'cross.png',
-  hud: { name: 'neon', provides: ['hud-health', 'hud-crosshair'], positions: { 'hud-health': { x: 8, y: 8 } } },
+  hud: {
+    name: 'neon',
+    provides: ['hud-health', 'hud-crosshair'],
+    positions: { 'hud-health': { x: 8, y: 8 } },
+  },
 }
 
 test('a safe package hashes and a wrong hash is refused', async () => {
@@ -36,7 +45,9 @@ test('a safe package hashes and a wrong hash is refused', async () => {
 test('a path that escapes or a missing license is refused', () => {
   assert.equal(isSafePath('../secret'), false)
   assert.ok('error' in parsePackage({ ...neon, files: { '../x': '1' } }))
-  assert.ok('error' in parsePackage({ ...neon, meta: { ...neon.meta, license: '' } }))
+  assert.ok(
+    'error' in parsePackage({ ...neon, meta: { ...neon.meta, license: '' } }),
+  )
 })
 
 test('mod.ini scales apply and a cheat size does not', () => {
