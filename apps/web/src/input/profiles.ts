@@ -34,7 +34,7 @@ export const DEFAULT_PROFILE_SETTINGS: ProfileSettings = {
 
 /** Controls that need two keys at once, each paired with the single control that replaces it. */
 export const ACCESSIBILITY_COMBOS = [
-  { keys: ['jump', 'crouch'], alternative: 'backflip', label: 'Backflip' },
+  { keys: ['jump', 'jet'], alternative: 'backflip', label: 'Backflip' },
   { keys: ['jump', 'crouch'], alternative: 'flagThrow', label: 'Throw flag' },
 ]
 
