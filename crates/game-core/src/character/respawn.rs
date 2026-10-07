@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 use crate::{MapSpawn, Vec2};
 use serde::{Deserialize, Serialize};
 
@@ -75,4 +77,23 @@ fn nearest_enemy(position: Vec2, enemies: &[Vec2]) -> f32 {
             dx * dx + dy * dy
         })
         .fold(f32::INFINITY, f32::min)
+}
+
+pub(crate) fn opponent_positions(world: &crate::World) -> BTreeMap<u32, Vec<Vec2>> {
+    let team_mode = world.mode == "team";
+    world
+        .players
+        .keys()
+        .map(|&id| {
+            let team = world.players.get(&id).map_or(0, |player| player.team);
+            let positions = world
+                .players
+                .values()
+                .filter(|other| other.id != id && other.hp > 0)
+                .filter(|other| !team_mode || other.team != team)
+                .map(|other| other.pos)
+                .collect();
+            (id, positions)
+        })
+        .collect()
 }

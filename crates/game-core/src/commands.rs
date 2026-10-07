@@ -71,3 +71,56 @@ pub fn parse_player_command(line: &str) -> Result<PlayerCommand, CommandError> {
         _ => Err(CommandError::Unknown),
     }
 }
+
+pub(crate) fn apply_player_command(
+    world: &mut crate::World,
+    player: u32,
+    command: PlayerCommand,
+) -> bool {
+    match command {
+        PlayerCommand::Kill | PlayerCommand::BrutalKill => {
+            let Some(target) = world.players.get(&player) else {
+                return false;
+            };
+            if target.hp <= 0 {
+                return false;
+            }
+            let amount = if command == PlayerCommand::BrutalKill {
+                world.damage.gib_damage.max(target.hp)
+            } else {
+                target.hp
+            };
+            world.apply_damage(crate::DamageEvent {
+                attacker: Some(player),
+                target: player,
+                amount,
+                region: crate::BodyRegion::Chest,
+                cause: crate::DamageCause::Bullet,
+                direction: crate::Vec2::default(),
+                pre_scaled: true,
+            });
+            true
+        }
+        PlayerCommand::Mercy
+        | PlayerCommand::Smoke
+        | PlayerCommand::Tabac
+        | PlayerCommand::Takeoff
+        | PlayerCommand::Victory => {
+            let Some(emote) = command.emote() else {
+                return false;
+            };
+            let Some(target) = world.players.get_mut(&player) else {
+                return false;
+            };
+            if target.hp <= 0 {
+                return false;
+            }
+            target.state = crate::CharacterState::Emote {
+                emote,
+                ticks_left: 90,
+            };
+            true
+        }
+        PlayerCommand::Pause | PlayerCommand::Unpause => false,
+    }
+}

@@ -17,6 +17,10 @@ pub mod spectator;
 pub mod statistics;
 pub mod team;
 
+mod rambo;
+
+pub(crate) use rambo::sync_rambo_bow;
+
 pub use modifiers::{
     has_line_of_sight, survival_standing, visibility_between, AdvanceConfig, RoundStanding,
     SurvivalConfig, Survivor, Unlocked, Viewer, Visibility,

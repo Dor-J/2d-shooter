@@ -11,16 +11,20 @@ pub mod damage;
 pub mod explosive;
 pub mod firing;
 pub mod flame;
+mod flight;
+mod hands;
 pub mod inventory;
 mod loader;
 pub mod melee;
 pub mod pickups;
 pub mod projectile;
 pub mod reload;
+mod splash;
 pub mod stationary;
 mod table;
 mod tables;
 pub mod throw;
+pub(crate) mod trigger;
 
 pub use accuracy::{
     bink_on_hit, calculate_bink, inaccuracy, max_deviation, movement_accuracy, recoil_radians,
@@ -43,15 +47,20 @@ pub use firing::{
     startup_resets_on_release, FireRefusal,
 };
 pub use flame::{propagated_hit_multiply, propagated_velocity, propagates};
+pub(crate) use flight::fly;
+pub(crate) use hands::{held_kind, shooter_pose, sync_hands, writeback_ammo};
 pub use inventory::{muzzle_origin, Inventory, WeaponSlot, SWITCH_DELAY_TICKS};
 pub use loader::WeaponConfigError;
 pub use melee::{is_continuous_contact, reach as melee_reach, swing_segment, MELEE_RADIUS};
 pub use pickups::{dropped_weapon, nearest_index, PICKUP_RADIUS};
+pub(crate) use projectile::{armed_def, projectile_kind, thrown_knife, PROJECTILE_GRAVITY};
 pub use projectile::{
     bounce_velocity, collides_with_bodies, gravity_multiplier, grenade_is_armed, impact_response,
-    pushes_objects, ricochet_velocity, surface_response, ImpactResponse, SurfaceResponse,
-    ARROW_RESIST_TICKS, GRENADE_SURFACE_COEF, OBJECT_PUSH_MULTIPLIER, RICOCHET_MIN_TRAVEL,
+    pushes_objects, ricochet_velocity, surface_response, ImpactResponse, Projectile,
+    ProjectileKind, SurfaceResponse, ARROW_RESIST_TICKS, GRENADE_SURFACE_COEF,
+    OBJECT_PUSH_MULTIPLIER, RICOCHET_MIN_TRAVEL,
 };
+pub(crate) use splash::{splash_hits, PendingHit, EXPLOSION_FLAG_PUSH};
 pub use stationary::StationaryGun;
 pub use table::WeaponTable;
 pub use throw::{aim_dir, charged_velocity, MAX_THROW_CHARGE};

@@ -158,3 +158,33 @@ pub fn resolve_choice(advance: bool, unlocked: Unlocked, wanted: WeaponKind) -> 
 pub fn reset() -> Unlocked {
     Unlocked::starting()
 }
+
+pub(crate) fn advance_progress(world: &mut crate::World, killer: Option<u32>, victim: u32) {
+    let config = world.advance;
+    if let Some(id) = killer.filter(|id| *id != victim) {
+        let kills = world.ledger.player(id).kills;
+        if kill_earns_unlock(&config, kills) {
+            let mut unlocked = world
+                .players
+                .get(&id)
+                .map_or(Unlocked::starting(), |p| p.unlocked);
+            if unlock_one(&mut unlocked, &mut world.rng).is_some() {
+                if let Some(player) = world.players.get_mut(&id) {
+                    player.unlocked = unlocked;
+                }
+            }
+        }
+    }
+    let deaths = world.ledger.player(victim).deaths;
+    if death_costs_unlock(&config, deaths) {
+        let mut unlocked = world
+            .players
+            .get(&victim)
+            .map_or(Unlocked::starting(), |p| p.unlocked);
+        if revoke_one(&mut unlocked, &mut world.rng).is_some() {
+            if let Some(player) = world.players.get_mut(&victim) {
+                player.unlocked = unlocked;
+            }
+        }
+    }
+}

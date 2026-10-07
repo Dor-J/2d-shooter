@@ -272,3 +272,20 @@ impl Rotation {
         !self.loops && self.index + 1 == self.maps.len()
     }
 }
+
+pub(crate) fn restart_match(world: &mut crate::World) {
+    let rules = world.rules;
+    let event = world.match_state.restart(&rules);
+    world.objectives.reset();
+    world.pickups.clear();
+    for player in world.players.values_mut() {
+        player.bonus.clear();
+    }
+    world.ledger = ScoreLedger::default();
+    world.stats.clear();
+    for id in world.players.keys().copied().collect::<Vec<_>>() {
+        world.ledger.ensure(id);
+    }
+    world.project_scores();
+    world.match_events.push(event);
+}

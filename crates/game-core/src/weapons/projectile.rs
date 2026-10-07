@@ -5,7 +5,10 @@
 //! `shared/mechanics/Bullets.pas` (`TBullet.Update`, `CheckMapCollision`, `CheckMapVerticesCollision`)
 //! and `shared/mechanics/Sprites.pas` (`GRENADE_SURFACECOEF`) at the pinned commit.
 
-use super::config::{BulletStyle, WeaponDef};
+use serde::{Deserialize, Serialize};
+
+use super::config::{BulletStyle, WeaponDef, WeaponKind};
+use super::WeaponTable;
 use crate::Vec2;
 
 /// How much a grenade keeps of the velocity it had after being reflected off a surface.
@@ -157,3 +160,66 @@ pub const OBJECT_PUSH_MULTIPLIER: f32 = 9.0;
 
 /// Ticks an object ignores further bullet shoves after one lands, so a burst cannot launch it.
 pub const OBJECT_PUSH_COOLDOWN_TICKS: u16 = 3;
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Projectile {
+    pub id: u32,
+    pub owner: u32,
+    pub pos: Vec2,
+    pub vel: Vec2,
+    pub ttl: u16,
+    pub damage: i32,
+    pub explosive: bool,
+    pub kind: ProjectileKind,
+    pub splash_radius: f32,
+    #[serde(default)]
+    pub weapon: Option<WeaponKind>,
+    #[serde(default)]
+    pub origin: Vec2,
+    /// Where this projectile last struck something. A rocket only skips off a surface it reached
+    /// from far enough away, so it has to remember its last impact rather than only its origin.
+    #[serde(default)]
+    pub last_impact: Vec2,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ProjectileKind {
+    Bullet,
+    ShotgunPellet,
+    M79Grenade,
+    FragGrenade,
+    Melee,
+    LawRocket,
+    ThrownKnife,
+}
+
+pub(crate) fn projectile_kind(def: &WeaponDef) -> ProjectileKind {
+    if def.kind == WeaponKind::ThrownKnife {
+        return ProjectileKind::ThrownKnife;
+    }
+    match def.bullet_style {
+        BulletStyle::Shotgun => ProjectileKind::ShotgunPellet,
+        BulletStyle::M79Grenade => ProjectileKind::M79Grenade,
+        BulletStyle::Law => ProjectileKind::LawRocket,
+        BulletStyle::FragGrenade | BulletStyle::ClusterGrenade | BulletStyle::Cluster => {
+            ProjectileKind::FragGrenade
+        }
+        style if style.is_melee() => ProjectileKind::Melee,
+        _ => ProjectileKind::Bullet,
+    }
+}
+
+pub(crate) fn thrown_knife(bullet: &Projectile) -> bool {
+    bullet.kind == ProjectileKind::ThrownKnife || bullet.weapon == Some(WeaponKind::ThrownKnife)
+}
+
+/// How hard gravity pulls a projectile that is subject to it, in world units per second squared.
+///
+/// Matched to the character gravity the movement config uses, so a grenade and a body fall at the
+/// same rate and a thrown arc lands where a player expects it to.
+pub(crate) const PROJECTILE_GRAVITY: f32 = 0.12 * 950.0;
+
+/// The definition a projectile was fired from, falling back to a plain bullet for older snapshots
+/// that predate weapon-tagged projectiles.
+pub(crate) fn armed_def(weapons: &WeaponTable, bullet: &Projectile) -> WeaponDef {
+    *weapons.get(bullet.weapon.unwrap_or(WeaponKind::Ak74))
+}

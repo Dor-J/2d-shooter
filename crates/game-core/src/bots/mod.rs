@@ -11,6 +11,10 @@ pub mod objectives;
 pub mod perception;
 pub mod profile;
 
+mod drive;
+
+pub(crate) use drive::bot_inputs;
+
 use serde::{Deserialize, Serialize};
 
 pub use combat::Trigger;
