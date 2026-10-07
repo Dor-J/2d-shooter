@@ -70,6 +70,7 @@ pub use weapons::{
     MAX_THROW_CHARGE, MELEE_RADIUS, OBJECT_PUSH_MULTIPLIER, PICKUP_RADIUS, RICOCHET_MIN_TRAVEL,
     SECOND_DEGRADE_DISTANCE, SELECTABLE_WEAPONS, SWITCH_DELAY_TICKS, THROW_LAST_FRAME,
 };
+use weapons::{held_kind, shooter_pose, sync_hands, writeback_ammo};
 
 pub const TICK_RATE: u32 = 60;
 pub const DT: f32 = 1.0 / TICK_RATE as f32;
@@ -2621,16 +2622,6 @@ fn splash_hits(
     }
 }
 
-fn shooter_pose(player: &Player, input: &Input) -> ShooterPose {
-    ShooterPose {
-        state: player.state,
-        grounded: player.grounded,
-        moving: input.left || input.right || player.vel.x.abs() > 20.0,
-        jetting: input.jet && player.fuel > 0.01,
-        bink: player.bink,
-    }
-}
-
 fn projectile_kind(def: &WeaponDef) -> ProjectileKind {
     if def.kind == WeaponKind::ThrownKnife {
         return ProjectileKind::ThrownKnife;
@@ -2649,35 +2640,6 @@ fn projectile_kind(def: &WeaponDef) -> ProjectileKind {
 
 fn thrown_knife(bullet: &Projectile) -> bool {
     bullet.kind == ProjectileKind::ThrownKnife || bullet.weapon == Some(WeaponKind::ThrownKnife)
-}
-
-fn held_kind(player: &Player) -> WeaponKind {
-    let kind = player
-        .inventory
-        .active()
-        .map(|slot| slot.kind)
-        .unwrap_or(WeaponKind::Punch);
-    if kind == WeaponKind::RamboBow && player.bonus.is(BonusEffect::FlameGod) {
-        return WeaponKind::FlamedArrows;
-    }
-    kind
-}
-
-fn sync_hands(player: &mut Player) {
-    if let Some(slot) = player.inventory.active() {
-        if let Some(index) = slot.kind.slot() {
-            player.weapon = index;
-        }
-        player.ammo = slot.ammo;
-    } else {
-        player.ammo = 0;
-    }
-}
-
-fn writeback_ammo(player: &mut Player) {
-    if let Some(slot) = player.inventory.active_mut() {
-        slot.ammo = player.ammo;
-    }
 }
 
 #[cfg(target_arch = "wasm32")]

@@ -11,6 +11,7 @@ pub mod damage;
 pub mod explosive;
 pub mod firing;
 pub mod flame;
+mod hands;
 pub mod inventory;
 mod loader;
 pub mod melee;
@@ -43,6 +44,7 @@ pub use firing::{
     startup_resets_on_release, FireRefusal,
 };
 pub use flame::{propagated_hit_multiply, propagated_velocity, propagates};
+pub(crate) use hands::{held_kind, shooter_pose, sync_hands, writeback_ammo};
 pub use inventory::{muzzle_origin, Inventory, WeaponSlot, SWITCH_DELAY_TICKS};
 pub use loader::WeaponConfigError;
 pub use melee::{is_continuous_contact, reach as melee_reach, swing_segment, MELEE_RADIUS};
