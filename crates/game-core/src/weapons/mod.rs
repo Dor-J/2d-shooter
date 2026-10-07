@@ -18,6 +18,7 @@ pub mod melee;
 pub mod pickups;
 pub mod projectile;
 pub mod reload;
+mod splash;
 pub mod stationary;
 mod table;
 mod tables;
@@ -54,6 +55,7 @@ pub use projectile::{
     pushes_objects, ricochet_velocity, surface_response, ImpactResponse, SurfaceResponse,
     ARROW_RESIST_TICKS, GRENADE_SURFACE_COEF, OBJECT_PUSH_MULTIPLIER, RICOCHET_MIN_TRAVEL,
 };
+pub(crate) use splash::{splash_hits, PendingHit, EXPLOSION_FLAG_PUSH};
 pub use stationary::StationaryGun;
 pub use table::WeaponTable;
 pub use throw::{aim_dir, charged_velocity, MAX_THROW_CHARGE};
