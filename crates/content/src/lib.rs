@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+pub mod anim;
 pub mod manifest;
 pub mod mod_package;
 pub mod pms;
