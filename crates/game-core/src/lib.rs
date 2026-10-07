@@ -9,6 +9,7 @@ mod collision;
 pub mod commands;
 mod events;
 mod fixtures;
+mod input;
 mod map;
 pub mod modes;
 pub mod objects;
@@ -36,6 +37,7 @@ pub use collision::{
 pub use commands::{parse_player_command, CommandError, PlayerCommand};
 pub use events::Event;
 pub use fixtures::{replay_fixture_json, Fixture, FrameInput, SimRng, WorldDigest};
+pub use input::Input;
 use map::{map_spawn, spawn};
 pub use map::{MapSpawn, MapValidationError, SpawnKind, ValidatedMap};
 pub use modes::{
@@ -137,37 +139,6 @@ impl Vec2 {
     pub fn length(self) -> f32 {
         (self.x * self.x + self.y * self.y).sqrt()
     }
-}
-
-#[derive(Clone, Copy, Default, Debug, Serialize, Deserialize)]
-pub struct Input {
-    pub seq: u32,
-    pub left: bool,
-    pub right: bool,
-    pub jump: bool,
-    pub jet: bool,
-    #[serde(default)]
-    pub crouch: bool,
-    #[serde(default)]
-    pub prone: bool,
-    #[serde(default)]
-    pub roll: bool,
-    #[serde(default)]
-    pub emote: Option<Emote>,
-    #[serde(default)]
-    pub reload: bool,
-    pub fire: bool,
-    pub throw_grenade: bool,
-    pub aim: Vec2,
-    pub weapon: u8,
-    #[serde(default)]
-    pub drop: bool,
-    #[serde(default)]
-    pub throw_weapon: bool,
-    #[serde(default)]
-    pub throw_knife: bool,
-    #[serde(default)]
-    pub pickup: bool,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
