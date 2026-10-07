@@ -70,16 +70,17 @@ pub use weapons::{
     propagated_velocity, propagates, push_impulse, pushes_objects, recoil_radians, refusal,
     ricochet_velocity, self_bink_on_fire, self_boost, should_bink, stance_spread,
     startup_resets_on_release, stationary, surface_response, swing_segment, throw_arc, throw_frame,
-    throw_velocity, BulletStyle, FireRefusal, ImpactResponse, Inventory, NoCollision, ShooterPose,
-    StationaryGun, SurfaceResponse, WeaponConfigError, WeaponDef, WeaponKind, WeaponLimits,
-    WeaponSlot, WeaponTable, ALL_WEAPONS, ARROW_RESIST_TICKS, CLUSTER_SUBMUNITIONS,
-    CONFIGURED_WEAPONS, FIRST_DEGRADE_DISTANCE, GRENADE_SURFACE_COEF, MAX_INACCURACY,
-    MAX_THROW_CHARGE, MELEE_RADIUS, OBJECT_PUSH_MULTIPLIER, PICKUP_RADIUS, RICOCHET_MIN_TRAVEL,
-    SECOND_DEGRADE_DISTANCE, SELECTABLE_WEAPONS, SWITCH_DELAY_TICKS, THROW_LAST_FRAME,
+    throw_velocity, BulletStyle, FireRefusal, ImpactResponse, Inventory, NoCollision, Projectile,
+    ProjectileKind, ShooterPose, StationaryGun, SurfaceResponse, WeaponConfigError, WeaponDef,
+    WeaponKind, WeaponLimits, WeaponSlot, WeaponTable, ALL_WEAPONS, ARROW_RESIST_TICKS,
+    CLUSTER_SUBMUNITIONS, CONFIGURED_WEAPONS, FIRST_DEGRADE_DISTANCE, GRENADE_SURFACE_COEF,
+    MAX_INACCURACY, MAX_THROW_CHARGE, MELEE_RADIUS, OBJECT_PUSH_MULTIPLIER, PICKUP_RADIUS,
+    RICOCHET_MIN_TRAVEL, SECOND_DEGRADE_DISTANCE, SELECTABLE_WEAPONS, SWITCH_DELAY_TICKS,
+    THROW_LAST_FRAME,
 };
 use weapons::{
-    held_kind, shooter_pose, splash_hits, sync_hands, writeback_ammo, PendingHit,
-    EXPLOSION_FLAG_PUSH,
+    armed_def, held_kind, projectile_kind, shooter_pose, splash_hits, sync_hands, thrown_knife,
+    writeback_ammo, PendingHit, EXPLOSION_FLAG_PUSH, PROJECTILE_GRAVITY,
 };
 
 pub const TICK_RATE: u32 = 60;
@@ -120,36 +121,6 @@ fn default_collision_world() -> CollisionWorld {
     CollisionWorld::new(polygons)
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Projectile {
-    pub id: u32,
-    pub owner: u32,
-    pub pos: Vec2,
-    pub vel: Vec2,
-    pub ttl: u16,
-    pub damage: i32,
-    pub explosive: bool,
-    pub kind: ProjectileKind,
-    pub splash_radius: f32,
-    #[serde(default)]
-    pub weapon: Option<WeaponKind>,
-    #[serde(default)]
-    pub origin: Vec2,
-    /// Where this projectile last struck something. A rocket only skips off a surface it reached
-    /// from far enough away, so it has to remember its last impact rather than only its origin.
-    #[serde(default)]
-    pub last_impact: Vec2,
-}
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum ProjectileKind {
-    Bullet,
-    ShotgunPellet,
-    M79Grenade,
-    FragGrenade,
-    Melee,
-    LawRocket,
-    ThrownKnife,
-}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct World {
     pub tick: u64,
@@ -2194,26 +2165,6 @@ impl World {
     }
 }
 
-fn projectile_kind(def: &WeaponDef) -> ProjectileKind {
-    if def.kind == WeaponKind::ThrownKnife {
-        return ProjectileKind::ThrownKnife;
-    }
-    match def.bullet_style {
-        BulletStyle::Shotgun => ProjectileKind::ShotgunPellet,
-        BulletStyle::M79Grenade => ProjectileKind::M79Grenade,
-        BulletStyle::Law => ProjectileKind::LawRocket,
-        BulletStyle::FragGrenade | BulletStyle::ClusterGrenade | BulletStyle::Cluster => {
-            ProjectileKind::FragGrenade
-        }
-        style if style.is_melee() => ProjectileKind::Melee,
-        _ => ProjectileKind::Bullet,
-    }
-}
-
-fn thrown_knife(bullet: &Projectile) -> bool {
-    bullet.kind == ProjectileKind::ThrownKnife || bullet.weapon == Some(WeaponKind::ThrownKnife)
-}
-
 #[cfg(target_arch = "wasm32")]
 mod wasm {
     use super::*;
@@ -2237,18 +2188,6 @@ mod wasm {
     pub fn replay_fixture(fixture_json: &str) -> String {
         replay_fixture_json(fixture_json).unwrap_or_default()
     }
-}
-
-/// How hard gravity pulls a projectile that is subject to it, in world units per second squared.
-///
-/// Matched to the character gravity the movement config uses, so a grenade and a body fall at the
-/// same rate and a thrown arc lands where a player expects it to.
-const PROJECTILE_GRAVITY: f32 = 0.12 * 950.0;
-
-/// The definition a projectile was fired from, falling back to a plain bullet for older snapshots
-/// that predate weapon-tagged projectiles.
-fn armed_def(weapons: &WeaponTable, bullet: &Projectile) -> WeaponDef {
-    *weapons.get(bullet.weapon.unwrap_or(WeaponKind::Ak74))
 }
 
 /// The weapon a damage event should be credited to, for the statistics.
