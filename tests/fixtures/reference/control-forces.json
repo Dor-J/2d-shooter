@@ -1,0 +1,168 @@
+{
+  "source": "opensoldat/opensoldat shared/mechanics/Control.pas",
+  "commit": "c7596cdca32416cb66339b339105eb1e07e7fbbf",
+  "function": "ControlSprite",
+  "notes": [
+    "Locomotion from line 1621 runs only when body animation is not TakeOff, Piss, Mercy, Mercy2, Victory, or Own.",
+    "That block is one if/else chain, so an in-progress roll wins over a new input on the same tick.",
+    "Ice and slope checks are absent from Control.pas."
+  ],
+  "entries": [
+    {
+      "id": "backflip-entry",
+      "lines": "350-358",
+      "condition": "Jetpack AND ((legs JumpSide AND ((Direction=-1 AND Right) OR (Direction=1 AND Left) OR both Left and Right)) OR (legs RollBack AND Up))",
+      "assignment": "apply RollBack to body and legs; no force this tick; skip jet force"
+    },
+    {
+      "id": "jet-ground",
+      "lines": "361-365",
+      "condition": "Jetpack AND JetsCount>0 AND not backflip test AND OnGround",
+      "assignment": "Forces.Y = -2.5 * (JETSPEED if Grav>0.05 else Grav*2)"
+    },
+    {
+      "id": "jet-air",
+      "lines": "367-371",
+      "condition": "same, not OnGround, Position<>POS_PRONE",
+      "assignment": "Forces.Y -= (JETSPEED if Grav>0.05 else Grav*2)"
+    },
+    {
+      "id": "jet-air-prone",
+      "lines": "372-374",
+      "condition": "same, not OnGround, Position=POS_PRONE",
+      "assignment": "Forces.X += Direction * (JETSPEED if Grav>0.05 else Grav*2) / 2"
+    },
+    {
+      "id": "roll-ground",
+      "lines": "1628-1634",
+      "condition": "body Roll or RollBack, legs Roll, OnGround",
+      "assignment": "Forces.X = Direction * ROLLSPEED"
+    },
+    {
+      "id": "roll-air",
+      "lines": "1635-1636",
+      "condition": "legs Roll, not OnGround",
+      "assignment": "Forces.X = Direction * 2 * FLYSPEED"
+    },
+    {
+      "id": "rollback-ground",
+      "lines": "1638-1641",
+      "condition": "legs RollBack, OnGround",
+      "assignment": "Forces.X = -Direction * ROLLSPEED"
+    },
+    {
+      "id": "rollback-air",
+      "lines": "1642-1643",
+      "condition": "legs RollBack, not OnGround",
+      "assignment": "Forces.X = -Direction * 2 * FLYSPEED"
+    },
+    {
+      "id": "backflip-boost",
+      "lines": "1646-1653",
+      "condition": "legs RollBack, frame >1 and <8, Up held",
+      "assignment": "Forces.Y -= JUMPDIRSPEED * 1.5; Forces.X *= 0.5; Velocity.X *= 0.8"
+    },
+    {
+      "id": "crouch-run-right",
+      "lines": "1659-1709",
+      "condition": "Right AND Down, OnGround, legs CrouchRun or CrouchRunBack",
+      "assignment": "Forces.X = CROUCHRUNSPEED"
+    },
+    {
+      "id": "roll-entry-right",
+      "lines": "1659-1696 and 1710-1712",
+      "condition": "Right AND Down, OnGround, legs were Run, RunBack, Fall, ProneMove, or Prone frame>=24; Direction=1 selects Roll else RollBack; then impulse",
+      "assignment": "switch anim; Forces.X = 2 * CROUCHRUNSPEED"
+    },
+    {
+      "id": "crouch-run-left",
+      "lines": "1716-1766",
+      "condition": "Left AND Down, OnGround, legs CrouchRun or CrouchRunBack",
+      "assignment": "Forces.X = -CROUCHRUNSPEED"
+    },
+    {
+      "id": "roll-entry-left",
+      "lines": "1716-1753 and 1767-1769",
+      "condition": "Left AND Down, OnGround, same legs preconditions; Direction=1 selects RollBack else Roll",
+      "assignment": "switch anim; Forces.X = 2 * -CROUCHRUNSPEED"
+    },
+    {
+      "id": "prone-move",
+      "lines": "1775-1792",
+      "condition": "legs Prone or ProneMove or GetUp (body not Throw/Punch), OnGround, (Prone and frame>25) or ProneMove, Left or Right, frame <4 or >14",
+      "assignment": "Forces.X = -PRONESPEED if Left else PRONESPEED"
+    },
+    {
+      "id": "side-jump-right",
+      "lines": "1817-1861",
+      "condition": "Right AND Up, legs JumpSide, frame >3 and <11",
+      "assignment": "Forces.X = JUMPDIRSPEED; Forces.Y = -JUMPDIRSPEED / 1.2"
+    },
+    {
+      "id": "side-jump-left",
+      "lines": "1865-1909",
+      "condition": "Left AND Up, legs JumpSide, same frames",
+      "assignment": "Forces.X = -JUMPDIRSPEED; Forces.Y = -JUMPDIRSPEED / 1.2"
+    },
+    {
+      "id": "jump",
+      "lines": "1913-1934",
+      "condition": "Up only, legs Jump, frame >8 and <15",
+      "assignment": "Forces.Y = -JUMPSPEED"
+    },
+    {
+      "id": "run-right",
+      "lines": "1956-1977",
+      "condition": "Right only, OnGround",
+      "assignment": "Forces.X = RUNSPEED; Forces.Y = -RUNSPEEDUP"
+    },
+    {
+      "id": "air-strafe-right",
+      "lines": "1979-1980",
+      "condition": "Right only, not OnGround",
+      "assignment": "Forces.X = FLYSPEED"
+    },
+    {
+      "id": "parachute-right",
+      "lines": "1965-1971",
+      "condition": "Right, Para<>0, HoldedThing<>0",
+      "assignment": "parachute joint 3 Forces.Y -= 0.5; joint 2 Forces.Y += 0.5; player still gets the run or fly write"
+    },
+    {
+      "id": "run-left",
+      "lines": "1983-2004",
+      "condition": "Left only, OnGround",
+      "assignment": "Forces.X = -RUNSPEED; Forces.Y = -RUNSPEEDUP"
+    },
+    {
+      "id": "air-strafe-left",
+      "lines": "2006-2007",
+      "condition": "Left only, not OnGround",
+      "assignment": "Forces.X = -FLYSPEED"
+    },
+    {
+      "id": "parachute-left",
+      "lines": "1992-1998",
+      "condition": "Left, Para<>0, HoldedThing<>0",
+      "assignment": "parachute joint 2 Forces.Y -= 0.5; joint 3 Forces.Y += 0.5"
+    },
+    {
+      "id": "anim-speed-damp",
+      "lines": "1400-1413",
+      "condition": "LegsAnimation.Speed > 1 and legs is Jump, JumpSide, Roll, RollBack, Prone, Run, or RunBack",
+      "assignment": "Velocity.X and Velocity.Y divided by that speed"
+    },
+    {
+      "id": "anim-speed-damp-slow",
+      "lines": "1416-1423",
+      "condition": "Speed > 2 and legs ProneMove or CrouchRun",
+      "assignment": "Velocity.X and Velocity.Y divided by that speed"
+    },
+    {
+      "id": "down-crouch",
+      "lines": "1941-1952",
+      "condition": "Down alone",
+      "assignment": "apply Crouch; no force"
+    }
+  ]
+}
