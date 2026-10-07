@@ -23,6 +23,7 @@ pub mod stationary;
 mod table;
 mod tables;
 pub mod throw;
+pub(crate) mod trigger;
 
 pub use accuracy::{
     bink_on_hit, calculate_bink, inaccuracy, max_deviation, movement_accuracy, recoil_radians,
