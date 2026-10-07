@@ -10,6 +10,7 @@ use crate::{
     Player, Projectile, ProjectileKind, StatEvent, Vec2, WeaponSlot, DT, THROW_LAST_FRAME,
 };
 
+#[allow(clippy::too_many_arguments)]
 pub(crate) fn trigger(
     player: &mut Player,
     input: Input,
@@ -258,7 +259,7 @@ pub(crate) fn trigger(
         }
     }
     if player.switch_timer == 0 && input.pickup {
-        if let Some(index) = nearest_index(player.pos, &objects) {
+        if let Some(index) = nearest_index(player.pos, objects) {
             let object = objects.remove(index);
             if let Some(kind) = object.weapon_slot.map(WeaponKind::from_slot) {
                 crate::weapons::reload::interrupt(&mut player.reload_timer);

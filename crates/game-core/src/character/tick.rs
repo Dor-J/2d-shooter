@@ -8,6 +8,7 @@ use crate::{
     MapSpawn, MovementConfig, Player, RespawnConfig, Vec2, DT, HEIGHT, WIDTH,
 };
 
+#[allow(clippy::too_many_arguments)]
 pub(crate) fn corpse(
     player: &mut Player,
     inputs: &BTreeMap<u32, Input>,
@@ -38,11 +39,11 @@ pub(crate) fn corpse(
         player.attackers.clear();
         player.last_damage_direction = Vec2::default();
         player.spawn_protection = respawn_config.protection_ticks;
-        player.pos = select_spawn(&map_spawns, &mode, player.team, player.id, &enemies);
+        player.pos = select_spawn(map_spawns, mode, player.team, player.id, &enemies);
         player.vel = Vec2::default();
         player.fuel = 1.0;
         let unlocked = player.unlocked;
-        player.inventory = Inventory::spawn_limited(player.weapon, &weapons, |kind| {
+        player.inventory = Inventory::spawn_limited(player.weapon, weapons, |kind| {
             !rules_snapshot.modifiers.advance || unlocked.has(kind)
         });
         sync_hands(player);

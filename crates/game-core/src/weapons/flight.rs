@@ -52,7 +52,7 @@ pub(crate) fn fly(world: &mut World, newborns: &mut Vec<Projectile>) {
                 || bullet.pos.y > HEIGHT
             {
                 if bullet.explosive {
-                    splash_hits(bullet, &players, &teams, &weapons, friendly_fire, &mut hits);
+                    splash_hits(bullet, players, &teams, &weapons, friendly_fire, &mut hits);
                     blast_pushes.push((bullet.pos, bullet.splash_radius));
                     if matches!(style, BulletStyle::ClusterGrenade) {
                         cluster_pieces.push((bullet.owner, bullet.pos, bullet.vel));
@@ -196,7 +196,7 @@ pub(crate) fn fly(world: &mut World, newborns: &mut Vec<Projectile>) {
                     }
                 }
                 if bullet.explosive {
-                    splash_hits(bullet, &players, &teams, &weapons, friendly_fire, &mut hits);
+                    splash_hits(bullet, players, &teams, &weapons, friendly_fire, &mut hits);
                     blast_pushes.push((bullet.pos, bullet.splash_radius));
                     if matches!(style, BulletStyle::ClusterGrenade) {
                         cluster_pieces.push((bullet.owner, bullet.pos, bullet.vel));
