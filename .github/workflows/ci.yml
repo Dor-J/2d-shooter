@@ -53,6 +53,8 @@ jobs:
           path: apps/web/public/wasm
       - run: bun install --frozen-lockfile
         working-directory: apps/web
+      - run: bun run format:check
+        working-directory: apps/web
       - run: bun run lint
         working-directory: apps/web
       - run: bun run test
