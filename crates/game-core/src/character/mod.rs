@@ -3,6 +3,7 @@ pub(crate) mod damage;
 pub(crate) mod death;
 mod jet;
 mod movement;
+mod player;
 pub(crate) mod ragdoll;
 pub(crate) mod respawn;
 mod state;
@@ -14,6 +15,7 @@ pub use damage::{
 };
 pub use death::{multi_kill_label, DeathCause, KillFeedEntry, MultiKill};
 pub use movement::{advance_character, MovementConfig};
+pub use player::Player;
 pub use ragdoll::{Ragdoll, RagdollSegment};
 pub use respawn::{fallback_spawn, select_spawn, RespawnConfig};
 pub use state::{CharacterState, Direction, Emote, RollSource};
