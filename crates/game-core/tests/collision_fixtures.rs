@@ -1,7 +1,9 @@
 use game_core::{
-    BodyRegion, BodyShape, CollisionMask, CollisionPolygon, CollisionWorld, DynamicBody,
-    DynamicBodyKind, PolygonKind, Vec2,
+    resolve_material_velocity, BodyRegion, BodyShape, CharacterState, CollisionMask,
+    CollisionPolygon, CollisionWorld, Direction, DynamicBody, DynamicBodyKind, Input, PolygonKind,
+    Vec2, World,
 };
+use std::collections::BTreeMap;
 
 fn triangle(vertices: [(f32, f32); 3], kind: PolygonKind) -> CollisionPolygon {
     CollisionPolygon::triangle(vertices.map(|(x, y)| Vec2 { x, y }), kind)
@@ -169,4 +171,121 @@ fn standing_clearance_only_looks_at_the_headroom_above_a_low_stance() {
     ));
     let low = CollisionWorld::new(polygons);
     assert!(!low.has_standing_clearance(Vec2 { x: 40.0, y: 10.0 }, CollisionMask::PLAYER));
+}
+
+fn flat_floor() -> CollisionWorld {
+    CollisionWorld::new(vec![triangle(
+        [(0.0, 200.0), (600.0, 200.0), (300.0, 280.0)],
+        PolygonKind::Normal,
+    )])
+}
+
+/// Horizontal speed on the tick the landing jump first carries the body up.
+fn landing_jump_speed(facing: Direction) -> f32 {
+    let mut world = World::with_collision("deathmatch", flat_floor());
+    world.add_player(1, "jumper".into());
+    {
+        let player = world.players.get_mut(&1).unwrap();
+        player.pos = Vec2 { x: 200.0, y: 182.0 };
+        player.vel = Vec2 { x: 2.0, y: 1.0 };
+        player.facing = facing;
+        player.grounded = false;
+        player.state = CharacterState::Airborne;
+        player.parachute = false;
+    }
+    let mut jump_held = false;
+    for _ in 0..40 {
+        let grounded = world.players[&1].grounded;
+        world.step(&BTreeMap::from([(
+            1,
+            Input {
+                jump: grounded || jump_held,
+                ..Input::default()
+            },
+        )]));
+        jump_held |= grounded;
+        let player = &world.players[&1];
+        if player.vel.y < 0.0 {
+            assert_eq!(player.facing, facing);
+            return player.vel.x;
+        }
+    }
+    panic!("landing jump never left the floor");
+}
+
+fn spike(peak: Vec2) -> CollisionWorld {
+    CollisionWorld::new(vec![triangle(
+        [
+            (peak.x - 1.0, peak.y + 40.0),
+            (peak.x, peak.y),
+            (peak.x + 1.0, peak.y + 40.0),
+        ],
+        PolygonKind::Normal,
+    )])
+}
+
+#[test]
+fn landing_jump_speed_is_identical_either_facing() {
+    let forward = landing_jump_speed(Direction::Right);
+    let backward = landing_jump_speed(Direction::Left);
+    // gap: forward 0.15075698 and backward 0.15075698 (ratio 1); the sweep ignores facing, so the tutorial's ~5% is absent.
+    assert_eq!(forward, backward);
+    assert_eq!(forward.to_bits(), 1_041_915_914);
+    assert_eq!(backward.to_bits(), 1_041_915_914);
+}
+
+#[test]
+fn clipping_a_polygon_tip_launches_the_body_upward() {
+    let peak = Vec2 { x: 50.0, y: 50.0 };
+    let start = Vec2 { x: 36.0, y: 40.0 };
+    let incoming = Vec2 { x: 8.0, y: 0.0 };
+    let shape = BodyShape::standing();
+    let hit = spike(peak)
+        .sweep_shape(
+            start,
+            Vec2 {
+                x: start.x + incoming.x,
+                y: start.y + incoming.y,
+            },
+            &shape,
+            CollisionMask::PLAYER,
+        )
+        .expect("the standing body reaches the tip");
+    let legs = shape
+        .parts()
+        .find(|part| part.region == BodyRegion::Legs)
+        .copied()
+        .unwrap();
+    let center = Vec2 {
+        x: hit.hit.position.x + legs.offset.x,
+        y: hit.hit.position.y + legs.offset.y,
+    };
+    let dx = center.x - peak.x;
+    let dy = center.y - peak.y;
+    let distance = (dx * dx + dy * dy).sqrt();
+    assert_eq!(hit.region, BodyRegion::Legs);
+    assert!(
+        (distance - legs.radius).abs() < 0.001,
+        "contact is the tip, distance {distance}"
+    );
+    let out = resolve_material_velocity(incoming, hit.hit.normal, hit.hit.kind).velocity;
+    // Measured launch: horizontal 8 leaves the sweep at (0.39999962, -1.5491933), speed 1.6.
+    assert_eq!(out.x.to_bits(), 1_053_609_152);
+    assert_eq!(out.y.to_bits(), 3_217_443_831);
+
+    let mut world = World::with_collision("deathmatch", spike(peak));
+    world.add_player(1, "corner".into());
+    {
+        let player = world.players.get_mut(&1).unwrap();
+        player.pos = start;
+        player.vel = incoming;
+        player.grounded = false;
+        player.state = CharacterState::Airborne;
+        player.parachute = false;
+    }
+    world.step(&BTreeMap::new());
+    let player = &world.players[&1];
+    // Same approach through one player tick: velocity (0.36642534, -1.4554204), speed 1.5008385.
+    assert_eq!(player.vel.x.to_bits(), 1_052_482_586);
+    assert_eq!(player.vel.y.to_bits(), 3_216_657_207);
 }
