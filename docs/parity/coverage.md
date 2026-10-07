@@ -4,23 +4,23 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 
 | ID | Status | Section | Feature | Acceptance |
 | --- | --- | --- | --- | --- |
-| G01-CHARACTER-MOVEMENT-001 | Present | 1. Character movement and physics | Horizontal running. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-002 | Present | 1. Character movement and physics | Jumping. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-003 | Present | 1. Character movement and physics | Jetpack flight. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-004 | Present | 1. Character movement and physics | Crouching. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-005 | Present | 1. Character movement and physics | Prone stance. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-006 | Present | 1. Character movement and physics | Standing-to-prone transition. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-007 | Present | 1. Character movement and physics | Getting up from prone. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-008 | Present | 1. Character movement and physics | Directional ground rolls. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-009 | Present | 1. Character movement and physics | Rolling out of prone. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-010 | Present | 1. Character movement and physics | Standard backflip. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-011 | Present | 1. Character movement and physics | Late backflip. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-012 | Present | 1. Character movement and physics | Soldat-style momentum conservation. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-013 | Present | 1. Character movement and physics | Air-control behavior. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-014 | Present | 1. Character movement and physics | Acceleration matching Soldat. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-015 | Present | 1. Character movement and physics | Ground friction matching Soldat. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-016 | Present | 1. Character movement and physics | Slope movement. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-017 | Present | 1. Character movement and physics | Sliding along slopes. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-001 | Partial | 1. Character movement and physics | Horizontal running. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-002 | Partial | 1. Character movement and physics | Jumping. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-003 | Partial | 1. Character movement and physics | Jetpack flight. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-004 | Partial | 1. Character movement and physics | Crouching. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-005 | Partial | 1. Character movement and physics | Prone stance. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-006 | Partial | 1. Character movement and physics | Standing-to-prone transition. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-007 | Partial | 1. Character movement and physics | Getting up from prone. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-008 | Partial | 1. Character movement and physics | Directional ground rolls. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-009 | Partial | 1. Character movement and physics | Rolling out of prone. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-010 | Partial | 1. Character movement and physics | Standard backflip. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-011 | Partial | 1. Character movement and physics | Late backflip. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-012 | Partial | 1. Character movement and physics | Soldat-style momentum conservation. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-013 | Partial | 1. Character movement and physics | Air-control behavior. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-014 | Partial | 1. Character movement and physics | Acceleration matching Soldat. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-015 | Partial | 1. Character movement and physics | Ground friction matching Soldat. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-016 | Partial | 1. Character movement and physics | Slope movement. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-017 | Partial | 1. Character movement and physics | Sliding along slopes. | rust:movement_fixtures |
 | G01-CHARACTER-MOVEMENT-018 | Present | 1. Character movement and physics | Polygon-edge interaction. | rust:collision_fixtures:edges |
 | G01-CHARACTER-MOVEMENT-019 | Present | 1. Character movement and physics | One-way polygons. | rust:collision_fixtures:one-way |
 | G01-CHARACTER-MOVEMENT-020 | Present | 1. Character movement and physics | Bouncy polygons. | rust:polygon_collision:materials |
@@ -31,25 +31,25 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G01-CHARACTER-MOVEMENT-025 | Present | 1. Character movement and physics | Proper head/body/legs collision volumes. | rust:collision_fixtures:body-shape |
 | G01-CHARACTER-MOVEMENT-026 | Present | 1. Character movement and physics | Character-body ragdoll physics. | rust:damage_fixtures:ragdoll |
 | G01-CHARACTER-MOVEMENT-027 | Present | 1. Character movement and physics | Corpses interacting with terrain. | rust:game_core:corpse-terrain |
-| G01-CHARACTER-MOVEMENT-028 | Present | 1. Character movement and physics | Player-to-player physical interaction. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-029 | Present | 1. Character movement and physics | Fall/impact behavior. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-030 | Present | 1. Character movement and physics | Jet force affected by pose and movement. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-031 | Present | 1. Character movement and physics | Map-specific jet-fuel capacity. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-032 | Present | 1. Character movement and physics | Jet fuel recharge. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-033 | Present | 1. Character movement and physics | Soldat-accurate jet depletion and regeneration. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-034 | Present | 1. Character movement and physics | Weapon recoil affecting the player. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-035 | Present | 1. Character movement and physics | SPAS/minigun self-boost. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-036 | Present | 1. Character movement and physics | Explosive knockback. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-037 | Present | 1. Character movement and physics | Bullet push. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-028 | Partial | 1. Character movement and physics | Player-to-player physical interaction. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-029 | Partial | 1. Character movement and physics | Fall/impact behavior. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-030 | Partial | 1. Character movement and physics | Jet force affected by pose and movement. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-031 | Partial | 1. Character movement and physics | Map-specific jet-fuel capacity. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-032 | Partial | 1. Character movement and physics | Jet fuel recharge. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-033 | Partial | 1. Character movement and physics | Soldat-accurate jet depletion and regeneration. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-034 | Partial | 1. Character movement and physics | Weapon recoil affecting the player. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-035 | Partial | 1. Character movement and physics | SPAS/minigun self-boost. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-036 | Partial | 1. Character movement and physics | Explosive knockback. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-037 | Partial | 1. Character movement and physics | Bullet push. | rust:movement_fixtures |
 | G01-CHARACTER-MOVEMENT-038 | Present | 1. Character movement and physics | Flag and kit push from bullets/explosions. | rust:mode_world:physics, rust:bonus_world:physics |
-| G01-CHARACTER-MOVEMENT-039 | Present | 1. Character movement and physics | Movement animation state machine. | rust:movement_fixtures |
-| G01-CHARACTER-MOVEMENT-040 | Present | 1. Character movement and physics | Directional aiming and body rotation. | parity:G01-CHARACTER-MOVEMENT-040, web:render:gostek |
-| G01-CHARACTER-MOVEMENT-041 | Present | 1. Character movement and physics | Separate legs, torso, head, arms, weapon, and jet animations. | parity:G01-CHARACTER-MOVEMENT-041, web:render:gostek |
-| G01-CHARACTER-MOVEMENT-042 | Present | 1. Character movement and physics | Death animations. | parity:G01-CHARACTER-MOVEMENT-042, web:render:gostek |
+| G01-CHARACTER-MOVEMENT-039 | Partial | 1. Character movement and physics | Movement animation state machine. | rust:movement_fixtures |
+| G01-CHARACTER-MOVEMENT-040 | Partial | 1. Character movement and physics | Directional aiming and body rotation. | parity:G01-CHARACTER-MOVEMENT-040, web:render:gostek |
+| G01-CHARACTER-MOVEMENT-041 | Partial | 1. Character movement and physics | Separate legs, torso, head, arms, weapon, and jet animations. | parity:G01-CHARACTER-MOVEMENT-041, web:render:gostek |
+| G01-CHARACTER-MOVEMENT-042 | Partial | 1. Character movement and physics | Death animations. | parity:G01-CHARACTER-MOVEMENT-042, web:render:gostek |
 | G01-CHARACTER-MOVEMENT-043 | Present | 1. Character movement and physics | Mercy/victory/smoke/tobacco/helmet animations. | rust:commands:emote, web:render:gostek |
-| G02-INPUT-AND-001 | Present | 2. Input and controls | Move left/right. | rust:movement_fixtures |
-| G02-INPUT-AND-002 | Present | 2. Input and controls | Jump. | rust:movement_fixtures |
-| G02-INPUT-AND-003 | Present | 2. Input and controls | Jet. | rust:movement_fixtures |
+| G02-INPUT-AND-001 | Partial | 2. Input and controls | Move left/right. | rust:movement_fixtures |
+| G02-INPUT-AND-002 | Partial | 2. Input and controls | Jump. | rust:movement_fixtures |
+| G02-INPUT-AND-003 | Partial | 2. Input and controls | Jet. | rust:movement_fixtures |
 | G02-INPUT-AND-004 | Present | 2. Input and controls | Mouse aiming. | web:smoke:aim-input |
 | G02-INPUT-AND-005 | Present | 2. Input and controls | Primary fire. | rust:game_core::tests::fire_is_rate_limited |
 | G02-INPUT-AND-006 | Present | 2. Input and controls | Grenade input. | rust:game_core::tests::holding_grenade_input_throws_only_once |
@@ -79,15 +79,15 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G02-INPUT-AND-030 | Present | 2. Input and controls | Sniper-line toggle. | parity:G02-INPUT-AND-030, web:hud:net |
 | G02-INPUT-AND-031 | Present | 2. Input and controls | Performance-statistics overlay. | parity:G02-INPUT-AND-031, web:hud:net |
 | G02-INPUT-AND-032 | Present | 2. Input and controls | Screenshot control. | web:input:screenshot |
-| G02-INPUT-AND-033 | Present | 2. Input and controls | Music toggle. | parity:G02-INPUT-AND-033, web:audio:engine |
-| G02-INPUT-AND-034 | Present | 2. Input and controls | Previous/next music track. | parity:G02-INPUT-AND-034, web:audio:engine |
+| G02-INPUT-AND-033 | Partial | 2. Input and controls | Music toggle. | parity:G02-INPUT-AND-033, web:audio:engine |
+| G02-INPUT-AND-034 | Partial | 2. Input and controls | Previous/next music track. | parity:G02-INPUT-AND-034, web:audio:engine |
 | G02-INPUT-AND-035 | Present | 2. Input and controls | Demo recording. | web:replay:player, rust:replay:record |
 | G02-INPUT-AND-036 | Present | 2. Input and controls | Demo playback fast-forward. | web:replay:player, rust:replay:seek |
 | G02-INPUT-AND-037 | Present | 2. Input and controls | Pause. | parity:G02-INPUT-AND-037, rust:commands:parse |
 | G02-INPUT-AND-038 | Present | 2. Input and controls | Window minimize shortcut. | web:input:minimize |
 | G02-INPUT-AND-039 | Present | 2. Input and controls | Taunt shortcuts. | parity:G02-INPUT-AND-039, rust:commands:emote |
 | G02-INPUT-AND-040 | Present | 2. Input and controls | Runtime mouse-sensitivity adjustment. | web:input:sensitivity |
-| G02-INPUT-AND-041 | Present | 2. Input and controls | Runtime sound-volume adjustment. | parity:G02-INPUT-AND-041, web:audio:engine |
+| G02-INPUT-AND-041 | Partial | 2. Input and controls | Runtime sound-volume adjustment. | parity:G02-INPUT-AND-041, web:audio:engine |
 | G02-INPUT-AND-042 | Present | 2. Input and controls | Scoreboard scrolling. | web:input:scoreboard-scroll |
 | G02-INPUT-AND-043 | Present | 2. Input and controls | Fully rebindable keyboard controls. | web:input:rebinding |
 | G02-INPUT-AND-044 | Present | 2. Input and controls | Rebindable mouse buttons. | web:input:mouse-rebinding |
@@ -152,13 +152,13 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G03-WEAPONS-055 | Present | 3. Weapons | Muzzle origin based on character pose. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-056 | Present | 3. Weapons | Muzzle flashes. | web:render:particles, rust:presentation:impact |
 | G03-WEAPONS-057 | Present | 3. Weapons | Shell casings. | web:render:particles |
-| G03-WEAPONS-058 | Present | 3. Weapons | Weapon-specific sounds. | web:audio:engine |
-| G03-WEAPONS-059 | Present | 3. Weapons | Reload sounds. | web:audio:engine |
-| G03-WEAPONS-060 | Present | 3. Weapons | Empty-magazine sound. | web:audio:engine |
+| G03-WEAPONS-058 | Partial | 3. Weapons | Weapon-specific sounds. | web:audio:engine |
+| G03-WEAPONS-059 | Partial | 3. Weapons | Reload sounds. | web:audio:engine |
+| G03-WEAPONS-060 | Partial | 3. Weapons | Empty-magazine sound. | web:audio:engine |
 | G03-WEAPONS-061 | Present | 3. Weapons | Bullet impact effects. | rust:presentation:impact, web:render:effects |
 | G03-WEAPONS-062 | Present | 3. Weapons | Tracers matching weapon configuration. | web:render:effects |
 | G03-WEAPONS-063 | Present | 3. Weapons | Explosion visual and audio effects. | rust:presentation:explosion, web:audio:engine |
-| G03-WEAPONS-064 | Present | 3. Weapons | Weapon sprites held by characters. | web:render:gostek |
+| G03-WEAPONS-064 | Partial | 3. Weapons | Weapon sprites held by characters. | web:render:gostek |
 | G03-WEAPONS-065 | Present | 3. Weapons | Weapons lying on the ground. | rust:weapon_inventory_fixtures |
 | G03-WEAPONS-066 | Present | 3. Weapons | Weapon pickup indicators. | web:weapons:inventory |
 | G04-WEAPON-MOD-001 | Present | 4. Weapon Mod parity | Damage. | rust:weapon_config_fixtures |
@@ -349,7 +349,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G14-BONUS-KITS-009 | Present | 14. Bonus kits | Configurable kit frequency. | parity:G14-BONUS-KITS-009, rust:bonus:pickups, rust:bonus:settings |
 | G14-BONUS-KITS-010 | Present | 14. Bonus kits | Kit respawn timers. | parity:G14-BONUS-KITS-010, rust:bonus:pickups |
 | G14-BONUS-KITS-011 | Present | 14. Bonus kits | Pickup collision. | parity:G14-BONUS-KITS-011, rust:bonus:pickups, rust:bonus_world:pickup |
-| G14-BONUS-KITS-012 | Present | 14. Bonus kits | Pickup sounds and effects. | web:audio:engine |
+| G14-BONUS-KITS-012 | Partial | 14. Bonus kits | Pickup sounds and effects. | web:audio:engine |
 | G14-BONUS-KITS-013 | Present | 14. Bonus kits | Active-bonus HUD. | parity:G14-BONUS-KITS-013, web:bonuses:hud |
 | G14-BONUS-KITS-014 | Present | 14. Bonus kits | Bonus countdown. | parity:G14-BONUS-KITS-014, web:bonuses:hud, rust:bonus:stacking |
 | G14-BONUS-KITS-015 | Present | 14. Bonus kits | Bonus overlay/effect. | parity:G14-BONUS-KITS-015, web:bonuses:hud |
@@ -367,7 +367,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G15-HEALTH-ARMOR-005 | Present | 15. Health, armor, death, and respawn | Bulletproof vest/armor. | parity:G15-HEALTH-ARMOR-005, rust:bonus:effects |
 | G15-HEALTH-ARMOR-006 | Present | 15. Health, armor, death, and respawn | Bleeding. | rust:damage_fixtures:bleeding |
 | G15-HEALTH-ARMOR-007 | Present | 15. Health, armor, death, and respawn | Blood particles. | web:render:particles |
-| G15-HEALTH-ARMOR-008 | Present | 15. Health, armor, death, and respawn | Blood remaining on the character. | parity:G15-HEALTH-ARMOR-008, web:render:gostek |
+| G15-HEALTH-ARMOR-008 | Partial | 15. Health, armor, death, and respawn | Blood remaining on the character. | parity:G15-HEALTH-ARMOR-008, web:render:gostek |
 | G15-HEALTH-ARMOR-009 | Present | 15. Health, armor, death, and respawn | Gore/gibs. | web:render:particles |
 | G15-HEALTH-ARMOR-010 | Present | 15. Health, armor, death, and respawn | Ragdoll corpses. | rust:damage_fixtures:ragdoll |
 | G15-HEALTH-ARMOR-011 | Present | 15. Health, armor, death, and respawn | Corpse persistence. | rust:damage_fixtures:ragdoll |
@@ -385,7 +385,7 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G15-HEALTH-ARMOR-023 | Present | 15. Health, armor, death, and respawn | Kill attribution after delayed damage. | rust:damage_fixtures:attribution |
 | G15-HEALTH-ARMOR-024 | Present | 15. Health, armor, death, and respawn | Assist tracking if desired. | rust:damage_fixtures:attribution |
 | G15-HEALTH-ARMOR-025 | Present | 15. Health, armor, death, and respawn | Damage direction feedback. | web:hud:damage-arrow |
-| G15-HEALTH-ARMOR-026 | Present | 15. Health, armor, death, and respawn | Explosion deafness/whistling effect. | web:audio:engine |
+| G15-HEALTH-ARMOR-026 | Partial | 15. Health, armor, death, and respawn | Explosion deafness/whistling effect. | web:audio:engine |
 | G16-MAPS-AND-001 | Present | 16. Maps and terrain engine | `.pms` map loader. | rust:content::pms |
 | G16-MAPS-AND-002 | Present | 16. Maps and terrain engine | PMS format validation. | rust:content::pms-validation |
 | G16-MAPS-AND-003 | Present | 16. Maps and terrain engine | Polygon geometry. | web:map-render:coordinates |
@@ -426,103 +426,103 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G16-MAPS-AND-038 | Present | 16. Maps and terrain engine | Map preview images. | task5:map-pipeline |
 | G16-MAPS-AND-039 | Present | 16. Maps and terrain engine | Map selection UI. | task5:map-pipeline |
 | G16-MAPS-AND-040 | Present | 16. Maps and terrain engine | Offline map testing. | task5:map-pipeline |
-| G17-ALL-97-001 | Present | 17. All 97 referenced default maps | Aero | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-002 | Present | 17. All 97 referenced default maps | Airpirates | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-003 | Present | 17. All 97 referenced default maps | Arena | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-004 | Present | 17. All 97 referenced default maps | Arena2 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-005 | Present | 17. All 97 referenced default maps | Arena3 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-006 | Present | 17. All 97 referenced default maps | Bigfalls | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-007 | Present | 17. All 97 referenced default maps | Blox | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-008 | Present | 17. All 97 referenced default maps | Bridge | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-009 | Present | 17. All 97 referenced default maps | Bunker | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-010 | Present | 17. All 97 referenced default maps | Cambodia | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-011 | Present | 17. All 97 referenced default maps | CrackedBoot | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-012 | Present | 17. All 97 referenced default maps | Daybreak | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-013 | Present | 17. All 97 referenced default maps | DesertWind | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-014 | Present | 17. All 97 referenced default maps | Factory | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-015 | Present | 17. All 97 referenced default maps | Flashback | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-016 | Present | 17. All 97 referenced default maps | HH | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-017 | Present | 17. All 97 referenced default maps | Island2k5 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-018 | Present | 17. All 97 referenced default maps | Jungle | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-019 | Present | 17. All 97 referenced default maps | Krab | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-020 | Present | 17. All 97 referenced default maps | Lagrange | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-021 | Present | 17. All 97 referenced default maps | Leaf | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-022 | Present | 17. All 97 referenced default maps | MrSnowman | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-023 | Present | 17. All 97 referenced default maps | RatCave | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-024 | Present | 17. All 97 referenced default maps | Rok | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-025 | Present | 17. All 97 referenced default maps | RR | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-026 | Present | 17. All 97 referenced default maps | Shau | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-027 | Present | 17. All 97 referenced default maps | Tropiccave | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-028 | Present | 17. All 97 referenced default maps | Unlim | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-029 | Present | 17. All 97 referenced default maps | Veoto | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-030 | Present | 17. All 97 referenced default maps | ctf_Ash | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-031 | Present | 17. All 97 referenced default maps | ctf_B2b | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-032 | Present | 17. All 97 referenced default maps | ctf_Blade | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-033 | Present | 17. All 97 referenced default maps | ctf_Campeche | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-034 | Present | 17. All 97 referenced default maps | ctf_Cobra | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-035 | Present | 17. All 97 referenced default maps | ctf_Crucifix | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-036 | Present | 17. All 97 referenced default maps | ctf_Death | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-037 | Present | 17. All 97 referenced default maps | ctf_Division | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-038 | Present | 17. All 97 referenced default maps | ctf_Dropdown | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-039 | Present | 17. All 97 referenced default maps | ctf_Equinox | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-040 | Present | 17. All 97 referenced default maps | ctf_Guardian | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-041 | Present | 17. All 97 referenced default maps | ctf_Hormone | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-042 | Present | 17. All 97 referenced default maps | ctf_IceBeam | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-043 | Present | 17. All 97 referenced default maps | ctf_Kampf | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-044 | Present | 17. All 97 referenced default maps | ctf_Lanubya | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-045 | Present | 17. All 97 referenced default maps | ctf_Laos | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-046 | Present | 17. All 97 referenced default maps | ctf_Maya | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-047 | Present | 17. All 97 referenced default maps | ctf_Mayapan | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-048 | Present | 17. All 97 referenced default maps | ctf_MFM | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-049 | Present | 17. All 97 referenced default maps | ctf_Nuubia | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-050 | Present | 17. All 97 referenced default maps | ctf_Raspberry | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-051 | Present | 17. All 97 referenced default maps | ctf_Rotten | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-052 | Present | 17. All 97 referenced default maps | ctf_Ruins | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-053 | Present | 17. All 97 referenced default maps | ctf_Run | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-054 | Present | 17. All 97 referenced default maps | ctf_Scorpion | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-055 | Present | 17. All 97 referenced default maps | ctf_Snakebite | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-056 | Present | 17. All 97 referenced default maps | ctf_Steel | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-057 | Present | 17. All 97 referenced default maps | ctf_Triumph | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-058 | Present | 17. All 97 referenced default maps | ctf_Viet | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-059 | Present | 17. All 97 referenced default maps | ctf_Voland | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-060 | Present | 17. All 97 referenced default maps | ctf_Wretch | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-061 | Present | 17. All 97 referenced default maps | ctf_X | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-062 | Present | 17. All 97 referenced default maps | htf_Arch | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-063 | Present | 17. All 97 referenced default maps | htf_Baire | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-064 | Present | 17. All 97 referenced default maps | htf_Boxed | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-065 | Present | 17. All 97 referenced default maps | htf_Desert | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-066 | Present | 17. All 97 referenced default maps | htf_Dorothy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-067 | Present | 17. All 97 referenced default maps | htf_Dusk | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-068 | Present | 17. All 97 referenced default maps | htf_Erbium | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-069 | Present | 17. All 97 referenced default maps | htf_Feast | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-070 | Present | 17. All 97 referenced default maps | htf_Mossy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-071 | Present | 17. All 97 referenced default maps | htf_Muygen | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-072 | Present | 17. All 97 referenced default maps | htf_Niall | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-073 | Present | 17. All 97 referenced default maps | htf_Nuclear | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-074 | Present | 17. All 97 referenced default maps | htf_Prison | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-075 | Present | 17. All 97 referenced default maps | htf_Rubik | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-076 | Present | 17. All 97 referenced default maps | htf_Star | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-077 | Present | 17. All 97 referenced default maps | htf_Tower | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-078 | Present | 17. All 97 referenced default maps | htf_Void | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-079 | Present | 17. All 97 referenced default maps | htf_Vortex | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-080 | Present | 17. All 97 referenced default maps | htf_Zajacz | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-081 | Present | 17. All 97 referenced default maps | inf_Abel | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-082 | Present | 17. All 97 referenced default maps | inf_April | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-083 | Present | 17. All 97 referenced default maps | inf_Argy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-084 | Present | 17. All 97 referenced default maps | inf_Belltower | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-085 | Present | 17. All 97 referenced default maps | inf_Biologic | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-086 | Present | 17. All 97 referenced default maps | inf_Changeling | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-087 | Present | 17. All 97 referenced default maps | inf_Flute | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-088 | Present | 17. All 97 referenced default maps | inf_Fortress | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-089 | Present | 17. All 97 referenced default maps | inf_Industrial | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-090 | Present | 17. All 97 referenced default maps | inf_Messner | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-091 | Present | 17. All 97 referenced default maps | inf_Moonshine | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-092 | Present | 17. All 97 referenced default maps | inf_Motheaten | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-093 | Present | 17. All 97 referenced default maps | inf_Outpost | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-094 | Present | 17. All 97 referenced default maps | inf_Rescue | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-095 | Present | 17. All 97 referenced default maps | inf_Rise | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-096 | Present | 17. All 97 referenced default maps | inf_Warehouse | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
-| G17-ALL-97-097 | Present | 17. All 97 referenced default maps | inf_Warlock | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-001 | Partial | 17. All 97 referenced default maps | Aero | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-002 | Partial | 17. All 97 referenced default maps | Airpirates | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-003 | Partial | 17. All 97 referenced default maps | Arena | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-004 | Partial | 17. All 97 referenced default maps | Arena2 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-005 | Partial | 17. All 97 referenced default maps | Arena3 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-006 | Partial | 17. All 97 referenced default maps | Bigfalls | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-007 | Partial | 17. All 97 referenced default maps | Blox | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-008 | Partial | 17. All 97 referenced default maps | Bridge | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-009 | Partial | 17. All 97 referenced default maps | Bunker | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-010 | Partial | 17. All 97 referenced default maps | Cambodia | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-011 | Partial | 17. All 97 referenced default maps | CrackedBoot | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-012 | Partial | 17. All 97 referenced default maps | Daybreak | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-013 | Partial | 17. All 97 referenced default maps | DesertWind | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-014 | Partial | 17. All 97 referenced default maps | Factory | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-015 | Partial | 17. All 97 referenced default maps | Flashback | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-016 | Partial | 17. All 97 referenced default maps | HH | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-017 | Partial | 17. All 97 referenced default maps | Island2k5 | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-018 | Partial | 17. All 97 referenced default maps | Jungle | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-019 | Partial | 17. All 97 referenced default maps | Krab | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-020 | Partial | 17. All 97 referenced default maps | Lagrange | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-021 | Partial | 17. All 97 referenced default maps | Leaf | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-022 | Partial | 17. All 97 referenced default maps | MrSnowman | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-023 | Partial | 17. All 97 referenced default maps | RatCave | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-024 | Partial | 17. All 97 referenced default maps | Rok | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-025 | Partial | 17. All 97 referenced default maps | RR | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-026 | Partial | 17. All 97 referenced default maps | Shau | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-027 | Partial | 17. All 97 referenced default maps | Tropiccave | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-028 | Partial | 17. All 97 referenced default maps | Unlim | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-029 | Partial | 17. All 97 referenced default maps | Veoto | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-030 | Partial | 17. All 97 referenced default maps | ctf_Ash | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-031 | Partial | 17. All 97 referenced default maps | ctf_B2b | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-032 | Partial | 17. All 97 referenced default maps | ctf_Blade | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-033 | Partial | 17. All 97 referenced default maps | ctf_Campeche | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-034 | Partial | 17. All 97 referenced default maps | ctf_Cobra | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-035 | Partial | 17. All 97 referenced default maps | ctf_Crucifix | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-036 | Partial | 17. All 97 referenced default maps | ctf_Death | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-037 | Partial | 17. All 97 referenced default maps | ctf_Division | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-038 | Partial | 17. All 97 referenced default maps | ctf_Dropdown | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-039 | Partial | 17. All 97 referenced default maps | ctf_Equinox | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-040 | Partial | 17. All 97 referenced default maps | ctf_Guardian | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-041 | Partial | 17. All 97 referenced default maps | ctf_Hormone | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-042 | Partial | 17. All 97 referenced default maps | ctf_IceBeam | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-043 | Partial | 17. All 97 referenced default maps | ctf_Kampf | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-044 | Partial | 17. All 97 referenced default maps | ctf_Lanubya | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-045 | Partial | 17. All 97 referenced default maps | ctf_Laos | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-046 | Partial | 17. All 97 referenced default maps | ctf_Maya | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-047 | Partial | 17. All 97 referenced default maps | ctf_Mayapan | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-048 | Partial | 17. All 97 referenced default maps | ctf_MFM | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-049 | Partial | 17. All 97 referenced default maps | ctf_Nuubia | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-050 | Partial | 17. All 97 referenced default maps | ctf_Raspberry | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-051 | Partial | 17. All 97 referenced default maps | ctf_Rotten | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-052 | Partial | 17. All 97 referenced default maps | ctf_Ruins | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-053 | Partial | 17. All 97 referenced default maps | ctf_Run | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-054 | Partial | 17. All 97 referenced default maps | ctf_Scorpion | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-055 | Partial | 17. All 97 referenced default maps | ctf_Snakebite | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-056 | Partial | 17. All 97 referenced default maps | ctf_Steel | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-057 | Partial | 17. All 97 referenced default maps | ctf_Triumph | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-058 | Partial | 17. All 97 referenced default maps | ctf_Viet | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-059 | Partial | 17. All 97 referenced default maps | ctf_Voland | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-060 | Partial | 17. All 97 referenced default maps | ctf_Wretch | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-061 | Partial | 17. All 97 referenced default maps | ctf_X | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-062 | Partial | 17. All 97 referenced default maps | htf_Arch | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-063 | Partial | 17. All 97 referenced default maps | htf_Baire | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-064 | Partial | 17. All 97 referenced default maps | htf_Boxed | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-065 | Partial | 17. All 97 referenced default maps | htf_Desert | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-066 | Partial | 17. All 97 referenced default maps | htf_Dorothy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-067 | Partial | 17. All 97 referenced default maps | htf_Dusk | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-068 | Partial | 17. All 97 referenced default maps | htf_Erbium | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-069 | Partial | 17. All 97 referenced default maps | htf_Feast | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-070 | Partial | 17. All 97 referenced default maps | htf_Mossy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-071 | Partial | 17. All 97 referenced default maps | htf_Muygen | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-072 | Partial | 17. All 97 referenced default maps | htf_Niall | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-073 | Partial | 17. All 97 referenced default maps | htf_Nuclear | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-074 | Partial | 17. All 97 referenced default maps | htf_Prison | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-075 | Partial | 17. All 97 referenced default maps | htf_Rubik | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-076 | Partial | 17. All 97 referenced default maps | htf_Star | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-077 | Partial | 17. All 97 referenced default maps | htf_Tower | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-078 | Partial | 17. All 97 referenced default maps | htf_Void | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-079 | Partial | 17. All 97 referenced default maps | htf_Vortex | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-080 | Partial | 17. All 97 referenced default maps | htf_Zajacz | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-081 | Partial | 17. All 97 referenced default maps | inf_Abel | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-082 | Partial | 17. All 97 referenced default maps | inf_April | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-083 | Partial | 17. All 97 referenced default maps | inf_Argy | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-084 | Partial | 17. All 97 referenced default maps | inf_Belltower | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-085 | Partial | 17. All 97 referenced default maps | inf_Biologic | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-086 | Partial | 17. All 97 referenced default maps | inf_Changeling | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-087 | Partial | 17. All 97 referenced default maps | inf_Flute | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-088 | Partial | 17. All 97 referenced default maps | inf_Fortress | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-089 | Partial | 17. All 97 referenced default maps | inf_Industrial | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-090 | Partial | 17. All 97 referenced default maps | inf_Messner | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-091 | Partial | 17. All 97 referenced default maps | inf_Moonshine | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-092 | Partial | 17. All 97 referenced default maps | inf_Motheaten | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-093 | Partial | 17. All 97 referenced default maps | inf_Outpost | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-094 | Partial | 17. All 97 referenced default maps | inf_Rescue | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-095 | Partial | 17. All 97 referenced default maps | inf_Rise | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-096 | Partial | 17. All 97 referenced default maps | inf_Warehouse | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
+| G17-ALL-97-097 | Partial | 17. All 97 referenced default maps | inf_Warlock | rust:map_editor:all_97_original_maps_pass_the_admission_pipeline |
 | G18-BOTS-AND-001 | Present | 18. Bots and AI | Bot entities driven by the authoritative simulation. | parity:G18-BOTS-AND-001, rust:bot_world:join, rust:bot_world:drive |
 | G18-BOTS-AND-002 | Present | 18. Bots and AI | Random-bot count. | parity:G18-BOTS-AND-002, server:bots, web:bots:setup |
 | G18-BOTS-AND-003 | Present | 18. Bots and AI | Per-team bot count. | parity:G18-BOTS-AND-003, rust:bots:profiles, rust:bot_world:join |
@@ -596,15 +596,15 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G19-HUD-AND-045 | Present | 19. HUD and game screen | Custom HUD/interface loading. | parity:G19-HUD-AND-045, web:hud:layout |
 | G19-HUD-AND-046 | Present | 19. HUD and game screen | HUD scaling. | parity:G19-HUD-AND-046, web:hud:layout |
 | G19-HUD-AND-047 | Present | 19. HUD and game screen | Safe-area and resolution tests across desktop and mobile. | parity:G19-HUD-AND-047, web:hud:layout, web:render:visual |
-| G20-RENDERING-AND-001 | Present | 20. Rendering and visual effects | Full animated soldier/gostek rendering. | parity:G20-RENDERING-AND-001, web:render:gostek |
-| G20-RENDERING-AND-002 | Present | 20. Rendering and visual effects | Separate body parts. | parity:G20-RENDERING-AND-002, web:render:gostek |
-| G20-RENDERING-AND-003 | Present | 20. Rendering and visual effects | Hair. | parity:G20-RENDERING-AND-003, web:render:gostek |
-| G20-RENDERING-AND-004 | Present | 20. Rendering and visual effects | Headgear. | parity:G20-RENDERING-AND-004, web:render:gostek |
-| G20-RENDERING-AND-005 | Present | 20. Rendering and visual effects | Helmet/hat/none. | parity:G20-RENDERING-AND-005, web:render:gostek |
-| G20-RENDERING-AND-006 | Present | 20. Rendering and visual effects | Chains and dog tags. | parity:G20-RENDERING-AND-006, web:render:gostek |
-| G20-RENDERING-AND-007 | Present | 20. Rendering and visual effects | Shirt, pants, skin, hair, shoes, and jet colors. | parity:G20-RENDERING-AND-007, web:render:gostek |
-| G20-RENDERING-AND-008 | Present | 20. Rendering and visual effects | Weapon sprites. | parity:G20-RENDERING-AND-008, web:render:gostek |
-| G20-RENDERING-AND-009 | Present | 20. Rendering and visual effects | Character pose matching aim angle. | parity:G20-RENDERING-AND-009, web:render:gostek |
+| G20-RENDERING-AND-001 | Partial | 20. Rendering and visual effects | Full animated soldier/gostek rendering. | parity:G20-RENDERING-AND-001, web:render:gostek |
+| G20-RENDERING-AND-002 | Partial | 20. Rendering and visual effects | Separate body parts. | parity:G20-RENDERING-AND-002, web:render:gostek |
+| G20-RENDERING-AND-003 | Partial | 20. Rendering and visual effects | Hair. | parity:G20-RENDERING-AND-003, web:render:gostek |
+| G20-RENDERING-AND-004 | Partial | 20. Rendering and visual effects | Headgear. | parity:G20-RENDERING-AND-004, web:render:gostek |
+| G20-RENDERING-AND-005 | Partial | 20. Rendering and visual effects | Helmet/hat/none. | parity:G20-RENDERING-AND-005, web:render:gostek |
+| G20-RENDERING-AND-006 | Partial | 20. Rendering and visual effects | Chains and dog tags. | parity:G20-RENDERING-AND-006, web:render:gostek |
+| G20-RENDERING-AND-007 | Partial | 20. Rendering and visual effects | Shirt, pants, skin, hair, shoes, and jet colors. | parity:G20-RENDERING-AND-007, web:render:gostek |
+| G20-RENDERING-AND-008 | Partial | 20. Rendering and visual effects | Weapon sprites. | parity:G20-RENDERING-AND-008, web:render:gostek |
+| G20-RENDERING-AND-009 | Partial | 20. Rendering and visual effects | Character pose matching aim angle. | parity:G20-RENDERING-AND-009, web:render:gostek |
 | G20-RENDERING-AND-010 | Present | 20. Rendering and visual effects | Muzzle flashes. | parity:G20-RENDERING-AND-010, web:render:particles |
 | G20-RENDERING-AND-011 | Present | 20. Rendering and visual effects | Bullet trails. | parity:G20-RENDERING-AND-011, web:render:particles |
 | G20-RENDERING-AND-012 | Present | 20. Rendering and visual effects | Shell casings. | parity:G20-RENDERING-AND-012, web:render:particles |
@@ -641,39 +641,39 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G20-RENDERING-AND-043 | Present | 20. Rendering and visual effects | Compatibility rendering path. | parity:G20-RENDERING-AND-043, web:render:effects, web:render:leak |
 | G20-RENDERING-AND-044 | Present | 20. Rendering and visual effects | Custom-interface graphics. | parity:G20-RENDERING-AND-044, web:mods:package |
 | G20-RENDERING-AND-045 | Present | 20. Rendering and visual effects | Mod-controlled asset scaling through `mod.ini`-like rules. | parity:G20-RENDERING-AND-045, web:mods:ini |
-| G21-SOUND-AND-001 | Present | 21. Sound and music | Weapon-specific firing sounds. | parity:G21-SOUND-AND-001, web:audio:engine |
-| G21-SOUND-AND-002 | Present | 21. Sound and music | Reload sounds. | parity:G21-SOUND-AND-002, web:audio:engine |
-| G21-SOUND-AND-003 | Present | 21. Sound and music | Empty-weapon sounds. | parity:G21-SOUND-AND-003, web:audio:engine |
-| G21-SOUND-AND-004 | Present | 21. Sound and music | Grenade pin/throw/bounce/explosion sounds. | parity:G21-SOUND-AND-004, web:audio:engine |
-| G21-SOUND-AND-005 | Present | 21. Sound and music | M79 and LAW explosion sounds. | parity:G21-SOUND-AND-005, web:audio:engine |
-| G21-SOUND-AND-006 | Present | 21. Sound and music | Bullet impacts. | parity:G21-SOUND-AND-006, web:audio:engine |
-| G21-SOUND-AND-007 | Present | 21. Sound and music | Ricochets if applicable. | parity:G21-SOUND-AND-007, web:audio:engine |
-| G21-SOUND-AND-008 | Present | 21. Sound and music | Chainsaw loop. | parity:G21-SOUND-AND-008, web:audio:engine |
-| G21-SOUND-AND-009 | Present | 21. Sound and music | Knife sounds. | parity:G21-SOUND-AND-009, web:audio:engine |
-| G21-SOUND-AND-010 | Present | 21. Sound and music | Punch sounds. | parity:G21-SOUND-AND-010, web:audio:engine |
-| G21-SOUND-AND-011 | Present | 21. Sound and music | Flamethrower loop. | parity:G21-SOUND-AND-011, web:audio:engine |
-| G21-SOUND-AND-012 | Present | 21. Sound and music | Character pain. | parity:G21-SOUND-AND-012, web:audio:engine |
-| G21-SOUND-AND-013 | Present | 21. Sound and music | Death sounds. | parity:G21-SOUND-AND-013, web:audio:engine |
-| G21-SOUND-AND-014 | Present | 21. Sound and music | Gore sounds. | parity:G21-SOUND-AND-014, web:audio:engine |
-| G21-SOUND-AND-015 | Present | 21. Sound and music | Footsteps selected by map property. | parity:G21-SOUND-AND-015, web:audio:engine |
-| G21-SOUND-AND-016 | Present | 21. Sound and music | Jetpack sound. | parity:G21-SOUND-AND-016, web:audio:engine |
-| G21-SOUND-AND-017 | Present | 21. Sound and music | Flag pickup/drop/return/capture sounds. | parity:G21-SOUND-AND-017, web:audio:engine |
-| G21-SOUND-AND-018 | Present | 21. Sound and music | Kit pickup sounds. | parity:G21-SOUND-AND-018, web:audio:engine |
-| G21-SOUND-AND-019 | Present | 21. Sound and music | Bonus activation/expiration sounds. | parity:G21-SOUND-AND-019, web:audio:engine |
-| G21-SOUND-AND-020 | Present | 21. Sound and music | UI/menu sounds. | parity:G21-SOUND-AND-020, web:audio:engine |
-| G21-SOUND-AND-021 | Present | 21. Sound and music | Chat/message notification. | parity:G21-SOUND-AND-021, web:audio:engine |
-| G21-SOUND-AND-022 | Present | 21. Sound and music | Distant-battle sounds. | parity:G21-SOUND-AND-022, web:audio:engine |
-| G21-SOUND-AND-023 | Present | 21. Sound and music | Weather sounds. | parity:G21-SOUND-AND-023, web:audio:engine |
-| G21-SOUND-AND-024 | Present | 21. Sound and music | Explosion deafness and whistle effect. | parity:G21-SOUND-AND-024, web:audio:engine |
-| G21-SOUND-AND-025 | Present | 21. Sound and music | Positional audio. | parity:G21-SOUND-AND-025, web:audio:engine |
-| G21-SOUND-AND-026 | Present | 21. Sound and music | Distance attenuation. | parity:G21-SOUND-AND-026, web:audio:engine |
-| G21-SOUND-AND-027 | Present | 21. Sound and music | Master sound volume. | parity:G21-SOUND-AND-027, web:audio:engine |
-| G21-SOUND-AND-028 | Present | 21. Sound and music | Music volume. | parity:G21-SOUND-AND-028, web:audio:engine |
-| G21-SOUND-AND-029 | Present | 21. Sound and music | Music playback. | parity:G21-SOUND-AND-029, web:audio:engine |
-| G21-SOUND-AND-030 | Present | 21. Sound and music | Toggle music. | parity:G21-SOUND-AND-030, web:audio:engine |
-| G21-SOUND-AND-031 | Present | 21. Sound and music | Previous/next track. | parity:G21-SOUND-AND-031, web:audio:engine |
-| G21-SOUND-AND-032 | Present | 21. Sound and music | Sound-quality option. | parity:G21-SOUND-AND-032, web:audio:engine |
-| G21-SOUND-AND-033 | Present | 21. Sound and music | Sound-output/device option where browser APIs permit it. | parity:G21-SOUND-AND-033, web:audio:engine |
+| G21-SOUND-AND-001 | Partial | 21. Sound and music | Weapon-specific firing sounds. | parity:G21-SOUND-AND-001, web:audio:engine |
+| G21-SOUND-AND-002 | Partial | 21. Sound and music | Reload sounds. | parity:G21-SOUND-AND-002, web:audio:engine |
+| G21-SOUND-AND-003 | Partial | 21. Sound and music | Empty-weapon sounds. | parity:G21-SOUND-AND-003, web:audio:engine |
+| G21-SOUND-AND-004 | Partial | 21. Sound and music | Grenade pin/throw/bounce/explosion sounds. | parity:G21-SOUND-AND-004, web:audio:engine |
+| G21-SOUND-AND-005 | Partial | 21. Sound and music | M79 and LAW explosion sounds. | parity:G21-SOUND-AND-005, web:audio:engine |
+| G21-SOUND-AND-006 | Partial | 21. Sound and music | Bullet impacts. | parity:G21-SOUND-AND-006, web:audio:engine |
+| G21-SOUND-AND-007 | Partial | 21. Sound and music | Ricochets if applicable. | parity:G21-SOUND-AND-007, web:audio:engine |
+| G21-SOUND-AND-008 | Partial | 21. Sound and music | Chainsaw loop. | parity:G21-SOUND-AND-008, web:audio:engine |
+| G21-SOUND-AND-009 | Partial | 21. Sound and music | Knife sounds. | parity:G21-SOUND-AND-009, web:audio:engine |
+| G21-SOUND-AND-010 | Partial | 21. Sound and music | Punch sounds. | parity:G21-SOUND-AND-010, web:audio:engine |
+| G21-SOUND-AND-011 | Partial | 21. Sound and music | Flamethrower loop. | parity:G21-SOUND-AND-011, web:audio:engine |
+| G21-SOUND-AND-012 | Partial | 21. Sound and music | Character pain. | parity:G21-SOUND-AND-012, web:audio:engine |
+| G21-SOUND-AND-013 | Partial | 21. Sound and music | Death sounds. | parity:G21-SOUND-AND-013, web:audio:engine |
+| G21-SOUND-AND-014 | Partial | 21. Sound and music | Gore sounds. | parity:G21-SOUND-AND-014, web:audio:engine |
+| G21-SOUND-AND-015 | Partial | 21. Sound and music | Footsteps selected by map property. | parity:G21-SOUND-AND-015, web:audio:engine |
+| G21-SOUND-AND-016 | Partial | 21. Sound and music | Jetpack sound. | parity:G21-SOUND-AND-016, web:audio:engine |
+| G21-SOUND-AND-017 | Partial | 21. Sound and music | Flag pickup/drop/return/capture sounds. | parity:G21-SOUND-AND-017, web:audio:engine |
+| G21-SOUND-AND-018 | Partial | 21. Sound and music | Kit pickup sounds. | parity:G21-SOUND-AND-018, web:audio:engine |
+| G21-SOUND-AND-019 | Partial | 21. Sound and music | Bonus activation/expiration sounds. | parity:G21-SOUND-AND-019, web:audio:engine |
+| G21-SOUND-AND-020 | Partial | 21. Sound and music | UI/menu sounds. | parity:G21-SOUND-AND-020, web:audio:engine |
+| G21-SOUND-AND-021 | Partial | 21. Sound and music | Chat/message notification. | parity:G21-SOUND-AND-021, web:audio:engine |
+| G21-SOUND-AND-022 | Partial | 21. Sound and music | Distant-battle sounds. | parity:G21-SOUND-AND-022, web:audio:engine |
+| G21-SOUND-AND-023 | Partial | 21. Sound and music | Weather sounds. | parity:G21-SOUND-AND-023, web:audio:engine |
+| G21-SOUND-AND-024 | Partial | 21. Sound and music | Explosion deafness and whistle effect. | parity:G21-SOUND-AND-024, web:audio:engine |
+| G21-SOUND-AND-025 | Partial | 21. Sound and music | Positional audio. | parity:G21-SOUND-AND-025, web:audio:engine |
+| G21-SOUND-AND-026 | Partial | 21. Sound and music | Distance attenuation. | parity:G21-SOUND-AND-026, web:audio:engine |
+| G21-SOUND-AND-027 | Partial | 21. Sound and music | Master sound volume. | parity:G21-SOUND-AND-027, web:audio:engine |
+| G21-SOUND-AND-028 | Partial | 21. Sound and music | Music volume. | parity:G21-SOUND-AND-028, web:audio:engine |
+| G21-SOUND-AND-029 | Partial | 21. Sound and music | Music playback. | parity:G21-SOUND-AND-029, web:audio:engine |
+| G21-SOUND-AND-030 | Partial | 21. Sound and music | Toggle music. | parity:G21-SOUND-AND-030, web:audio:engine |
+| G21-SOUND-AND-031 | Partial | 21. Sound and music | Previous/next track. | parity:G21-SOUND-AND-031, web:audio:engine |
+| G21-SOUND-AND-032 | Partial | 21. Sound and music | Sound-quality option. | parity:G21-SOUND-AND-032, web:audio:engine |
+| G21-SOUND-AND-033 | Partial | 21. Sound and music | Sound-output/device option where browser APIs permit it. | parity:G21-SOUND-AND-033, web:audio:engine |
 | G22-PLAYER-PROFILES-001 | Present | 22. Player profiles and customization | Persistent player profiles. | parity:G22-PLAYER-PROFILES-001, web:profiles:player |
 | G22-PLAYER-PROFILES-002 | Present | 22. Player profiles and customization | Multiple profiles. | parity:G22-PLAYER-PROFILES-002, web:profiles:player |
 | G22-PLAYER-PROFILES-003 | Present | 22. Player profiles and customization | Profile selection screen. | parity:G22-PLAYER-PROFILES-003, web:profiles:player |
@@ -810,14 +810,14 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G26-MATCH-AND-051 | Present | 26. Match and server settings | Final-score screenshot. | web:input:screenshot |
 | G26-MATCH-AND-052 | Present | 26. Match and server settings | Clanmatch color behavior. | web:hud:status |
 | G26-MATCH-AND-053 | Present | 26. Match and server settings | Frame-rate limit or VSync. | web:render:visual |
-| G26-MATCH-AND-054 | Present | 26. Match and server settings | Performance statistics. | parity:G26-MATCH-AND-054, web:audio:engine |
-| G26-MATCH-AND-055 | Present | 26. Match and server settings | Sound volume. | parity:G26-MATCH-AND-055, web:audio:engine |
-| G26-MATCH-AND-056 | Present | 26. Match and server settings | Music volume. | parity:G26-MATCH-AND-056, web:audio:engine |
-| G26-MATCH-AND-057 | Present | 26. Match and server settings | Sound quality. | parity:G26-MATCH-AND-057, web:audio:engine |
-| G26-MATCH-AND-058 | Present | 26. Match and server settings | Output device. | parity:G26-MATCH-AND-058, web:audio:engine |
-| G26-MATCH-AND-059 | Present | 26. Match and server settings | Explosion effect. | parity:G26-MATCH-AND-059, web:audio:engine |
-| G26-MATCH-AND-060 | Present | 26. Match and server settings | Distant battle. | parity:G26-MATCH-AND-060, web:audio:engine |
-| G26-MATCH-AND-061 | Present | 26. Match and server settings | Game music. | parity:G26-MATCH-AND-061, web:audio:engine |
+| G26-MATCH-AND-054 | Partial | 26. Match and server settings | Performance statistics. | parity:G26-MATCH-AND-054, web:audio:engine |
+| G26-MATCH-AND-055 | Partial | 26. Match and server settings | Sound volume. | parity:G26-MATCH-AND-055, web:audio:engine |
+| G26-MATCH-AND-056 | Partial | 26. Match and server settings | Music volume. | parity:G26-MATCH-AND-056, web:audio:engine |
+| G26-MATCH-AND-057 | Partial | 26. Match and server settings | Sound quality. | parity:G26-MATCH-AND-057, web:audio:engine |
+| G26-MATCH-AND-058 | Partial | 26. Match and server settings | Output device. | parity:G26-MATCH-AND-058, web:audio:engine |
+| G26-MATCH-AND-059 | Partial | 26. Match and server settings | Explosion effect. | parity:G26-MATCH-AND-059, web:audio:engine |
+| G26-MATCH-AND-060 | Partial | 26. Match and server settings | Distant battle. | parity:G26-MATCH-AND-060, web:audio:engine |
+| G26-MATCH-AND-061 | Partial | 26. Match and server settings | Game music. | parity:G26-MATCH-AND-061, web:audio:engine |
 | G27-LOBBY-AND-001 | Present | 27. Lobby and room browser | Server/room refresh. | parity:G27-LOBBY-AND-001, web:lobby:filter |
 | G27-LOBBY-AND-002 | Present | 27. Lobby and room browser | Cancel refresh. | parity:G27-LOBBY-AND-002, web:lobby:filter |
 | G27-LOBBY-AND-003 | Present | 27. Lobby and room browser | Ping measurement. | parity:G27-LOBBY-AND-003, web:lobby:filter |
@@ -1071,10 +1071,10 @@ This generated index maps every actionable feature in `docs/gaps/gap-list.md` to
 | G36-OPERATIONAL-AND-031 | Missing | 36. Operational and production work | Asset CDN/caching. | parity:G36-OPERATIONAL-AND-031 |
 | G36-OPERATIONAL-AND-032 | Present | 36. Operational and production work | Static-asset compression. | parity:G36-OPERATIONAL-AND-032, infra:caddy:encode |
 | G36-OPERATIONAL-AND-033 | Present | 36. Operational and production work | Privacy policy and moderation policy if publicly operated. | parity:G36-OPERATIONAL-AND-033, docs:ops:policies |
-| G37-TESTING-REQUIRED-001 | Present | 37. Testing required for parity | Source-versus-Rust movement fixtures. | rust:movement_fixtures |
-| G37-TESTING-REQUIRED-002 | Present | 37. Testing required for parity | Jump fixtures. | rust:movement_fixtures |
-| G37-TESTING-REQUIRED-003 | Present | 37. Testing required for parity | Jet fixtures. | rust:movement_fixtures |
-| G37-TESTING-REQUIRED-004 | Present | 37. Testing required for parity | Crouch/prone/roll/backflip fixtures. | rust:movement_fixtures |
+| G37-TESTING-REQUIRED-001 | Partial | 37. Testing required for parity | Source-versus-Rust movement fixtures. | rust:movement_fixtures |
+| G37-TESTING-REQUIRED-002 | Partial | 37. Testing required for parity | Jump fixtures. | rust:movement_fixtures |
+| G37-TESTING-REQUIRED-003 | Partial | 37. Testing required for parity | Jet fixtures. | rust:movement_fixtures |
+| G37-TESTING-REQUIRED-004 | Partial | 37. Testing required for parity | Crouch/prone/roll/backflip fixtures. | rust:movement_fixtures |
 | G37-TESTING-REQUIRED-005 | Present | 37. Testing required for parity | Polygon collision fixtures. | rust:collision_fixtures:geometry |
 | G37-TESTING-REQUIRED-006 | Present | 37. Testing required for parity | One-way polygon fixtures. | rust:collision_fixtures:one-way |
 | G37-TESTING-REQUIRED-007 | Present | 37. Testing required for parity | Weapon fixture for every weapon and field. | parity:G37-TESTING-REQUIRED-007, rust:weapon_config_fixtures |

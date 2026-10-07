@@ -10,23 +10,23 @@ Legend:
 
 ## 1. Character movement and physics
 
-- **Present:** Horizontal running. <!-- G01-CHARACTER-MOVEMENT-001 -->
-- **Present:** Jumping. <!-- G01-CHARACTER-MOVEMENT-002 -->
-- **Present:** Jetpack flight. <!-- G01-CHARACTER-MOVEMENT-003 -->
-- **Present:** Crouching. <!-- G01-CHARACTER-MOVEMENT-004 -->
-- **Present:** Prone stance. <!-- G01-CHARACTER-MOVEMENT-005 -->
-- **Present:** Standing-to-prone transition. <!-- G01-CHARACTER-MOVEMENT-006 -->
-- **Present:** Getting up from prone. <!-- G01-CHARACTER-MOVEMENT-007 -->
-- **Present:** Directional ground rolls. <!-- G01-CHARACTER-MOVEMENT-008 -->
-- **Present:** Rolling out of prone. <!-- G01-CHARACTER-MOVEMENT-009 -->
-- **Present:** Standard backflip. <!-- G01-CHARACTER-MOVEMENT-010 -->
-- **Present:** Late backflip. <!-- G01-CHARACTER-MOVEMENT-011 -->
-- **Present:** Soldat-style momentum conservation. <!-- G01-CHARACTER-MOVEMENT-012 -->
-- **Present:** Air-control behavior. <!-- G01-CHARACTER-MOVEMENT-013 -->
-- **Present:** Acceleration matching Soldat. <!-- G01-CHARACTER-MOVEMENT-014 -->
-- **Present:** Ground friction matching Soldat. <!-- G01-CHARACTER-MOVEMENT-015 -->
-- **Present:** Slope movement. <!-- G01-CHARACTER-MOVEMENT-016 -->
-- **Present:** Sliding along slopes. <!-- G01-CHARACTER-MOVEMENT-017 -->
+- **Partial:** Horizontal running. <!-- G01-CHARACTER-MOVEMENT-001 -->
+- **Partial:** Jumping. <!-- G01-CHARACTER-MOVEMENT-002 -->
+- **Partial:** Jetpack flight. <!-- G01-CHARACTER-MOVEMENT-003 -->
+- **Partial:** Crouching. <!-- G01-CHARACTER-MOVEMENT-004 -->
+- **Partial:** Prone stance. <!-- G01-CHARACTER-MOVEMENT-005 -->
+- **Partial:** Standing-to-prone transition. <!-- G01-CHARACTER-MOVEMENT-006 -->
+- **Partial:** Getting up from prone. <!-- G01-CHARACTER-MOVEMENT-007 -->
+- **Partial:** Directional ground rolls. <!-- G01-CHARACTER-MOVEMENT-008 -->
+- **Partial:** Rolling out of prone. <!-- G01-CHARACTER-MOVEMENT-009 -->
+- **Partial:** Standard backflip. <!-- G01-CHARACTER-MOVEMENT-010 -->
+- **Partial:** Late backflip. <!-- G01-CHARACTER-MOVEMENT-011 -->
+- **Partial:** Soldat-style momentum conservation. <!-- G01-CHARACTER-MOVEMENT-012 -->
+- **Partial:** Air-control behavior. <!-- G01-CHARACTER-MOVEMENT-013 -->
+- **Partial:** Acceleration matching Soldat. <!-- G01-CHARACTER-MOVEMENT-014 -->
+- **Partial:** Ground friction matching Soldat. <!-- G01-CHARACTER-MOVEMENT-015 -->
+- **Partial:** Slope movement. <!-- G01-CHARACTER-MOVEMENT-016 -->
+- **Partial:** Sliding along slopes. <!-- G01-CHARACTER-MOVEMENT-017 -->
 - **Present:** Polygon-edge interaction. <!-- G01-CHARACTER-MOVEMENT-018 -->
 - **Present:** One-way polygons. <!-- G01-CHARACTER-MOVEMENT-019 -->
 - **Present:** Bouncy polygons. <!-- G01-CHARACTER-MOVEMENT-020 -->
@@ -37,21 +37,21 @@ Legend:
 - **Present:** Proper head/body/legs collision volumes. <!-- G01-CHARACTER-MOVEMENT-025 -->
 - **Present:** Character-body ragdoll physics. <!-- G01-CHARACTER-MOVEMENT-026 -->
 - **Present:** Corpses interacting with terrain. <!-- G01-CHARACTER-MOVEMENT-027 -->
-- **Present:** Player-to-player physical interaction. <!-- G01-CHARACTER-MOVEMENT-028 -->
-- **Present:** Fall/impact behavior. <!-- G01-CHARACTER-MOVEMENT-029 -->
-- **Present:** Jet force affected by pose and movement. <!-- G01-CHARACTER-MOVEMENT-030 -->
-- **Present:** Map-specific jet-fuel capacity. <!-- G01-CHARACTER-MOVEMENT-031 -->
-- **Present:** Jet fuel recharge. <!-- G01-CHARACTER-MOVEMENT-032 -->
-- **Present:** Soldat-accurate jet depletion and regeneration. <!-- G01-CHARACTER-MOVEMENT-033 -->
-- **Present:** Weapon recoil affecting the player. <!-- G01-CHARACTER-MOVEMENT-034 -->
-- **Present:** SPAS/minigun self-boost. <!-- G01-CHARACTER-MOVEMENT-035 -->
-- **Present:** Explosive knockback. <!-- G01-CHARACTER-MOVEMENT-036 -->
-- **Present:** Bullet push. <!-- G01-CHARACTER-MOVEMENT-037 -->
+- **Partial:** Player-to-player physical interaction. <!-- G01-CHARACTER-MOVEMENT-028 -->
+- **Partial:** Fall/impact behavior. <!-- G01-CHARACTER-MOVEMENT-029 -->
+- **Partial:** Jet force affected by pose and movement. <!-- G01-CHARACTER-MOVEMENT-030 -->
+- **Partial:** Map-specific jet-fuel capacity. <!-- G01-CHARACTER-MOVEMENT-031 -->
+- **Partial:** Jet fuel recharge. <!-- G01-CHARACTER-MOVEMENT-032 -->
+- **Partial:** Soldat-accurate jet depletion and regeneration. <!-- G01-CHARACTER-MOVEMENT-033 -->
+- **Partial:** Weapon recoil affecting the player. <!-- G01-CHARACTER-MOVEMENT-034 -->
+- **Partial:** SPAS/minigun self-boost. <!-- G01-CHARACTER-MOVEMENT-035 -->
+- **Partial:** Explosive knockback. <!-- G01-CHARACTER-MOVEMENT-036 -->
+- **Partial:** Bullet push. <!-- G01-CHARACTER-MOVEMENT-037 -->
 - **Present:** Flag and kit push from bullets/explosions. <!-- G01-CHARACTER-MOVEMENT-038 -->
-- **Present:** Movement animation state machine. <!-- G01-CHARACTER-MOVEMENT-039 -->
-- **Present:** Directional aiming and body rotation. <!-- G01-CHARACTER-MOVEMENT-040 -->
-- **Present:** Separate legs, torso, head, arms, weapon, and jet animations. <!-- G01-CHARACTER-MOVEMENT-041 -->
-- **Present:** Death animations. <!-- G01-CHARACTER-MOVEMENT-042 -->
+- **Partial:** Movement animation state machine. <!-- G01-CHARACTER-MOVEMENT-039 -->
+- **Partial:** Directional aiming and body rotation. <!-- G01-CHARACTER-MOVEMENT-040 -->
+- **Partial:** Separate legs, torso, head, arms, weapon, and jet animations. <!-- G01-CHARACTER-MOVEMENT-041 -->
+- **Partial:** Death animations. <!-- G01-CHARACTER-MOVEMENT-042 -->
 - **Present:** Mercy/victory/smoke/tobacco/helmet animations. <!-- G01-CHARACTER-MOVEMENT-043 -->
 
 The current implementation uses a simple rectangle/circle physics model and five axis-aligned platforms. Soldat maps require polygon-based physics. [Default controls](https://wiki.soldat.pl/index.php/Default_Controls)
@@ -60,9 +60,9 @@ The current implementation uses a simple rectangle/circle physics model and five
 
 ### Existing but incomplete
 
-- **Present:** Move left/right. <!-- G02-INPUT-AND-001 -->
-- **Present:** Jump. <!-- G02-INPUT-AND-002 -->
-- **Present:** Jet. <!-- G02-INPUT-AND-003 -->
+- **Partial:** Move left/right. <!-- G02-INPUT-AND-001 -->
+- **Partial:** Jump. <!-- G02-INPUT-AND-002 -->
+- **Partial:** Jet. <!-- G02-INPUT-AND-003 -->
 - **Present:** Mouse aiming. <!-- G02-INPUT-AND-004 -->
 - **Present:** Primary fire. <!-- G02-INPUT-AND-005 -->
 - **Present:** Grenade input. <!-- G02-INPUT-AND-006 -->
@@ -95,15 +95,15 @@ The current implementation uses a simple rectangle/circle physics model and five
 - **Present:** Sniper-line toggle. <!-- G02-INPUT-AND-030 -->
 - **Present:** Performance-statistics overlay. <!-- G02-INPUT-AND-031 -->
 - **Present:** Screenshot control. <!-- G02-INPUT-AND-032 -->
-- **Present:** Music toggle. <!-- G02-INPUT-AND-033 -->
-- **Present:** Previous/next music track. <!-- G02-INPUT-AND-034 -->
+- **Partial:** Music toggle. <!-- G02-INPUT-AND-033 -->
+- **Partial:** Previous/next music track. <!-- G02-INPUT-AND-034 -->
 - **Present:** Demo recording. <!-- G02-INPUT-AND-035 -->
 - **Present:** Demo playback fast-forward. <!-- G02-INPUT-AND-036 -->
 - **Present:** Pause. <!-- G02-INPUT-AND-037 -->
 - **Present:** Window minimize shortcut. <!-- G02-INPUT-AND-038 -->
 - **Present:** Taunt shortcuts. <!-- G02-INPUT-AND-039 -->
 - **Present:** Runtime mouse-sensitivity adjustment. <!-- G02-INPUT-AND-040 -->
-- **Present:** Runtime sound-volume adjustment. <!-- G02-INPUT-AND-041 -->
+- **Partial:** Runtime sound-volume adjustment. <!-- G02-INPUT-AND-041 -->
 - **Present:** Scoreboard scrolling. <!-- G02-INPUT-AND-042 -->
 - **Present:** Fully rebindable keyboard controls. <!-- G02-INPUT-AND-043 -->
 - **Present:** Rebindable mouse buttons. <!-- G02-INPUT-AND-044 -->
@@ -184,13 +184,13 @@ The project contains all 10 primary and 4 secondary weapon definitions, but many
 - **Present:** Muzzle origin based on character pose. <!-- G03-WEAPONS-055 -->
 - **Present:** Muzzle flashes. <!-- G03-WEAPONS-056 -->
 - **Present:** Shell casings. <!-- G03-WEAPONS-057 -->
-- **Present:** Weapon-specific sounds. <!-- G03-WEAPONS-058 -->
-- **Present:** Reload sounds. <!-- G03-WEAPONS-059 -->
-- **Present:** Empty-magazine sound. <!-- G03-WEAPONS-060 -->
+- **Partial:** Weapon-specific sounds. <!-- G03-WEAPONS-058 -->
+- **Partial:** Reload sounds. <!-- G03-WEAPONS-059 -->
+- **Partial:** Empty-magazine sound. <!-- G03-WEAPONS-060 -->
 - **Present:** Bullet impact effects. <!-- G03-WEAPONS-061 -->
 - **Present:** Tracers matching weapon configuration. <!-- G03-WEAPONS-062 -->
 - **Present:** Explosion visual and audio effects. <!-- G03-WEAPONS-063 -->
-- **Present:** Weapon sprites held by characters. <!-- G03-WEAPONS-064 -->
+- **Partial:** Weapon sprites held by characters. <!-- G03-WEAPONS-064 -->
 - **Present:** Weapons lying on the ground. <!-- G03-WEAPONS-065 -->
 - **Present:** Weapon pickup indicators. <!-- G03-WEAPONS-066 -->
 
@@ -452,7 +452,7 @@ Supporting systems still needed:
 - **Present:** Configurable kit frequency. <!-- G14-BONUS-KITS-009 -->
 - **Present:** Kit respawn timers. <!-- G14-BONUS-KITS-010 -->
 - **Present:** Pickup collision. <!-- G14-BONUS-KITS-011 -->
-- **Present:** Pickup sounds and effects. <!-- G14-BONUS-KITS-012 -->
+- **Partial:** Pickup sounds and effects. <!-- G14-BONUS-KITS-012 -->
 - **Present:** Active-bonus HUD. <!-- G14-BONUS-KITS-013 -->
 - **Present:** Bonus countdown. <!-- G14-BONUS-KITS-014 -->
 - **Present:** Bonus overlay/effect. <!-- G14-BONUS-KITS-015 -->
@@ -475,7 +475,7 @@ Supporting systems still needed:
 - **Present:** Bulletproof vest/armor. <!-- G15-HEALTH-ARMOR-005 -->
 - **Present:** Bleeding. <!-- G15-HEALTH-ARMOR-006 -->
 - **Present:** Blood particles. <!-- G15-HEALTH-ARMOR-007 -->
-- **Present:** Blood remaining on the character. <!-- G15-HEALTH-ARMOR-008 -->
+- **Partial:** Blood remaining on the character. <!-- G15-HEALTH-ARMOR-008 -->
 - **Present:** Gore/gibs. <!-- G15-HEALTH-ARMOR-009 -->
 - **Present:** Ragdoll corpses. <!-- G15-HEALTH-ARMOR-010 -->
 - **Present:** Corpse persistence. <!-- G15-HEALTH-ARMOR-011 -->
@@ -493,7 +493,7 @@ Supporting systems still needed:
 - **Present:** Kill attribution after delayed damage. <!-- G15-HEALTH-ARMOR-023 -->
 - **Present:** Assist tracking if desired. <!-- G15-HEALTH-ARMOR-024 -->
 - **Present:** Damage direction feedback. <!-- G15-HEALTH-ARMOR-025 -->
-- **Present:** Explosion deafness/whistling effect. <!-- G15-HEALTH-ARMOR-026 -->
+- **Partial:** Explosion deafness/whistling effect. <!-- G15-HEALTH-ARMOR-026 -->
 
 ## 16. Maps and terrain engine
 
@@ -548,112 +548,112 @@ None of these maps currently exists in the project.
 
 ### Deathmatch, Teammatch, Rambomatch, and Pointmatch — 29
 
-- **Present:** Aero <!-- G17-ALL-97-001 -->
-- **Present:** Airpirates <!-- G17-ALL-97-002 -->
-- **Present:** Arena <!-- G17-ALL-97-003 -->
-- **Present:** Arena2 <!-- G17-ALL-97-004 -->
-- **Present:** Arena3 <!-- G17-ALL-97-005 -->
-- **Present:** Bigfalls <!-- G17-ALL-97-006 -->
-- **Present:** Blox <!-- G17-ALL-97-007 -->
-- **Present:** Bridge <!-- G17-ALL-97-008 -->
-- **Present:** Bunker <!-- G17-ALL-97-009 -->
-- **Present:** Cambodia <!-- G17-ALL-97-010 -->
-- **Present:** CrackedBoot <!-- G17-ALL-97-011 -->
-- **Present:** Daybreak <!-- G17-ALL-97-012 -->
-- **Present:** DesertWind <!-- G17-ALL-97-013 -->
-- **Present:** Factory <!-- G17-ALL-97-014 -->
-- **Present:** Flashback <!-- G17-ALL-97-015 -->
-- **Present:** HH <!-- G17-ALL-97-016 -->
-- **Present:** Island2k5 <!-- G17-ALL-97-017 -->
-- **Present:** Jungle <!-- G17-ALL-97-018 -->
-- **Present:** Krab <!-- G17-ALL-97-019 -->
-- **Present:** Lagrange <!-- G17-ALL-97-020 -->
-- **Present:** Leaf <!-- G17-ALL-97-021 -->
-- **Present:** MrSnowman <!-- G17-ALL-97-022 -->
-- **Present:** RatCave <!-- G17-ALL-97-023 -->
-- **Present:** Rok <!-- G17-ALL-97-024 -->
-- **Present:** RR <!-- G17-ALL-97-025 -->
-- **Present:** Shau <!-- G17-ALL-97-026 -->
-- **Present:** Tropiccave <!-- G17-ALL-97-027 -->
-- **Present:** Unlim <!-- G17-ALL-97-028 -->
-- **Present:** Veoto <!-- G17-ALL-97-029 -->
+- **Partial:** Aero <!-- G17-ALL-97-001 -->
+- **Partial:** Airpirates <!-- G17-ALL-97-002 -->
+- **Partial:** Arena <!-- G17-ALL-97-003 -->
+- **Partial:** Arena2 <!-- G17-ALL-97-004 -->
+- **Partial:** Arena3 <!-- G17-ALL-97-005 -->
+- **Partial:** Bigfalls <!-- G17-ALL-97-006 -->
+- **Partial:** Blox <!-- G17-ALL-97-007 -->
+- **Partial:** Bridge <!-- G17-ALL-97-008 -->
+- **Partial:** Bunker <!-- G17-ALL-97-009 -->
+- **Partial:** Cambodia <!-- G17-ALL-97-010 -->
+- **Partial:** CrackedBoot <!-- G17-ALL-97-011 -->
+- **Partial:** Daybreak <!-- G17-ALL-97-012 -->
+- **Partial:** DesertWind <!-- G17-ALL-97-013 -->
+- **Partial:** Factory <!-- G17-ALL-97-014 -->
+- **Partial:** Flashback <!-- G17-ALL-97-015 -->
+- **Partial:** HH <!-- G17-ALL-97-016 -->
+- **Partial:** Island2k5 <!-- G17-ALL-97-017 -->
+- **Partial:** Jungle <!-- G17-ALL-97-018 -->
+- **Partial:** Krab <!-- G17-ALL-97-019 -->
+- **Partial:** Lagrange <!-- G17-ALL-97-020 -->
+- **Partial:** Leaf <!-- G17-ALL-97-021 -->
+- **Partial:** MrSnowman <!-- G17-ALL-97-022 -->
+- **Partial:** RatCave <!-- G17-ALL-97-023 -->
+- **Partial:** Rok <!-- G17-ALL-97-024 -->
+- **Partial:** RR <!-- G17-ALL-97-025 -->
+- **Partial:** Shau <!-- G17-ALL-97-026 -->
+- **Partial:** Tropiccave <!-- G17-ALL-97-027 -->
+- **Partial:** Unlim <!-- G17-ALL-97-028 -->
+- **Partial:** Veoto <!-- G17-ALL-97-029 -->
 
 ### Capture the Flag — 32
 
-- **Present:** ctf_Ash <!-- G17-ALL-97-030 -->
-- **Present:** ctf_B2b <!-- G17-ALL-97-031 -->
-- **Present:** ctf_Blade <!-- G17-ALL-97-032 -->
-- **Present:** ctf_Campeche <!-- G17-ALL-97-033 -->
-- **Present:** ctf_Cobra <!-- G17-ALL-97-034 -->
-- **Present:** ctf_Crucifix <!-- G17-ALL-97-035 -->
-- **Present:** ctf_Death <!-- G17-ALL-97-036 -->
-- **Present:** ctf_Division <!-- G17-ALL-97-037 -->
-- **Present:** ctf_Dropdown <!-- G17-ALL-97-038 -->
-- **Present:** ctf_Equinox <!-- G17-ALL-97-039 -->
-- **Present:** ctf_Guardian <!-- G17-ALL-97-040 -->
-- **Present:** ctf_Hormone <!-- G17-ALL-97-041 -->
-- **Present:** ctf_IceBeam <!-- G17-ALL-97-042 -->
-- **Present:** ctf_Kampf <!-- G17-ALL-97-043 -->
-- **Present:** ctf_Lanubya <!-- G17-ALL-97-044 -->
-- **Present:** ctf_Laos <!-- G17-ALL-97-045 -->
-- **Present:** ctf_Maya <!-- G17-ALL-97-046 -->
-- **Present:** ctf_Mayapan <!-- G17-ALL-97-047 -->
-- **Present:** ctf_MFM <!-- G17-ALL-97-048 -->
-- **Present:** ctf_Nuubia <!-- G17-ALL-97-049 -->
-- **Present:** ctf_Raspberry <!-- G17-ALL-97-050 -->
-- **Present:** ctf_Rotten <!-- G17-ALL-97-051 -->
-- **Present:** ctf_Ruins <!-- G17-ALL-97-052 -->
-- **Present:** ctf_Run <!-- G17-ALL-97-053 -->
-- **Present:** ctf_Scorpion <!-- G17-ALL-97-054 -->
-- **Present:** ctf_Snakebite <!-- G17-ALL-97-055 -->
-- **Present:** ctf_Steel <!-- G17-ALL-97-056 -->
-- **Present:** ctf_Triumph <!-- G17-ALL-97-057 -->
-- **Present:** ctf_Viet <!-- G17-ALL-97-058 -->
-- **Present:** ctf_Voland <!-- G17-ALL-97-059 -->
-- **Present:** ctf_Wretch <!-- G17-ALL-97-060 -->
-- **Present:** ctf_X <!-- G17-ALL-97-061 -->
+- **Partial:** ctf_Ash <!-- G17-ALL-97-030 -->
+- **Partial:** ctf_B2b <!-- G17-ALL-97-031 -->
+- **Partial:** ctf_Blade <!-- G17-ALL-97-032 -->
+- **Partial:** ctf_Campeche <!-- G17-ALL-97-033 -->
+- **Partial:** ctf_Cobra <!-- G17-ALL-97-034 -->
+- **Partial:** ctf_Crucifix <!-- G17-ALL-97-035 -->
+- **Partial:** ctf_Death <!-- G17-ALL-97-036 -->
+- **Partial:** ctf_Division <!-- G17-ALL-97-037 -->
+- **Partial:** ctf_Dropdown <!-- G17-ALL-97-038 -->
+- **Partial:** ctf_Equinox <!-- G17-ALL-97-039 -->
+- **Partial:** ctf_Guardian <!-- G17-ALL-97-040 -->
+- **Partial:** ctf_Hormone <!-- G17-ALL-97-041 -->
+- **Partial:** ctf_IceBeam <!-- G17-ALL-97-042 -->
+- **Partial:** ctf_Kampf <!-- G17-ALL-97-043 -->
+- **Partial:** ctf_Lanubya <!-- G17-ALL-97-044 -->
+- **Partial:** ctf_Laos <!-- G17-ALL-97-045 -->
+- **Partial:** ctf_Maya <!-- G17-ALL-97-046 -->
+- **Partial:** ctf_Mayapan <!-- G17-ALL-97-047 -->
+- **Partial:** ctf_MFM <!-- G17-ALL-97-048 -->
+- **Partial:** ctf_Nuubia <!-- G17-ALL-97-049 -->
+- **Partial:** ctf_Raspberry <!-- G17-ALL-97-050 -->
+- **Partial:** ctf_Rotten <!-- G17-ALL-97-051 -->
+- **Partial:** ctf_Ruins <!-- G17-ALL-97-052 -->
+- **Partial:** ctf_Run <!-- G17-ALL-97-053 -->
+- **Partial:** ctf_Scorpion <!-- G17-ALL-97-054 -->
+- **Partial:** ctf_Snakebite <!-- G17-ALL-97-055 -->
+- **Partial:** ctf_Steel <!-- G17-ALL-97-056 -->
+- **Partial:** ctf_Triumph <!-- G17-ALL-97-057 -->
+- **Partial:** ctf_Viet <!-- G17-ALL-97-058 -->
+- **Partial:** ctf_Voland <!-- G17-ALL-97-059 -->
+- **Partial:** ctf_Wretch <!-- G17-ALL-97-060 -->
+- **Partial:** ctf_X <!-- G17-ALL-97-061 -->
 
 ### Hold the Flag — 19
 
-- **Present:** htf_Arch <!-- G17-ALL-97-062 -->
-- **Present:** htf_Baire <!-- G17-ALL-97-063 -->
-- **Present:** htf_Boxed <!-- G17-ALL-97-064 -->
-- **Present:** htf_Desert <!-- G17-ALL-97-065 -->
-- **Present:** htf_Dorothy <!-- G17-ALL-97-066 -->
-- **Present:** htf_Dusk <!-- G17-ALL-97-067 -->
-- **Present:** htf_Erbium <!-- G17-ALL-97-068 -->
-- **Present:** htf_Feast <!-- G17-ALL-97-069 -->
-- **Present:** htf_Mossy <!-- G17-ALL-97-070 -->
-- **Present:** htf_Muygen <!-- G17-ALL-97-071 -->
-- **Present:** htf_Niall <!-- G17-ALL-97-072 -->
-- **Present:** htf_Nuclear <!-- G17-ALL-97-073 -->
-- **Present:** htf_Prison <!-- G17-ALL-97-074 -->
-- **Present:** htf_Rubik <!-- G17-ALL-97-075 -->
-- **Present:** htf_Star <!-- G17-ALL-97-076 -->
-- **Present:** htf_Tower <!-- G17-ALL-97-077 -->
-- **Present:** htf_Void <!-- G17-ALL-97-078 -->
-- **Present:** htf_Vortex <!-- G17-ALL-97-079 -->
-- **Present:** htf_Zajacz <!-- G17-ALL-97-080 -->
+- **Partial:** htf_Arch <!-- G17-ALL-97-062 -->
+- **Partial:** htf_Baire <!-- G17-ALL-97-063 -->
+- **Partial:** htf_Boxed <!-- G17-ALL-97-064 -->
+- **Partial:** htf_Desert <!-- G17-ALL-97-065 -->
+- **Partial:** htf_Dorothy <!-- G17-ALL-97-066 -->
+- **Partial:** htf_Dusk <!-- G17-ALL-97-067 -->
+- **Partial:** htf_Erbium <!-- G17-ALL-97-068 -->
+- **Partial:** htf_Feast <!-- G17-ALL-97-069 -->
+- **Partial:** htf_Mossy <!-- G17-ALL-97-070 -->
+- **Partial:** htf_Muygen <!-- G17-ALL-97-071 -->
+- **Partial:** htf_Niall <!-- G17-ALL-97-072 -->
+- **Partial:** htf_Nuclear <!-- G17-ALL-97-073 -->
+- **Partial:** htf_Prison <!-- G17-ALL-97-074 -->
+- **Partial:** htf_Rubik <!-- G17-ALL-97-075 -->
+- **Partial:** htf_Star <!-- G17-ALL-97-076 -->
+- **Partial:** htf_Tower <!-- G17-ALL-97-077 -->
+- **Partial:** htf_Void <!-- G17-ALL-97-078 -->
+- **Partial:** htf_Vortex <!-- G17-ALL-97-079 -->
+- **Partial:** htf_Zajacz <!-- G17-ALL-97-080 -->
 
 ### Infiltration — 17
 
-- **Present:** inf_Abel <!-- G17-ALL-97-081 -->
-- **Present:** inf_April <!-- G17-ALL-97-082 -->
-- **Present:** inf_Argy <!-- G17-ALL-97-083 -->
-- **Present:** inf_Belltower <!-- G17-ALL-97-084 -->
-- **Present:** inf_Biologic <!-- G17-ALL-97-085 -->
-- **Present:** inf_Changeling <!-- G17-ALL-97-086 -->
-- **Present:** inf_Flute <!-- G17-ALL-97-087 -->
-- **Present:** inf_Fortress <!-- G17-ALL-97-088 -->
-- **Present:** inf_Industrial <!-- G17-ALL-97-089 -->
-- **Present:** inf_Messner <!-- G17-ALL-97-090 -->
-- **Present:** inf_Moonshine <!-- G17-ALL-97-091 -->
-- **Present:** inf_Motheaten <!-- G17-ALL-97-092 -->
-- **Present:** inf_Outpost <!-- G17-ALL-97-093 -->
-- **Present:** inf_Rescue <!-- G17-ALL-97-094 -->
-- **Present:** inf_Rise <!-- G17-ALL-97-095 -->
-- **Present:** inf_Warehouse <!-- G17-ALL-97-096 -->
-- **Present:** inf_Warlock <!-- G17-ALL-97-097 -->
+- **Partial:** inf_Abel <!-- G17-ALL-97-081 -->
+- **Partial:** inf_April <!-- G17-ALL-97-082 -->
+- **Partial:** inf_Argy <!-- G17-ALL-97-083 -->
+- **Partial:** inf_Belltower <!-- G17-ALL-97-084 -->
+- **Partial:** inf_Biologic <!-- G17-ALL-97-085 -->
+- **Partial:** inf_Changeling <!-- G17-ALL-97-086 -->
+- **Partial:** inf_Flute <!-- G17-ALL-97-087 -->
+- **Partial:** inf_Fortress <!-- G17-ALL-97-088 -->
+- **Partial:** inf_Industrial <!-- G17-ALL-97-089 -->
+- **Partial:** inf_Messner <!-- G17-ALL-97-090 -->
+- **Partial:** inf_Moonshine <!-- G17-ALL-97-091 -->
+- **Partial:** inf_Motheaten <!-- G17-ALL-97-092 -->
+- **Partial:** inf_Outpost <!-- G17-ALL-97-093 -->
+- **Partial:** inf_Rescue <!-- G17-ALL-97-094 -->
+- **Partial:** inf_Rise <!-- G17-ALL-97-095 -->
+- **Partial:** inf_Warehouse <!-- G17-ALL-97-096 -->
+- **Partial:** inf_Warlock <!-- G17-ALL-97-097 -->
 
 Important: the names and layouts are reference targets, but original maps, textures, sounds, and art must not be copied until their licenses and reuse permissions are verified. The repository already recognizes this provenance issue.
 
@@ -747,15 +747,15 @@ Important: the names and layouts are reference targets, but original maps, textu
 
 ## 20. Rendering and visual effects
 
-- **Present:** Full animated soldier/gostek rendering. <!-- G20-RENDERING-AND-001 -->
-- **Present:** Separate body parts. <!-- G20-RENDERING-AND-002 -->
-- **Present:** Hair. <!-- G20-RENDERING-AND-003 -->
-- **Present:** Headgear. <!-- G20-RENDERING-AND-004 -->
-- **Present:** Helmet/hat/none. <!-- G20-RENDERING-AND-005 -->
-- **Present:** Chains and dog tags. <!-- G20-RENDERING-AND-006 -->
-- **Present:** Shirt, pants, skin, hair, shoes, and jet colors. <!-- G20-RENDERING-AND-007 -->
-- **Present:** Weapon sprites. <!-- G20-RENDERING-AND-008 -->
-- **Present:** Character pose matching aim angle. <!-- G20-RENDERING-AND-009 -->
+- **Partial:** Full animated soldier/gostek rendering. <!-- G20-RENDERING-AND-001 -->
+- **Partial:** Separate body parts. <!-- G20-RENDERING-AND-002 -->
+- **Partial:** Hair. <!-- G20-RENDERING-AND-003 -->
+- **Partial:** Headgear. <!-- G20-RENDERING-AND-004 -->
+- **Partial:** Helmet/hat/none. <!-- G20-RENDERING-AND-005 -->
+- **Partial:** Chains and dog tags. <!-- G20-RENDERING-AND-006 -->
+- **Partial:** Shirt, pants, skin, hair, shoes, and jet colors. <!-- G20-RENDERING-AND-007 -->
+- **Partial:** Weapon sprites. <!-- G20-RENDERING-AND-008 -->
+- **Partial:** Character pose matching aim angle. <!-- G20-RENDERING-AND-009 -->
 - **Present:** Muzzle flashes. <!-- G20-RENDERING-AND-010 -->
 - **Present:** Bullet trails. <!-- G20-RENDERING-AND-011 -->
 - **Present:** Shell casings. <!-- G20-RENDERING-AND-012 -->
@@ -799,39 +799,39 @@ There is currently no meaningful Soldat-like audio system.
 
 Add:
 
-- **Present:** Weapon-specific firing sounds. <!-- G21-SOUND-AND-001 -->
-- **Present:** Reload sounds. <!-- G21-SOUND-AND-002 -->
-- **Present:** Empty-weapon sounds. <!-- G21-SOUND-AND-003 -->
-- **Present:** Grenade pin/throw/bounce/explosion sounds. <!-- G21-SOUND-AND-004 -->
-- **Present:** M79 and LAW explosion sounds. <!-- G21-SOUND-AND-005 -->
-- **Present:** Bullet impacts. <!-- G21-SOUND-AND-006 -->
-- **Present:** Ricochets if applicable. <!-- G21-SOUND-AND-007 -->
-- **Present:** Chainsaw loop. <!-- G21-SOUND-AND-008 -->
-- **Present:** Knife sounds. <!-- G21-SOUND-AND-009 -->
-- **Present:** Punch sounds. <!-- G21-SOUND-AND-010 -->
-- **Present:** Flamethrower loop. <!-- G21-SOUND-AND-011 -->
-- **Present:** Character pain. <!-- G21-SOUND-AND-012 -->
-- **Present:** Death sounds. <!-- G21-SOUND-AND-013 -->
-- **Present:** Gore sounds. <!-- G21-SOUND-AND-014 -->
-- **Present:** Footsteps selected by map property. <!-- G21-SOUND-AND-015 -->
-- **Present:** Jetpack sound. <!-- G21-SOUND-AND-016 -->
-- **Present:** Flag pickup/drop/return/capture sounds. <!-- G21-SOUND-AND-017 -->
-- **Present:** Kit pickup sounds. <!-- G21-SOUND-AND-018 -->
-- **Present:** Bonus activation/expiration sounds. <!-- G21-SOUND-AND-019 -->
-- **Present:** UI/menu sounds. <!-- G21-SOUND-AND-020 -->
-- **Present:** Chat/message notification. <!-- G21-SOUND-AND-021 -->
-- **Present:** Distant-battle sounds. <!-- G21-SOUND-AND-022 -->
-- **Present:** Weather sounds. <!-- G21-SOUND-AND-023 -->
-- **Present:** Explosion deafness and whistle effect. <!-- G21-SOUND-AND-024 -->
-- **Present:** Positional audio. <!-- G21-SOUND-AND-025 -->
-- **Present:** Distance attenuation. <!-- G21-SOUND-AND-026 -->
-- **Present:** Master sound volume. <!-- G21-SOUND-AND-027 -->
-- **Present:** Music volume. <!-- G21-SOUND-AND-028 -->
-- **Present:** Music playback. <!-- G21-SOUND-AND-029 -->
-- **Present:** Toggle music. <!-- G21-SOUND-AND-030 -->
-- **Present:** Previous/next track. <!-- G21-SOUND-AND-031 -->
-- **Present:** Sound-quality option. <!-- G21-SOUND-AND-032 -->
-- **Present:** Sound-output/device option where browser APIs permit it. <!-- G21-SOUND-AND-033 -->
+- **Partial:** Weapon-specific firing sounds. <!-- G21-SOUND-AND-001 -->
+- **Partial:** Reload sounds. <!-- G21-SOUND-AND-002 -->
+- **Partial:** Empty-weapon sounds. <!-- G21-SOUND-AND-003 -->
+- **Partial:** Grenade pin/throw/bounce/explosion sounds. <!-- G21-SOUND-AND-004 -->
+- **Partial:** M79 and LAW explosion sounds. <!-- G21-SOUND-AND-005 -->
+- **Partial:** Bullet impacts. <!-- G21-SOUND-AND-006 -->
+- **Partial:** Ricochets if applicable. <!-- G21-SOUND-AND-007 -->
+- **Partial:** Chainsaw loop. <!-- G21-SOUND-AND-008 -->
+- **Partial:** Knife sounds. <!-- G21-SOUND-AND-009 -->
+- **Partial:** Punch sounds. <!-- G21-SOUND-AND-010 -->
+- **Partial:** Flamethrower loop. <!-- G21-SOUND-AND-011 -->
+- **Partial:** Character pain. <!-- G21-SOUND-AND-012 -->
+- **Partial:** Death sounds. <!-- G21-SOUND-AND-013 -->
+- **Partial:** Gore sounds. <!-- G21-SOUND-AND-014 -->
+- **Partial:** Footsteps selected by map property. <!-- G21-SOUND-AND-015 -->
+- **Partial:** Jetpack sound. <!-- G21-SOUND-AND-016 -->
+- **Partial:** Flag pickup/drop/return/capture sounds. <!-- G21-SOUND-AND-017 -->
+- **Partial:** Kit pickup sounds. <!-- G21-SOUND-AND-018 -->
+- **Partial:** Bonus activation/expiration sounds. <!-- G21-SOUND-AND-019 -->
+- **Partial:** UI/menu sounds. <!-- G21-SOUND-AND-020 -->
+- **Partial:** Chat/message notification. <!-- G21-SOUND-AND-021 -->
+- **Partial:** Distant-battle sounds. <!-- G21-SOUND-AND-022 -->
+- **Partial:** Weather sounds. <!-- G21-SOUND-AND-023 -->
+- **Partial:** Explosion deafness and whistle effect. <!-- G21-SOUND-AND-024 -->
+- **Partial:** Positional audio. <!-- G21-SOUND-AND-025 -->
+- **Partial:** Distance attenuation. <!-- G21-SOUND-AND-026 -->
+- **Partial:** Master sound volume. <!-- G21-SOUND-AND-027 -->
+- **Partial:** Music volume. <!-- G21-SOUND-AND-028 -->
+- **Partial:** Music playback. <!-- G21-SOUND-AND-029 -->
+- **Partial:** Toggle music. <!-- G21-SOUND-AND-030 -->
+- **Partial:** Previous/next track. <!-- G21-SOUND-AND-031 -->
+- **Partial:** Sound-quality option. <!-- G21-SOUND-AND-032 -->
+- **Partial:** Sound-output/device option where browser APIs permit it. <!-- G21-SOUND-AND-033 -->
 
 ## 22. Player profiles and customization
 
@@ -1011,17 +1011,17 @@ The complete server experience also needs:
 - **Present:** Final-score screenshot. <!-- G26-MATCH-AND-051 -->
 - **Present:** Clanmatch color behavior. <!-- G26-MATCH-AND-052 -->
 - **Present:** Frame-rate limit or VSync. <!-- G26-MATCH-AND-053 -->
-- **Present:** Performance statistics. <!-- G26-MATCH-AND-054 -->
+- **Partial:** Performance statistics. <!-- G26-MATCH-AND-054 -->
 
 ### Audio settings
 
-- **Present:** Sound volume. <!-- G26-MATCH-AND-055 -->
-- **Present:** Music volume. <!-- G26-MATCH-AND-056 -->
-- **Present:** Sound quality. <!-- G26-MATCH-AND-057 -->
-- **Present:** Output device. <!-- G26-MATCH-AND-058 -->
-- **Present:** Explosion effect. <!-- G26-MATCH-AND-059 -->
-- **Present:** Distant battle. <!-- G26-MATCH-AND-060 -->
-- **Present:** Game music. <!-- G26-MATCH-AND-061 -->
+- **Partial:** Sound volume. <!-- G26-MATCH-AND-055 -->
+- **Partial:** Music volume. <!-- G26-MATCH-AND-056 -->
+- **Partial:** Sound quality. <!-- G26-MATCH-AND-057 -->
+- **Partial:** Output device. <!-- G26-MATCH-AND-058 -->
+- **Partial:** Explosion effect. <!-- G26-MATCH-AND-059 -->
+- **Partial:** Distant battle. <!-- G26-MATCH-AND-060 -->
+- **Partial:** Game music. <!-- G26-MATCH-AND-061 -->
 
 [Settings reference](https://wiki.soldat.pl/index.php/Settings)
 
@@ -1327,10 +1327,10 @@ The repository itself identifies several non-gameplay gaps:
 
 ## 37. Testing required for parity
 
-- **Present:** Source-versus-Rust movement fixtures. <!-- G37-TESTING-REQUIRED-001 -->
-- **Present:** Jump fixtures. <!-- G37-TESTING-REQUIRED-002 -->
-- **Present:** Jet fixtures. <!-- G37-TESTING-REQUIRED-003 -->
-- **Present:** Crouch/prone/roll/backflip fixtures. <!-- G37-TESTING-REQUIRED-004 -->
+- **Partial:** Source-versus-Rust movement fixtures. <!-- G37-TESTING-REQUIRED-001 -->
+- **Partial:** Jump fixtures. <!-- G37-TESTING-REQUIRED-002 -->
+- **Partial:** Jet fixtures. <!-- G37-TESTING-REQUIRED-003 -->
+- **Partial:** Crouch/prone/roll/backflip fixtures. <!-- G37-TESTING-REQUIRED-004 -->
 - **Present:** Polygon collision fixtures. <!-- G37-TESTING-REQUIRED-005 -->
 - **Present:** One-way polygon fixtures. <!-- G37-TESTING-REQUIRED-006 -->
 - **Present:** Weapon fixture for every weapon and field. <!-- G37-TESTING-REQUIRED-007 -->

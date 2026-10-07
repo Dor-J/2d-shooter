@@ -4,6 +4,12 @@ import { fileURLToPath } from 'node:url'
 
 const statusPattern = /^\*\*(Missing|Partial|Present):\*\*\s*/
 const idPattern = /\s+<!--\s+(G\d{2}-[A-Z0-9-]+-\d{3})\s+-->$/
+const placeholderEvidenceIds = new Set(['rust:movement_fixtures', 'web:render:gostek', 'web:audio:engine'])
+const placeholderEvidencePattern = /all_\d+_original_maps_pass_the_admission_pipeline$/
+
+function isPlaceholderEvidence(testId) {
+  return placeholderEvidenceIds.has(testId) || placeholderEvidencePattern.test(testId)
+}
 
 export function readGapFeatures(markdown) {
   const features = []
@@ -57,8 +63,11 @@ export function validateCoverage(markdown, coverage) {
     if (gap.id && entry.id !== gap.id) errors.push(`Feature ID mismatch: ${gap.section} / ${gap.feature}`)
     if (gap.status === 'Present') {
       presentCount += 1
-      if (!entry.acceptance.some(testId => evidence.has(testId))) {
+      const passing = entry.acceptance.filter(testId => evidence.has(testId))
+      if (passing.length === 0) {
         errors.push(`Present feature lacks passing evidence: ${gap.section} / ${gap.feature}`)
+      } else if (passing.every(isPlaceholderEvidence)) {
+        errors.push(`Present feature has only placeholder evidence: ${gap.section} / ${gap.feature}`)
       }
     }
   }
