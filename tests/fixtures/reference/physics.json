@@ -1,0 +1,108 @@
+{
+  "source": "opensoldat/opensoldat",
+  "commit": "c7596cdca32416cb66339b339105eb1e07e7fbbf",
+  "tickRate": 60,
+  "constants": [
+    {"name": "RUNSPEED", "value": 0.118, "file": "shared/Constants.pas", "line": 42},
+    {
+      "name": "RUNSPEEDUP",
+      "value": "0.118/6",
+      "numeric": 0.019666666666666666,
+      "file": "shared/Constants.pas",
+      "line": 43
+    },
+    {"name": "FLYSPEED", "value": 0.03, "file": "shared/Constants.pas", "line": 44},
+    {"name": "JUMPSPEED", "value": 0.66, "file": "shared/Constants.pas", "line": 45},
+    {
+      "name": "CROUCHRUNSPEED",
+      "value": "0.118/0.6",
+      "numeric": 0.19666666666666666,
+      "file": "shared/Constants.pas",
+      "line": 46
+    },
+    {
+      "name": "PRONESPEED",
+      "value": "0.118*4",
+      "numeric": 0.472,
+      "file": "shared/Constants.pas",
+      "line": 47
+    },
+    {
+      "name": "ROLLSPEED",
+      "value": "0.118/1.2",
+      "numeric": 0.09833333333333333,
+      "file": "shared/Constants.pas",
+      "line": 48
+    },
+    {"name": "JUMPDIRSPEED", "value": 0.3, "file": "shared/Constants.pas", "line": 49},
+    {"name": "JETSPEED", "value": 0.1, "file": "shared/Constants.pas", "line": 50},
+    {"name": "PARA_SPEED", "value": -0.03, "file": "shared/Constants.pas", "line": 223},
+    {"name": "PARA_DISTANCE", "value": 500, "file": "shared/Constants.pas", "line": 224},
+    {"name": "GRAV", "value": 0.06, "file": "shared/Game.pas", "line": 58},
+    {"name": "EDamping", "value": 0.99, "file": "shared/Anims.pas", "line": 383},
+    {"name": "GravityMultiplier", "value": 1, "file": "shared/Anims.pas", "line": 382},
+    {"name": "TimeStep", "value": 1, "file": "shared/Anims.pas", "line": 381},
+    {"name": "VDamping", "value": 0.997, "file": "shared/Anims.pas", "line": 389},
+    {"name": "VDamping", "value": 0.9945, "file": "shared/mechanics/Sprites.pas", "line": 371},
+    {"name": "GravityMultiplier", "value": 1.06, "file": "shared/Anims.pas", "line": 388},
+    {"name": "SURFACECOEFX", "value": 0.97, "file": "shared/mechanics/Sprites.pas", "line": 36},
+    {"name": "SURFACECOEFY", "value": 0.97, "file": "shared/mechanics/Sprites.pas", "line": 37},
+    {
+      "name": "CROUCHMOVESURFACECOEFX",
+      "value": 0.85,
+      "file": "shared/mechanics/Sprites.pas",
+      "line": 38
+    },
+    {
+      "name": "CROUCHMOVESURFACECOEFY",
+      "value": 0.97,
+      "file": "shared/mechanics/Sprites.pas",
+      "line": 39
+    },
+    {"name": "STANDSURFACECOEFX", "value": 0, "file": "shared/mechanics/Sprites.pas", "line": 40},
+    {"name": "STANDSURFACECOEFY", "value": 0, "file": "shared/mechanics/Sprites.pas", "line": 41},
+    {"name": "SLIDELIMIT", "value": 0.2, "file": "shared/mechanics/Sprites.pas", "line": 62},
+    {"name": "MAX_VELOCITY", "value": 11, "file": "shared/mechanics/Sprites.pas", "line": 63},
+    {"name": "body mass", "value": 1, "file": "shared/mechanics/Sprites.pas", "line": 365}
+  ],
+  "integration": {
+    "order": "Euler runs before ControlSprite. Forces written this tick apply on the next Euler. Euler then clears forces.",
+    "body": [
+      "Fy += GravityMultiplier * Grav",
+      "S = Forces * OneOverMass * TimeStep^2",
+      "Velocity += S",
+      "Pos += Velocity",
+      "Velocity *= EDamping",
+      "Forces = 0"
+    ],
+    "withBodyDefaults": {
+      "GravityMultiplier": 1,
+      "OneOverMass": 1,
+      "TimeStep": 1,
+      "EDamping": 0.99,
+      "Grav": 0.06
+    },
+    "damping": "Velocity is multiplied by EDamping after the position update, so this step's displacement uses the undamped velocity.",
+    "aliveSkeleton": "Verlet on constraint pairs only. Pos = (1+VDamping)*Pos - VDamping*OldPos + Forces*invMass*dt^2. Live VDamping is 0.9945. Verlet does not use EDamping.",
+    "afterUpdate": "Each velocity axis is clamped to MAX_VELOCITY 11."
+  },
+  "jet": {
+    "storedAs": "JetsCount SmallInt, not a float tank",
+    "capacity": "Map.StartJet = 119 * MapFile.StartJet div 100",
+    "drain": "Dec once per ControlSprite while Jetpack and JetsCount > 0. Client only: if that leaves 1 and jet is still held, set 0. Server does not.",
+    "thrustGround": "Forces.Y = -2.5 * JETSPEED when Grav > 0.05, else Grav*2",
+    "thrustAir": "Forces.Y -= JETSPEED when Grav > 0.05, else Grav*2",
+    "thrustProneAir": "Forces.X += Direction * JETSPEED / 2 when Grav > 0.05, else Grav*2",
+    "regen": "If JetsCount < Map.StartJet and jet is not held, Inc. Every tick on ground. In air only when MainTickCounter mod 2 = 0.",
+    "parachuteAlive": "Forces.Y = PARA_SPEED"
+  },
+  "realistic": {
+    "movementConstantsChanged": false,
+    "changes": [
+      "StartHealth = REALISTIC_HEALTH 65",
+      "loads weapons_realistic",
+      "fall damage if Velocity.Y > 3.5 and polygon is not bouncy: HealthHit(Velocity.Y * 5)",
+      "visibility, bonus spawn, and bot aim change; they do not rewrite movement constants"
+    ]
+  }
+}
