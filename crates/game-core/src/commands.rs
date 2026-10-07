@@ -117,7 +117,7 @@ pub(crate) fn apply_player_command(
             }
             target.state = crate::CharacterState::Emote {
                 emote,
-                ticks_left: 90,
+                ticks_left: crate::character::emote_ticks(emote),
             };
             true
         }

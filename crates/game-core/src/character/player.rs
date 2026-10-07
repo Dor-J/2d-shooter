@@ -26,7 +26,7 @@ pub struct Player {
     pub parachute: bool,
     #[serde(default)]
     pub state: CharacterState,
-    /// Legs and body playback. Both channels follow the stance clip.
+    /// Legs follow the stance clip. The body plays an action clip, then the stance.
     #[serde(default)]
     pub anim: AnimPlayer,
     #[serde(default)]

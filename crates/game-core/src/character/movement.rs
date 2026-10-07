@@ -1,8 +1,9 @@
 use std::sync::OnceLock;
 
 use super::respawn::PARA_SPEED;
-use super::{CharacterState, Direction, RollSource};
+use super::{CharacterState, Direction, Emote, RollSource};
 use crate::anim::Channel;
+use crate::weapons::WeaponKind;
 use crate::{Input, Player, Vec2};
 use serde::{Deserialize, Serialize};
 
@@ -119,9 +120,7 @@ pub fn advance_character(
         player.jump_buffer_ticks = 0;
     }
     let roll_started = !was_rolling && matches!(player.state, CharacterState::Rolling { .. });
-    if !matches!(player.state, CharacterState::Emote { .. }) {
-        adopt_stance(player, input, jump_started, faced);
-    }
+    adopt_stance(player, input, jump_started, faced);
     player.anim.advance();
     write_forces(player, input, config, tick, roll_started, suppress_forces);
     player.airborne_ticks = if player.grounded {
@@ -257,9 +256,9 @@ fn next_state(
             Backflip { direction, late }
         }
         Backflip { .. } => Airborne,
-        Emote { emote, ticks_left } if ticks_left > 1 => Emote {
+        Emote { emote, ticks_left } if !emote_done(player, emote) => Emote {
             emote,
-            ticks_left: ticks_left - 1,
+            ticks_left: ticks_left.saturating_sub(1),
         },
         Emote { .. } => {
             if player.grounded {
@@ -291,10 +290,13 @@ fn next_state(
         }
         Prone if prone_pressed => GettingUp,
         Prone => Prone,
-        _ if input.emote.is_some() => Emote {
-            emote: input.emote.unwrap_or(super::Emote::Taunt),
-            ticks_left: 90,
-        },
+        _ if input.emote.is_some() => {
+            let emote = input.emote.unwrap_or(super::Emote::Taunt);
+            Emote {
+                emote,
+                ticks_left: emote_ticks(emote),
+            }
+        }
         _ if backflip => Backflip {
             direction: player.facing.opposite(),
             late: player.airborne_ticks >= MovementConfig::LATE_BACKFLIP_AFTER_TICKS,
@@ -348,20 +350,168 @@ fn jump_active(player: &Player) -> bool {
 
 fn adopt_stance(player: &mut Player, input: Input, jump_started: bool, faced: Direction) {
     let clip = stance_clip(player, input, jump_started, faced);
-    if player
+    if !player
         .anim
         .legs
         .is_clip(clip.id, clip.frames, clip.speed, clip.looping)
-        && player
+    {
+        player.anim.legs = channel(clip);
+    }
+    // Roll, backflip, and prone transitions keep the body on the stance clip.
+    if matches!(
+        player.state,
+        CharacterState::Rolling { .. }
+            | CharacterState::Backflip { .. }
+            | CharacterState::GoingProne
+            | CharacterState::GettingUp
+    ) {
+        if !player
             .anim
             .body
             .is_clip(clip.id, clip.frames, clip.speed, clip.looping)
+        {
+            player.anim.body = channel(clip);
+        }
+        return;
+    }
+    adopt_body(player, clip);
+}
+
+fn adopt_body(player: &mut Player, stance: Play) {
+    if let CharacterState::Emote { emote, .. } = player.state {
+        let clip = emote_play(emote);
+        if !emote_done(player, emote) {
+            start_body(player, clip);
+            return;
+        }
+    }
+    let clip_out = catalog().clip_out;
+    if player.reload_timer > 0
+        && player.anim.body.is_clip(
+            clip_out.id,
+            clip_out.frames,
+            clip_out.speed,
+            clip_out.looping,
+        )
+        && player.anim.body.finished()
+    {
+        start_body(player, catalog().clip_in);
+        return;
+    }
+    if action_busy(player) {
+        return;
+    }
+    if !player
+        .anim
+        .body
+        .is_clip(stance.id, stance.frames, stance.speed, stance.looping)
+    {
+        player.anim.body = channel(stance);
+    }
+}
+
+fn channel(clip: Play) -> Channel {
+    Channel::start(clip.id, clip.frames, clip.speed, clip.looping)
+}
+
+fn start_body(player: &mut Player, clip: Play) {
+    if player
+        .anim
+        .body
+        .is_clip(clip.id, clip.frames, clip.speed, clip.looping)
+        && !player.anim.body.finished()
     {
         return;
     }
-    let channel = Channel::start(clip.id, clip.frames, clip.speed, clip.looping);
-    player.anim.legs = channel.clone();
-    player.anim.body = channel;
+    player.anim.body = channel(clip);
+}
+
+fn emote_done(player: &Player, emote: Emote) -> bool {
+    let clip = emote_play(emote);
+    player
+        .anim
+        .body
+        .is_clip(clip.id, clip.frames, clip.speed, clip.looping)
+        && player.anim.body.finished()
+}
+
+fn emote_play(emote: Emote) -> Play {
+    let clips = catalog();
+    match emote {
+        Emote::Cigar => clips.cigar,
+        Emote::Victory => clips.victory,
+        Emote::Mercy => clips.mercy,
+        // No clip is named Taunt. Smoke is the loaded taunt.
+        Emote::Taunt => clips.smoke,
+    }
+}
+
+pub(crate) fn emote_ticks(emote: Emote) -> u16 {
+    let clip = emote_play(emote);
+    u16::try_from(clip.frames.saturating_mul(clip.speed)).unwrap_or(u16::MAX)
+}
+
+pub(crate) fn cue_reload(player: &mut Player, clip_reload: bool) {
+    let clips = catalog();
+    start_body(
+        player,
+        if clip_reload {
+            clips.clip_out
+        } else {
+            clips.reload
+        },
+    );
+}
+
+pub(crate) fn cue_change(player: &mut Player) {
+    start_body(player, catalog().change);
+}
+
+pub(crate) fn cue_throw(player: &mut Player) {
+    start_body(player, catalog().throw);
+}
+
+pub(crate) fn cue_throw_weapon(player: &mut Player) {
+    start_body(player, catalog().throw_weapon);
+}
+
+pub(crate) fn cue_aim(player: &mut Player) {
+    start_body(player, catalog().aim);
+}
+
+pub(crate) fn cue_shot(player: &mut Player, kind: WeaponKind, melee: bool) {
+    let clips = catalog();
+    let clip = if kind == WeaponKind::Punch {
+        clips.punch
+    } else if melee {
+        clips.melee
+    } else if kind == WeaponKind::Barrett {
+        clips.barret
+    } else {
+        clips.recoil
+    };
+    start_body(player, clip);
+}
+
+fn action_busy(player: &Player) -> bool {
+    let id = player.anim.body.id;
+    let clips = catalog();
+    let action = id == clips.reload.id
+        || id == clips.throw.id
+        || id == clips.recoil.id
+        || id == clips.clip_out.id
+        || id == clips.clip_in.id
+        || id == clips.change.id
+        || id == clips.throw_weapon.id
+        || id == clips.punch.id
+        || id == clips.barret.id
+        || id == clips.cigar.id
+        || id == clips.smoke.id
+        || id == clips.mercy.id
+        || id == clips.victory.id
+        || id == clips.aim.id
+        || id == clips.melee.id;
+    action && !player.anim.body.finished()
 }
 
 fn stance_clip(player: &Player, input: Input, jump_started: bool, faced: Direction) -> Play {
@@ -438,6 +588,21 @@ struct Catalog {
     prone: Play,
     prone_move: Play,
     get_up: Play,
+    reload: Play,
+    throw: Play,
+    recoil: Play,
+    clip_out: Play,
+    clip_in: Play,
+    change: Play,
+    throw_weapon: Play,
+    punch: Play,
+    barret: Play,
+    cigar: Play,
+    smoke: Play,
+    mercy: Play,
+    victory: Play,
+    aim: Play,
+    melee: Play,
 }
 
 fn catalog() -> &'static Catalog {
@@ -456,6 +621,21 @@ fn catalog() -> &'static Catalog {
         prone: load(include_str!("../../../content/animations/Prone.json")),
         prone_move: load(include_str!("../../../content/animations/ProneMove.json")),
         get_up: load(include_str!("../../../content/animations/GetUp.json")),
+        reload: load(include_str!("../../../content/animations/Reload.json")),
+        throw: load(include_str!("../../../content/animations/Throw.json")),
+        recoil: load(include_str!("../../../content/animations/Recoil.json")),
+        clip_out: load(include_str!("../../../content/animations/ClipOut.json")),
+        clip_in: load(include_str!("../../../content/animations/ClipIn.json")),
+        change: load(include_str!("../../../content/animations/Change.json")),
+        throw_weapon: load(include_str!("../../../content/animations/ThrowWeapon.json")),
+        punch: load(include_str!("../../../content/animations/Punch.json")),
+        barret: load(include_str!("../../../content/animations/Barret.json")),
+        cigar: load(include_str!("../../../content/animations/Cigar.json")),
+        smoke: load(include_str!("../../../content/animations/Smoke.json")),
+        mercy: load(include_str!("../../../content/animations/Mercy.json")),
+        victory: load(include_str!("../../../content/animations/Victory.json")),
+        aim: load(include_str!("../../../content/animations/Aim.json")),
+        melee: load(include_str!("../../../content/animations/Melee.json")),
     })
 }
 

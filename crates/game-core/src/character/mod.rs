@@ -16,6 +16,9 @@ pub use damage::{
 };
 pub use death::{multi_kill_label, DeathCause, KillFeedEntry, MultiKill};
 pub use movement::{advance_character, MovementConfig};
+pub(crate) use movement::{
+    cue_aim, cue_change, cue_reload, cue_shot, cue_throw, cue_throw_weapon, emote_ticks,
+};
 pub use player::Player;
 pub use ragdoll::{Ragdoll, RagdollSegment};
 pub(crate) use resolve::apply_damage;

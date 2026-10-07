@@ -490,6 +490,7 @@ impl World {
                     weapons::reload::interrupt(&mut player.reload_timer);
                     player.pending_switch = Some(slot);
                     player.switch_timer = SWITCH_DELAY_TICKS;
+                    character::cue_change(player);
                     player.startup = 0;
                     player.throw_charge = 0;
                 }
@@ -530,10 +531,16 @@ impl World {
                     weapon.reload_time,
                 ) {
                     player.reload_timer = time;
+                    character::cue_reload(player, weapon.clip_reload());
                     self.events.push(Event::Reload { player: player.id });
                 }
             }
             let previous = player.previous_input;
+            let burst_before = player.burst;
+            let startup_before = player.startup;
+            let grenade_before = player.grenade_charge;
+            let throw_before = player.throw_charge;
+            let reload_before = player.reload_timer;
             character::tick::movement(
                 player,
                 input,
@@ -557,6 +564,31 @@ impl World {
                 &mut self.stats,
                 &self.weapons,
             );
+            let winding_up = input.fire
+                && player.startup > startup_before
+                && player.startup <= weapon.start_up_time;
+            let crouch_aim = input.crouch
+                && !previous.crouch
+                && !matches!(
+                    player.state,
+                    CharacterState::Rolling { .. } | CharacterState::Backflip { .. }
+                );
+            if player.burst > burst_before {
+                character::cue_shot(player, weapon.kind, weapon.bullet_style.is_melee());
+            } else if crouch_aim || winding_up {
+                character::cue_aim(player);
+            }
+            if throw_before == 0 && player.throw_charge > 0
+                || (input.throw_knife && !previous.throw_knife)
+            {
+                character::cue_throw_weapon(player);
+            }
+            if grenade_before == 0 && player.grenade_charge > 0 {
+                character::cue_throw(player);
+            }
+            if reload_before == 0 && player.reload_timer > 0 {
+                character::cue_reload(player, weapon.clip_reload());
+            }
         }
         let player_ids = self.players.keys().copied().collect::<Vec<_>>();
         for (index, left_id) in player_ids.iter().copied().enumerate() {
