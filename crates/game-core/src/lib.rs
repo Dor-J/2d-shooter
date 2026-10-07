@@ -1446,20 +1446,7 @@ impl World {
     /// Players keep their place in the room; only the score and the clock are wiped, which is what
     /// makes this a restart rather than a new room.
     pub fn restart_match(&mut self) {
-        let rules = self.rules;
-        let event = self.match_state.restart(&rules);
-        self.objectives.reset();
-        self.pickups.clear();
-        for player in self.players.values_mut() {
-            player.bonus.clear();
-        }
-        self.ledger = ScoreLedger::default();
-        self.stats.clear();
-        for id in self.players.keys().copied().collect::<Vec<_>>() {
-            self.ledger.ensure(id);
-        }
-        self.project_scores();
-        self.match_events.push(event);
+        modes::round::restart_match(self);
     }
 
     /// Copies the ledger onto the per-player counters and the team scores.
