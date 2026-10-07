@@ -88,7 +88,7 @@ impl DamageConfig {
             bleed_damage: 1,
             attribution_ticks: 600,
             multi_kill_ticks: 240,
-            fall_damage_speed: 520.0,
+            fall_damage_speed: 3.5,
             fall_damage_per_speed: 0.16,
             gib_damage: 140,
         }

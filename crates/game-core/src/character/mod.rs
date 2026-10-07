@@ -1,7 +1,6 @@
 pub(crate) mod body;
 pub(crate) mod damage;
 pub(crate) mod death;
-mod jet;
 mod movement;
 mod player;
 pub(crate) mod ragdoll;

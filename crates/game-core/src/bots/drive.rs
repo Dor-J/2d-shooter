@@ -74,7 +74,7 @@ pub(crate) fn bot_inputs(world: &mut World) -> BTreeMap<u32, Input> {
             .count();
         let view = BotView {
             me,
-            fuel: player.fuel,
+            fuel: f32::from(player.fuel),
             ammo: player.ammo,
             magazine: u16::from(table.get(holding).ammo),
             reloading: player.reload_timer > 0,

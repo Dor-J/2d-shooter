@@ -6,7 +6,7 @@ pub(crate) fn shooter_pose(player: &Player, input: &Input) -> ShooterPose {
         state: player.state,
         grounded: player.grounded,
         moving: input.left || input.right || player.vel.x.abs() > 20.0,
-        jetting: input.jet && player.fuel > 0.01,
+        jetting: input.jet && player.fuel > 0,
         bink: player.bink,
     }
 }

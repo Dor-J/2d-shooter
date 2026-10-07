@@ -19,7 +19,7 @@ fn samples(doc: &Value) -> &[Value] {
     doc["samples"].as_array().expect("samples").as_slice()
 }
 
-fn at<'a>(rows: &'a [Value], tick: u64) -> &'a Value {
+fn at(rows: &[Value], tick: u64) -> &Value {
     let row = &rows[tick as usize];
     assert_eq!(row["tick"].as_u64(), Some(tick));
     row
