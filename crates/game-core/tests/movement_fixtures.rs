@@ -173,6 +173,194 @@ fn jump_force_follows_the_jump_clip_frame() {
 }
 
 #[test]
+fn ground_roll_facing_right_uses_the_roll_clip() {
+    let config = MovementConfig::soldat_default();
+    let mut player = Player::new(1, "roller".into(), 0);
+    player.grounded = true;
+    player.facing = Direction::Right;
+    player.state = CharacterState::Standing;
+    player.anim.legs.id = 1;
+    let mut crouch = input();
+    crouch.right = true;
+    crouch.crouch = true;
+    advance_character(&mut player, crouch, &config, true, 0);
+    assert!(matches!(
+        player.state,
+        CharacterState::Rolling {
+            direction: Direction::Right,
+            source: RollSource::CrouchWhileRunning,
+            ..
+        }
+    ));
+    assert_eq!(player.anim.legs.id, 22, "facing right selects Roll");
+    assert_eq!(player.forces.x, 2.0 * (0.118 / 0.6));
+
+    let mut steal = input();
+    steal.left = true;
+    steal.crouch = true;
+    steal.roll = true;
+    advance_character(&mut player, steal, &config, true, 0);
+    assert!(
+        matches!(
+            player.state,
+            CharacterState::Rolling {
+                direction: Direction::Right,
+                ..
+            }
+        ),
+        "an in-progress roll wins over a new input"
+    );
+    assert_eq!(player.anim.legs.id, 22);
+}
+
+#[test]
+fn ground_roll_facing_left_uses_the_rollback_clip() {
+    let config = MovementConfig::soldat_default();
+    let mut player = Player::new(1, "roller".into(), 0);
+    player.grounded = true;
+    player.facing = Direction::Left;
+    player.state = CharacterState::Standing;
+    player.anim.legs.id = 1;
+    let mut crouch = input();
+    crouch.right = true;
+    crouch.crouch = true;
+    advance_character(&mut player, crouch, &config, true, 0);
+    assert!(matches!(
+        player.state,
+        CharacterState::Rolling {
+            direction: Direction::Right,
+            source: RollSource::CrouchWhileRunning,
+            ..
+        }
+    ));
+    assert_eq!(player.anim.legs.id, 23, "facing left selects RollBack");
+    advance_character(&mut player, crouch, &config, true, 0);
+    assert_eq!(
+        player.anim.legs.id, 23,
+        "RollBack stays for the rest of the roll"
+    );
+
+    let mut keyed = Player::new(1, "keyed".into(), 0);
+    keyed.grounded = true;
+    keyed.facing = Direction::Left;
+    let mut roll = input();
+    roll.right = true;
+    roll.roll = true;
+    advance_character(&mut keyed, roll, &config, true, 0);
+    assert!(matches!(
+        keyed.state,
+        CharacterState::Rolling {
+            direction: Direction::Right,
+            source: RollSource::Explicit,
+            ..
+        }
+    ));
+    assert_eq!(keyed.anim.legs.id, 23);
+}
+
+#[test]
+fn crouch_without_direction_does_not_roll() {
+    let config = MovementConfig::soldat_default();
+    let mut player = Player::new(1, "still".into(), 0);
+    player.grounded = true;
+    player.state = CharacterState::Standing;
+    player.anim.legs.id = 1;
+    let mut crouch = input();
+    crouch.crouch = true;
+    advance_character(&mut player, crouch, &config, true, 0);
+    assert_eq!(player.state, CharacterState::Crouching);
+    assert_ne!(player.anim.legs.id, 22);
+    assert_ne!(player.anim.legs.id, 23);
+
+    let mut standing = Player::new(1, "idle".into(), 0);
+    standing.grounded = true;
+    standing.state = CharacterState::Standing;
+    let mut directed = input();
+    directed.right = true;
+    directed.crouch = true;
+    advance_character(&mut standing, directed, &config, true, 0);
+    assert_eq!(
+        standing.state,
+        CharacterState::Crouching,
+        "stand legs do not roll"
+    );
+}
+
+#[test]
+fn crouch_roll_accepts_run_back_fall_and_prone_move() {
+    let config = MovementConfig::soldat_default();
+    for legs in [2_u32, 5] {
+        let mut player = Player::new(1, "roller".into(), 0);
+        player.grounded = true;
+        player.facing = Direction::Right;
+        player.state = CharacterState::Standing;
+        player.anim.legs.id = legs;
+        let mut crouch = input();
+        crouch.right = true;
+        crouch.crouch = true;
+        advance_character(&mut player, crouch, &config, true, 0);
+        assert!(
+            matches!(
+                player.state,
+                CharacterState::Rolling {
+                    direction: Direction::Right,
+                    ..
+                }
+            ),
+            "legs {legs}"
+        );
+        assert_eq!(player.anim.legs.id, 22, "legs {legs}");
+    }
+
+    let mut prone_move = Player::new(1, "prone-move".into(), 0);
+    prone_move.grounded = true;
+    prone_move.facing = Direction::Left;
+    prone_move.state = CharacterState::Prone;
+    prone_move.anim.legs.id = 38;
+    prone_move.anim.legs.frame = 0;
+    let mut crouch = input();
+    crouch.left = true;
+    crouch.crouch = true;
+    advance_character(&mut prone_move, crouch, &config, true, 0);
+    assert!(matches!(
+        prone_move.state,
+        CharacterState::Rolling {
+            direction: Direction::Left,
+            ..
+        }
+    ));
+    assert_eq!(prone_move.anim.legs.id, 22, "facing the roll selects Roll");
+}
+
+#[test]
+fn prone_crouch_roll_refuses_frame_23_and_allows_frame_24() {
+    let config = MovementConfig::soldat_default();
+    let mut player = Player::new(1, "prone".into(), 0);
+    player.state = CharacterState::Prone;
+    player.grounded = true;
+    player.facing = Direction::Right;
+    player.anim.legs.id = 34;
+    player.anim.legs.frame = 23;
+    let mut crouch = input();
+    crouch.right = true;
+    crouch.crouch = true;
+    advance_character(&mut player, crouch, &config, true, 0);
+    assert_eq!(player.state, CharacterState::Prone);
+
+    player.previous_input = input();
+    player.anim.legs.id = 34;
+    player.anim.legs.frame = 24;
+    advance_character(&mut player, crouch, &config, true, 0);
+    assert!(matches!(
+        player.state,
+        CharacterState::Rolling {
+            direction: Direction::Right,
+            ..
+        }
+    ));
+}
+
+#[test]
 fn prone_roll_is_refused_before_frame_24() {
     let config = MovementConfig::soldat_default();
     let mut player = Player::new(1, "prone".into(), 0);

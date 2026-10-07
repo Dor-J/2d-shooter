@@ -82,11 +82,15 @@ pub fn advance_character(
     let jump_pressed = input.jump && !player.previous_input.jump;
     let prone_pressed = input.prone && !player.previous_input.prone;
     let roll_pressed = input.roll && !player.previous_input.roll;
+    let crouch_pressed = input.crouch && !player.previous_input.crouch;
     if jump_pressed {
         player.jump_buffer_ticks = config.input_buffer_ticks;
     } else {
         player.jump_buffer_ticks = player.jump_buffer_ticks.saturating_sub(1);
     }
+    // Clip choice reads the facing from before this tick's direction keys.
+    let faced = player.facing;
+    let was_rolling = matches!(player.state, CharacterState::Rolling { .. });
     if input.left ^ input.right {
         player.facing = if input.left {
             Direction::Left
@@ -100,6 +104,7 @@ pub fn advance_character(
         input,
         prone_pressed,
         roll_pressed,
+        crouch_pressed,
         has_standing_clearance,
     );
     let jump_started = player.jump_buffer_ticks > 0 && player.grounded && !player.state.is_low();
@@ -107,11 +112,12 @@ pub fn advance_character(
         player.state = CharacterState::Airborne;
         player.jump_buffer_ticks = 0;
     }
+    let roll_started = !was_rolling && matches!(player.state, CharacterState::Rolling { .. });
     if !matches!(player.state, CharacterState::Emote { .. }) {
-        adopt_stance(player, input, jump_started);
+        adopt_stance(player, input, jump_started, faced);
     }
     player.anim.advance();
-    write_forces(player, input, config, tick);
+    write_forces(player, input, config, tick, roll_started);
     player.airborne_ticks = if player.grounded {
         0
     } else {
@@ -120,7 +126,13 @@ pub fn advance_character(
     player.previous_input = input;
 }
 
-fn write_forces(player: &mut Player, input: Input, config: &MovementConfig, tick: u64) {
+fn write_forces(
+    player: &mut Player,
+    input: Input,
+    config: &MovementConfig,
+    tick: u64,
+    roll_started: bool,
+) {
     player.forces = Vec2::default();
     if input.jet && player.fuel > 0 {
         player.fuel -= 1;
@@ -138,7 +150,10 @@ fn write_forces(player: &mut Player, input: Input, config: &MovementConfig, tick
 
     let axis = f32::from((input.right as i8) - (input.left as i8));
     if let CharacterState::Rolling { direction, .. } = player.state {
-        let speed = if player.grounded {
+        // Entry tick is 2 * CROUCHRUNSPEED. Later ticks are Direction * ROLLSPEED.
+        let speed = if roll_started {
+            2.0 * (RUN_SPEED / 0.6)
+        } else if player.grounded {
             RUN_SPEED / 1.2
         } else {
             2.0 * FLY_SPEED
@@ -182,6 +197,7 @@ fn next_state(
     input: Input,
     prone_pressed: bool,
     roll_pressed: bool,
+    crouch_pressed: bool,
     clearance: bool,
 ) -> CharacterState {
     use CharacterState::*;
@@ -198,9 +214,7 @@ fn next_state(
                 Crouching
             }
         }
-        Rolling { direction, source } if !clip_done(player, clips.roll.id) => {
-            Rolling { direction, source }
-        }
+        Rolling { direction, source } if !rolling_finished(player) => Rolling { direction, source },
         Rolling { .. } => {
             if input.crouch {
                 Crouching
@@ -221,6 +235,17 @@ fn next_state(
                 Standing
             } else {
                 Airborne
+            }
+        }
+        Prone
+            if crouch_pressed
+                && player.grounded
+                && (input.left ^ input.right)
+                && (player.anim.legs.id == clips.prone_move.id || player.anim.legs.frame >= 24) =>
+        {
+            Rolling {
+                direction: player.facing,
+                source: RollSource::ProneExit,
             }
         }
         Prone if roll_pressed && (input.left || input.right) && player.anim.legs.frame >= 24 => {
@@ -247,6 +272,16 @@ fn next_state(
             direction: player.facing,
             source: RollSource::Explicit,
         },
+        _ if crouch_pressed
+            && player.grounded
+            && (input.left ^ input.right)
+            && crouch_roll_legs(player) =>
+        {
+            Rolling {
+                direction: player.facing,
+                source: RollSource::CrouchWhileRunning,
+            }
+        }
         _ if prone_pressed && player.grounded => GoingProne,
         _ if jump_active(player) => Airborne,
         _ if input.crouch && player.grounded => Crouching,
@@ -260,13 +295,28 @@ fn clip_done(player: &Player, id: u32) -> bool {
     player.anim.legs.id == id && player.anim.legs.finished()
 }
 
+fn rolling_finished(player: &Player) -> bool {
+    let clips = catalog();
+    clip_done(player, clips.roll.id) || clip_done(player, clips.roll_back.id)
+}
+
+fn crouch_roll_legs(player: &Player) -> bool {
+    let clips = catalog();
+    let id = player.anim.legs.id;
+    id == clips.run.id
+        || id == clips.run_back.id
+        || id == clips.fall.id
+        || id == clips.prone_move.id
+        || (id == clips.prone.id && player.anim.legs.frame >= 24)
+}
+
 fn jump_active(player: &Player) -> bool {
     let jump = catalog().jump;
     player.anim.legs.id == jump.id && !player.anim.legs.finished()
 }
 
-fn adopt_stance(player: &mut Player, input: Input, jump_started: bool) {
-    let clip = stance_clip(player, input, jump_started);
+fn adopt_stance(player: &mut Player, input: Input, jump_started: bool, faced: Direction) {
+    let clip = stance_clip(player, input, jump_started, faced);
     if player
         .anim
         .legs
@@ -283,7 +333,7 @@ fn adopt_stance(player: &mut Player, input: Input, jump_started: bool) {
     player.anim.body = channel;
 }
 
-fn stance_clip(player: &Player, input: Input, jump_started: bool) -> Play {
+fn stance_clip(player: &Player, input: Input, jump_started: bool, faced: Direction) -> Play {
     let clips = catalog();
     let axis = f32::from((input.right as i8) - (input.left as i8));
     let jump_holding =
@@ -291,7 +341,15 @@ fn stance_clip(player: &Player, input: Input, jump_started: bool) -> Play {
     match player.state {
         CharacterState::GoingProne => clips.prone,
         CharacterState::GettingUp => clips.get_up,
-        CharacterState::Rolling { .. } => clips.roll,
+        CharacterState::Rolling { direction, .. } => {
+            if player.anim.legs.id == clips.roll_back.id {
+                clips.roll_back
+            } else if player.anim.legs.id == clips.roll.id || direction == faced {
+                clips.roll
+            } else {
+                clips.roll_back
+            }
+        }
         CharacterState::Backflip { .. } => clips.roll_back,
         CharacterState::Prone if axis != 0.0 => clips.prone_move,
         CharacterState::Prone => clips.prone,
