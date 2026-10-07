@@ -5,11 +5,13 @@ mod broadphase;
 mod dynamic;
 mod hitbox;
 mod materials;
+mod segment;
 mod sweep;
 pub use broadphase::Aabb;
 pub use dynamic::{DynamicBody, DynamicBodyKind};
 pub use hitbox::{BodyPart, BodyRegion, BodyShape, ShapeHit};
 pub use materials::{resolve_material_velocity, MaterialResponse};
+pub(crate) use segment::{nudge, segment_circle_t};
 pub use sweep::{Contact, ContactManifold, RayHit, SweepHit};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
