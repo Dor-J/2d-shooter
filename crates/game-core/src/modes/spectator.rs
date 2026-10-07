@@ -204,3 +204,50 @@ pub fn delayed_tick(live: u64, delay: u32) -> u64 {
 pub const fn spectator_team() -> u8 {
     SPECTATOR
 }
+
+pub(crate) fn followable_players(world: &crate::World) -> Vec<u32> {
+    followable(
+        world
+            .players
+            .values()
+            .map(|player| (player.id, player.team)),
+    )
+}
+
+pub(crate) fn spectate(world: &mut crate::World, id: u32, command: SpectateCommand) {
+    if !world
+        .players
+        .get(&id)
+        .is_some_and(|player| is_spectator(player.team))
+    {
+        return;
+    }
+    let followable = world.followable();
+    let spectator = world
+        .spectators
+        .entry(id)
+        .or_insert_with(|| Spectator::new(followable.first().copied()));
+    apply(spectator, command, &followable);
+}
+
+pub(crate) fn retarget_spectators(world: &mut crate::World) {
+    let followable = world.followable();
+    // Anybody who has joined the spectators since last tick gets a camera.
+    let watching: Vec<u32> = world
+        .players
+        .values()
+        .filter(|player| is_spectator(player.team))
+        .map(|player| player.id)
+        .collect();
+    for id in &watching {
+        world
+            .spectators
+            .entry(*id)
+            .or_insert_with(|| Spectator::new(followable.first().copied()));
+    }
+    // And anybody who has stopped spectating gives theirs up.
+    world.spectators.retain(|id, _| watching.contains(id));
+    for spectator in world.spectators.values_mut() {
+        retarget_if_gone(spectator, &followable);
+    }
+}

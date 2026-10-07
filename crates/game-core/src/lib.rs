@@ -433,7 +433,7 @@ impl World {
 
     /// The players a spectator may follow right now, lowest id first.
     pub fn followable(&self) -> Vec<u32> {
-        modes::spectator::followable(self.players.values().map(|player| (player.id, player.team)))
+        modes::spectator::followable_players(self)
     }
 
     /// Points a spectator at somebody, or lets them fly the camera.
@@ -441,41 +441,12 @@ impl World {
     /// A command from somebody who is not spectating is ignored rather than quietly turning them
     /// into one; joining the spectators is a team change, which has its own path.
     pub fn spectate(&mut self, id: u32, command: SpectateCommand) {
-        if !self
-            .players
-            .get(&id)
-            .is_some_and(|player| modes::team::is_spectator(player.team))
-        {
-            return;
-        }
-        let followable = self.followable();
-        let spectator = self
-            .spectators
-            .entry(id)
-            .or_insert_with(|| Spectator::new(followable.first().copied()));
-        modes::spectator::apply(spectator, command, &followable);
+        modes::spectator::spectate(self, id, command);
     }
 
     /// Keeps every spectator watching somebody who is still in the match.
     fn retarget_spectators(&mut self) {
-        let followable = self.followable();
-        // Anybody who has joined the spectators since last tick gets a camera.
-        let watching: Vec<u32> = self
-            .players
-            .values()
-            .filter(|player| modes::team::is_spectator(player.team))
-            .map(|player| player.id)
-            .collect();
-        for id in &watching {
-            self.spectators
-                .entry(*id)
-                .or_insert_with(|| Spectator::new(followable.first().copied()));
-        }
-        // And anybody who has stopped spectating gives theirs up.
-        self.spectators.retain(|id, _| watching.contains(id));
-        for spectator in self.spectators.values_mut() {
-            modes::spectator::retarget_if_gone(spectator, &followable);
-        }
+        modes::spectator::retarget_spectators(self);
     }
 
     /// Whether the sides are lopsided enough that somebody should be moved.
