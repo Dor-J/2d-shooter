@@ -1467,15 +1467,7 @@ impl World {
     /// Those are what the HUD, the scoreboard, and the wire format read. Writing them from the
     /// ledger rather than alongside it is what keeps one authority for every point in the match.
     fn project_scores(&mut self) {
-        for (id, player) in self.players.iter_mut() {
-            let score = self.ledger.player(*id);
-            player.kills = score.kills;
-            player.deaths = score.deaths;
-            player.teamkills = score.teamkills;
-            player.suicides = score.suicides;
-        }
-        let teams = self.ledger.teams();
-        self.scores = [teams[1].max(0) as u32, teams[2].max(0) as u32];
+        modes::score::project_scores(self);
     }
 
     /// Living players this one would rather not spawn next to: the other team in team modes and

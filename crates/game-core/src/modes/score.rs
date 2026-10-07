@@ -228,3 +228,15 @@ pub const fn objectives_only() -> ScoringPolicy {
         teamkill_costs_the_team: false,
     }
 }
+
+pub(crate) fn project_scores(world: &mut crate::World) {
+    for (id, player) in world.players.iter_mut() {
+        let score = world.ledger.player(*id);
+        player.kills = score.kills;
+        player.deaths = score.deaths;
+        player.teamkills = score.teamkills;
+        player.suicides = score.suicides;
+    }
+    let teams = world.ledger.teams();
+    world.scores = [teams[1].max(0) as u32, teams[2].max(0) as u32];
+}
