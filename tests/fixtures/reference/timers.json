@@ -1,0 +1,15 @@
+{
+  "source": "opensoldat/opensoldat shared/Constants.pas",
+  "commit": "c7596cdca32416cb66339b339105eb1e07e7fbbf",
+  "timers": [
+    {"name": "SECOND", "value": 60, "line": 86},
+    {"name": "GRENADE_TIMEOUT", "value": 180, "line": 118},
+    {"name": "FLAG_TIMEOUT", "value": 1500, "line": 143},
+    {"name": "BOW_INTEREST_TIME", "value": 2500, "line": 152},
+    {"name": "FLAMERBONUSTIME", "value": 600, "line": 187},
+    {"name": "PREDATORBONUSTIME", "value": 1500, "line": 188},
+    {"name": "BERSERKERBONUSTIME", "value": 900, "line": 189},
+    {"name": "PARA_DISTANCE", "value": 500, "line": 224},
+    {"name": "SURVIVAL_RESPAWNTIME", "value": 300, "line": 268}
+  ]
+}
