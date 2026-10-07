@@ -1473,21 +1473,7 @@ impl World {
     /// Living players this one would rather not spawn next to: the other team in team modes and
     /// everybody else otherwise.
     fn opponent_positions(&self) -> BTreeMap<u32, Vec<Vec2>> {
-        let team_mode = self.mode == "team";
-        self.players
-            .keys()
-            .map(|&id| {
-                let team = self.players.get(&id).map_or(0, |player| player.team);
-                let positions = self
-                    .players
-                    .values()
-                    .filter(|other| other.id != id && other.hp > 0)
-                    .filter(|other| !team_mode || other.team != team)
-                    .map(|other| other.pos)
-                    .collect();
-                (id, positions)
-            })
-            .collect()
+        character::respawn::opponent_positions(self)
     }
 
     /// Carries out a typed player command. The parser already decided what was asked; this decides
