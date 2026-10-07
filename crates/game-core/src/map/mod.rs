@@ -1,5 +1,10 @@
 use content::pms::MapAsset;
 
+mod spawns;
+
+pub(crate) use spawns::{map_spawn, spawn};
+pub use spawns::{MapSpawn, SpawnKind};
+
 #[derive(Clone, Debug)]
 pub struct ValidatedMap {
     asset: MapAsset,
