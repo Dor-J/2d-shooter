@@ -1,3 +1,4 @@
+use game_core::anim::Channel;
 use game_core::{
     advance_character, apply_impulse, BodyShape, CharacterState, Direction, Emote, Impulse,
     ImpulseSource, Input, MovementConfig, Player, RollSource, Vec2, World, DT,
@@ -457,23 +458,117 @@ fn roll_direction_source_and_backflip_variants_are_explicit() {
     player.grounded = false;
     player.facing = Direction::Right;
     player.previous_input = input();
+    player.anim.legs = Channel::start(4, 34, 1, false);
+    player.anim.body = Channel::start(4, 34, 1, false);
     let mut backflip = input();
     backflip.left = true;
-    backflip.jump = true;
-    backflip.roll = true;
+    backflip.jet = true;
     advance_character(&mut player, backflip, &config, true, 0);
     assert!(matches!(
         player.state,
         CharacterState::Backflip { late: false, .. }
     ));
     player.state = CharacterState::Airborne;
+    player.facing = Direction::Right;
     player.airborne_ticks = MovementConfig::LATE_BACKFLIP_AFTER_TICKS;
     player.previous_input = input();
+    player.anim.legs = Channel::start(4, 34, 1, false);
+    player.anim.body = Channel::start(4, 34, 1, false);
     advance_character(&mut player, backflip, &config, true, 0);
     assert!(matches!(
         player.state,
         CharacterState::Backflip { late: true, .. }
     ));
+}
+
+#[test]
+fn backflip_is_jet_opposite_a_side_jump_not_an_airborne_roll() {
+    let config = MovementConfig::soldat_default();
+    let jump_side = || Channel::start(4, 34, 1, false);
+    let boost = -(0.30_f32 * 1.5);
+
+    let mut player = Player::new(1, "backflip".into(), 0);
+    player.state = CharacterState::Airborne;
+    player.grounded = false;
+    player.facing = Direction::Right;
+    player.anim.legs = jump_side();
+    player.anim.body = jump_side();
+    let mut entry = input();
+    entry.left = true;
+    entry.jet = true;
+    advance_character(&mut player, entry, &config, true, 0);
+    assert!(
+        matches!(player.state, CharacterState::Backflip { .. }),
+        "jet while JumpSide and facing the other way starts RollBack"
+    );
+    assert_eq!(player.anim.legs.id, 23);
+    assert_eq!(player.anim.body.id, 23);
+    assert_eq!(
+        player.forces.x, 0.0,
+        "no backflip impulse on the entry tick"
+    );
+    assert_eq!(player.forces.y, 0.0, "entry tick writes no force");
+
+    let mut player = Player::new(1, "same way".into(), 0);
+    player.state = CharacterState::Airborne;
+    player.grounded = false;
+    player.facing = Direction::Right;
+    player.anim.legs = jump_side();
+    player.anim.body = jump_side();
+    let mut jet = input();
+    jet.right = true;
+    jet.jet = true;
+    advance_character(&mut player, jet, &config, true, 0);
+    assert!(
+        !matches!(player.state, CharacterState::Backflip { .. }),
+        "jet without an opposite direction does not backflip"
+    );
+
+    let mut player = Player::new(1, "roll".into(), 0);
+    player.state = CharacterState::Airborne;
+    player.grounded = false;
+    player.previous_input = input();
+    let mut roll = input();
+    roll.roll = true;
+    advance_character(&mut player, roll, &config, true, 0);
+    assert!(
+        !matches!(player.state, CharacterState::Backflip { .. }),
+        "Input.roll in the air does not backflip"
+    );
+
+    let mut player = Player::new(1, "boost".into(), 0);
+    player.state = CharacterState::Backflip {
+        direction: Direction::Left,
+        late: false,
+    };
+    player.grounded = false;
+    let mut jump = input();
+    jump.jump = true;
+    let mut saw = [false; 8];
+    for _ in 0..10 {
+        advance_character(&mut player, jump, &config, true, 0);
+        let frame = player.anim.legs.frame;
+        if (2..=7).contains(&frame) {
+            assert_eq!(player.forces.y, boost, "frame {frame} vertical force");
+            saw[frame as usize] = true;
+        }
+    }
+    assert!(
+        saw[2..=7].iter().all(|hit| *hit),
+        "RollBack frames 2..7 were not all sampled: {saw:?}"
+    );
+
+    let mut player = Player::new(1, "side jump".into(), 0);
+    player.state = CharacterState::Standing;
+    player.grounded = true;
+    let mut side = input();
+    side.jump = true;
+    side.right = true;
+    advance_character(&mut player, side, &config, true, 0);
+    assert_eq!(player.anim.legs.id, 4);
+    assert_eq!(player.anim.legs.speed, 1);
+    assert!(!player.anim.legs.r#loop);
+    assert_eq!(player.anim.body.id, 4);
 }
 
 #[test]

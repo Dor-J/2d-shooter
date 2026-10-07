@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 const RUN_SPEED: f32 = 0.118;
 const FLY_SPEED: f32 = 0.03;
 const JUMP_SPEED: f32 = 0.66;
+const JUMP_DIR_SPEED: f32 = 0.30;
 const JET_SPEED: f32 = 0.10;
 const MAX_VELOCITY: f32 = 11.0;
 
@@ -98,6 +99,9 @@ pub fn advance_character(
             Direction::Right
         };
     }
+    let backflip = jump_side_backflip(player, input, faced);
+    let suppress_forces =
+        backflip || (input.jet && input.jump && player.anim.legs.id == catalog().roll_back.id);
 
     player.state = next_state(
         player,
@@ -106,6 +110,7 @@ pub fn advance_character(
         roll_pressed,
         crouch_pressed,
         has_standing_clearance,
+        backflip,
     );
     let jump_started = player.jump_buffer_ticks > 0 && player.grounded && !player.state.is_low();
     if jump_started {
@@ -117,7 +122,7 @@ pub fn advance_character(
         adopt_stance(player, input, jump_started, faced);
     }
     player.anim.advance();
-    write_forces(player, input, config, tick, roll_started);
+    write_forces(player, input, config, tick, roll_started, suppress_forces);
     player.airborne_ticks = if player.grounded {
         0
     } else {
@@ -132,8 +137,12 @@ fn write_forces(
     config: &MovementConfig,
     tick: u64,
     roll_started: bool,
+    suppress_forces: bool,
 ) {
     player.forces = Vec2::default();
+    if suppress_forces {
+        return;
+    }
     if input.jet && player.fuel > 0 {
         player.fuel -= 1;
         if player.grounded {
@@ -190,6 +199,17 @@ fn write_forces(
         player.grounded = false;
         player.state = CharacterState::Airborne;
     }
+
+    let roll_back = catalog().roll_back.id;
+    if player.anim.legs.id == roll_back
+        && player.anim.legs.frame > 1
+        && player.anim.legs.frame < 8
+        && input.jump
+    {
+        player.forces.y -= JUMP_DIR_SPEED * 1.5;
+        player.forces.x *= 0.5;
+        player.vel.x *= 0.8;
+    }
 }
 
 fn next_state(
@@ -199,6 +219,7 @@ fn next_state(
     roll_pressed: bool,
     crouch_pressed: bool,
     clearance: bool,
+    backflip: bool,
 ) -> CharacterState {
     use CharacterState::*;
     let clips = catalog();
@@ -264,7 +285,7 @@ fn next_state(
             emote: input.emote.unwrap_or(super::Emote::Taunt),
             ticks_left: 90,
         },
-        _ if roll_pressed && !player.grounded => Backflip {
+        _ if backflip => Backflip {
             direction: player.facing.opposite(),
             late: player.airborne_ticks >= MovementConfig::LATE_BACKFLIP_AFTER_TICKS,
         },
@@ -355,6 +376,7 @@ fn stance_clip(player: &Player, input: Input, jump_started: bool, faced: Directi
         CharacterState::Prone => clips.prone,
         CharacterState::Crouching if axis != 0.0 => clips.crouch_run,
         CharacterState::Crouching => clips.crouch,
+        CharacterState::Airborne if jump_started && axis != 0.0 => clips.jump_side,
         CharacterState::Airborne if jump_holding => clips.jump,
         CharacterState::Airborne if axis != 0.0 => clips.jump_side,
         CharacterState::Airborne => clips.fall,
@@ -363,6 +385,17 @@ fn stance_clip(player: &Player, input: Input, jump_started: bool, faced: Directi
         CharacterState::Standing => clips.stand,
         CharacterState::Dead | CharacterState::Emote { .. } => clips.stand,
     }
+}
+
+fn jump_side_backflip(player: &Player, input: Input, facing: Direction) -> bool {
+    if !input.jet || player.anim.legs.id != catalog().jump_side.id {
+        return false;
+    }
+    let opposite = match facing {
+        Direction::Left => input.right,
+        Direction::Right => input.left,
+    };
+    opposite || (input.left && input.right)
 }
 
 fn running_back(player: &Player, input: Input, axis: f32) -> bool {
