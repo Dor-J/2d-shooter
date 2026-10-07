@@ -11,6 +11,7 @@ mod events;
 mod fixtures;
 mod input;
 mod map;
+mod math;
 pub mod modes;
 pub mod objects;
 pub mod replay;
@@ -40,6 +41,7 @@ pub use fixtures::{replay_fixture_json, Fixture, FrameInput, SimRng, WorldDigest
 pub use input::Input;
 use map::{map_spawn, spawn};
 pub use map::{MapSpawn, MapValidationError, SpawnKind, ValidatedMap};
+pub use math::Vec2;
 pub use modes::{
     assign_team, has_line_of_sight, infiltration_award, leader, limit_reached, policy_for,
     scoreboard, survival_standing, validate_spawns, visibility_between, AdvanceConfig, Award,
@@ -116,29 +118,6 @@ fn default_collision_world() -> CollisionWorld {
         })
         .collect();
     CollisionWorld::new(polygons)
-}
-
-#[derive(Clone, Copy, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Vec2 {
-    pub x: f32,
-    pub y: f32,
-}
-impl Vec2 {
-    fn add(self, other: Self) -> Self {
-        Self {
-            x: self.x + other.x,
-            y: self.y + other.y,
-        }
-    }
-    fn scale(self, s: f32) -> Self {
-        Self {
-            x: self.x * s,
-            y: self.y * s,
-        }
-    }
-    pub fn length(self) -> f32 {
-        (self.x * self.x + self.y * self.y).sqrt()
-    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
