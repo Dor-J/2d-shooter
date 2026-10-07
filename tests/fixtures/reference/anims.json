@@ -1,0 +1,478 @@
+{
+  "sourceFiles": "opensoldat/base shared/anims/*.poa",
+  "filesCommit": "5b6e5bef23f5c0d58fb1d4d887b9b94ebcf799b4",
+  "loader": "opensoldat/opensoldat shared/Anims.pas TAnimation.LoadFromFile and LoadAnimObjects",
+  "loaderCommit": "c7596cdca32416cb66339b339105eb1e07e7fbbf",
+  "formatNotes": [
+    "one token per line",
+    "keywords NEXTFRAME and ENDFILE",
+    "NumFrames starts at 1 and increments on NEXTFRAME",
+    "MAX_FRAMES_INDEX=40",
+    "point index 1..20 (MAX_POS_INDEX=20)",
+    "Speed and Loop are NOT in the file (Speed defaults to 1, Loop defaults false)",
+    "SCALE=3 applied at load",
+    "DoAnimation advances one frame every Speed calls",
+    "one cycle is NumFrames*Speed updates"
+  ],
+  "files": [
+    {
+      "file": "barret.poa",
+      "frames": 29,
+      "loaded": true,
+      "id": 21,
+      "object": "Barret",
+      "loop": false,
+      "speed": 9
+    },
+    {
+      "file": "bezbroni.poa",
+      "frames": 11,
+      "loaded": true,
+      "id": 18,
+      "object": "WeaponNone",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "biega.poa",
+      "frames": 38,
+      "loaded": true,
+      "id": 1,
+      "object": "Run",
+      "loop": true,
+      "speed": 1
+    },
+    {
+      "file": "biegaranny.poa",
+      "frames": 38,
+      "loaded": false,
+      "id": null,
+      "object": null,
+      "loop": null,
+      "speed": null
+    },
+    {
+      "file": "biegatyl.poa",
+      "frames": 33,
+      "loaded": true,
+      "id": 2,
+      "object": "RunBack",
+      "loop": true,
+      "speed": 1
+    },
+    {
+      "file": "bije.poa",
+      "frames": 18,
+      "loaded": true,
+      "id": 19,
+      "object": "Punch",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "celuje.poa",
+      "frames": 7,
+      "loaded": true,
+      "id": 36,
+      "object": "Aim",
+      "loop": false,
+      "speed": 2
+    },
+    {
+      "file": "celujeodrzut.poa",
+      "frames": 6,
+      "loaded": true,
+      "id": 40,
+      "object": "AimRecoil",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "change.poa",
+      "frames": 40,
+      "loaded": true,
+      "id": 16,
+      "object": "Change",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "chat.poa",
+      "frames": 20,
+      "loaded": false,
+      "id": null,
+      "object": null,
+      "loop": null,
+      "speed": null
+    },
+    {
+      "file": "cieszy.poa",
+      "frames": 36,
+      "loaded": true,
+      "id": 35,
+      "object": "Victory",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "cigar.poa",
+      "frames": 39,
+      "loaded": true,
+      "id": 25,
+      "object": "Cigar",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "clipin.poa",
+      "frames": 23,
+      "loaded": true,
+      "id": 14,
+      "object": "ClipIn",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "clipout.poa",
+      "frames": 35,
+      "loaded": true,
+      "id": 13,
+      "object": "ClipOut",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "firemode.poa",
+      "frames": 15,
+      "loaded": false,
+      "id": null,
+      "object": null,
+      "loop": null,
+      "speed": null
+    },
+    {
+      "file": "gora.poa",
+      "frames": 11,
+      "loaded": true,
+      "id": 37,
+      "object": "HandsUpAim",
+      "loop": false,
+      "speed": 2
+    },
+    {
+      "file": "goraodrzut.poa",
+      "frames": 11,
+      "loaded": true,
+      "id": 41,
+      "object": "HandsUpRecoil",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "kolba.poa",
+      "frames": 21,
+      "loaded": true,
+      "id": 42,
+      "object": "Melee",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "krocze.poa",
+      "frames": 26,
+      "loaded": true,
+      "id": 29,
+      "object": "Groin",
+      "loop": false,
+      "speed": 2
+    },
+    {
+      "file": "kuca.poa",
+      "frames": 15,
+      "loaded": true,
+      "id": 6,
+      "object": "Crouch",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "kucaidzie.poa",
+      "frames": 28,
+      "loaded": true,
+      "id": 7,
+      "object": "CrouchRun",
+      "loop": true,
+      "speed": 2
+    },
+    {
+      "file": "kucaidzietyl.poa",
+      "frames": 28,
+      "loaded": true,
+      "id": 24,
+      "object": "CrouchRunBack",
+      "loop": true,
+      "speed": 2
+    },
+    {
+      "file": "laduje.poa",
+      "frames": 14,
+      "loaded": true,
+      "id": 8,
+      "object": "Reload",
+      "loop": false,
+      "speed": 2
+    },
+    {
+      "file": "lezy.poa",
+      "frames": 27,
+      "loaded": true,
+      "id": 34,
+      "object": "Prone",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "lezyidzie.poa",
+      "frames": 28,
+      "loaded": true,
+      "id": 38,
+      "object": "ProneMove",
+      "loop": true,
+      "speed": 2
+    },
+    {
+      "file": "match.poa",
+      "frames": 30,
+      "loaded": true,
+      "id": 26,
+      "object": "Match",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "odrzut.poa",
+      "frames": 21,
+      "loaded": true,
+      "id": 10,
+      "object": "Recoil",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "odrzut2.poa",
+      "frames": 7,
+      "loaded": true,
+      "id": 11,
+      "object": "SmallRecoil",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "pistolet.poa",
+      "frames": 17,
+      "loaded": false,
+      "id": null,
+      "object": null,
+      "loop": null,
+      "speed": null
+    },
+    {
+      "file": "rucha.poa",
+      "frames": 26,
+      "loaded": true,
+      "id": 43,
+      "object": "Own",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "rzuca.poa",
+      "frames": 40,
+      "loaded": true,
+      "id": 9,
+      "object": "Throw",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "samo.poa",
+      "frames": 29,
+      "loaded": true,
+      "id": 31,
+      "object": "Mercy",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "samo2.poa",
+      "frames": 22,
+      "loaded": true,
+      "id": 32,
+      "object": "Mercy2",
+      "loop": false,
+      "speed": 3
+    },
+    {
+      "file": "shotgun.poa",
+      "frames": 25,
+      "loaded": true,
+      "id": 12,
+      "object": "Shotgun",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "skok.poa",
+      "frames": 37,
+      "loaded": true,
+      "id": 3,
+      "object": "Jump",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "skokdolobrot.poa",
+      "frames": 34,
+      "loaded": true,
+      "id": 22,
+      "object": "Roll",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "skokdolobrottyl.poa",
+      "frames": 32,
+      "loaded": true,
+      "id": 23,
+      "object": "RollBack",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "skokwbok.poa",
+      "frames": 34,
+      "loaded": true,
+      "id": 4,
+      "object": "JumpSide",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "slideback.poa",
+      "frames": 24,
+      "loaded": true,
+      "id": 15,
+      "object": "SlideBack",
+      "loop": true,
+      "speed": 2
+    },
+    {
+      "file": "smoke.poa",
+      "frames": 39,
+      "loaded": true,
+      "id": 27,
+      "object": "Smoke",
+      "loop": false,
+      "speed": 4
+    },
+    {
+      "file": "spada.poa",
+      "frames": 7,
+      "loaded": true,
+      "id": 5,
+      "object": "Fall",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "stoi.poa",
+      "frames": 17,
+      "loaded": true,
+      "id": 0,
+      "object": "Stand",
+      "loop": true,
+      "speed": 3
+    },
+    {
+      "file": "strzala.poa",
+      "frames": 31,
+      "loaded": true,
+      "id": 20,
+      "object": "ReloadBow",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "stunt.poa",
+      "frames": 28,
+      "loaded": false,
+      "id": null,
+      "object": null,
+      "loop": null,
+      "speed": null
+    },
+    {
+      "file": "szcza.poa",
+      "frames": 37,
+      "loaded": true,
+      "id": 30,
+      "object": "Piss",
+      "loop": false,
+      "speed": 8
+    },
+    {
+      "file": "takeoff.poa",
+      "frames": 33,
+      "loaded": true,
+      "id": 33,
+      "object": "TakeOff",
+      "loop": false,
+      "speed": 2
+    },
+    {
+      "file": "template.poa",
+      "frames": 2,
+      "loaded": false,
+      "id": null,
+      "object": null,
+      "loop": null,
+      "speed": null
+    },
+    {
+      "file": "wipe.poa",
+      "frames": 37,
+      "loaded": true,
+      "id": 28,
+      "object": "Wipe",
+      "loop": false,
+      "speed": 4
+    },
+    {
+      "file": "wstaje.poa",
+      "frames": 25,
+      "loaded": true,
+      "id": 39,
+      "object": "GetUp",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "wyrzuca.poa",
+      "frames": 26,
+      "loaded": true,
+      "id": 17,
+      "object": "ThrowWeapon",
+      "loop": false,
+      "speed": 1
+    },
+    {
+      "file": "zmienbron.poa",
+      "frames": 38,
+      "loaded": false,
+      "id": null,
+      "object": null,
+      "loop": null,
+      "speed": null
+    }
+  ]
+}
