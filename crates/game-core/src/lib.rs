@@ -1864,33 +1864,7 @@ impl World {
     /// Earning a weapon and losing one are the same rule seen from either end: every configured
     /// number of kills grants one, and every configured number of deaths takes one back.
     fn advance_progress(&mut self, killer: Option<u32>, victim: u32) {
-        let config = self.advance;
-        if let Some(id) = killer.filter(|id| *id != victim) {
-            let kills = self.ledger.player(id).kills;
-            if modes::modifiers::advance::kill_earns_unlock(&config, kills) {
-                let mut unlocked = self
-                    .players
-                    .get(&id)
-                    .map_or(Unlocked::starting(), |p| p.unlocked);
-                if modes::modifiers::advance::unlock_one(&mut unlocked, &mut self.rng).is_some() {
-                    if let Some(player) = self.players.get_mut(&id) {
-                        player.unlocked = unlocked;
-                    }
-                }
-            }
-        }
-        let deaths = self.ledger.player(victim).deaths;
-        if modes::modifiers::advance::death_costs_unlock(&config, deaths) {
-            let mut unlocked = self
-                .players
-                .get(&victim)
-                .map_or(Unlocked::starting(), |p| p.unlocked);
-            if modes::modifiers::advance::revoke_one(&mut unlocked, &mut self.rng).is_some() {
-                if let Some(player) = self.players.get_mut(&victim) {
-                    player.unlocked = unlocked;
-                }
-            }
-        }
+        modes::modifiers::advance::advance_progress(self, killer, victim);
     }
 }
 
