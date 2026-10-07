@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": 18,
+  "name": "WeaponNone",
+  "frames": 11,
+  "speed": 3,
+  "loop": false,
+  "points": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
+}

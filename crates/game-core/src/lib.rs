@@ -2,6 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+pub mod anim;
 pub mod bots;
 mod character;
 pub mod chat;

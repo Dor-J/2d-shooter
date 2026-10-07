@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "id": 40,
+  "name": "AimRecoil",
+  "frames": 6,
+  "speed": 1,
+  "loop": false,
+  "points": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
+}
