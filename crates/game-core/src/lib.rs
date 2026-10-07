@@ -298,32 +298,7 @@ impl World {
 
     /// The yellow flag *is* the bow: whoever holds it has the weapon, everyone else does not.
     fn sync_rambo_bow(&mut self) {
-        if self.rules.kind != ModeKind::Rambomatch {
-            return;
-        }
-        let ammo = u16::from(self.weapons.get(WeaponKind::RamboBow).ammo);
-        let holders: Vec<u32> = self.objectives.carriers().map(|(_, id)| id).collect();
-        let ids: Vec<u32> = self.players.keys().copied().collect();
-        for id in ids {
-            let rambo = holders.contains(&id);
-            let Some(player) = self.players.get_mut(&id) else {
-                continue;
-            };
-            if rambo {
-                if !player.inventory.owns(WeaponKind::RamboBow)
-                    && !player.inventory.owns(WeaponKind::FlamedArrows)
-                {
-                    player.inventory.force_equip(WeaponKind::RamboBow, ammo);
-                    sync_hands(player);
-                }
-            } else if player.inventory.owns(WeaponKind::RamboBow)
-                || player.inventory.owns(WeaponKind::FlamedArrows)
-            {
-                player.inventory.take_kind(WeaponKind::RamboBow);
-                player.inventory.take_kind(WeaponKind::FlamedArrows);
-                sync_hands(player);
-            }
-        }
+        modes::sync_rambo_bow(self);
     }
 
     /// The map geometry this world simulates against.
