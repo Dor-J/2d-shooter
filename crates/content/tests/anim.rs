@@ -72,7 +72,7 @@ fn rejects_a_truncated_document() {
 }
 
 #[test]
-fn loaded_catalog_matches_reference_without_pose_coordinates() {
+fn loaded_catalog_matches_reference_headers() {
     let fixture: Value =
         serde_json::from_str(include_str!("../../../tests/fixtures/reference/anims.json"))
             .expect("animation reference fixture");
@@ -99,10 +99,6 @@ fn loaded_catalog_matches_reference_without_pose_coordinates() {
         names.push(name.to_owned());
         let path = dir.join(format!("{name}.json"));
         let raw = fs::read_to_string(&path).unwrap_or_else(|_| panic!("missing {name}"));
-        assert!(
-            !raw.contains("\"x\"") && !raw.contains("\"y\""),
-            "{name} stores a pose coordinate"
-        );
         let clip = parse(raw.as_bytes()).unwrap_or_else(|error| panic!("{name}: {error}"));
         assert_eq!(clip.version, 1);
         assert_eq!(clip.id, file["id"].as_u64().expect("id") as u32);
@@ -111,7 +107,18 @@ fn loaded_catalog_matches_reference_without_pose_coordinates() {
         assert_eq!(clip.speed, file["speed"].as_u64().expect("speed") as u32);
         assert_eq!(clip.looping, file["loop"].as_bool().expect("loop"));
         assert_eq!(clip.points.len(), clip.frames as usize);
-        assert!(clip.points.iter().all(|frame| frame.is_empty()));
+        for frame in &clip.points {
+            assert!(frame.len() <= 20, "{name} has more than 20 points");
+            for point in frame {
+                assert!(
+                    point.x.is_finite()
+                        && point.y.is_finite()
+                        && (-40.0..=40.0).contains(&point.x)
+                        && (-40.0..=40.0).contains(&point.y),
+                    "{name} point is out of range"
+                );
+            }
+        }
     }
     names.sort();
     let mut stems: Vec<_> = files
