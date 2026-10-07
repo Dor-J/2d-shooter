@@ -1,6 +1,21 @@
 use std::collections::BTreeMap;
 
-use crate::{MapSpawn, Vec2};
+use crate::{CollisionMask, CollisionWorld, MapSpawn, Vec2};
+
+pub(crate) const PARA_DISTANCE: f32 = 500.0;
+pub(crate) const PARA_SPEED: f32 = -0.03;
+
+/// Ray down `PARA_DISTANCE`. A canopy opens when nothing is within `PARA_DISTANCE - 10`.
+pub(crate) fn spawn_holds_parachute(collision: &CollisionWorld, pos: Vec2) -> bool {
+    let end = Vec2 {
+        x: pos.x,
+        y: pos.y + PARA_DISTANCE,
+    };
+    let Some(hit) = collision.raycast(pos, end, CollisionMask::PLAYER) else {
+        return true;
+    };
+    hit.time * PARA_DISTANCE > PARA_DISTANCE - 10.0
+}
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]

@@ -284,6 +284,7 @@ impl World {
         let team = assign_team(&self.rules, choice, sizes);
         let mut player = Player::new(id, name, team);
         player.pos = map_spawn(&self.map_spawns, id, team);
+        player.parachute = character::respawn::spawn_holds_parachute(&self.collision, player.pos);
         player.fuel = self.movement.fuel_capacity;
         let advance = self.rules.modifiers.advance;
         let unlocked = player.unlocked;
@@ -310,6 +311,7 @@ impl World {
         // Changing sides puts a player back on a spawn rather than teleporting them behind enemy
         // lines from wherever they happened to be standing.
         player.pos = map_spawn(&self.map_spawns, id, team);
+        player.parachute = character::respawn::spawn_holds_parachute(&self.collision, player.pos);
         player.vel = Vec2::default();
         player.forces = Vec2::default();
         Some(team)
@@ -454,6 +456,7 @@ impl World {
                     &respawn_config,
                     &opponents,
                     &map_spawns,
+                    &self.collision,
                     &mode,
                     &self.weapons,
                     &mut self.events,

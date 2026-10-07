@@ -1,5 +1,6 @@
 use std::sync::OnceLock;
 
+use super::respawn::PARA_SPEED;
 use super::{CharacterState, Direction, RollSource};
 use crate::anim::Channel;
 use crate::{Input, Player, Vec2};
@@ -140,10 +141,14 @@ fn write_forces(
     suppress_forces: bool,
 ) {
     player.forces = Vec2::default();
+    let releasing = player.parachute && input.jet;
+    if releasing {
+        player.parachute = false;
+    }
     if suppress_forces {
         return;
     }
-    if input.jet && player.fuel > 0 {
+    if input.jet && !releasing && player.fuel > 0 {
         player.fuel -= 1;
         if player.grounded {
             player.forces.y = -2.5 * JET_SPEED;
@@ -209,6 +214,11 @@ fn write_forces(
         player.forces.y -= JUMP_DIR_SPEED * 1.5;
         player.forces.x *= 0.5;
         player.vel.x *= 0.8;
+    }
+
+    if player.parachute {
+        // ponytail: one body, no parachute joints; steering stays the existing left/right forces
+        player.forces.y = PARA_SPEED;
     }
 }
 

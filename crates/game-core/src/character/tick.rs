@@ -1,6 +1,7 @@
 use std::collections::BTreeMap;
 
 use super::movement::integrate_body;
+use super::respawn::spawn_holds_parachute;
 use crate::weapons::{sync_hands, WeaponTable, SELECTABLE_WEAPONS};
 use crate::ModeRules;
 use crate::{
@@ -17,6 +18,7 @@ pub(crate) fn corpse(
     respawn_config: &RespawnConfig,
     opponents: &BTreeMap<u32, Vec<Vec2>>,
     map_spawns: &[MapSpawn],
+    collision: &CollisionWorld,
     mode: &str,
     weapons: &WeaponTable,
     events: &mut Vec<Event>,
@@ -42,6 +44,7 @@ pub(crate) fn corpse(
         player.last_damage_direction = Vec2::default();
         player.spawn_protection = respawn_config.protection_ticks;
         player.pos = select_spawn(map_spawns, mode, player.team, player.id, &enemies);
+        player.parachute = spawn_holds_parachute(collision, player.pos);
         player.vel = Vec2::default();
         player.forces = Vec2::default();
         player.fuel = fuel_capacity;

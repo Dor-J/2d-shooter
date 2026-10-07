@@ -10,6 +10,7 @@ import { ParticleField } from './render/particles.ts'
 import {
   buildRig,
   defaultAppearance,
+  parachuteCanopy,
   readPose,
   burningTint,
   bloodStain,
@@ -126,6 +127,8 @@ export type Player = {
   state?: { pose?: string }
   bonus?: WireTimedEffect
   unlocked?: number
+  /** Set when a high spawn opened a parachute. */
+  parachute?: boolean
 }
 export type RagdollSegment = {
   region: string
@@ -793,6 +796,16 @@ export class GameClient {
             pants: bloodStain(this.appearance.pants, stain),
           }
         : this.appearance
+    if (player.parachute) {
+      const canopy = parachuteCanopy(pos, appearance.shirt)
+      this.rect(
+        canopy.x - canopy.width / 2,
+        canopy.y - canopy.height / 2,
+        canopy.width,
+        canopy.height,
+        canopy.color,
+      )
+    }
     const rig = buildRig({
       pos,
       aim,

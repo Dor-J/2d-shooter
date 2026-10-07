@@ -333,6 +333,20 @@ export function buildRig(input: RigInput): Placement[] {
   )
 }
 
+/// One original canopy rectangle. Shirt colour is the tint; there is no upstream sprite.
+export function parachuteCanopy(
+  pos: Vec2,
+  shirt: Rgba,
+): { x: number; y: number; width: number; height: number; color: Rgba } {
+  return {
+    x: pos.x,
+    y: pos.y - 48,
+    width: 36,
+    height: 12,
+    color: [shirt[0], shirt[1], shirt[2], shirt[3]],
+  }
+}
+
 /// Where a weapon's muzzle ends up once the arm has been posed, which is where a flash belongs.
 export function muzzlePoint(rig: Placement[]): Vec2 | null {
   const weapon = rig.find((part) => part.part === 'weapon')

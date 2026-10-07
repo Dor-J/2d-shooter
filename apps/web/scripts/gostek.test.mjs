@@ -17,6 +17,7 @@ import {
   defaultAppearance,
   facing,
   muzzlePoint,
+  parachuteCanopy,
   readPose,
   walkPhase,
 } from '../src/render/gostek.ts'
@@ -237,4 +238,12 @@ test('a burning soldier is drawn hotter the longer they burn', () => {
   assert.ok(alight[0] > skin[0])
   assert.ok(alight[2] < skin[2])
   for (const channel of alight) assert.ok(channel >= 0 && channel <= 1)
+})
+
+test('a deployed parachute is one canopy rectangle in the shirt colour', () => {
+  const shirt = [0.2, 0.45, 0.7, 1]
+  const canopy = parachuteCanopy({ x: 100, y: 200 }, shirt)
+  assert.ok(canopy.width > 0 && canopy.height > 0)
+  assert.deepEqual(canopy.color, shirt)
+  assert.ok(canopy.y < 200, 'the canopy sits above the soldier')
 })

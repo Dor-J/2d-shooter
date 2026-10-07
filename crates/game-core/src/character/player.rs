@@ -21,6 +21,9 @@ pub struct Player {
     pub deaths: u32,
     pub team: u8,
     pub grounded: bool,
+    /// High-spawn canopy. Object id 23 (`OBJECT_PARACHUTE`); one flag, no extra body.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub parachute: bool,
     #[serde(default)]
     pub state: CharacterState,
     /// Legs and body playback. Both channels follow the stance clip.
@@ -114,6 +117,7 @@ impl Player {
             deaths: 0,
             team,
             grounded: false,
+            parachute: false,
             state: CharacterState::Airborne,
             anim: AnimPlayer::default(),
             facing: Direction::Right,
@@ -157,4 +161,8 @@ impl Player {
             burst: 0,
         }
     }
+}
+
+fn is_false(value: &bool) -> bool {
+    !*value
 }
