@@ -449,69 +449,21 @@ impl World {
         let lived_projectiles = self.projectiles.len();
         for player in self.players.values_mut() {
             if player.hp <= 0 {
-                // A dead player still picks the weapon they will carry back in.
-                if let Some(input) = inputs.get(&player.id) {
-                    player.last_seq = input.seq;
-                    player.weapon = input.weapon.min((SELECTABLE_WEAPONS.len() - 1) as u8);
-                }
-                if !modes::modifiers::survival::may_respawn(rules_snapshot.modifiers.survival) {
-                    // In Survival there is nothing to count down to: they are out for the round.
-                    continue;
-                }
-                if player.respawn > 0 {
-                    player.respawn -= 1;
-                } else {
-                    let enemies = opponents.get(&player.id).cloned().unwrap_or_default();
-                    player.hp = 100;
-                    player.armor = 0;
-                    player.bleed = None;
-                    player.attackers.clear();
-                    player.last_damage_direction = Vec2::default();
-                    player.spawn_protection = respawn_config.protection_ticks;
-                    player.pos = select_spawn(&map_spawns, &mode, player.team, player.id, &enemies);
-                    player.vel = Vec2::default();
-                    player.fuel = 1.0;
-                    let unlocked = player.unlocked;
-                    player.inventory =
-                        Inventory::spawn_limited(player.weapon, &self.weapons, |kind| {
-                            !rules_snapshot.modifiers.advance || unlocked.has(kind)
-                        });
-                    sync_hands(player);
-                    player.reload_timer = 0;
-                    player.startup = 0;
-                    player.switch_timer = 0;
-                    player.throw_charge = 0;
-                    player.pending_switch = None;
-                    player.grenades = 2;
-                    player.grenade_cooldown = 0;
-                    player.grenade_held = false;
-                    player.state = CharacterState::Airborne;
-                    player.previous_input = Input::default();
-                    player.jump_buffer_ticks = 0;
-                    player.airborne_ticks = 0;
-                    player.last_impact = 0.0;
-                    player.last_impulse = None;
-                    self.events.push(Event::Respawn { player: player.id });
-                }
+                character::tick::corpse(
+                    player,
+                    inputs,
+                    &rules_snapshot,
+                    &respawn_config,
+                    &opponents,
+                    &map_spawns,
+                    &mode,
+                    &self.weapons,
+                    &mut self.events,
+                );
                 continue;
             }
             player.spawn_protection = player.spawn_protection.saturating_sub(1);
-            if let Some(bleed) = player.bleed.as_mut() {
-                if let Some(amount) = bleed.tick() {
-                    pending.push(DamageEvent {
-                        attacker: bleed.attacker,
-                        target: player.id,
-                        amount,
-                        region: BodyRegion::Chest,
-                        cause: DamageCause::Bleeding,
-                        direction: Vec2::default(),
-                        pre_scaled: false,
-                    });
-                }
-                if bleed.finished() {
-                    player.bleed = None;
-                }
-            }
+            character::tick::bleed(player, &mut pending);
             let input = inputs.get(&player.id).copied().unwrap_or_default();
             player.last_seq = input.seq;
             let selected = input.weapon.min((SELECTABLE_WEAPONS.len() - 1) as u8);
@@ -580,81 +532,14 @@ impl World {
                 }
             }
             let previous = player.previous_input;
-            let has_standing_clearance = !player.state.is_low()
-                || self
-                    .collision
-                    .has_standing_clearance(player.pos, CollisionMask::PLAYER);
-            advance_character(player, input, &self.movement, has_standing_clearance);
-            let start = player.pos;
-            let impact_velocity = player.vel.y.max(0.0);
-            let desired = Vec2 {
-                // Acceptance evidence: rust:map:bounds
-                x: (start.x + player.vel.x * DT).clamp(16.0, WIDTH - 16.0),
-                y: (start.y + player.vel.y * DT).clamp(16.0, HEIGHT - 16.0),
-            };
-            let was_grounded = player.grounded;
-            player.grounded = false;
-            let contact = self.collision.sweep_shape(
-                start,
-                desired,
-                &character::body::shape_for(player.state),
-                CollisionMask::PLAYER,
+            character::tick::movement(
+                player,
+                input,
+                &self.collision,
+                &self.movement,
+                &damage_config,
+                &mut pending,
             );
-            let collided = contact.is_some();
-            if let Some(shape_hit) = contact {
-                let hit = shape_hit.hit;
-                player.pos = hit.position;
-                let response = resolve_material_velocity(player.vel, hit.normal, hit.kind);
-                player.vel = response.velocity;
-                player.grounded = hit.normal.y < -0.5;
-                if player.grounded && matches!(player.state, CharacterState::Airborne) {
-                    player.state = CharacterState::Standing;
-                }
-                if response.deadly {
-                    pending.push(DamageEvent {
-                        attacker: None,
-                        target: player.id,
-                        amount: player.hp + player.armor + 1,
-                        region: BodyRegion::Chest,
-                        cause: DamageCause::Deadly,
-                        direction: Vec2 { x: 0.0, y: -1.0 },
-                        pre_scaled: false,
-                    });
-                }
-            } else {
-                player.pos = desired;
-            }
-            // How hard this descent is going. In free flight it simply follows the current
-            // downward speed, so a jet burn genuinely softens the landing; once something is being
-            // hit it keeps the fastest reading, because terrain usually bleeds off a fast fall over
-            // two ticks and the body settles at a speed that no longer describes the fall.
-            if was_grounded && !player.grounded {
-                player.last_impact = 0.0;
-            } else if !was_grounded {
-                player.last_impact = if collided {
-                    player.last_impact.max(impact_velocity)
-                } else {
-                    impact_velocity
-                };
-            }
-            if !was_grounded
-                && player.grounded
-                && player.last_impact > damage_config.fall_damage_speed
-            {
-                let over = player.last_impact - damage_config.fall_damage_speed;
-                let amount = (over * damage_config.fall_damage_per_speed)
-                    .round()
-                    .max(1.0) as i32;
-                pending.push(DamageEvent {
-                    attacker: None,
-                    target: player.id,
-                    amount,
-                    region: BodyRegion::Legs,
-                    cause: DamageCause::Fall,
-                    direction: Vec2 { x: 0.0, y: 1.0 },
-                    pre_scaled: false,
-                });
-            }
             if input.fire && player.switch_timer == 0 {
                 player.startup = player.startup.saturating_add(1);
             } else if !input.fire {

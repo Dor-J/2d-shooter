@@ -8,6 +8,7 @@ pub(crate) mod ragdoll;
 mod resolve;
 pub(crate) mod respawn;
 mod state;
+pub(crate) mod tick;
 
 pub use body::{apply_impulse, resolve_player_contact, Impulse, ImpulseSource, ImpulseTarget};
 pub use damage::{
