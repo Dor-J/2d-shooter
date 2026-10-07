@@ -1,7 +1,9 @@
 use content::pms::MapAsset;
 
+mod load;
 mod spawns;
 
+pub(crate) use load::{place_objectives, place_specials, with_map};
 pub(crate) use spawns::{map_spawn, spawn};
 pub use spawns::{MapSpawn, SpawnKind};
 
