@@ -11,6 +11,7 @@ pub mod damage;
 pub mod explosive;
 pub mod firing;
 pub mod flame;
+mod flight;
 mod hands;
 pub mod inventory;
 mod loader;
@@ -46,6 +47,7 @@ pub use firing::{
     startup_resets_on_release, FireRefusal,
 };
 pub use flame::{propagated_hit_multiply, propagated_velocity, propagates};
+pub(crate) use flight::fly;
 pub(crate) use hands::{held_kind, shooter_pose, sync_hands, writeback_ammo};
 pub use inventory::{muzzle_origin, Inventory, WeaponSlot, SWITCH_DELAY_TICKS};
 pub use loader::WeaponConfigError;
