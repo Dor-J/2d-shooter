@@ -269,7 +269,7 @@ fn a_hard_landing_costs_health_and_a_soft_one_does_not() {
     }
     assert!(
         world.players[&2].hp < 100,
-        "falling from height hurts above {} px/s",
+        "falling from height hurts above {}",
         config.fall_damage_speed
     );
 

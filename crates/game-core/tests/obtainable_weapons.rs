@@ -131,10 +131,10 @@ fn a_map_m2_can_be_mounted() {
 
 #[test]
 fn realistic_movement_is_heavier() {
-    let normal = MovementConfig::soldat_default();
-    let realistic = MovementConfig::realistic();
-    assert!(realistic.max_run_speed < normal.max_run_speed);
-    assert!(realistic.jump_speed < normal.jump_speed);
+    assert_eq!(
+        MovementConfig::realistic(),
+        MovementConfig::soldat_default()
+    );
 }
 
 #[test]

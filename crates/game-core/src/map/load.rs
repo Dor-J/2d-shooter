@@ -25,7 +25,8 @@ pub(crate) fn place_objectives(world: &mut World) {
 
 pub(crate) fn with_map(mode: &str, map: &ValidatedMap) -> World {
     let mut world = World::with_collision(mode, CollisionWorld::from_map(map));
-    world.movement.fuel_capacity = (map.asset().start_jet.max(0) as f32 / 100.0).max(0.01);
+    let start = i64::from(map.asset().start_jet.max(0));
+    world.movement.fuel_capacity = i16::try_from((119 * start) / 100).unwrap_or(i16::MAX);
     world.map_spawns = map
         .asset()
         .spawnpoints

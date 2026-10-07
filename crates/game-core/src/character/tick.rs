@@ -1,11 +1,12 @@
 use std::collections::BTreeMap;
 
+use super::movement::integrate_body;
 use crate::weapons::{sync_hands, WeaponTable, SELECTABLE_WEAPONS};
 use crate::ModeRules;
 use crate::{
     advance_character, resolve_material_velocity, select_spawn, BodyRegion, CharacterState,
     CollisionMask, CollisionWorld, DamageCause, DamageConfig, DamageEvent, Event, Input, Inventory,
-    MapSpawn, MovementConfig, Player, RespawnConfig, Vec2, DT, HEIGHT, WIDTH,
+    MapSpawn, MovementConfig, Player, RespawnConfig, Vec2, HEIGHT, WIDTH,
 };
 
 #[allow(clippy::too_many_arguments)]
@@ -19,6 +20,7 @@ pub(crate) fn corpse(
     mode: &str,
     weapons: &WeaponTable,
     events: &mut Vec<Event>,
+    fuel_capacity: i16,
 ) {
     // A dead player still picks the weapon they will carry back in.
     if let Some(input) = inputs.get(&player.id) {
@@ -41,7 +43,8 @@ pub(crate) fn corpse(
         player.spawn_protection = respawn_config.protection_ticks;
         player.pos = select_spawn(map_spawns, mode, player.team, player.id, &enemies);
         player.vel = Vec2::default();
-        player.fuel = 1.0;
+        player.forces = Vec2::default();
+        player.fuel = fuel_capacity;
         let unlocked = player.unlocked;
         player.inventory = Inventory::spawn_limited(player.weapon, weapons, |kind| {
             !rules_snapshot.modifiers.advance || unlocked.has(kind)
@@ -91,16 +94,17 @@ pub(crate) fn movement(
     movement: &MovementConfig,
     damage_config: &DamageConfig,
     pending: &mut Vec<DamageEvent>,
+    tick: u64,
 ) {
     let has_standing_clearance = !player.state.is_low()
         || collision.has_standing_clearance(player.pos, CollisionMask::PLAYER);
-    advance_character(player, input, movement, has_standing_clearance);
     let start = player.pos;
+    integrate_body(player);
     let impact_velocity = player.vel.y.max(0.0);
     let desired = Vec2 {
         // Acceptance evidence: rust:map:bounds
-        x: (start.x + player.vel.x * DT).clamp(16.0, WIDTH - 16.0),
-        y: (start.y + player.vel.y * DT).clamp(16.0, HEIGHT - 16.0),
+        x: player.pos.x.clamp(16.0, WIDTH - 16.0),
+        y: player.pos.y.clamp(16.0, HEIGHT - 16.0),
     };
     let was_grounded = player.grounded;
     player.grounded = false;
@@ -162,4 +166,5 @@ pub(crate) fn movement(
             pre_scaled: false,
         });
     }
+    advance_character(player, input, movement, has_standing_clearance, tick);
 }

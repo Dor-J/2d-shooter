@@ -19,13 +19,62 @@ fn fixture_metadata_is_pinned() {
 }
 
 #[test]
+fn resting_player_drops_by_recorded_gravity() {
+    let mut world = World::new("deathmatch");
+    world.add_player(1, "rest".into());
+    let y = world.players[&1].pos.y;
+    world.step(&Default::default());
+    let player = &world.players[&1];
+    assert_eq!(player.pos.y, y + 0.06f32);
+    assert_eq!(player.vel.y, 0.06f32 * 0.99);
+}
+
+#[test]
+fn run_force_applies_on_the_tick_after_it_is_pressed() {
+    let mut world = World::new("deathmatch");
+    world.add_player(1, "runner".into());
+    {
+        let player = world.players.get_mut(&1).unwrap();
+        player.pos = Vec2 { x: 260.0, y: 474.0 };
+        player.vel = Vec2::default();
+        player.grounded = true;
+        player.state = CharacterState::Standing;
+    }
+    let inputs = std::collections::BTreeMap::from([(
+        1,
+        Input {
+            right: true,
+            ..Input::default()
+        },
+    )]);
+    world.step(&inputs);
+    assert_eq!(
+        world.players[&1].vel.x, 0.0,
+        "tick 1 has no RUNSPEED in vel.x"
+    );
+    world.step(&inputs);
+    assert_eq!(
+        world.players[&1].vel.x,
+        0.118f32 * 0.99 * 0.8,
+        "tick 2 applies RUNSPEED"
+    );
+}
+
+#[test]
+fn realistic_movement_matches_soldat_default() {
+    assert_eq!(
+        MovementConfig::realistic(),
+        MovementConfig::soldat_default()
+    );
+}
+
+#[test]
 fn source_constants_are_exposed_at_sixty_hertz() {
     let config = MovementConfig::soldat_default();
     assert_eq!(config.tick_rate, 60);
     assert_eq!(DT, 1.0 / 60.0);
-    assert_eq!(config.source_run_speed, 0.118);
-    assert_eq!(config.source_jump_speed, 0.66);
-    assert_eq!(config.source_jet_speed, 0.10);
+    assert_eq!(config.gravity, 0.06);
+    assert_eq!(config.fuel_capacity, 119);
 }
 
 #[test]
@@ -33,19 +82,23 @@ fn acceleration_friction_momentum_and_air_control_are_deterministic() {
     let config = MovementConfig::soldat_default();
     let mut player = Player::new(1, "runner".into(), 0);
     player.grounded = true;
+    player.state = CharacterState::Standing;
     let mut right = input();
     right.right = true;
-    advance_character(&mut player, right, &config, true);
-    assert_eq!(player.vel.x, config.ground_acceleration * DT);
+    advance_character(&mut player, right, &config, true, 0);
+    assert_eq!(player.vel.x, 0.0);
+    assert_eq!(player.forces.x, 0.118);
+    assert_eq!(player.forces.y, -(0.118f32 / 6.0));
 
-    let momentum = player.vel.x;
-    advance_character(&mut player, input(), &config, true);
-    assert_eq!(player.vel.x, momentum * config.ground_friction);
+    advance_character(&mut player, input(), &config, true, 0);
+    assert_eq!(player.forces.x, 0.0);
+    assert_eq!(player.vel.x, 0.0);
 
     player.grounded = false;
-    player.vel.x = 0.0;
-    advance_character(&mut player, right, &config, true);
-    assert_eq!(player.vel.x, config.air_acceleration * DT);
+    player.state = CharacterState::Airborne;
+    advance_character(&mut player, right, &config, true, 0);
+    assert_eq!(player.forces.x, 0.03);
+    assert_eq!(player.vel.x, 0.0);
 }
 
 #[test]
@@ -55,12 +108,13 @@ fn jump_is_edge_buffered_and_transitions_airborne() {
     player.grounded = false;
     let mut jump = input();
     jump.jump = true;
-    advance_character(&mut player, jump, &config, true);
+    advance_character(&mut player, jump, &config, true, 0);
     assert!(player.jump_buffer_ticks > 0);
     player.grounded = true;
-    advance_character(&mut player, input(), &config, true);
+    advance_character(&mut player, input(), &config, true, 0);
     assert_eq!(player.state, CharacterState::Airborne);
-    assert_eq!(player.vel.y, -config.jump_speed + config.gravity * DT);
+    assert_eq!(player.forces.y, -0.66);
+    assert_eq!(player.vel.y, 0.0);
 }
 
 #[test]
@@ -70,7 +124,7 @@ fn stance_transitions_use_deterministic_source_timers() {
     player.grounded = true;
     let mut prone = input();
     prone.prone = true;
-    advance_character(&mut player, prone, &config, true);
+    advance_character(&mut player, prone, &config, true, 0);
     assert_eq!(
         player.state,
         CharacterState::GoingProne {
@@ -78,17 +132,17 @@ fn stance_transitions_use_deterministic_source_timers() {
         }
     );
     for _ in 1..config.prone_transition_ticks {
-        advance_character(&mut player, input(), &config, true);
+        advance_character(&mut player, input(), &config, true, 0);
     }
     assert_eq!(player.state, CharacterState::Prone);
 
-    advance_character(&mut player, prone, &config, true);
+    advance_character(&mut player, prone, &config, true, 0);
     assert!(matches!(player.state, CharacterState::GettingUp { .. }));
     for _ in 0..config.get_up_ticks {
-        advance_character(&mut player, input(), &config, false);
+        advance_character(&mut player, input(), &config, false, 0);
     }
     assert_eq!(player.state, CharacterState::Crouching);
-    advance_character(&mut player, input(), &config, true);
+    advance_character(&mut player, input(), &config, true, 0);
     assert_eq!(player.state, CharacterState::Standing);
 }
 
@@ -101,7 +155,7 @@ fn roll_direction_source_and_backflip_variants_are_explicit() {
     roll.right = true;
     roll.crouch = true;
     roll.roll = true;
-    advance_character(&mut player, roll, &config, true);
+    advance_character(&mut player, roll, &config, true, 0);
     assert!(matches!(
         player.state,
         CharacterState::Rolling {
@@ -119,7 +173,7 @@ fn roll_direction_source_and_backflip_variants_are_explicit() {
     backflip.left = true;
     backflip.jump = true;
     backflip.roll = true;
-    advance_character(&mut player, backflip, &config, true);
+    advance_character(&mut player, backflip, &config, true, 0);
     assert!(matches!(
         player.state,
         CharacterState::Backflip { late: false, .. }
@@ -127,7 +181,7 @@ fn roll_direction_source_and_backflip_variants_are_explicit() {
     player.state = CharacterState::Airborne;
     player.airborne_ticks = config.late_backflip_after_ticks;
     player.previous_input = input();
-    advance_character(&mut player, backflip, &config, true);
+    advance_character(&mut player, backflip, &config, true, 0);
     assert!(matches!(
         player.state,
         CharacterState::Backflip { late: true, .. }
@@ -143,7 +197,7 @@ fn prone_can_exit_directly_into_a_directional_roll() {
     let mut roll = input();
     roll.left = true;
     roll.roll = true;
-    advance_character(&mut player, roll, &config, true);
+    advance_character(&mut player, roll, &config, true, 0);
     assert!(matches!(
         player.state,
         CharacterState::Rolling {
@@ -163,32 +217,31 @@ fn jet_force_depends_on_pose_and_fuel_recharges_on_ground() {
     player.fuel = config.fuel_capacity;
     let mut jet = input();
     jet.jet = true;
-    advance_character(&mut player, jet, &config, true);
-    let prone_velocity = player.vel.y;
-    assert_eq!(
-        player.fuel,
-        config.fuel_capacity - config.fuel_depletion_per_tick
-    );
+    advance_character(&mut player, jet, &config, true, 0);
+    let prone_lift = player.forces.y;
+    assert_eq!(player.fuel, config.fuel_capacity - 1);
+    assert_eq!(player.forces.x, 0.10f32 / 2.0);
 
     player.state = CharacterState::Airborne;
     player.vel.y = 0.0;
     player.fuel = config.fuel_capacity;
     player.previous_input = input();
-    advance_character(&mut player, jet, &config, true);
-    assert!(player.vel.y < prone_velocity);
+    advance_character(&mut player, jet, &config, true, 0);
+    assert!(player.forces.y < prone_lift);
+    assert_eq!(player.forces.y, -0.10);
 
     player.grounded = true;
     player.vel.y = 0.0;
     player.fuel = config.fuel_capacity;
     player.previous_input = input();
-    advance_character(&mut player, jet, &config, true);
-    assert!(player.vel.y < 0.0, "jet lifts off the ground");
+    advance_character(&mut player, jet, &config, true, 0);
+    assert_eq!(player.forces.y, -2.5 * 0.10f32, "jet lifts off the ground");
 
     player.grounded = true;
-    player.fuel = config.fuel_capacity / 2.0;
+    player.fuel = config.fuel_capacity / 2;
     let fuel = player.fuel;
-    advance_character(&mut player, input(), &config, true);
-    assert_eq!(player.fuel, fuel + config.fuel_recharge_per_tick);
+    advance_character(&mut player, input(), &config, true, 0);
+    assert_eq!(player.fuel, fuel + 1);
 }
 
 #[test]
@@ -256,10 +309,10 @@ fn emotes_and_death_are_controller_states() {
     let mut player = Player::new(1, "state".into(), 0);
     let mut emote = input();
     emote.emote = Some(Emote::Victory);
-    advance_character(&mut player, emote, &config, true);
+    advance_character(&mut player, emote, &config, true, 0);
     assert!(matches!(player.state, CharacterState::Emote { .. }));
     player.hp = 0;
-    advance_character(&mut player, input(), &config, true);
+    advance_character(&mut player, input(), &config, true, 0);
     assert_eq!(player.state, CharacterState::Dead);
 }
 

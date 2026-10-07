@@ -310,6 +310,7 @@ impl World {
         // lines from wherever they happened to be standing.
         player.pos = map_spawn(&self.map_spawns, id, team);
         player.vel = Vec2::default();
+        player.forces = Vec2::default();
         Some(team)
     }
 
@@ -455,6 +456,7 @@ impl World {
                     &mode,
                     &self.weapons,
                     &mut self.events,
+                    self.movement.fuel_capacity,
                 );
                 continue;
             }
@@ -535,6 +537,7 @@ impl World {
                 &self.movement,
                 &damage_config,
                 &mut pending,
+                self.tick,
             );
             weapons::trigger::trigger(
                 player,
