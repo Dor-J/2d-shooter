@@ -30,7 +30,7 @@ const describe = (
   gaps: string[],
 ): ActionDescriptor => ({ id, label, category, kind, target, gaps })
 
-const weaponSlots = Array.from({ length: 10 }, (_, index) =>
+const weaponSlots = Array.from({ length: 14 }, (_, index) =>
   describe(
     `selectWeapon${index + 1}`,
     `Select weapon ${index + 1}`,

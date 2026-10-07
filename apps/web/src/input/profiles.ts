@@ -1,12 +1,12 @@
 import type { Action } from './actions.ts'
 import {
+  BINDINGS_VERSION,
   type BindingSet,
   parseBindings,
   resetBindings,
-  serializeBindings,
 } from './bindings.ts'
 
-export const PROFILE_VERSION = 1
+export const PROFILE_VERSION = 2
 export const PROFILES_KEY = 'arena-input-profiles'
 
 export type ProfileSettings = {
@@ -91,13 +91,25 @@ export function createProfile(
   }
 }
 
+function storedBindingVersion(profileVersion: unknown): number {
+  return typeof profileVersion === 'number' && profileVersion >= PROFILE_VERSION
+    ? BINDINGS_VERSION
+    : 1
+}
+
 /** Brings any stored profile shape, including pre-versioned ones, up to the current format. */
 export function migrateProfile(raw: unknown): ControlProfile {
   if (!raw || typeof raw !== 'object') return createProfile('Default')
   const value = raw as Partial<ControlProfile> & { bindings?: unknown }
-  const bindings = value.bindings
-    ? parseBindings(serializeBindings(value.bindings as BindingSet))
-    : resetBindings()
+  const bindings =
+    value.bindings && typeof value.bindings === 'object'
+      ? parseBindings(
+          JSON.stringify({
+            version: storedBindingVersion(value.version),
+            bindings: value.bindings,
+          }),
+        )
+      : resetBindings()
   return {
     version: PROFILE_VERSION,
     id: typeof value.id === 'string' && value.id ? value.id : newId(),
@@ -156,15 +168,18 @@ export class ProfileStore {
       payload && typeof payload === 'object'
         ? (payload as { profiles?: unknown; activeId?: unknown })
         : {}
-    const profiles = Array.isArray(stored.profiles)
-      ? stored.profiles.map(migrateProfile)
-      : []
+    const rawProfiles = Array.isArray(stored.profiles) ? stored.profiles : []
+    const profiles = rawProfiles.map(migrateProfile)
+    const stale = rawProfiles.some((entry) => {
+      if (!entry || typeof entry !== 'object') return true
+      return (entry as { version?: unknown }).version !== PROFILE_VERSION
+    })
     this.#profiles = profiles.length > 0 ? profiles : [createProfile('Default')]
     const active = typeof stored.activeId === 'string' ? stored.activeId : ''
     this.#activeId = this.#profiles.some((profile) => profile.id === active)
       ? active
       : this.#profiles[0].id
-    if (profiles.length === 0) this.#persist()
+    if (profiles.length === 0 || stale) this.#persist()
   }
 
   #persist() {

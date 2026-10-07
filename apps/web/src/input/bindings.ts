@@ -4,20 +4,29 @@ export type DeviceKind = 'keyboard' | 'mouse' | 'gamepad' | 'touch'
 export type Binding = { device: DeviceKind; code: string }
 export type BindingSet = Record<Action, Binding[]>
 
-export const BINDINGS_VERSION = 1
+export const BINDINGS_VERSION = 2
 
 const key = (code: string): Binding => ({ device: 'keyboard', code })
 const mouse = (code: string): Binding => ({ device: 'mouse', code })
 const pad = (code: string): Binding => ({ device: 'gamepad', code })
 
 const weaponSlotDefaults = Object.fromEntries(
-  Array.from({ length: 10 }, (_, index) => [
+  Array.from({ length: 14 }, (_, index) => [
     `selectWeapon${index + 1}`,
-    [key(index === 9 ? 'Digit0' : `Digit${index + 1}`)],
+    [
+      key(
+        index < 10
+          ? index === 9
+            ? 'Digit0'
+            : `Digit${index + 1}`
+          : `Control+Digit${index - 9}`,
+      ),
+    ],
   ]),
 )
 
-const defaults: BindingSet = {
+/** Bindings shipped before BINDINGS_VERSION 2. Untouched copies of these reset; anything else stays. */
+const previousDefaults: Record<string, Binding[]> = {
   moveLeft: [key('KeyA'), key('ArrowLeft'), pad('Axis0-')],
   moveRight: [key('KeyD'), key('ArrowRight'), pad('Axis0+')],
   jump: [key('Space'), key('KeyW'), key('ArrowUp'), pad('Button0')],
@@ -38,7 +47,12 @@ const defaults: BindingSet = {
   weaponMenu: [key('KeyM')],
   selectPrimary: [key('KeyO')],
   selectSecondary: [key('KeyP')],
-  ...weaponSlotDefaults,
+  ...Object.fromEntries(
+    Array.from({ length: 10 }, (_, index) => [
+      `selectWeapon${index + 1}`,
+      [key(index === 9 ? 'Digit0' : `Digit${index + 1}`)],
+    ]),
+  ),
   nextWeapon: [key('Period')],
   previousWeapon: [key('Comma')],
   chat: [key('Enter')],
@@ -67,6 +81,58 @@ const defaults: BindingSet = {
   sensitivityDown: [key('BracketLeft')],
   pause: [key('Pause')],
   minimize: [key('F10')],
+}
+
+const defaults: BindingSet = {
+  moveLeft: [key('KeyA'), key('ArrowLeft'), pad('Axis0-')],
+  moveRight: [key('KeyD'), key('ArrowRight'), pad('Axis0+')],
+  jump: [key('KeyW'), key('Space'), key('ArrowUp'), pad('Button0')],
+  jet: [mouse('Mouse2'), pad('Button6')],
+  crouch: [key('KeyS'), key('ArrowDown'), pad('Button1')],
+  prone: [key('KeyX'), pad('Button2')],
+  roll: [],
+  backflip: [],
+  fire: [mouse('Mouse0'), pad('Button7')],
+  throwGrenade: [key('KeyE'), pad('Button5')],
+  reload: [key('KeyR'), pad('Button3')],
+  switchWeapon: [key('KeyQ'), pad('Button4')],
+  dropWeapon: [key('KeyG')],
+  throwWeapon: [key('KeyF')],
+  throwKnife: [],
+  pickup: [],
+  flagThrow: [key('KeyB')],
+  weaponMenu: [key('KeyM')],
+  selectPrimary: [key('KeyO')],
+  selectSecondary: [key('KeyP')],
+  ...weaponSlotDefaults,
+  nextWeapon: [key('Period')],
+  previousWeapon: [key('Comma')],
+  chat: [key('KeyT')],
+  teamChat: [key('KeyY')],
+  console: [key('Slash')],
+  emoteTaunt: [key('Alt+KeyA')],
+  emoteVictory: [key('Alt+KeyB')],
+  emoteMercy: [key('Alt+KeyC')],
+  emoteCigar: [key('Alt+Digit1')],
+  scoreboard: [key('Tab'), key('F1'), pad('Button8')],
+  scoreboardScrollUp: [key('PageUp'), mouse('WheelUp')],
+  scoreboardScrollDown: [key('PageDown'), mouse('WheelDown')],
+  weaponStats: [key('F2')],
+  minimap: [key('F3')],
+  sniperLine: [key('Alt+F2')],
+  performanceStats: [key('Alt+F3')],
+  screenshot: [key('F4')],
+  musicToggle: [key('F5')],
+  musicPrevious: [key('F6')],
+  musicNext: [key('F7')],
+  demoRecord: [key('F8')],
+  demoFastForward: [],
+  volumeUp: [key('Shift+Equal')],
+  volumeDown: [key('Shift+Minus')],
+  sensitivityUp: [key('Control+Alt+Equal')],
+  sensitivityDown: [key('Control+Alt+Minus')],
+  pause: [key('F10')],
+  minimize: [key('F9')],
 }
 
 export const DEFAULT_BINDINGS: BindingSet = Object.freeze(
@@ -166,6 +232,39 @@ function readBindingList(value: unknown): Binding[] | null {
   return bindings
 }
 
+function sameBindings(left: Binding[], right: Binding[]): boolean {
+  return (
+    left.length === right.length &&
+    left.every(
+      (binding, index) =>
+        binding.device === right[index]?.device &&
+        binding.code === right[index]?.code,
+    )
+  )
+}
+
+function overlayBindings(
+  bindings: unknown,
+  upgradeFromPrevious: boolean,
+): BindingSet {
+  const merged = resetBindings()
+  if (!bindings || typeof bindings !== 'object') return merged
+  for (const [action, value] of Object.entries(
+    bindings as Record<string, unknown>,
+  )) {
+    if (!isAction(action)) continue
+    const parsed = readBindingList(value)
+    if (!parsed) continue
+    if (
+      upgradeFromPrevious &&
+      sameBindings(parsed, previousDefaults[action] ?? [])
+    )
+      continue
+    merged[action] = parsed
+  }
+  return merged
+}
+
 /** Reads stored bindings, falling back to the defaults for anything missing, unknown, or malformed. */
 export function parseBindings(raw: string | null | undefined): BindingSet {
   const merged = resetBindings()
@@ -181,14 +280,7 @@ export function parseBindings(raw: string | null | undefined): BindingSet {
     version?: unknown
     bindings?: unknown
   }
+  if (version === 1) return overlayBindings(bindings, true)
   if (version !== BINDINGS_VERSION) return merged
-  if (!bindings || typeof bindings !== 'object') return merged
-  for (const [action, value] of Object.entries(
-    bindings as Record<string, unknown>,
-  )) {
-    if (!isAction(action)) continue
-    const parsed = readBindingList(value)
-    if (parsed) merged[action] = parsed
-  }
-  return merged
+  return overlayBindings(bindings, false)
 }

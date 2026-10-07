@@ -16,6 +16,7 @@ import {
   importProfile,
   type ControlProfile,
 } from './input/profiles'
+import { chordCode } from './input/keyboard'
 import { clampSensitivity } from './input/mouse'
 import { gamepadCodes } from './input/gamepad'
 import type { InputSystem } from './input'
@@ -53,12 +54,12 @@ function commit(next: ControlProfile) {
 }
 
 function describeBinding(binding: Binding) {
-  const label = binding.code
-    .replace(/^(Key|Digit)/, '')
+  return binding.code
+    .replaceAll('Digit', '')
+    .replaceAll('Key', '')
     .replace('Mouse', 'Mouse ')
     .replace('Button', 'Pad ')
     .replace('Axis', 'Stick ')
-  return binding.device === 'keyboard' ? label : `${label}`
 }
 
 function startCapture(action: Action, slot: number) {
@@ -102,7 +103,7 @@ function onCaptureKey(event: KeyboardEvent) {
     notice.value = 'Control cleared.'
     return
   }
-  applyCapture({ device: 'keyboard', code: event.code })
+  applyCapture({ device: 'keyboard', code: chordCode(event) })
 }
 
 function onCaptureMouse(event: MouseEvent) {
@@ -239,6 +240,10 @@ function slotsFor(action: Action) {
       <h2>Controls</h2>
       <button class="outline" @click="emit('close')">Done</button>
     </header>
+    <p class="footnote">
+      Ctrl+W can still be stolen by the browser, and Keyboard Lock is missing
+      outside Chromium fullscreen.
+    </p>
 
     <div class="profile-row">
       <label>

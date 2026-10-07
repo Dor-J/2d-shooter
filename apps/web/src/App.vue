@@ -36,6 +36,7 @@ import {
 import { disconnectText } from './network/prediction.ts'
 import { PlayerStore, toggleFavorite } from './profiles/player.ts'
 import MobileControls from './MobileControls.vue'
+import { lockCapturableKeys } from './input/keyboard'
 import ControlsSettings from './ControlsSettings.vue'
 import VideoSettings from './VideoSettings.vue'
 import { networkPanel } from './hud/net.ts'
@@ -516,9 +517,17 @@ function applyQuality(next: QualitySettings) {
   quality.value = next
   game?.setQuality(next)
 }
-function toggleFullscreen() {
-  if (document.fullscreenElement) void document.exitFullscreen()
-  else void document.documentElement.requestFullscreen()
+async function toggleFullscreen() {
+  if (document.fullscreenElement) {
+    void document.exitFullscreen()
+    return
+  }
+  try {
+    await document.documentElement.requestFullscreen()
+    lockCapturableKeys()
+  } catch {
+    // Fullscreen was refused; the page keeps the browser's keys.
+  }
 }
 function applyBackground(url: string) {
   if (game) game.backgroundUrl = url.trim()
@@ -1184,7 +1193,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
       <div class="game-wrap">
-        <canvas ref="canvas" aria-label="Game arena"></canvas>
+        <canvas ref="canvas" tabindex="0" aria-label="Game arena"></canvas>
         <div class="hud">
           <div class="stat">
             <small>HEALTH</small><strong>{{ me?.hp ?? 100 }}</strong>

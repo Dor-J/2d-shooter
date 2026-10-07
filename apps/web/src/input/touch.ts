@@ -43,8 +43,15 @@ export const TOUCH_BUTTONS: TouchButton[] = [
   {
     action: 'roll',
     label: 'ROLL',
-    hint: 'Roll on the ground or backflip in the air',
-    kind: 'press',
+    hint: 'Crouch while moving to roll',
+    kind: 'hold',
+    group: 'stance',
+  },
+  {
+    action: 'backflip',
+    label: 'FLIP',
+    hint: 'Jet during a jump to backflip',
+    kind: 'hold',
     group: 'stance',
   },
   {
@@ -144,32 +151,49 @@ export function aimFromStick(
   }
 }
 
+/** Roll and backflip have no default key, so the buttons synthesize the combos.
+ *  ponytail: both buttons pick a fixed direction; the movement stick should supply it once facing exists. */
+const TOUCH_SYNTH: Partial<Record<Action, Action[]>> = {
+  roll: ['moveRight', 'crouch'],
+  backflip: ['jump', 'jet', 'moveLeft'],
+}
+
+function touchedActions(action: Action): Action[] {
+  return TOUCH_SYNTH[action] ?? [action]
+}
+
 /**
  * Tracks which pointer holds which action so that lifting one finger, or the browser cancelling a
  * touch, never leaves another control stuck down.
  */
 export class TouchDevice {
   #state: ActionState
-  #held = new Map<number, Action>()
+  #held = new Map<number, Action[]>()
 
   constructor(state: ActionState) {
     this.#state = state
   }
 
   press(pointerId: number, action: Action) {
-    this.#held.set(pointerId, action)
-    this.#state.set(action, true)
+    const actions = touchedActions(action)
+    this.#held.set(pointerId, actions)
+    for (const item of actions) this.#state.set(item, true)
   }
 
   release(pointerId: number) {
-    const action = this.#held.get(pointerId)
-    if (action === undefined) return
+    const actions = this.#held.get(pointerId)
+    if (!actions) return
     this.#held.delete(pointerId)
-    this.#state.set(action, false)
+    const still = new Set([...this.#held.values()].flat())
+    for (const item of actions) {
+      if (!still.has(item)) this.#state.set(item, false)
+    }
   }
 
   cancel() {
-    for (const action of this.#held.values()) this.#state.set(action, false)
+    for (const actions of this.#held.values()) {
+      for (const action of actions) this.#state.set(action, false)
+    }
     this.#held.clear()
   }
 }

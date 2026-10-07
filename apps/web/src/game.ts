@@ -310,6 +310,8 @@ export class GameClient {
     this.canvas = canvas
     this.send = send
     if (input) this.input = input
+    this.canvas.tabIndex = 0
+    this.input.keyboard.attachCanvas(canvas)
     const gl = canvas.getContext('webgl2', { antialias: false })
     if (!gl) throw new Error('WebGL2 is required on this device')
     this.gl = gl
@@ -390,6 +392,7 @@ export class GameClient {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
     this.resizeObserver = new ResizeObserver(() => this.resize())
     this.resizeObserver.observe(canvas)
+    this.canvas.focus?.()
     window.addEventListener('keydown', this.keydown)
     window.addEventListener('keyup', this.keyup)
     window.addEventListener('blur', this.blur)
@@ -424,6 +427,7 @@ export class GameClient {
     )
   }
   pointerDown = (e: PointerEvent) => {
+    this.canvas.focus?.()
     this.pointer(e)
     this.input.mouse.pointerdown(e)
   }

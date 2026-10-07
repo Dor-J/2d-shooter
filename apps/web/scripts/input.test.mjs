@@ -27,7 +27,12 @@ import {
   BINDINGS_VERSION,
 } from '../src/input/bindings.ts'
 import { ActionState } from '../src/input/state.ts'
-import { KeyboardDevice, isTextEntryTarget } from '../src/input/keyboard.ts'
+import {
+  KeyboardDevice,
+  isTextEntryTarget,
+  browserWouldSteal,
+  lockCapturableKeys,
+} from '../src/input/keyboard.ts'
 import {
   MouseDevice,
   clampSensitivity,
@@ -64,15 +69,110 @@ test('every gap-2 control maps to an action, the pointer path, or a named capabi
     assert.ok(required.includes(id), `${id} is not a gap-2 feature`)
 })
 
-test('every action has a unique id and at least one default binding', () => {
+function bindingCodes(action) {
+  return DEFAULT_BINDINGS[action].map((binding) => bindingCode(binding))
+}
+
+test('soldat defaults bind the soldat.pl table and leave roll, backflip, and pickup empty', () => {
   assert.equal(new Set(actionIds()).size, ACTIONS.length)
+  for (const action of [
+    'roll',
+    'backflip',
+    'pickup',
+    'throwKnife',
+    'demoFastForward',
+  ]) {
+    assert.deepEqual(
+      DEFAULT_BINDINGS[action],
+      [],
+      `${action} has no soldat default`,
+    )
+  }
+  assert.deepEqual(bindingCodes('jump'), [
+    'keyboard:KeyW',
+    'keyboard:Space',
+    'keyboard:ArrowUp',
+    'gamepad:Button0',
+  ])
+  assert.deepEqual(bindingCodes('jet'), ['mouse:Mouse2', 'gamepad:Button6'])
+  assert.equal(bindingCodes('crouch')[0], 'keyboard:KeyS')
+  assert.deepEqual(bindingCodes('throwGrenade'), [
+    'keyboard:KeyE',
+    'gamepad:Button5',
+  ])
+  assert.deepEqual(bindingCodes('throwWeapon'), ['keyboard:KeyF'])
+  assert.deepEqual(bindingCodes('chat'), ['keyboard:KeyT'])
+  assert.deepEqual(bindingCodes('teamChat'), ['keyboard:KeyY'])
+  assert.deepEqual(bindingCodes('console'), ['keyboard:Slash'])
+  assert.deepEqual(bindingCodes('flagThrow'), ['keyboard:KeyB'])
+  assert.deepEqual(bindingCodes('selectWeapon1'), ['keyboard:Digit1'])
+  assert.deepEqual(bindingCodes('selectWeapon10'), ['keyboard:Digit0'])
+  assert.deepEqual(bindingCodes('selectWeapon11'), ['keyboard:Control+Digit1'])
+  assert.deepEqual(bindingCodes('selectWeapon12'), ['keyboard:Control+Digit2'])
+  assert.deepEqual(bindingCodes('selectWeapon13'), ['keyboard:Control+Digit3'])
+  assert.deepEqual(bindingCodes('selectWeapon14'), ['keyboard:Control+Digit4'])
+  assert.deepEqual(bindingCodes('scoreboard'), [
+    'keyboard:Tab',
+    'keyboard:F1',
+    'gamepad:Button8',
+  ])
+  assert.deepEqual(bindingCodes('weaponStats'), ['keyboard:F2'])
+  assert.deepEqual(bindingCodes('sniperLine'), ['keyboard:Alt+F2'])
+  assert.deepEqual(bindingCodes('minimap'), ['keyboard:F3'])
+  assert.deepEqual(bindingCodes('performanceStats'), ['keyboard:Alt+F3'])
+  assert.deepEqual(bindingCodes('screenshot'), ['keyboard:F4'])
+  assert.deepEqual(bindingCodes('musicToggle'), ['keyboard:F5'])
+  assert.deepEqual(bindingCodes('musicPrevious'), ['keyboard:F6'])
+  assert.deepEqual(bindingCodes('musicNext'), ['keyboard:F7'])
+  assert.deepEqual(bindingCodes('demoRecord'), ['keyboard:F8'])
+  assert.deepEqual(bindingCodes('minimize'), ['keyboard:F9'])
+  assert.deepEqual(bindingCodes('pause'), ['keyboard:F10'])
+  assert.deepEqual(bindingCodes('volumeUp'), ['keyboard:Shift+Equal'])
+  assert.deepEqual(bindingCodes('volumeDown'), ['keyboard:Shift+Minus'])
+  assert.deepEqual(bindingCodes('sensitivityUp'), [
+    'keyboard:Control+Alt+Equal',
+  ])
+  assert.deepEqual(bindingCodes('sensitivityDown'), [
+    'keyboard:Control+Alt+Minus',
+  ])
+  assert.deepEqual(bindingCodes('emoteTaunt'), ['keyboard:Alt+KeyA'])
+  assert.deepEqual(bindingCodes('emoteVictory'), ['keyboard:Alt+KeyB'])
+  assert.deepEqual(bindingCodes('emoteMercy'), ['keyboard:Alt+KeyC'])
+  assert.deepEqual(bindingCodes('emoteCigar'), ['keyboard:Alt+Digit1'])
   for (const action of ACTIONS) {
-    const bindings = DEFAULT_BINDINGS[action.id]
+    if (
+      ['roll', 'backflip', 'pickup', 'throwKnife', 'demoFastForward'].includes(
+        action.id,
+      )
+    )
+      continue
     assert.ok(
-      bindings && bindings.length > 0,
+      DEFAULT_BINDINGS[action.id]?.length > 0,
       `${action.id} has no default binding`,
     )
   }
+})
+
+test('version 1 profiles keep a custom binding and reset only untouched soldat defaults', () => {
+  const parsed = parseBindings(
+    JSON.stringify({
+      version: 1,
+      bindings: {
+        jet: [
+          { device: 'keyboard', code: 'ShiftLeft' },
+          { device: 'keyboard', code: 'ShiftRight' },
+          { device: 'gamepad', code: 'Button6' },
+        ],
+        reload: [{ device: 'keyboard', code: 'KeyL' }],
+      },
+    }),
+  )
+  assert.deepEqual(parsed.jet, [
+    { device: 'mouse', code: 'Mouse2' },
+    { device: 'gamepad', code: 'Button6' },
+  ])
+  assert.deepEqual(parsed.reload, [{ device: 'keyboard', code: 'KeyL' }])
+  assert.deepEqual(parsed.jump, DEFAULT_BINDINGS.jump)
 })
 
 test('default bindings contain no duplicate codes', () => {
@@ -123,9 +223,7 @@ test('a control can be cleared and restored without touching other controls', ()
 
 test('mouse buttons are rebindable and default fire to the left button', () => {
   assert.deepEqual(actionsForCode(DEFAULT_BINDINGS, 'mouse:Mouse0'), ['fire'])
-  assert.deepEqual(actionsForCode(DEFAULT_BINDINGS, 'mouse:Mouse2'), [
-    'throwGrenade',
-  ])
+  assert.deepEqual(actionsForCode(DEFAULT_BINDINGS, 'mouse:Mouse2'), ['jet'])
   const next = rebind(DEFAULT_BINDINGS, 'fire', 0, {
     device: 'mouse',
     code: 'Mouse2',
@@ -307,7 +405,7 @@ test('the encoder produces one protocol input frame covering stance, reload, and
     jet: false,
     crouch: true,
     prone: false,
-    roll: false,
+    roll: true,
     emote: null,
     reload: true,
     fire: true,
@@ -384,6 +482,155 @@ test('roll and backflip reach the simulation through the same roll field', () =>
     encodeInput(state, { seq: 2, aim: { x: 0, y: 0 }, weapon: 0 }).roll,
     true,
   )
+})
+
+test('grounded crouch plus a direction rolls, and jet during a jump backflips', () => {
+  const state = new ActionState()
+  state.set('crouch', true)
+  state.set('moveLeft', true)
+  assert.equal(
+    encodeInput(state, {
+      seq: 1,
+      aim: { x: 0, y: 0 },
+      weapon: 0,
+      airborne: false,
+    }).roll,
+    true,
+  )
+  state.releaseAll()
+  state.commit()
+  state.set('jump', true)
+  state.set('crouch', true)
+  assert.equal(
+    encodeInput(state, {
+      seq: 2,
+      aim: { x: 0, y: 0 },
+      weapon: 0,
+      airborne: true,
+    }).roll,
+    false,
+    'airborne jump plus crouch is not a backflip',
+  )
+  state.releaseAll()
+  state.commit()
+  state.set('jump', true)
+  state.set('jet', true)
+  state.set('moveRight', true)
+  assert.equal(
+    encodeInput(state, {
+      seq: 3,
+      aim: { x: 0, y: 0 },
+      weapon: 0,
+      airborne: true,
+    }).roll,
+    true,
+  )
+  state.releaseAll()
+  state.commit()
+  state.set('jump', true)
+  state.set('crouch', true)
+  const grounded = encodeInput(state, {
+    seq: 4,
+    aim: { x: 0, y: 0 },
+    weapon: 0,
+    airborne: false,
+  })
+  assert.equal(grounded.throw_weapon, true)
+  assert.equal(grounded.roll, false)
+})
+
+test('ctrl number keys select secondary slots without firing the primary', () => {
+  const state = new ActionState()
+  const keyboard = new KeyboardDevice(state, DEFAULT_BINDINGS)
+  keyboard.keydown({
+    code: 'Digit1',
+    ctrlKey: true,
+    target: null,
+    canvasFocused: true,
+    preventDefault() {},
+  })
+  assert.equal(resolveWeapon(0, state), 10)
+  state.releaseAll()
+  state.commit()
+  keyboard.keyup({ code: 'Digit1', ctrlKey: true, target: null })
+  keyboard.keydown({
+    code: 'Digit1',
+    target: null,
+    preventDefault() {},
+  })
+  assert.equal(resolveWeapon(0, state), 0)
+})
+
+test('a focused canvas swallows stolen soldat keys and never Ctrl+W', () => {
+  assert.equal(browserWouldSteal({ code: 'F5' }), true)
+  assert.equal(browserWouldSteal({ code: 'F10' }), true)
+  assert.equal(browserWouldSteal({ code: 'Tab' }), true)
+  assert.equal(browserWouldSteal({ code: 'Digit4', ctrlKey: true }), true)
+  assert.equal(browserWouldSteal({ code: 'Digit5', ctrlKey: true }), false)
+  assert.equal(browserWouldSteal({ code: 'KeyW', ctrlKey: true }), false)
+  const prevented = []
+  const state = new ActionState()
+  const keyboard = new KeyboardDevice(state, DEFAULT_BINDINGS)
+  keyboard.keydown({
+    code: 'F1',
+    canvasFocused: true,
+    target: null,
+    preventDefault() {
+      prevented.push('F1')
+    },
+  })
+  keyboard.keydown({
+    code: 'Digit2',
+    ctrlKey: true,
+    canvasFocused: true,
+    target: null,
+    preventDefault() {
+      prevented.push('Digit2')
+    },
+  })
+  keyboard.keydown({
+    code: 'KeyW',
+    ctrlKey: true,
+    canvasFocused: true,
+    target: null,
+    preventDefault() {
+      prevented.push('KeyW')
+    },
+  })
+  keyboard.keydown({
+    code: 'F5',
+    canvasFocused: false,
+    target: null,
+    preventDefault() {
+      prevented.push('unfocused')
+    },
+  })
+  assert.deepEqual(prevented, ['F1', 'Digit2'])
+})
+
+test('keyboard lock requests capturable codes and ignores rejection', async () => {
+  const seen = []
+  lockCapturableKeys({
+    lock(codes) {
+      seen.push(codes)
+      return Promise.reject(new Error('denied'))
+    },
+  })
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  assert.ok(seen[0].includes('F1') && seen[0].includes('F10'))
+  assert.ok(seen[0].includes('Tab'))
+  assert.ok(seen[0].includes('Digit1') && seen[0].includes('Digit4'))
+  assert.equal(seen[0].includes('KeyW'), false)
+  assert.equal(lockCapturableKeys(null), undefined)
+})
+
+test('the controls screen notes keys the browser can still steal', () => {
+  const source = readFileSync(
+    fileURLToPath(new URL('../src/ControlsSettings.vue', import.meta.url)),
+    'utf8',
+  )
+  assert.match(source, /Ctrl\+W/)
+  assert.match(source, /Keyboard Lock/)
 })
 
 test('taunt shortcuts send one emote on the press frame only', () => {

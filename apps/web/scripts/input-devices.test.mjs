@@ -95,6 +95,7 @@ test('touch buttons cover every stance, combat, and panel control the gap list a
     'crouch',
     'prone',
     'roll',
+    'backflip',
     'reload',
     'switchWeapon',
     'throwWeapon',
@@ -233,12 +234,69 @@ test('stored profiles from an older version are migrated instead of discarded', 
   assert.equal(migrateProfile(null).name, createProfile('Default').name)
 })
 
+test('untouched default bindings adopt soldat keys and a custom binding stays', () => {
+  const migrated = migrateProfile({
+    version: 1,
+    name: 'Legacy',
+    bindings: {
+      jet: [
+        { device: 'keyboard', code: 'ShiftLeft' },
+        { device: 'keyboard', code: 'ShiftRight' },
+        { device: 'gamepad', code: 'Button6' },
+      ],
+      fire: [{ device: 'keyboard', code: 'KeyL' }],
+    },
+  })
+  assert.deepEqual(migrated.bindings.jet, [
+    { device: 'mouse', code: 'Mouse2' },
+    { device: 'gamepad', code: 'Button6' },
+  ])
+  assert.deepEqual(migrated.bindings.fire, [
+    { device: 'keyboard', code: 'KeyL' },
+  ])
+})
+
+test('roll and backflip touch buttons synthesize the soldat combos', () => {
+  const state = new ActionState()
+  const touch = new TouchDevice(state)
+  touch.press(1, 'roll')
+  assert.equal(state.held('roll'), false)
+  assert.equal(state.held('crouch'), true)
+  assert.equal(state.held('moveLeft') || state.held('moveRight'), true)
+  assert.equal(
+    encodeInput(state, {
+      seq: 1,
+      aim: { x: 0, y: 0 },
+      weapon: 0,
+      airborne: false,
+    }).roll,
+    true,
+  )
+  touch.release(1)
+  touch.press(2, 'backflip')
+  assert.equal(state.held('backflip'), false)
+  assert.equal(state.held('jump'), true)
+  assert.equal(state.held('jet'), true)
+  assert.equal(state.held('moveLeft') || state.held('moveRight'), true)
+  assert.equal(
+    encodeInput(state, {
+      seq: 2,
+      aim: { x: 0, y: 0 },
+      weapon: 0,
+      airborne: true,
+    }).roll,
+    true,
+  )
+})
+
 test('every combined input has a single-control alternative', () => {
   for (const combo of ACCESSIBILITY_COMBOS) {
-    assert.ok(
-      DEFAULT_BINDINGS[combo.alternative]?.length > 0,
-      `${combo.alternative} needs a default binding`,
-    )
+    if (combo.alternative !== 'backflip') {
+      assert.ok(
+        DEFAULT_BINDINGS[combo.alternative]?.length > 0,
+        `${combo.alternative} needs a default binding`,
+      )
+    }
     assert.ok(combo.keys.length > 1)
   }
   const state = new ActionState()
@@ -246,13 +304,23 @@ test('every combined input has a single-control alternative', () => {
   state.set('crouch', true)
   assert.equal(
     backflipRequested(state, true),
-    true,
-    'the combo still works in the air',
+    false,
+    'jump plus crouch in the air is not a backflip',
   )
   assert.equal(
     flagThrowRequested(state, false),
     true,
     'the combo still works on the ground',
+  )
+  state.releaseAll()
+  state.commit()
+  state.set('jump', true)
+  state.set('jet', true)
+  state.set('moveLeft', true)
+  assert.equal(
+    backflipRequested(state, true),
+    true,
+    'jet during a directional jump is the backflip combo',
   )
   state.releaseAll()
   state.commit()

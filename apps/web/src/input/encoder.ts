@@ -35,7 +35,7 @@ export type EncoderContext = {
   seq: number
   aim: Vec2
   weapon: number
-  /** Jump+crouch means backflip in the air and a flag throw on the ground. */
+  /** Grounded jump+crouch throws the flag. Roll and backflip are combos on the frame. */
   airborne?: boolean
   /** Carried slot numbers. When set, next/prev/switch stay inside the inventory. */
   owned?: number[]
@@ -48,13 +48,27 @@ const EMOTES: [string, Emote][] = [
   ['emoteTaunt', 'taunt'],
 ]
 
-/** True when the player asked for a backflip, either with the key or with the jump+crouch combo. */
+function groundRoll(state: ActionState, airborne: boolean): boolean {
+  return (
+    !airborne &&
+    state.held('crouch') &&
+    (state.held('moveLeft') || state.held('moveRight'))
+  )
+}
+
+/** True when the player asked for a backflip, with the key or by jetting during a jump. */
 export function backflipRequested(
   state: ActionState,
   airborne: boolean,
 ): boolean {
   if (state.held('backflip')) return true
-  return airborne && state.held('jump') && state.held('crouch')
+  // ponytail: facing-opposite backflip needs the sim facing bit; MOV-04 tightens this
+  return (
+    airborne &&
+    state.held('jump') &&
+    state.held('jet') &&
+    (state.held('moveLeft') || state.held('moveRight'))
+  )
 }
 
 /** The flag-throw combo, kept here so the dedicated key and the combo cannot drift apart.
@@ -74,7 +88,7 @@ export function resolveWeapon(
   memory: WeaponMemory = { primary: 0, secondary: SECONDARY_WEAPONS[0] },
   owned?: number[],
 ): number {
-  for (let slot = 0; slot < 10; slot += 1) {
+  for (let slot = 0; slot < WEAPON_COUNT; slot += 1) {
     if (state.pressed(`selectWeapon${slot + 1}`)) return slot
   }
   const cycle = owned && owned.length > 0 ? owned : null
@@ -132,7 +146,10 @@ export function encodeInput(
     jet: state.held('jet'),
     crouch: state.held('crouch'),
     prone: state.held('prone'),
-    roll: state.held('roll') || backflipRequested(state, airborne),
+    roll:
+      state.held('roll') ||
+      groundRoll(state, airborne) ||
+      backflipRequested(state, airborne),
     emote,
     reload: state.held('reload'),
     fire: state.held('fire'),
