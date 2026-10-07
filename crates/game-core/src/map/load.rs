@@ -47,21 +47,24 @@ pub(crate) fn with_map(mode: &str, map: &ValidatedMap) -> World {
     world
 }
 
-/// Active PMS points, in file order, with connections resolved against that active list.
+/// Active PMS points, in file order.
 ///
-/// A connection is a 0-based index when that index exists, otherwise a 1-based index when
-/// `value - 1` exists. Anything else is dropped. No reverse links are invented.
+/// A connection is resolved on the original array, inactive points included: the waypoint whose
+/// id equals the value when exactly one has that id, otherwise a 0-based index, otherwise a
+/// 1-based index. Missing and inactive targets are dropped. The stored index is into this active
+/// list. No reverse links are invented.
 fn bot_waypoints(raw: &[content::pms::Waypoint]) -> Vec<crate::Waypoint> {
-    let active: Vec<&content::pms::Waypoint> = raw.iter().filter(|point| point.active).collect();
-    let len = active.len();
-    active
-        .iter()
+    raw.iter()
+        .filter(|point| point.active)
         .map(|point| {
             let mut links = [0u16; 20];
             let mut link_count = 0u8;
             let stored = point.connections_num.clamp(0, 20) as usize;
             for &value in point.connections.iter().take(stored) {
-                let Some(index) = connection_index(value, len) else {
+                let Some(original) = connection_target(raw, value) else {
+                    continue;
+                };
+                let Some(index) = active_index(raw, original) else {
                     continue;
                 };
                 links[usize::from(link_count)] = index as u16;
@@ -80,8 +83,23 @@ fn bot_waypoints(raw: &[content::pms::Waypoint]) -> Vec<crate::Waypoint> {
         .collect()
 }
 
-fn connection_index(value: i32, len: usize) -> Option<usize> {
-    let len = i32::try_from(len).unwrap_or(i32::MAX);
+/// Original-array index a connection names, before inactive points are dropped.
+fn connection_target(raw: &[content::pms::Waypoint], value: i32) -> Option<usize> {
+    let mut found = None;
+    for (index, point) in raw.iter().enumerate() {
+        if point.id != value {
+            continue;
+        }
+        if found.is_some() {
+            found = None;
+            break;
+        }
+        found = Some(index);
+    }
+    if let Some(index) = found {
+        return Some(index);
+    }
+    let len = i32::try_from(raw.len()).unwrap_or(i32::MAX);
     if (0..len).contains(&value) {
         return Some(value as usize);
     }
@@ -90,6 +108,20 @@ fn connection_index(value: i32, len: usize) -> Option<usize> {
         return Some(one_based as usize);
     }
     None
+}
+
+/// Where an original index lands after inactive points are removed.
+fn active_index(raw: &[content::pms::Waypoint], original: usize) -> Option<usize> {
+    let point = raw.get(original)?;
+    if !point.active {
+        return None;
+    }
+    Some(
+        raw.iter()
+            .take(original)
+            .filter(|point| point.active)
+            .count(),
+    )
 }
 
 pub(crate) fn place_specials(world: &mut World) {
@@ -197,7 +229,79 @@ mod tests {
         assert_eq!(world.waypoints[0].links[1], 1);
         assert!(world.waypoints[1].needs_jet);
         assert_eq!(world.waypoints[1].pos.x, 56.0);
+        // Value 1 is original index 1, the inactive point, so the link is dropped.
+        assert_eq!(world.waypoints[1].link_count, 0);
+    }
+
+    #[test]
+    fn editor_catalog_connections_follow_waypoint_ids() {
+        let mut to_second = [0; 20];
+        to_second[0] = 2;
+        let mut to_first = [0; 20];
+        to_first[0] = 1;
+        let vertex = Vertex {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            rhw: 1.0,
+            color: [255; 4],
+            u: 0.0,
+            v: 0.0,
+        };
+        let asset = MapAsset {
+            hash: 1,
+            version: 1,
+            name: "Fixture".into(),
+            texture: "fixture.png".into(),
+            background_top: [0; 4],
+            background_bottom: [0; 4],
+            start_jet: 100,
+            grenade_packs: 0,
+            medikits: 0,
+            weather: 0,
+            steps: 0,
+            random_id: 0,
+            polygons: vec![Polygon {
+                vertices: [
+                    vertex,
+                    Vertex { x: 10.0, ..vertex },
+                    Vertex { y: 10.0, ..vertex },
+                ],
+                normals: [[0.0; 3]; 3],
+                kind: 0,
+            }],
+            sectors_division: 50,
+            sectors_num: 0,
+            sectors: Vec::new(),
+            props: Vec::new(),
+            scenery: Vec::new(),
+            colliders: Vec::new(),
+            spawnpoints: Vec::new(),
+            waypoints: vec![
+                Waypoint {
+                    id: 1,
+                    x: 260,
+                    y: 600,
+                    connections_num: 1,
+                    connections: to_second,
+                    ..point(true, 260, 600, true, 1, to_second)
+                },
+                Waypoint {
+                    id: 2,
+                    x: 940,
+                    y: 600,
+                    connections_num: 1,
+                    connections: to_first,
+                    ..point(true, 940, 600, true, 1, to_first)
+                },
+            ],
+        };
+        let map = ValidatedMap::try_from(asset).unwrap();
+        let world = with_map("deathmatch", &map);
+
+        assert_eq!(world.waypoints[0].link_count, 1);
+        assert_eq!(world.waypoints[0].links[0], 1, "id 2 is the other point");
         assert_eq!(world.waypoints[1].link_count, 1);
-        assert_eq!(world.waypoints[1].links[0], 1);
+        assert_eq!(world.waypoints[1].links[0], 0, "id 1 is the first point");
     }
 }
