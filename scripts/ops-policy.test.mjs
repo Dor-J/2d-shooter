@@ -23,8 +23,27 @@ test('rollback and moderation policies are written down', () => {
   assert.match(policies, /Rollback/)
   assert.match(policies, /Moderation/)
   assert.match(policies, /\/DRAIN/)
-  assert.match(differences, /Rambo/)
+  assert.match(differences, /Historical interface packs/)
   assert.match(differences, /invite/)
+})
+
+test('every gap the differences doc calls deferred really is still open', () => {
+  // The doc cites a deferred gap in backticks and names an already-finished one in plain prose, so
+  // the backticked ones are the claims worth checking. A row that has since been implemented has to
+  // leave this list, or the doc tells players something is missing that they can already play —
+  // which is how the Rambo line came to be asserted here long after Rambomatch worked.
+  const gaps = readFileSync(resolve('docs/gaps/gap-list.md'), 'utf8').split(/\r?\n/)
+  const cited = [...new Set((differences.match(/`G\d{2}-\d{3}`/g) ?? []).map(id => id.replaceAll('`', '')))]
+  assert.ok(cited.length > 0, 'the doc cites the gaps it is talking about')
+  for (const id of cited) {
+    const [section, number] = id.split('-')
+    const row = gaps.find(line => new RegExp(`<!-- ${section}-[A-Z0-9-]+-${number} -->`).test(line))
+    assert.ok(row, `${id} names a row that exists in the gap list`)
+    assert.ok(
+      !row.includes('**Present:**'),
+      `${id} is still open, so calling it an intentional difference is honest`,
+    )
+  }
 })
 
 test('invite edge locks origin, trusted proxies, and metrics', () => {
